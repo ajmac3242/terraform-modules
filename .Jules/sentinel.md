@@ -68,6 +68,7 @@ _Sentinel will append entries here as it runs. Format:_
 _`- [YYYY-MM-DD] <decision or rule learned>`_
 
 - [2026-04-18] Initial journal created. No modules exist yet — first scan will be a baseline pass. If no modules are found under `aws/`, note that in the nightly report and skip the audit.
+- [2026-04-19] Baseline scan complete. Base modules (iam, kms, s3) exist but contain no .tf files yet. Security audit skipped for this run.
 
 ## Nightly Run Log
 
@@ -75,3 +76,4 @@ _Sentinel will append a one-line summary after each run:_
 _`- [YYYY-MM-DD] Scanned X modules. Found Y violations. Opened Z PRs, W issues.`_
 
 - [2026-04-18] Journal initialized. Awaiting first module scaffold from Forge.
+- [2026-04-19] Scanned 0 modules. Found 0 violations. Opened 1 PR, 0 issues.
