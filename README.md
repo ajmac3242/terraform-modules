@@ -82,3 +82,22 @@ module "my_bucket" {
 ## Contributing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines. To request a new module or enhancement, add an item to `.Jules/backlog.md` following the template in that file.
+
+<!-- BEGIN_TF_DOCS -->
+
+
+## Usage
+
+```hcl
+# See README.md for usage example
+```
+
+## Inputs
+
+No inputs.
+
+## Outputs
+
+No outputs.
+
+<!-- END_TF_DOCS -->
