@@ -1,0 +1,49 @@
+variables {
+  name        = "test-key"
+  description = "Test KMS Key"
+  admin_principal_arns = [
+    "arn:aws:iam::123456789012:root"
+  ]
+  usage_principal_arns = [
+    "arn:aws:iam::123456789012:root"
+  ]
+  tags = {
+    environment = "test"
+    owner       = "forge"
+    project     = "test-project"
+    cost_center = "test-cc"
+  }
+}
+
+provider "aws" {
+  region                      = "us-east-1"
+  skip_credentials_validation = true
+  skip_requesting_account_id  = true
+  skip_metadata_api_check     = true
+  access_key                  = "mock_access_key"
+  secret_key                  = "mock_secret_key"
+}
+
+run "verify_kms_key" {
+  command = plan
+
+  assert {
+    condition     = aws_kms_key.this.enable_key_rotation == true
+    error_message = "KMS key rotation must be enabled."
+  }
+
+  assert {
+    condition     = aws_kms_alias.this.name == "alias/test-key"
+    error_message = "KMS alias name is incorrect."
+  }
+
+  assert {
+    condition     = aws_kms_key.this.multi_region == false
+    error_message = "KMS multi_region should be false by default."
+  }
+
+  assert {
+    condition     = aws_kms_key.this.deletion_window_in_days == 30
+    error_message = "KMS deletion window should be 30 days by default."
+  }
+}
