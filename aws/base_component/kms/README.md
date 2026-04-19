@@ -41,6 +41,7 @@ module "kms" {
 | `admin_principal_arns` | A list of IAM ARNs that are allowed to administer the KMS key | `list(string)` | n/a | yes |
 | `usage_principal_arns` | A list of IAM ARNs that are allowed to use the KMS key for cryptographic operations | `list(string)` | n/a | yes |
 | `tags` | A map of tags to assign to the resources. Required keys: environment, owner, project, cost_center. | `map(string)` | n/a | yes |
+| `aws_account_id` | The AWS Account ID to use for the key policy. If not provided, it is looked up via a data source. | `string` | `null` | no |
 | `deletion_window_in_days` | The waiting period, specified in number of days. (7-30) | `number` | `30` | no |
 | `multi_region` | Indicates whether the KMS key is a multi-Region (true) or regional (false) key | `bool` | `false` | no |
 

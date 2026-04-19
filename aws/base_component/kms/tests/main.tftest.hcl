@@ -1,6 +1,7 @@
 variables {
-  name        = "test-key"
-  description = "Test KMS Key"
+  name           = "test-key"
+  description    = "Test KMS Key"
+  aws_account_id = "123456789012"
   admin_principal_arns = [
     "arn:aws:iam::123456789012:root"
   ]

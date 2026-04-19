@@ -1,4 +1,10 @@
-data "aws_caller_identity" "current" {}
+data "aws_caller_identity" "current" {
+  count = var.aws_account_id == null ? 1 : 0
+}
+
+locals {
+  account_id = var.aws_account_id != null ? var.aws_account_id : data.aws_caller_identity.current[0].account_id
+}
 
 resource "aws_kms_key" "this" {
   description             = var.description
@@ -23,53 +29,59 @@ data "aws_iam_policy_document" "kms" {
     effect = "Allow"
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+      identifiers = ["arn:aws:iam::${local.account_id}:root"]
     }
     actions   = ["kms:*"]
     resources = ["*"]
   }
 
-  statement {
-    sid    = "Allow access for Key Administrators"
-    effect = "Allow"
-    principals {
-      type        = "AWS"
-      identifiers = var.admin_principal_arns
+  dynamic "statement" {
+    for_each = length(var.admin_principal_arns) > 0 ? [1] : []
+    content {
+      sid    = "Allow access for Key Administrators"
+      effect = "Allow"
+      principals {
+        type        = "AWS"
+        identifiers = var.admin_principal_arns
+      }
+      actions = [
+        "kms:Create*",
+        "kms:Describe*",
+        "kms:Enable*",
+        "kms:List*",
+        "kms:Put*",
+        "kms:Update*",
+        "kms:Revoke*",
+        "kms:Disable*",
+        "kms:Get*",
+        "kms:Delete*",
+        "kms:TagResource",
+        "kms:UntagResource",
+        "kms:ScheduleKeyDeletion",
+        "kms:CancelKeyDeletion",
+        "kms:RotateKeyOnDemand"
+      ]
+      resources = ["*"]
     }
-    actions = [
-      "kms:Create*",
-      "kms:Describe*",
-      "kms:Enable*",
-      "kms:List*",
-      "kms:Put*",
-      "kms:Update*",
-      "kms:Revoke*",
-      "kms:Disable*",
-      "kms:Get*",
-      "kms:Delete*",
-      "kms:TagResource",
-      "kms:UntagResource",
-      "kms:ScheduleKeyDeletion",
-      "kms:CancelKeyDeletion",
-      "kms:RotateKeyOnDemand"
-    ]
-    resources = ["*"]
   }
 
-  statement {
-    sid    = "Allow use of the key"
-    effect = "Allow"
-    principals {
-      type        = "AWS"
-      identifiers = var.usage_principal_arns
+  dynamic "statement" {
+    for_each = length(var.usage_principal_arns) > 0 ? [1] : []
+    content {
+      sid    = "Allow use of the key"
+      effect = "Allow"
+      principals {
+        type        = "AWS"
+        identifiers = var.usage_principal_arns
+      }
+      actions = [
+        "kms:Encrypt",
+        "kms:Decrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*",
+        "kms:DescribeKey"
+      ]
+      resources = ["*"]
     }
-    actions = [
-      "kms:Encrypt",
-      "kms:Decrypt",
-      "kms:ReEncrypt*",
-      "kms:GenerateDataKey*",
-      "kms:DescribeKey"
-    ]
-    resources = ["*"]
   }
 }

@@ -35,6 +35,12 @@ variable "multi_region" {
   default     = false
 }
 
+variable "aws_account_id" {
+  description = "The AWS Account ID to use for the key policy. If not provided, the current account ID will be looked up via a data source."
+  type        = string
+  default     = null
+}
+
 variable "tags" {
   description = "A map of tags to assign to the resources"
   type        = map(string)
