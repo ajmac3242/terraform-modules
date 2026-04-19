@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Sentinel (nightly) + Forge (marks items done)
-> **Last reviewed:** <!-- Sentinel updates this on each run -->
+> **Last reviewed:** 2026-04-19
 > **Purpose:** Single source of truth for all module requirements, acceptance criteria, security findings, and feature requests across this multi-cloud Terraform module registry.
 
 ---
