@@ -1,6 +1,6 @@
 # Upstream VPC module call with organizational defaults
 module "vpc" {
-  source = "terraform-aws-modules/vpc/aws"
+  source  = "terraform-aws-modules/vpc/aws"
   version = "~> 5.0"
 
   name = var.name
@@ -14,9 +14,9 @@ module "vpc" {
   single_nat_gateway = var.single_nat_gateway
 
   # Enforce Flow Logs with mandatory CMK encryption
-  enable_flow_log                      = true
-  create_flow_log_cloudwatch_log_group = true
-  create_flow_log_cloudwatch_iam_role  = true
+  enable_flow_log                          = true
+  create_flow_log_cloudwatch_log_group     = true
+  create_flow_log_cloudwatch_iam_role      = true
   flow_log_cloudwatch_log_group_kms_key_id = var.kms_key_arn
 
   tags = var.tags

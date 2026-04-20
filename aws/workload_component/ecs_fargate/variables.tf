@@ -3,11 +3,6 @@ variable "name" {
   type        = string
 }
 
-variable "vpc_id" {
-  description = "The ID of the VPC where resources will be placed"
-  type        = string
-}
-
 variable "private_subnet_ids" {
   description = "A list of private subnet IDs for the Fargate service"
   type        = list(string)

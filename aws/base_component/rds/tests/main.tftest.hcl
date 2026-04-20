@@ -1,13 +1,13 @@
 variables {
-  identifier     = "test-db"
-  engine         = "postgres"
-  engine_version = "15.3"
-  db_name        = "testdb"
-  username       = "testadmin"
-  password       = "testpassword"
-  subnet_ids     = ["subnet-12345", "subnet-67890"]
+  identifier             = "test-db"
+  engine                 = "postgres"
+  engine_version         = "15.3"
+  db_name                = "testdb"
+  username               = "testadmin"
+  password               = "testpassword"
+  subnet_ids             = ["subnet-12345", "subnet-67890"]
   vpc_security_group_ids = ["sg-12345"]
-  kms_key_id     = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
+  kms_key_id             = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
   tags = {
     environment = "test"
     owner       = "test-owner"

@@ -18,7 +18,6 @@ module "ecs_fargate" {
   source = "./aws/workload_component/ecs_fargate"
 
   name               = "my-service"
-  vpc_id             = module.vpc.vpc_id
   private_subnet_ids = module.vpc.private_subnet_ids
   container_image    = "nginx:latest"
   kms_key_arn        = module.kms.key_arn
@@ -37,7 +36,6 @@ module "ecs_fargate" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | `name` | Name for the ECS cluster and service | `string` | n/a | yes |
-| `vpc_id` | The ID of the VPC | `string` | n/a | yes |
 | `private_subnet_ids` | A list of private subnet IDs | `list(string)` | n/a | yes |
 | `container_image` | The image used to start a container | `string` | n/a | yes |
 | `container_port` | The port number on the container | `number` | `80` | no |

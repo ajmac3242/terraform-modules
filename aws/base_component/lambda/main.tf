@@ -34,7 +34,7 @@ resource "aws_lambda_function" "this" {
   runtime = var.runtime
   handler = var.handler
 
-  filename         = var.filename
+  filename = var.filename
   # source_code_hash handles change detection and is resilient to missing files in CI/plan
   source_code_hash = var.filename != null ? (fileexists(var.filename) ? filebase64sha256(var.filename) : null) : null
 
