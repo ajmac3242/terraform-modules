@@ -57,21 +57,21 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** CRITICAL
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #2)
 **Module:** aws/base_component/iam
 **Why:** Foundational module — all other modules depend on this for execution roles and service principals. Enforces least-privilege patterns with managed policy attachments only.
 
 #### Acceptance Criteria
-- [ ] `aws_iam_role` created with configurable `assume_role_policy` (JSON string input)
-- [ ] Variable `managed_policy_arns` (list of strings) — attaches each via `aws_iam_role_policy_attachment`
-- [ ] Variable `permissions_boundary_arn` (optional string, default `null`) — attached when provided
-- [ ] Variable `role_name` with validation: 1–64 chars, alphanumeric + `+=,.@_/-`
-- [ ] Variable `managed_policy_arns` entries validated to match ARN format
-- [ ] Required `tags` variable enforced (environment, owner, project, cost_center)
-- [ ] Outputs: `role_arn`, `role_name`, `role_id`, `unique_id`
-- [ ] `versions.tf` pins AWS provider `~> 5.0` and Terraform `>= 1.5`
-- [ ] README with usage example, inputs table, outputs table
-- [ ] At least one Terraform test: role created, policy attached, assume-role policy matches input
+- [x] `aws_iam_role` created with configurable `assume_role_policy` (JSON string input)
+- [x] Variable `managed_policy_arns` (list of strings) — attaches each via `aws_iam_role_policy_attachment`
+- [x] Variable `permissions_boundary_arn` (optional string, default `null`) — attached when provided
+- [x] Variable `role_name` with validation: 1–64 chars, alphanumeric + `+=,.@_/-`
+- [x] Variable `managed_policy_arns` entries validated to match ARN format
+- [x] Required `tags` variable enforced (environment, owner, project, cost_center)
+- [x] Outputs: `role_arn`, `role_name`, `role_id`, `unique_id`
+- [x] `versions.tf` pins AWS provider `~> 5.0` and Terraform `>= 1.5`
+- [x] README with usage example, inputs table, outputs table
+- [x] At least one Terraform test: role created, policy attached, assume-role policy matches input
 
 #### Security Notes
 - Permissions boundary is strongly recommended for developer-facing roles
