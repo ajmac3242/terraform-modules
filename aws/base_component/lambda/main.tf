@@ -32,7 +32,7 @@ resource "aws_lambda_function" "this" {
   handler = var.handler
 
   filename         = var.filename
-  source_code_hash = var.filename != null ? filebase64sha256(var.filename) : null
+  source_code_hash = var.filename != null ? (fileexists(var.filename) ? filebase64sha256(var.filename) : null) : null
 
   memory_size = var.memory_size
   timeout     = var.timeout
@@ -63,6 +63,7 @@ resource "aws_lambda_function" "this" {
 resource "aws_cloudwatch_log_group" "this" {
   name              = "/aws/lambda/${var.function_name}"
   retention_in_days = var.retention_in_days
+  kms_key_id        = var.kms_key_arn
 
   tags = var.tags
 }
