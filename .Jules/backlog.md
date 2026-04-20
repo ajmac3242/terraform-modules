@@ -83,23 +83,23 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** CRITICAL
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #1)
 **Module:** aws/base_component/kms
 **Why:** Foundational module — S3, Lambda, DynamoDB, RDS, and Secrets Manager all require a CMK for at-rest encryption. Centralizing key creation, rotation, deletion window, and least-privilege key policy prevents ad-hoc key sprawl and enforces a consistent encryption posture across the org.
 
 #### Acceptance Criteria
 
-- [ ] `aws_kms_key` with `enable_key_rotation = true` by default
-- [ ] `deletion_window_in_days` variable (default: 30, validation: 7-30)
-- [ ] `aws_kms_alias` created automatically using `alias/var.name`
-- [ ] `key_policy` — supports configurable `admin_principal_arns` (list) and `usage_principal_arns` (list)
-- [ ] Key policy denies all access if no principal is specified (deny-by-default)
-- [ ] Variable `multi_region` (bool, default: `false`)
-- [ ] Outputs: `key_arn`, `key_id`, `alias_arn`, `alias_name`
-- [ ] Required `tags` enforced (environment, owner, project, cost_center)
-- [ ] `versions.tf` pins AWS provider `~> 5.0` and Terraform `>= 1.5`
-- [ ] README with usage example, inputs table, outputs table
-- [ ] At least one Terraform test: key created, rotation enabled, alias exists
+- [x] `aws_kms_key` with `enable_key_rotation = true` by default
+- [x] `deletion_window_in_days` variable (default: 30, validation: 7-30)
+- [x] `aws_kms_alias` created automatically using `alias/var.name`
+- [x] `key_policy` — supports configurable `admin_principal_arns` (list) and `usage_principal_arns` (list)
+- [x] Key policy denies all access if no principal is specified (deny-by-default)
+- [x] Variable `multi_region` (bool, default: `false`)
+- [x] Outputs: `key_arn`, `key_id`, `alias_arn`, `alias_name`
+- [x] Required `tags` enforced (environment, owner, project, cost_center)
+- [x] `versions.tf` pins AWS provider `~> 5.0` and Terraform `>= 1.5`
+- [x] README with usage example, inputs table, outputs table
+- [x] At least one Terraform test: key created, rotation enabled, alias exists
 
 #### Security Notes
 
