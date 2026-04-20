@@ -9,13 +9,13 @@ variable "description" {
 }
 
 variable "deletion_window_in_days" {
-  description = "The waiting period, specified in number of days. After the time period ends, AWS KMS deletes the KMS key. (7-30)"
+  description = "The waiting period, specified in number of days. After the time period ends, AWS KMS deletes the KMS key. (14-30)"
   type        = number
   default     = 30
 
   validation {
-    condition     = var.deletion_window_in_days >= 7 && var.deletion_window_in_days <= 30
-    error_message = "The deletion_window_in_days must be between 7 and 30 days."
+    condition     = var.deletion_window_in_days >= 14 && var.deletion_window_in_days <= 30
+    error_message = "The deletion_window_in_days must be between 14 and 30 days."
   }
 }
 

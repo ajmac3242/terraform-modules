@@ -48,3 +48,28 @@ run "verify_kms_key" {
     error_message = "KMS deletion window should be 30 days by default."
   }
 }
+
+run "verify_kms_key_validation" {
+  command = plan
+
+  variables {
+    deletion_window_in_days = 14
+  }
+
+  assert {
+    condition     = aws_kms_key.this.deletion_window_in_days == 14
+    error_message = "KMS deletion window should be 14 days when specified."
+  }
+}
+
+run "verify_kms_key_invalid_deletion_window" {
+  command = plan
+
+  variables {
+    deletion_window_in_days = 7
+  }
+
+  expect_failures = [
+    var.deletion_window_in_days
+  ]
+}

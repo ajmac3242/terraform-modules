@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Sentinel (nightly) + Forge (marks items done)
-> **Last reviewed:** 2026-04-19
+> **Last reviewed:** 2026-04-20
 > **Purpose:** Single source of truth for all module requirements, acceptance criteria, security findings, and feature requests across this multi-cloud Terraform module registry.
 
 ---
@@ -237,3 +237,4 @@ All modules in this repo MUST comply with these non-negotiable standards:
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-04-18 | Human | Initial backlog with aligned CRITICAL/HIGH/MEDIUM/LOW priorities and standardized item format |
+| 2026-04-20 | Sentinel | Nightly audit; updated KMS deletion window requirement |

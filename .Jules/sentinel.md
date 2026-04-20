@@ -27,7 +27,7 @@ These are the non-negotiable standards you enforce. Do not deviate.
 
 ### KMS
 - `enable_key_rotation = true` (non-negotiable)
-- `deletion_window_in_days >= 7` (enforce via variable validation)
+- `deletion_window_in_days >= 14` (enforce via variable validation)
 - Key policy must not use `*` as Principal without conditions
 
 ### IAM
@@ -69,6 +69,7 @@ _`- [YYYY-MM-DD] <decision or rule learned>`_
 
 - [2026-04-18] Initial journal created. No modules exist yet — first scan will be a baseline pass. If no modules are found under `aws/`, note that in the nightly report and skip the audit.
 - [2026-04-19] Baseline scan complete. Base modules (iam, kms, s3) exist but contain no .tf files yet. Security audit skipped for this run.
+- [2026-04-20] Found KMS deletion window minimum (7 days) was below the required 14 days. Updated module and enforced via variable validation.
 
 ## Nightly Run Log
 
@@ -77,3 +78,4 @@ _`- [YYYY-MM-DD] Scanned X modules. Found Y violations. Opened Z PRs, W issues.`
 
 - [2026-04-18] Journal initialized. Awaiting first module scaffold from Forge.
 - [2026-04-19] Scanned 0 modules. Found 0 violations. Opened 1 PR, 0 issues.
+- [2026-04-20] Scanned 3 modules. Found 1 violation. Opened 1 PR, 0 issues.
