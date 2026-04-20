@@ -1,3 +1,4 @@
+# IAM Role and Policy Attachment resources
 resource "aws_iam_role" "this" {
   name                 = var.role_name
   description          = var.description
@@ -7,6 +8,7 @@ resource "aws_iam_role" "this" {
   tags = var.tags
 }
 
+# Attach managed policies to the created role
 resource "aws_iam_role_policy_attachment" "this" {
   for_each   = toset(var.managed_policy_arns)
   role       = aws_iam_role.this.name

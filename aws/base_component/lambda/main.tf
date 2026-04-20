@@ -1,3 +1,4 @@
+# Lambda execution role using the base IAM module
 module "execution_role" {
   source = "../iam"
 
@@ -15,6 +16,7 @@ module "execution_role" {
       },
     ]
   })
+  # Basic execution and VPC access policies are attached by default
   managed_policy_arns = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
@@ -23,6 +25,7 @@ module "execution_role" {
   tags = var.tags
 }
 
+# Main Lambda function resource
 resource "aws_lambda_function" "this" {
   function_name = var.function_name
   description   = var.description
@@ -32,6 +35,7 @@ resource "aws_lambda_function" "this" {
   handler = var.handler
 
   filename         = var.filename
+  # source_code_hash handles change detection and is resilient to missing files in CI/plan
   source_code_hash = var.filename != null ? (fileexists(var.filename) ? filebase64sha256(var.filename) : null) : null
 
   memory_size = var.memory_size
@@ -41,6 +45,7 @@ resource "aws_lambda_function" "this" {
 
   reserved_concurrent_executions = var.reserved_concurrent_executions
 
+  # Optional VPC placement
   dynamic "vpc_config" {
     for_each = var.vpc_config != null ? [var.vpc_config] : []
     content {
@@ -49,6 +54,7 @@ resource "aws_lambda_function" "this" {
     }
   }
 
+  # Active tracing with X-Ray is enabled by default
   tracing_config {
     mode = "Active"
   }
@@ -60,6 +66,7 @@ resource "aws_lambda_function" "this" {
   tags = var.tags
 }
 
+# CloudWatch log group with mandatory KMS encryption
 resource "aws_cloudwatch_log_group" "this" {
   name              = "/aws/lambda/${var.function_name}"
   retention_in_days = var.retention_in_days

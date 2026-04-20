@@ -67,3 +67,5 @@ _`- [YYYY-MM-DD] Built <module path>. PR #<number>.`_
 - [2026-04-18] Journal initialized. Ready to begin building from backlog.
 - [2026-04-19] Built aws/base_component/kms. PR #1.
 - [2026-04-20] Built aws/base_component/iam. PR #2.
+- [2026-04-20] Built aws/base_component/s3. PR #3.
+- [2026-04-20] Built aws/base_component/lambda. PR #4.

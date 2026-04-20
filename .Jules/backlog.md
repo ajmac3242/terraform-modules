@@ -113,24 +113,24 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** CRITICAL
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #3)
 **Module:** aws/base_component/s3
 **Why:** S3 is the most widely used storage primitive. Auto-enforcing CMK encryption, public access blocking, versioning, and TLS-only access eliminates entire classes of data exposure risk.
 
 #### Acceptance Criteria
-- [ ] `aws_s3_bucket` with configurable `bucket_name` or name prefix
-- [ ] `aws_kms_key` created automatically (or accept `existing_kms_key_arn`) used for SSE-KMS
-- [ ] `aws_s3_bucket_server_side_encryption_configuration` using CMK
-- [ ] `aws_s3_bucket_public_access_block` — all 4 block settings `true` by default
-- [ ] `aws_s3_bucket_versioning` — `enabled` by default, variable to disable
-- [ ] `aws_s3_bucket_ownership_controls` set to `BucketOwnerEnforced` (no ACLs)
-- [ ] `aws_s3_bucket_policy` enforcing `aws:SecureTransport` (deny HTTP)
-- [ ] Variable `lifecycle_rules` (optional) for object expiry/transition
-- [ ] Variable `enable_access_logging` + `log_bucket_id` for server access logs
-- [ ] `force_destroy` variable defaults to `false`
-- [ ] Outputs: `bucket_id`, `bucket_arn`, `kms_key_arn`, `kms_key_id`
-- [ ] Required `tags` enforced
-- [ ] At least one Terraform test: bucket created, encryption confirmed, public access blocked
+- [x] `aws_s3_bucket` with configurable `bucket_name` or name prefix
+- [x] `aws_kms_key` created automatically (or accept `existing_kms_key_arn`) used for SSE-KMS
+- [x] `aws_s3_bucket_server_side_encryption_configuration` using CMK
+- [x] `aws_s3_bucket_public_access_block` — all 4 block settings `true` by default
+- [x] `aws_s3_bucket_versioning` — `enabled` by default, variable to disable
+- [x] `aws_s3_bucket_ownership_controls` set to `BucketOwnerEnforced` (no ACLs)
+- [x] `aws_s3_bucket_policy` enforcing `aws:SecureTransport` (deny HTTP)
+- [x] Variable `lifecycle_rules` (optional) for object expiry/transition
+- [x] Variable `enable_access_logging` + `log_bucket_id` for server access logs
+- [x] `force_destroy` variable defaults to `false`
+- [x] Outputs: `bucket_id`, `bucket_arn`, `kms_key_arn`, `kms_key_id`
+- [x] Required `tags` enforced
+- [x] At least one Terraform test: bucket created, encryption confirmed, public access blocked
 
 #### Security Notes
 - Never set `force_destroy = true` by default
@@ -143,22 +143,22 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #4)
 **Module:** aws/base_component/lambda
 **Why:** Lambda is the primary compute primitive. Centralizing execution role creation, VPC config, CMK env var encryption, X-Ray tracing, and CW log groups prevents recurring security gaps across workload modules.
 
 #### Acceptance Criteria
-- [ ] `aws_lambda_function` with configurable runtime, handler, memory, timeout
-- [ ] Execution role created via `aws/base_component/iam` module (or accept `existing_role_arn`)
-- [ ] `aws_cloudwatch_log_group` with configurable `retention_in_days` (default: 30)
-- [ ] X-Ray `tracing_config` set to `Active` by default
-- [ ] Variable `vpc_config` (optional): `subnet_ids`, `security_group_ids`
-- [ ] KMS key for environment variable encryption (`kms_key_arn` input or auto-create)
-- [ ] `dead_letter_config` — optional SQS ARN or SNS ARN input
-- [ ] Reserved concurrency variable (default `-1` = unreserved)
-- [ ] Outputs: `function_arn`, `function_name`, `role_arn`, `invoke_arn`, `log_group_name`
-- [ ] Required `tags` enforced
-- [ ] At least one Terraform test: function deploys, log group exists, X-Ray enabled
+- [x] `aws_lambda_function` with configurable runtime, handler, memory, timeout
+- [x] Execution role created via `aws/base_component/iam` module (or accept `existing_role_arn`)
+- [x] `aws_cloudwatch_log_group` with configurable `retention_in_days` (default: 30)
+- [x] X-Ray `tracing_config` set to `Active` by default
+- [x] Variable `vpc_config` (optional): `subnet_ids`, `security_group_ids`
+- [x] KMS key for environment variable encryption (`kms_key_arn` input or auto-create)
+- [x] `dead_letter_config` — optional SQS ARN or SNS ARN input
+- [x] Reserved concurrency variable (default `-1` = unreserved)
+- [x] Outputs: `function_arn`, `function_name`, `role_arn`, `invoke_arn`, `log_group_name`
+- [x] Required `tags` enforced
+- [x] At least one Terraform test: function deploys, log group exists, X-Ray enabled
 
 #### Security Notes
 - No hardcoded secrets in environment variables — require SSM/Secrets Manager references
@@ -218,13 +218,122 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ---
 
+### aws/base_component/vpc: Opinionated VPC module
+
+**Priority:** CRITICAL
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/vpc
+**Why:** Foundational networking module. Required for Fargate, RDS, and secure Lambda placement. Enforces flow logs and private-by-default subnetting.
+
+#### Acceptance Criteria
+- [ ] VPC with configurable CIDR block
+- [ ] Public and Private subnets across multiple AZs
+- [ ] NAT Gateway (configurable: one per AZ, single, or none)
+- [ ] VPC Flow Logs enabled and sent to CloudWatch (encrypted)
+- [ ] Required `tags` enforced on VPC and all subnets
+- [ ] Outputs: `vpc_id`, `public_subnet_ids`, `private_subnet_ids`, `vpc_cidr_block`
+- [ ] Terraform test: VPC created with expected subnets and tags
+
+---
+
+### aws/base_component/dynamodb: Opinionated DynamoDB table module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/dynamodb
+**Why:** Core NoSQL storage. Enforces CMK encryption and point-in-time recovery.
+
+#### Acceptance Criteria
+- [ ] `aws_dynamodb_table` with configurable `hash_key`, `range_key`, and `attributes`
+- [ ] `billing_mode` defaults to `PAY_PER_REQUEST`
+- [ ] `server_side_encryption` using mandatory `kms_key_arn`
+- [ ] `point_in_time_recovery` enabled by default
+- [ ] Required `tags` enforced
+- [ ] Outputs: `table_arn`, `table_name`, `table_id`
+- [ ] Terraform test: Table created with PITR and CMK encryption
+
+---
+
+### aws/base_component/rds: Opinionated RDS instance module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/rds
+**Why:** Core relational storage. Enforces CMK encryption, Multi-AZ for prod, and VPC placement.
+
+#### Acceptance Criteria
+- [ ] `aws_db_instance` (Postgres/MySQL) with configurable engine, version, instance class
+- [ ] Mandatory `kms_key_id` for storage encryption
+- [ ] `multi_az` defaults to `true`
+- [ ] `storage_encrypted` must be `true`
+- [ ] Placed in VPC private subnets via `aws_db_subnet_group`
+- [ ] Required `tags` enforced
+- [ ] Outputs: `db_instance_arn`, `db_instance_endpoint`, `db_instance_id`
+- [ ] Terraform test: RDS instance created in private subnets with encryption
+
+---
+
+### aws/base_component/sqs: Opinionated SQS queue module
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/sqs
+**Why:** Core messaging primitive. Enforces CMK encryption.
+
+#### Acceptance Criteria
+- [ ] `aws_sqs_queue` with configurable name and visibility timeout
+- [ ] Mandatory `kms_master_key_id` for encryption
+- [ ] `sqs_managed_sse_enabled` set to `false` (favor CMK)
+- [ ] Dead-letter queue support (configurable)
+- [ ] Required `tags` enforced
+- [ ] Outputs: `queue_arn`, `queue_url`, `queue_id`
+- [ ] Terraform test: Queue created with CMK encryption
+
+---
+
+### aws/base_component/ssm: Opinionated SSM Parameter module
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/ssm
+**Why:** Standard secret/config management. Enforces `SecureString` with CMK.
+
+#### Acceptance Criteria
+- [ ] `aws_ssm_parameter` of type `SecureString`
+- [ ] Mandatory `key_id` (KMS CMK) for encryption
+- [ ] Required `tags` enforced
+- [ ] Outputs: `parameter_arn`, `parameter_name`
+- [ ] Terraform test: Parameter created as SecureString with CMK
+
+---
+
+### aws/workload_component/ecs_fargate: ECS Fargate Service pattern
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/workload_component/ecs_fargate
+**Why:** Common container compute pattern. Enforces VPC placement, Fargate launch type, and CMK encryption for logs.
+
+#### Acceptance Criteria
+- [ ] `aws_ecs_cluster` and `aws_ecs_service`
+- [ ] Task definition with Fargate compatibility
+- [ ] Placed in VPC private subnets
+- [ ] Log group with KMS encryption (reuse `kms_key_arn`)
+- [ ] Task execution role and Task role via `aws/base_component/iam`
+- [ ] Required `tags` enforced
+- [ ] Outputs: `cluster_arn`, `service_arn`, `task_definition_arn`
+- [ ] Terraform test: Cluster and service created with Fargate capacity providers
+
+---
+
 ## Future Module Ideas
 
-- `aws/base_component/kms` — Standalone CMK module for cross-module key sharing
-- `aws/base_component/rds` — RDS Postgres with CMK, Multi-AZ, subnet group
-- `aws/base_component/secrets_manager` — Secret with CMK + rotation config
-- `aws/base_component/vpc` — VPC with public/private subnets, flow logs, NAT gateway
-- `aws/workload_component/ecs_fargate_service` — ECS Fargate + ALB + IAM role
 - `aws/workload_component/eventbridge_lambda` — EventBridge rule → Lambda pattern
 - `aws/workload_component/s3_lambda_trigger` — S3 event notification → Lambda
 - `gcp/base_component/gcs` — (Future) GCP Cloud Storage equivalent

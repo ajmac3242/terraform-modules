@@ -1,3 +1,4 @@
+# S3 Bucket and related security configurations
 resource "aws_s3_bucket" "this" {
   bucket        = var.bucket_name
   force_destroy = var.force_destroy
@@ -5,6 +6,7 @@ resource "aws_s3_bucket" "this" {
   tags = var.tags
 }
 
+# Enforce Server-Side Encryption using KMS
 resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
   bucket = aws_s3_bucket.this.id
 
@@ -16,6 +18,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
   }
 }
 
+# Block all public access to the bucket
 resource "aws_s3_bucket_public_access_block" "this" {
   bucket = aws_s3_bucket.this.id
 
@@ -25,6 +28,7 @@ resource "aws_s3_bucket_public_access_block" "this" {
   restrict_public_buckets = true
 }
 
+# Enable versioning for data protection
 resource "aws_s3_bucket_versioning" "this" {
   bucket = aws_s3_bucket.this.id
   versioning_configuration {
@@ -32,6 +36,7 @@ resource "aws_s3_bucket_versioning" "this" {
   }
 }
 
+# Enforce bucket ownership controls (no ACLs)
 resource "aws_s3_bucket_ownership_controls" "this" {
   bucket = aws_s3_bucket.this.id
   rule {
@@ -39,11 +44,13 @@ resource "aws_s3_bucket_ownership_controls" "this" {
   }
 }
 
+# Apply bucket policy to enforce SSL-only access
 resource "aws_s3_bucket_policy" "this" {
   bucket = aws_s3_bucket.this.id
   policy = data.aws_iam_policy_document.this.json
 }
 
+# IAM policy document for S3 bucket policy
 data "aws_iam_policy_document" "this" {
   statement {
     sid     = "EnforceSSLOnly"
@@ -67,6 +74,7 @@ data "aws_iam_policy_document" "this" {
   }
 }
 
+# Enable server access logging if configured
 resource "aws_s3_bucket_logging" "this" {
   count  = var.enable_access_logging ? 1 : 0
   bucket = aws_s3_bucket.this.id
@@ -75,6 +83,7 @@ resource "aws_s3_bucket_logging" "this" {
   target_prefix = "log/"
 }
 
+# Configure lifecycle rules for object management
 resource "aws_s3_bucket_lifecycle_configuration" "this" {
   count  = length(var.lifecycle_rules) > 0 ? 1 : 0
   bucket = aws_s3_bucket.this.id
