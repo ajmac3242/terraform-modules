@@ -1,9 +1,9 @@
-output "cache_nodes" {
-  description = "List of node objects including address and port"
-  value       = aws_elasticache_cluster.this.cache_nodes
+output "primary_endpoint_address" {
+  description = "The address of the endpoint for the primary node in the replication group"
+  value       = aws_elasticache_replication_group.this.primary_endpoint_address
 }
 
 output "cluster_arn" {
-  description = "The ARN of the ElastiCache cluster"
-  value       = aws_elasticache_cluster.this.arn
+  description = "The ARN of the ElastiCache replication group"
+  value       = aws_elasticache_replication_group.this.arn
 }

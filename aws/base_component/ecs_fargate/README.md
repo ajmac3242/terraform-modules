@@ -1,4 +1,4 @@
-# aws/workload_component/ecs_fargate
+# aws/base_component/ecs_fargate
 
 ECS Fargate Service pattern. Enforces VPC placement, Fargate launch type, and CMK encryption for logs.
 

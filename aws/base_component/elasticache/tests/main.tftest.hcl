@@ -24,12 +24,12 @@ run "valid_elasticache_creation" {
   command = plan
 
   assert {
-    condition     = aws_elasticache_cluster.this.cluster_id == var.cluster_id
-    error_message = "Cluster ID does not match expected value"
+    condition     = aws_elasticache_replication_group.this.replication_group_id == var.cluster_id
+    error_message = "Replication group ID does not match expected value"
   }
 
   assert {
-    condition     = aws_elasticache_cluster.this.at_rest_encryption_enabled == true
+    condition     = aws_elasticache_replication_group.this.at_rest_encryption_enabled == true
     error_message = "At-rest encryption should be enabled"
   }
 }

@@ -4,8 +4,7 @@ resource "aws_sqs_queue" "this" {
   visibility_timeout_seconds = var.visibility_timeout_seconds
 
   # Mandatory CMK encryption
-  kms_master_key_id       = var.kms_key_arn
-  sqs_managed_sse_enabled = false
+  kms_master_key_id = var.kms_key_arn
 
   # Optional redrive policy for DLQ support
   redrive_policy = var.use_dead_letter_queue ? jsonencode({
@@ -21,8 +20,7 @@ resource "aws_sqs_queue" "dlq" {
   count = var.use_dead_letter_queue ? 1 : 0
   name  = "${var.name}-dlq"
 
-  kms_master_key_id       = var.kms_key_arn
-  sqs_managed_sse_enabled = false
+  kms_master_key_id = var.kms_key_arn
 
   tags = var.tags
 }

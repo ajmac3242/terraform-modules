@@ -10,5 +10,31 @@ variables {
   }
 }
 
-# The upstream module uses aws_caller_identity which fails in mock environments without real credentials.
-# We skip the tests for this foundational module that uses a trusted upstream source.
+provider "aws" {
+  region                      = "us-east-1"
+  skip_credentials_validation = true
+  skip_requesting_account_id  = true
+  skip_metadata_api_check     = true
+  access_key                  = "mock_access_key"
+  secret_key                  = "mock_secret_key"
+}
+
+# Plan-only test to verify flow logs and defaults
+run "verify_vpc_configuration" {
+  command = plan
+
+  assert {
+    condition     = module.vpc.vpc_cidr_block == var.cidr_block
+    error_message = "VPC CIDR block is incorrect"
+  }
+
+  assert {
+    condition     = module.vpc.vpc_flow_log_enabled == true
+    error_message = "VPC Flow Logs should be enabled"
+  }
+
+  assert {
+    condition     = length(module.vpc.private_subnets) == 3
+    error_message = "Expected 3 private subnets"
+  }
+}
