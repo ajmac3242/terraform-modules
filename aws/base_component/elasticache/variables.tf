@@ -1,0 +1,41 @@
+variable "cluster_id" {
+  description = "Identifier for the ElastiCache cluster"
+  type        = string
+}
+
+variable "node_type" {
+  description = "The instance class used for the cache nodes"
+  type        = string
+  default     = "cache.t3.micro"
+}
+
+variable "num_cache_nodes" {
+  description = "The initial number of cache nodes that the cache cluster will have"
+  type        = number
+  default     = 1
+}
+
+variable "subnet_ids" {
+  description = "A list of VPC subnet IDs"
+  type        = list(string)
+}
+
+variable "security_group_ids" {
+  description = "List of security group IDs to associate with this cache cluster"
+  type        = list(string)
+}
+
+variable "kms_key_id" {
+  description = "The ARN of the KMS key for encryption at rest"
+  type        = string
+}
+
+variable "tags" {
+  description = "A map of tags to assign to the resources"
+  type        = map(string)
+
+  validation {
+    condition     = contains(keys(var.tags), "environment") && contains(keys(var.tags), "owner") && contains(keys(var.tags), "project") && contains(keys(var.tags), "cost_center")
+    error_message = "The tags map must contain the following keys: environment, owner, project, cost_center."
+  }
+}
