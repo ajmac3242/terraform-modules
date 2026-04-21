@@ -1,6 +1,9 @@
+# Data source to get current AWS region
+data "aws_region" "current" {}
+
 # Task execution role created via base IAM module
 module "task_execution_role" {
-  source = "../../base_component/iam"
+  source = "../iam"
 
   role_name   = "${var.name}-task-execution-role"
   description = "Task execution role for ${var.name}"
@@ -25,7 +28,7 @@ module "task_execution_role" {
 
 # Task role for the application itself
 module "task_role" {
-  source = "../../base_component/iam"
+  source = "../iam"
 
   role_name   = "${var.name}-task-role"
   description = "Task role for ${var.name}"
@@ -104,7 +107,7 @@ resource "aws_ecs_task_definition" "this" {
         logDriver = "awslogs"
         options = {
           "awslogs-group"         = aws_cloudwatch_log_group.this.name
-          "awslogs-region"        = "us-east-1" # Hardcoded to us-east-1 for simplicity, in prod use data.aws_region
+          "awslogs-region"        = data.aws_region.current.name
           "awslogs-stream-prefix" = "ecs"
         }
       }

@@ -1,3 +1,21 @@
+# Automatically manage KMS key if not provided
+module "kms" {
+  count  = var.existing_kms_key_arn == null ? 1 : 0
+  source = "../kms"
+
+  name                 = "${var.bucket_name}-key"
+  description          = "KMS key for S3 bucket ${var.bucket_name}"
+  admin_principal_arns = []
+  usage_principal_arns = []
+  aws_account_id       = var.aws_account_id
+
+  tags = var.tags
+}
+
+locals {
+  kms_key_arn = var.existing_kms_key_arn != null ? var.existing_kms_key_arn : module.kms[0].key_arn
+}
+
 # S3 Bucket and related security configurations
 resource "aws_s3_bucket" "this" {
   bucket        = var.bucket_name
@@ -12,7 +30,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
 
   rule {
     apply_server_side_encryption_by_default {
-      kms_master_key_id = var.existing_kms_key_arn
+      kms_master_key_id = local.kms_key_arn
       sse_algorithm     = "aws:kms"
     }
   }
@@ -81,6 +99,13 @@ resource "aws_s3_bucket_logging" "this" {
 
   target_bucket = var.log_bucket_id
   target_prefix = "log/"
+
+  lifecycle {
+    precondition {
+      condition     = var.log_bucket_id != null
+      error_message = "The log_bucket_id must be provided when enable_access_logging is true."
+    }
+  }
 }
 
 # Configure lifecycle rules for object management

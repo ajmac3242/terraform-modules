@@ -15,7 +15,7 @@ ECS Fargate Service pattern. Enforces VPC placement, Fargate launch type, and CM
 
 ```hcl
 module "ecs_fargate" {
-  source = "./aws/workload_component/ecs_fargate"
+  source = "./aws/base_component/ecs_fargate"
 
   name               = "my-service"
   private_subnet_ids = module.vpc.private_subnet_ids

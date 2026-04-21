@@ -1,5 +1,24 @@
+# Automatically manage KMS key if not provided
+module "kms" {
+  count  = var.kms_key_arn == null ? 1 : 0
+  source = "../kms"
+
+  name                 = "${var.function_name}-key"
+  description          = "KMS key for Lambda function ${var.function_name}"
+  admin_principal_arns = []
+  usage_principal_arns = []
+  aws_account_id       = var.aws_account_id
+
+  tags = var.tags
+}
+
+locals {
+  kms_key_arn = var.kms_key_arn != null ? var.kms_key_arn : module.kms[0].key_arn
+}
+
 # Lambda execution role using the base IAM module
 module "execution_role" {
+  count  = var.existing_role_arn == null ? 1 : 0
   source = "../iam"
 
   role_name   = "${var.function_name}-role"
@@ -29,7 +48,7 @@ module "execution_role" {
 resource "aws_lambda_function" "this" {
   function_name = var.function_name
   description   = var.description
-  role          = module.execution_role.role_arn
+  role          = var.existing_role_arn != null ? var.existing_role_arn : module.execution_role[0].role_arn
 
   runtime = var.runtime
   handler = var.handler
@@ -41,7 +60,7 @@ resource "aws_lambda_function" "this" {
   memory_size = var.memory_size
   timeout     = var.timeout
 
-  kms_key_arn = var.kms_key_arn
+  kms_key_arn = local.kms_key_arn
 
   reserved_concurrent_executions = var.reserved_concurrent_executions
 
@@ -59,6 +78,13 @@ resource "aws_lambda_function" "this" {
     mode = "Active"
   }
 
+  dynamic "dead_letter_config" {
+    for_each = var.dead_letter_config_target_arn != null ? [1] : []
+    content {
+      target_arn = var.dead_letter_config_target_arn
+    }
+  }
+
   environment {
     variables = var.environment_variables
   }
@@ -70,7 +96,7 @@ resource "aws_lambda_function" "this" {
 resource "aws_cloudwatch_log_group" "this" {
   name              = "/aws/lambda/${var.function_name}"
   retention_in_days = var.retention_in_days
-  kms_key_id        = var.kms_key_arn
+  kms_key_id        = local.kms_key_arn
 
   tags = var.tags
 }

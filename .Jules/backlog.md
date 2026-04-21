@@ -222,18 +222,18 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** CRITICAL
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #5)
 **Module:** aws/base_component/vpc
 **Why:** Foundational networking module. Required for Fargate, RDS, and secure Lambda placement. Enforces flow logs and private-by-default subnetting.
 
 #### Acceptance Criteria
-- [ ] VPC with configurable CIDR block
-- [ ] Public and Private subnets across multiple AZs
-- [ ] NAT Gateway (configurable: one per AZ, single, or none)
-- [ ] VPC Flow Logs enabled and sent to CloudWatch (encrypted)
-- [ ] Required `tags` enforced on VPC and all subnets
-- [ ] Outputs: `vpc_id`, `public_subnet_ids`, `private_subnet_ids`, `vpc_cidr_block`
-- [ ] Terraform test: VPC created with expected subnets and tags
+- [x] VPC with configurable CIDR block
+- [x] Public and Private subnets across multiple AZs
+- [x] NAT Gateway (configurable: one per AZ, single, or none)
+- [x] VPC Flow Logs enabled and sent to CloudWatch (encrypted)
+- [x] Required `tags` enforced on VPC and all subnets
+- [x] Outputs: `vpc_id`, `public_subnet_ids`, `private_subnet_ids`, `vpc_cidr_block`
+- [x] Terraform test: VPC created with expected subnets and tags
 
 ---
 
@@ -241,18 +241,18 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #5)
 **Module:** aws/base_component/dynamodb
 **Why:** Core NoSQL storage. Enforces CMK encryption and point-in-time recovery.
 
 #### Acceptance Criteria
-- [ ] `aws_dynamodb_table` with configurable `hash_key`, `range_key`, and `attributes`
-- [ ] `billing_mode` defaults to `PAY_PER_REQUEST`
-- [ ] `server_side_encryption` using mandatory `kms_key_arn`
-- [ ] `point_in_time_recovery` enabled by default
-- [ ] Required `tags` enforced
-- [ ] Outputs: `table_arn`, `table_name`, `table_id`
-- [ ] Terraform test: Table created with PITR and CMK encryption
+- [x] `aws_dynamodb_table` with configurable `hash_key`, `range_key`, and `attributes`
+- [x] `billing_mode` defaults to `PAY_PER_REQUEST`
+- [x] `server_side_encryption` using mandatory `kms_key_arn`
+- [x] `point_in_time_recovery` enabled by default
+- [x] Required `tags` enforced
+- [x] Outputs: `table_arn`, `table_name`, `table_id`
+- [x] Terraform test: Table created with PITR and CMK encryption
 
 ---
 
@@ -260,19 +260,19 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #5)
 **Module:** aws/base_component/rds
 **Why:** Core relational storage. Enforces CMK encryption, Multi-AZ for prod, and VPC placement.
 
 #### Acceptance Criteria
-- [ ] `aws_db_instance` (Postgres/MySQL) with configurable engine, version, instance class
-- [ ] Mandatory `kms_key_id` for storage encryption
-- [ ] `multi_az` defaults to `true`
-- [ ] `storage_encrypted` must be `true`
-- [ ] Placed in VPC private subnets via `aws_db_subnet_group`
-- [ ] Required `tags` enforced
-- [ ] Outputs: `db_instance_arn`, `db_instance_endpoint`, `db_instance_id`
-- [ ] Terraform test: RDS instance created in private subnets with encryption
+- [x] `aws_db_instance` (Postgres/MySQL) with configurable engine, version, instance class
+- [x] Mandatory `kms_key_id` for storage encryption
+- [x] `multi_az` defaults to `true`
+- [x] `storage_encrypted` must be `true`
+- [x] Placed in VPC private subnets via `aws_db_subnet_group`
+- [x] Required `tags` enforced
+- [x] Outputs: `db_instance_arn`, `db_instance_endpoint`, `db_instance_id`
+- [x] Terraform test: RDS instance created in private subnets with encryption
 
 ---
 
@@ -280,18 +280,18 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** MEDIUM
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #5)
 **Module:** aws/base_component/sqs
 **Why:** Core messaging primitive. Enforces CMK encryption.
 
 #### Acceptance Criteria
-- [ ] `aws_sqs_queue` with configurable name and visibility timeout
-- [ ] Mandatory `kms_master_key_id` for encryption
-- [ ] `sqs_managed_sse_enabled` set to `false` (favor CMK)
-- [ ] Dead-letter queue support (configurable)
-- [ ] Required `tags` enforced
-- [ ] Outputs: `queue_arn`, `queue_url`, `queue_id`
-- [ ] Terraform test: Queue created with CMK encryption
+- [x] `aws_sqs_queue` with configurable name and visibility timeout
+- [x] Mandatory `kms_master_key_id` for encryption
+- [x] `sqs_managed_sse_enabled` set to `false` (favor CMK)
+- [x] Dead-letter queue support (configurable)
+- [x] Required `tags` enforced
+- [x] Outputs: `queue_arn`, `queue_url`, `queue_id`
+- [x] Terraform test: Queue created with CMK encryption
 
 ---
 
@@ -299,16 +299,16 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** MEDIUM
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #5)
 **Module:** aws/base_component/ssm
 **Why:** Standard secret/config management. Enforces `SecureString` with CMK.
 
 #### Acceptance Criteria
-- [ ] `aws_ssm_parameter` of type `SecureString`
-- [ ] Mandatory `key_id` (KMS CMK) for encryption
-- [ ] Required `tags` enforced
-- [ ] Outputs: `parameter_arn`, `parameter_name`
-- [ ] Terraform test: Parameter created as SecureString with CMK
+- [x] `aws_ssm_parameter` of type `SecureString`
+- [x] Mandatory `key_id` (KMS CMK) for encryption
+- [x] Required `tags` enforced
+- [x] Outputs: `parameter_arn`, `parameter_name`
+- [x] Terraform test: Parameter created as SecureString with CMK
 
 ---
 
@@ -316,19 +316,87 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #5)
 **Module:** aws/workload_component/ecs_fargate
 **Why:** Common container compute pattern. Enforces VPC placement, Fargate launch type, and CMK encryption for logs.
 
 #### Acceptance Criteria
-- [ ] `aws_ecs_cluster` and `aws_ecs_service`
-- [ ] Task definition with Fargate compatibility
-- [ ] Placed in VPC private subnets
-- [ ] Log group with KMS encryption (reuse `kms_key_arn`)
-- [ ] Task execution role and Task role via `aws/base_component/iam`
+- [x] `aws_ecs_cluster` and `aws_ecs_service`
+- [x] Task definition with Fargate compatibility
+- [x] Placed in VPC private subnets
+- [x] Log group with KMS encryption (reuse `kms_key_arn`)
+- [x] Task execution role and Task role via `aws/base_component/iam`
+- [x] Required `tags` enforced
+- [x] Outputs: `cluster_arn`, `service_arn`, `task_definition_arn`
+- [x] Terraform test: Cluster and service created with Fargate capacity providers
+
+---
+
+### aws/base_component/cloudfront: Opinionated CloudFront distribution module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/cloudfront
+**Why:** Secure content delivery. Enforces TLS 1.2+, WAF integration, and logging.
+
+#### Acceptance Criteria
+- [ ] `aws_cloudfront_distribution` with S3 or ALBy origin
+- [ ] Mandatory WAF association
+- [ ] Access logging to S3 enabled by default
+- [ ] Minimum protocol version TLSv1.2_2021
 - [ ] Required `tags` enforced
-- [ ] Outputs: `cluster_arn`, `service_arn`, `task_definition_arn`
-- [ ] Terraform test: Cluster and service created with Fargate capacity providers
+- [ ] Outputs: `distribution_id`, `distribution_arn`, `distribution_domain_name`
+
+---
+
+### aws/base_component/vpc_endpoints: Opinionated VPC Endpoints module
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/vpc_endpoints
+**Why:** Enables private access to AWS services without NAT gateways.
+
+#### Acceptance Criteria
+- [ ] Support for S3 and DynamoDB Gateway endpoints
+- [ ] Support for Interface endpoints (e.g., kms, logs, execute-api)
+- [ ] Security groups for interface endpoints scoped to VPC CIDR
+- [ ] Required `tags` enforced
+- [ ] Outputs: `s3_endpoint_id`, `dynamodb_endpoint_id`, `interface_endpoint_ids`
+
+---
+
+### aws/base_component/subnet: Standalone Subnet module
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/subnet
+**Why:** For custom network topologies where the standard VPC module is too rigid.
+
+#### Acceptance Criteria
+- [ ] `aws_subnet` with configurable CIDR and AZ
+- [ ] `map_public_ip_on_launch` defaults to `false`
+- [ ] Required `tags` enforced
+- [ ] Outputs: `subnet_id`, `subnet_arn`
+
+---
+
+### aws/base_component/security_group: Opinionated Security Group module
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/security_group
+**Why:** Consistent SG management with mandatory descriptions and no 0.0.0.0/0 defaults.
+
+#### Acceptance Criteria
+- [ ] `aws_security_group` with mandatory `description`
+- [ ] No default rules (must be explicitly provided)
+- [ ] Validation: No `0.0.0.0/0` in ingress rules without override
+- [ ] Required `tags` enforced
+- [ ] Outputs: `security_group_id`, `security_group_arn`
 
 ---
 

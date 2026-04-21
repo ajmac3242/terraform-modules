@@ -43,7 +43,25 @@ variable "environment_variables" {
 }
 
 variable "kms_key_arn" {
-  description = "The ARN of the KMS key used to encrypt your function's environment variables"
+  description = "The ARN of the KMS key used to encrypt your function's environment variables. If null, a new key will be created."
+  type        = string
+  default     = null
+}
+
+variable "existing_role_arn" {
+  description = "The ARN of an existing IAM role to use for the Lambda function. If null, a new role will be created."
+  type        = string
+  default     = null
+}
+
+variable "dead_letter_config_target_arn" {
+  description = "The ARN of an SNS topic or SQS queue to notify when an invocation fails"
+  type        = string
+  default     = null
+}
+
+variable "aws_account_id" {
+  description = "The AWS Account ID to support tests/mocking"
   type        = string
   default     = null
 }

@@ -1,9 +1,11 @@
 variables {
-  function_name = "test-lambda"
-  description   = "A test lambda function"
-  runtime       = "nodejs18.x"
-  handler       = "index.handler"
-  filename      = "dummy.zip"
+  function_name  = "test-lambda"
+  description    = "A test lambda function"
+  runtime        = "nodejs18.x"
+  handler        = "index.handler"
+  filename       = "dummy.zip"
+  aws_account_id = "123456789012" # Avoid data source failure in mock environment
+  kms_key_arn    = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
   tags = {
     environment = "test"
     owner       = "test-owner"

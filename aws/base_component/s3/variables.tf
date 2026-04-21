@@ -9,8 +9,9 @@ variable "bucket_name" {
 }
 
 variable "existing_kms_key_arn" {
-  description = "The ARN of an existing KMS CMK to use for SSE-KMS."
+  description = "The ARN of an existing KMS CMK to use for SSE-KMS. If null, a new key will be created."
   type        = string
+  default     = null
 }
 
 variable "versioning_enabled" {
@@ -43,6 +44,12 @@ variable "lifecycle_rules" {
   default     = []
 }
 
+variable "aws_account_id" {
+  description = "The AWS Account ID to support tests/mocking"
+  type        = string
+  default     = null
+}
+
 variable "tags" {
   description = "A map of tags to assign to the resources"
   type        = map(string)
@@ -52,3 +59,9 @@ variable "tags" {
     error_message = "The tags map must contain the following keys: environment, owner, project, cost_center."
   }
 }
+
+# Validation to ensure log_bucket_id is provided if access logging is enabled
+# Using a null resource or local variable for complex validation if needed,
+# but Terraform 1.5+ allows check blocks or we can use a local with an error.
+# For simplicity in this module, we'll use a precondition in main.tf if possible,
+# but let's try a validation block on a local.

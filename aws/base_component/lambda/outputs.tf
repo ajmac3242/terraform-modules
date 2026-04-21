@@ -9,8 +9,8 @@ output "function_name" {
 }
 
 output "role_arn" {
-  description = "The ARN of the IAM role created for the Lambda function"
-  value       = module.execution_role.role_arn
+  description = "The ARN of the IAM role used by the Lambda function"
+  value       = var.existing_role_arn != null ? var.existing_role_arn : module.execution_role[0].role_arn
 }
 
 output "invoke_arn" {
@@ -21,4 +21,9 @@ output "invoke_arn" {
 output "log_group_name" {
   description = "The name of the CloudWatch log group"
   value       = aws_cloudwatch_log_group.this.name
+}
+
+output "kms_key_arn" {
+  description = "The ARN of the KMS key used for encryption"
+  value       = local.kms_key_arn
 }
