@@ -2,6 +2,7 @@ variables {
   bucket_name          = "test-bucket"
   aws_account_id       = "123456789012"
   existing_kms_key_arn = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
+  log_bucket_id        = "test-log-bucket"
   tags = {
     environment = "test"
     owner       = "test-owner"
