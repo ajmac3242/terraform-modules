@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Sentinel (nightly) + Forge (marks items done)
-> **Last reviewed:** 2026-04-20
+> **Last reviewed:** 2026-04-21
 > **Purpose:** Single source of truth for all module requirements, acceptance criteria, security findings, and feature requests across this multi-cloud Terraform module registry.
 
 ---
@@ -170,7 +170,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `in-progress`
 **Module:** aws/workload_component/apigw_lambda
 **Why:** The most common serverless pattern in the org. Composing this from base modules eliminates the need for developers to wire up routes, integrations, stages, and Lambda permissions separately.
 
@@ -189,6 +189,23 @@ All modules in this repo MUST comply with these non-negotiable standards:
 #### Security Notes
 - JWT authorizer required for any non-public route — make this the default
 - CloudWatch access logging must be enabled by default
+
+---
+
+### aws/workload_component/apigw_lambda: Add JWT Authorizer and WAF
+
+**Priority:** HIGH
+**Type:** Security
+**Status:** `backlog`
+**Module:** aws/workload_component/apigw_lambda
+**Why:** Current implementation lacks mandatory JWT authorization and WAF association, which are organizational security standards for API Gateway.
+
+#### Acceptance Criteria
+- [ ] Implement JWT authorizer by default
+- [ ] Add mandatory WAF association
+
+#### Security Notes
+- Every API must be protected by an authorizer and WAF unless specifically exempted.
 
 ---
 

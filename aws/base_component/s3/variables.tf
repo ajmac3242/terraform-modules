@@ -23,7 +23,7 @@ variable "versioning_enabled" {
 variable "enable_access_logging" {
   description = "Indicates whether access logging is enabled for the S3 bucket"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "log_bucket_id" {

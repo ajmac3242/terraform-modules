@@ -82,7 +82,7 @@ variable "retention_in_days" {
 }
 
 variable "reserved_concurrent_executions" {
-  description = "The amount of reserved concurrent executions for this lambda function"
+  description = "The amount of reserved concurrent executions for this lambda function. A value of -1 (default) removes any concurrency limitations from the function."
   type        = number
   default     = -1
 }
