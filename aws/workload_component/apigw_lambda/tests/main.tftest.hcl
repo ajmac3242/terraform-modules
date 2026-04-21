@@ -1,7 +1,7 @@
 variables {
-  name        = "test-apigw"
-  description = "A test API GW + Lambda"
-  runtime     = "nodejs18.x"
+  name            = "test-apigw"
+  description     = "A test API GW + Lambda"
+  runtime         = "nodejs18.x"
   handler         = "index.handler"
   filename        = "dummy.zip"
   kms_key_arn     = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"

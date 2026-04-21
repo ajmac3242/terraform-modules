@@ -38,7 +38,11 @@ variable "kms_key_arn" {
 variable "jwt_issuer" {
   description = "The base URL of the IdP that issues JWTs"
   type        = string
-  default     = null
+
+  validation {
+    condition     = can(regex("^https://", var.jwt_issuer))
+    error_message = "The jwt_issuer must be an HTTPS URL."
+  }
 }
 
 variable "jwt_audience" {
@@ -50,6 +54,11 @@ variable "jwt_audience" {
 variable "waf_web_acl_arn" {
   description = "The ARN of the WAF Web ACL to associate with the API Gateway stage"
   type        = string
+
+  validation {
+    condition     = can(regex("^arn:aws:wafv2:.*:.*:regional/webacl/.*", var.waf_web_acl_arn))
+    error_message = "The waf_web_acl_arn must be a valid WAFv2 regional Web ACL ARN."
+  }
 }
 
 variable "disable_authorizer" {

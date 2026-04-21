@@ -52,7 +52,7 @@ module "apigw_lambda" {
 | `filename` | The path to the function's deployment package | `string` | `null` | no |
 | `route_key` | The route key for the API Gateway | `string` | `"$default"` | no |
 | `kms_key_arn` | The ARN of the KMS key for encryption | `string` | n/a | yes |
-| `jwt_issuer` | The base URL of the IdP that issues JWTs | `string` | `null` | no |
+| `jwt_issuer` | The base URL of the IdP that issues JWTs | `string` | n/a | yes |
 | `jwt_audience` | The list of audiences that are allowed to access the API | `list(string)` | `[]` | no |
 | `waf_web_acl_arn` | The ARN of the WAF Web ACL to associate with the API Gateway stage | `string` | n/a | yes |
 | `disable_authorizer` | Whether to disable the JWT authorizer for the API Gateway route | `bool` | `false` | no |
@@ -64,7 +64,9 @@ module "apigw_lambda" {
 |------|-------------|
 | `api_endpoint` | The HTTP API endpoint |
 | `api_id` | The ID of the API Gateway |
+| `api_arn` | The ARN of the API Gateway |
 | `function_arn` | The ARN of the Lambda function |
+| `role_arn` | The ARN of the IAM role used by the Lambda function |
 | `stage_id` | The ID of the API Gateway stage |
 | `route_id` | The ID of the API Gateway route |
 | `authorizer_id` | The ID of the API Gateway authorizer |

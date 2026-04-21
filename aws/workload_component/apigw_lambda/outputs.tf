@@ -8,9 +8,19 @@ output "api_id" {
   value       = aws_apigatewayv2_api.this.id
 }
 
+output "api_arn" {
+  description = "The ARN of the API Gateway"
+  value       = aws_apigatewayv2_api.this.arn
+}
+
 output "function_arn" {
   description = "The ARN of the Lambda function"
   value       = module.lambda.function_arn
+}
+
+output "role_arn" {
+  description = "The ARN of the IAM role used by the Lambda function"
+  value       = module.lambda.role_arn
 }
 
 output "stage_id" {
