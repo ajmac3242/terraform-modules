@@ -18,7 +18,7 @@ resource "aws_elasticache_replication_group" "this" {
 
   # Mandatory encryption settings
   at_rest_encryption_enabled = true
-  transit_encryption_enabled  = true
+  transit_encryption_enabled = true
   kms_key_id                 = var.kms_key_id
 
   tags = var.tags

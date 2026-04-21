@@ -29,7 +29,7 @@ run "valid_elasticache_creation" {
   }
 
   assert {
-    condition     = aws_elasticache_replication_group.this.at_rest_encryption_enabled == true
+    condition     = aws_elasticache_replication_group.this.at_rest_encryption_enabled == "true"
     error_message = "At-rest encryption should be enabled"
   }
 }

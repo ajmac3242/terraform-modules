@@ -336,7 +336,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #6)
 **Module:** aws/base_component/cloudfront
 **Why:** Secure content delivery. Enforces TLS 1.2+, WAF integration, and logging.
 
@@ -354,7 +354,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** MEDIUM
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #6)
 **Module:** aws/base_component/vpc_endpoints
 **Why:** Enables private access to AWS services without NAT gateways.
 
@@ -371,7 +371,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** MEDIUM
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #6)
 **Module:** aws/base_component/subnet
 **Why:** For custom network topologies where the standard VPC module is too rigid.
 
@@ -387,7 +387,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** MEDIUM
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #6)
 **Module:** aws/base_component/security_group
 **Why:** Consistent SG management with mandatory descriptions and no 0.0.0.0/0 defaults.
 
@@ -397,6 +397,86 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Validation: No `0.0.0.0/0` in ingress rules without override
 - [ ] Required `tags` enforced
 - [ ] Outputs: `security_group_id`, `security_group_arn`
+
+---
+
+### aws/base_component/sns: Opinionated SNS Topic module
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `done` (PR #6)
+**Module:** aws/base_component/sns
+**Why:** Core messaging component with enforced CMK encryption.
+
+#### Acceptance Criteria
+- [x] SNS Topic with mandatory KMS key
+- [x] Required tags enforced
+- [x] Terraform test provided
+
+---
+
+### aws/base_component/secrets_manager: Opinionated Secrets Manager module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `done` (PR #6)
+**Module:** aws/base_component/secrets_manager
+**Why:** Secure storage of secrets with rotation support and CMK.
+
+#### Acceptance Criteria
+- [x] Secrets Manager secret with mandatory KMS key
+- [x] Enforced 30-day recovery window
+- [x] Required tags enforced
+- [x] Terraform test provided
+
+---
+
+### aws/base_component/route53: Opinionated Route 53 module
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `done` (PR #6)
+**Module:** aws/base_component/route53
+**Why:** Managed DNS records with standard validation.
+
+#### Acceptance Criteria
+- [x] Route 53 records support
+- [x] No unused tags variable (records don't support tags)
+- [x] Terraform test provided
+
+---
+
+### aws/base_component/elasticache: Opinionated ElastiCache module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `done` (PR #6)
+**Module:** aws/base_component/elasticache
+**Why:** Managed Redis with enforced CMK encryption and private networking.
+
+#### Acceptance Criteria
+- [x] Redis replication group (supports encryption)
+- [x] Mandatory at-rest and transit encryption
+- [x] Private subnet placement
+- [x] Required tags enforced
+- [x] Terraform test verified with string comparison
+
+---
+
+### aws/base_component/eks: Opinionated EKS module
+
+**Priority:** CRITICAL
+**Type:** Feature
+**Status:** `done` (PR #6)
+**Module:** aws/base_component/eks
+**Why:** Managed Kubernetes with enforced secret encryption and IAM best practices.
+
+#### Acceptance Criteria
+- [x] EKS Cluster with mandatory CMK encryption for secrets
+- [x] Cluster role created via base IAM module
+- [x] Private subnet placement
+- [x] Required tags enforced
+- [x] Terraform test provided
 
 ---
 
