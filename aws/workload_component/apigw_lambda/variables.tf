@@ -35,6 +35,29 @@ variable "kms_key_arn" {
   type        = string
 }
 
+variable "jwt_issuer" {
+  description = "The base URL of the IdP that issues JWTs"
+  type        = string
+  default     = null
+}
+
+variable "jwt_audience" {
+  description = "The list of audiences that are allowed to access the API"
+  type        = list(string)
+  default     = []
+}
+
+variable "waf_web_acl_arn" {
+  description = "The ARN of the WAF Web ACL to associate with the API Gateway stage"
+  type        = string
+}
+
+variable "disable_authorizer" {
+  description = "Whether to disable the JWT authorizer for the API Gateway route"
+  type        = bool
+  default     = false
+}
+
 variable "tags" {
   description = "A map of tags to assign to the resources"
   type        = map(string)
