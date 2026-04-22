@@ -1,0 +1,315 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+    types: [ opened, synchronize, reopened ]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+
+env:
+  TF_INPUT: false
+  TF_IN_AUTOMATION: true
+  TF_PLUGIN_CACHE_DIR: ~/.terraform.d/plugin-cache
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  discover:
+    name: Discover Changed Modules
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      modules_json: ${{ steps.discover.outputs.modules_json }}
+      modules_count: ${{ steps.discover.outputs.modules_count }}
+      has_modules: ${{ steps.discover.outputs.has_modules }}
+      test_modules_json: ${{ steps.discover.outputs.test_modules_json }}
+      has_test_modules: ${{ steps.discover.outputs.has_test_modules }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Discover changed Terraform modules
+        id: discover
+        run: |
+          set -euo pipefail
+
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE_REF="origin/${{ github.base_ref }}"
+            git fetch origin "${{ github.base_ref }}" --depth=1
+            CHANGED_FILES=$(git diff --name-only "$BASE_REF"...HEAD || true)
+          else
+            CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r HEAD || true)
+          fi
+
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+
+          MODULES=$(
+            echo "$CHANGED_FILES" | awk -F/ '
+              /^aws\/[^/]+\/[^/]+\// { print $1 "/" $2 "/" $3 }
+            ' | sort -u
+          )
+
+          if [[ -z "${MODULES}" ]]; then
+            echo 'modules_json=[]' >> "$GITHUB_OUTPUT"
+            echo 'modules_count=0' >> "$GITHUB_OUTPUT"
+            echo 'has_modules=false' >> "$GITHUB_OUTPUT"
+            echo 'test_modules_json=[]' >> "$GITHUB_OUTPUT"
+            echo 'has_test_modules=false' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          MODULES_JSON=$(printf '%s\n' "$MODULES" | jq -R . | jq -s -c .)
+          MODULES_COUNT=$(printf '%s\n' "$MODULES" | sed '/^$/d' | wc -l | xargs)
+
+          TEST_MODULES=$(
+            while IFS= read -r module; do
+              if find "$module/tests" -type f -name '*.tftest.hcl' 2>/dev/null | grep -q .; then
+                echo "$module"
+              fi
+            done <<< "$MODULES"
+          )
+
+          if [[ -n "${TEST_MODULES}" ]]; then
+            TEST_MODULES_JSON=$(printf '%s\n' "$TEST_MODULES" | jq -R . | jq -s -c .)
+            echo 'has_test_modules=true' >> "$GITHUB_OUTPUT"
+          else
+            TEST_MODULES_JSON='[]'
+            echo 'has_test_modules=false' >> "$GITHUB_OUTPUT"
+          fi
+
+          echo "modules_json=${MODULES_JSON}" >> "$GITHUB_OUTPUT"
+          echo "modules_count=${MODULES_COUNT}" >> "$GITHUB_OUTPUT"
+          echo 'has_modules=true' >> "$GITHUB_OUTPUT"
+          echo "test_modules_json=${TEST_MODULES_JSON}" >> "$GITHUB_OUTPUT"
+
+  validate:
+    name: Validate Modules
+    needs: discover
+    if: needs.discover.outputs.has_modules == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        module: ${{ fromJson(needs.discover.outputs.modules_json) }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_wrapper: false
+
+      - name: Cache Terraform plugin cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.terraform.d/plugin-cache
+          key: terraform-plugin-cache-${{ runner.os }}-${{ hashFiles(format('{0}/.terraform.lock.hcl', matrix.module), format('{0}/versions.tf', matrix.module)) }}
+          restore-keys: |
+            terraform-plugin-cache-${{ runner.os }}-
+
+      - name: Prepare plugin cache
+        run: mkdir -p ~/.terraform.d/plugin-cache
+
+      - name: Check required files
+        run: |
+          set -euo pipefail
+          module="${{ matrix.module }}"
+
+          required_files=(
+            "main.tf"
+            "variables.tf"
+            "outputs.tf"
+            "versions.tf"
+            "README.md"
+          )
+
+          missing=0
+          for file in "${required_files[@]}"; do
+            if [[ ! -f "${module}/${file}" ]]; then
+              echo "::error file=${module}/${file}::Missing required file ${file}"
+              missing=1
+            fi
+          done
+
+          if [[ "$missing" -ne 0 ]]; then
+            exit 1
+          fi
+
+      - name: Check terraform fmt
+        run: terraform fmt -check -recursive "${{ matrix.module }}"
+
+      - name: Terraform init
+        working-directory: ${{ matrix.module }}
+        run: terraform init -backend=false -input=false
+
+      - name: Terraform validate
+        working-directory: ${{ matrix.module }}
+        run: terraform validate -no-color
+
+  lint:
+    name: Lint Modules
+    needs: discover
+    if: needs.discover.outputs.has_modules == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        module: ${{ fromJson(needs.discover.outputs.modules_json) }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_wrapper: false
+
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v5
+        with:
+          tflint_version: v0.55.1
+
+      - name: Init TFLint
+        run: tflint --init
+
+      - name: Run TFLint
+        working-directory: ${{ matrix.module }}
+        run: tflint --format compact
+
+  docs:
+    name: Check Docs Drift
+    needs: discover
+    if: needs.discover.outputs.has_modules == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        module: ${{ fromJson(needs.discover.outputs.modules_json) }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup terraform-docs
+        run: |
+          set -euo pipefail
+          VERSION="0.19.0"
+          curl -sSLo terraform-docs.tar.gz "https://github.com/terraform-docs/terraform-docs/releases/download/v${VERSION}/terraform-docs-v${VERSION}-linux-amd64.tar.gz"
+          tar -xzf terraform-docs.tar.gz
+          chmod +x terraform-docs
+          sudo mv terraform-docs /usr/local/bin/terraform-docs
+          rm -f terraform-docs.tar.gz
+
+      - name: Generate docs for module
+        working-directory: ${{ matrix.module }}
+        run: terraform-docs . --output-file README.md --output-method inject
+
+      - name: Check for docs drift
+        run: |
+          set -euo pipefail
+          if ! git diff --quiet -- "${{ matrix.module }}/README.md"; then
+            echo "::error file=${{ matrix.module }}/README.md::README.md is out of date. Run terraform-docs before opening the PR."
+            git diff -- "${{ matrix.module }}/README.md"
+            exit 1
+          fi
+
+  test:
+    name: Test Modules
+    needs: discover
+    if: needs.discover.outputs.has_test_modules == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        module: ${{ fromJson(needs.discover.outputs.test_modules_json) }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_wrapper: false
+
+      - name: Cache Terraform plugin cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.terraform.d/plugin-cache
+          key: terraform-plugin-cache-${{ runner.os }}-${{ hashFiles(format('{0}/.terraform.lock.hcl', matrix.module), format('{0}/versions.tf', matrix.module)) }}
+          restore-keys: |
+            terraform-plugin-cache-${{ runner.os }}-
+
+      - name: Prepare plugin cache
+        run: mkdir -p ~/.terraform.d/plugin-cache
+
+      - name: Terraform init
+        working-directory: ${{ matrix.module }}
+        run: terraform init -backend=false -input=false
+
+      - name: Run terraform test
+        working-directory: ${{ matrix.module }}
+        run: terraform test
+
+  no-changes:
+    name: No Changed Modules
+    needs: discover
+    if: needs.discover.outputs.has_modules != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Write summary
+        run: |
+          echo "### CI Summary" >> "$GITHUB_STEP_SUMMARY"
+          echo "No Terraform module changes detected under \`aws/<category>/<module>\`." >> "$GITHUB_STEP_SUMMARY"
+
+  decision-gate:
+    name: Decision Gate
+    needs: [discover, validate, lint, docs, test]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Write summary
+        run: |
+          echo "### CI Summary" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Changed modules: ${{ needs.discover.outputs.modules_count }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Validate: ${{ needs.validate.result || 'skipped' }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Lint: ${{ needs.lint.result || 'skipped' }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Docs: ${{ needs.docs.result || 'skipped' }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Test: ${{ needs.test.result || 'skipped' }}" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Enforce success
+        env:
+          VALIDATE_RESULT: ${{ needs.validate.result }}
+          LINT_RESULT: ${{ needs.lint.result }}
+          DOCS_RESULT: ${{ needs.docs.result }}
+          TEST_RESULT: ${{ needs.test.result }}
+        run: |
+          set -euo pipefail
+
+          for result in "$VALIDATE_RESULT" "$LINT_RESULT" "$DOCS_RESULT" "$TEST_RESULT"; do
+            if [[ "$result" != "success" && "$result" != "skipped" ]]; then
+              echo "A required CI job failed."
+              exit 1
+            fi
+          done
