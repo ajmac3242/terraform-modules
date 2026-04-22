@@ -44,7 +44,7 @@ module "execution_role" {
   tags = var.tags
 }
 
-# Main Lambda function resource test 2
+# Main Lambda function resource test 3
 resource "aws_lambda_function" "this" {
   function_name     = var.function_name
   description   = var.description
