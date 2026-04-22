@@ -32,35 +32,9 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
-  discover:
-    name: Discover Terraform modules
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-
-      - name: Build module matrix
-        id: set-matrix
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          matrix_json=$(
-            find aws -type f -name main.tf \
-              -exec dirname {} \; \
-              | sort -u \
-              | jq -R -s -c 'split("\n")[:-1] | map({working-directory: .}) | {include: .}'
-          )
-
-          echo "matrix=${matrix_json}" >> "$GITHUB_OUTPUT"
-
   fmt:
     name: Terraform Fmt
     runs-on: ubuntu-latest
-    needs: discover
 
     steps:
       - name: Checkout
@@ -85,10 +59,13 @@ jobs:
   validate:
     name: Terraform Validate
     runs-on: ubuntu-latest
-    needs: [discover, fmt]
+    needs: fmt
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.discover.outputs.matrix) }}
+      matrix:
+        working-directory:
+          - aws/base_component/lambda
+          - aws/workload_component/apigw_lambda
 
     defaults:
       run:
@@ -113,10 +90,13 @@ jobs:
   lint:
     name: Terraform Lint
     runs-on: ubuntu-latest
-    needs: [discover, validate]
+    needs: validate
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.discover.outputs.matrix) }}
+      matrix:
+        working-directory:
+          - aws/base_component/lambda
+          - aws/workload_component/apigw_lambda
 
     defaults:
       run:
@@ -152,11 +132,14 @@ jobs:
   docs:
     name: Terraform Docs
     runs-on: ubuntu-latest
-    needs: [discover, lint]
+    needs: lint
     if: github.event_name == 'pull_request'
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.discover.outputs.matrix) }}
+      matrix:
+        working-directory:
+          - aws/base_component/lambda
+          - aws/workload_component/apigw_lambda
 
     steps:
       - name: Checkout
