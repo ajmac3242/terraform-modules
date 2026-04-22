@@ -44,10 +44,10 @@ module "execution_role" {
   tags = var.tags
 }
 
-# Main Lambda function resource test 4
+# Main Lambda function resource test 5
 resource "aws_lambda_function" "this" {
   function_name = var.function_name
-  description   = var.description
+  description       = var.description
   role                = var.existing_role_arn != null ? var.existing_role_arn : module.execution_role[0].role_arn
 
   runtime = var.runtime
