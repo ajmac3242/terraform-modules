@@ -1,0 +1,28 @@
+variables {
+  domain_name       = "example.com"
+  validation_method = "DNS"
+  tags = {
+    environment = "test"
+    owner       = "test-owner"
+    project     = "test-project"
+    cost_center = "test-cc"
+  }
+}
+
+provider "aws" {
+  region                      = "us-east-1"
+  skip_credentials_validation = true
+  skip_requesting_account_id  = true
+  skip_metadata_api_check     = true
+  access_key                  = "mock_access_key"
+  secret_key                  = "mock_secret_key"
+}
+
+run "valid_acm_creation" {
+  command = plan
+
+  assert {
+    condition     = aws_acm_certificate.this.domain_name == var.domain_name
+    error_message = "Domain name does not match expected value"
+  }
+}
