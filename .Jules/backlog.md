@@ -196,13 +196,13 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Security
-**Status:** `backlog`
+**Status:** `done` (PR #7)
 **Module:** aws/workload_component/apigw_lambda
 **Why:** Current implementation lacks mandatory JWT authorization and WAF association, which are organizational security standards for API Gateway.
 
 #### Acceptance Criteria
-- [ ] Implement JWT authorizer by default
-- [ ] Add mandatory WAF association
+- [x] Implement JWT authorizer by default
+- [x] Add mandatory WAF association
 
 #### Security Notes
 - Every API must be protected by an authorizer and WAF unless specifically exempted.

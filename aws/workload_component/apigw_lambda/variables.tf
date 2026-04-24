@@ -35,6 +35,38 @@ variable "kms_key_arn" {
   type        = string
 }
 
+variable "jwt_issuer" {
+  description = "The base URL of the IdP that issues JWTs"
+  type        = string
+
+  validation {
+    condition     = can(regex("^https://", var.jwt_issuer))
+    error_message = "The jwt_issuer must be an HTTPS URL."
+  }
+}
+
+variable "jwt_audience" {
+  description = "The list of audiences that are allowed to access the API"
+  type        = list(string)
+  default     = []
+}
+
+variable "waf_web_acl_arn" {
+  description = "The ARN of the WAF Web ACL to associate with the API Gateway stage"
+  type        = string
+
+  validation {
+    condition     = can(regex("^arn:aws:wafv2:.*:.*:regional/webacl/.*", var.waf_web_acl_arn))
+    error_message = "The waf_web_acl_arn must be a valid WAFv2 regional Web ACL ARN."
+  }
+}
+
+variable "disable_authorizer" {
+  description = "Whether to disable the JWT authorizer for the API Gateway route"
+  type        = bool
+  default     = false
+}
+
 variable "tags" {
   description = "A map of tags to assign to the resources"
   type        = map(string)

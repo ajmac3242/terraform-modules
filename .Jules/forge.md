@@ -71,3 +71,4 @@ _`- [YYYY-MM-DD] Built <module path>. PR #<number>.`_
 - [2026-04-20] Built aws/base_component/lambda. PR #4.
 - [2026-04-21] Built VPC, DynamoDB, RDS, SQS, SSM, ECS Fargate. PR #5.
 - [2026-04-21] Built CloudFront, VPC Endpoints, Subnet, Security Group, SNS, Secrets Manager, Route 53, ElastiCache, EKS. PR #6.
+- [2026-04-21] Added JWT Authorizer and WAF to aws/workload_component/apigw_lambda. PR #7.
