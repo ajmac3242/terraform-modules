@@ -170,21 +170,21 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `in-progress`
+**Status:** `done` (PR #8)
 **Module:** aws/workload_component/apigw_lambda
 **Why:** The most common serverless pattern in the org. Composing this from base modules eliminates the need for developers to wire up routes, integrations, stages, and Lambda permissions separately.
 
 #### Acceptance Criteria
-- [ ] Uses `aws/base_component/lambda` module internally (not raw `aws_lambda_function`)
-- [ ] `aws_apigatewayv2_api` (HTTP API type)
-- [ ] `aws_apigatewayv2_integration` linked to Lambda function ARN
-- [ ] `aws_apigatewayv2_route` with configurable route key (e.g., `POST /items`)
-- [ ] `aws_apigatewayv2_stage` with `auto_deploy = true` and CloudWatch access log group
-- [ ] `aws_lambda_permission` granting API GW invoke rights
-- [ ] Optional JWT authorizer: `aws_apigatewayv2_authorizer` with configurable `issuer` and `audience`
-- [ ] Outputs: `api_endpoint`, `api_id`, `stage_id`, `route_id`, `function_arn`
-- [ ] Required `tags` enforced
-- [ ] At least one Terraform test: endpoint returns expected HTTP response
+- [x] Uses `aws/base_component/lambda` module internally (not raw `aws_lambda_function`)
+- [x] `aws_apigatewayv2_api` (HTTP API type)
+- [x] `aws_apigatewayv2_integration` linked to Lambda function ARN
+- [x] `aws_apigatewayv2_route` with configurable route key (e.g., `POST /items`)
+- [x] `aws_apigatewayv2_stage` with `auto_deploy = true` and CloudWatch access log group
+- [x] `aws_lambda_permission` granting API GW invoke rights
+- [x] Optional JWT authorizer: `aws_apigatewayv2_authorizer` with configurable `issuer` and `audience`
+- [x] Outputs: `api_endpoint`, `api_id`, `stage_id`, `route_id`, `function_arn`
+- [x] Required `tags` enforced
+- [x] At least one Terraform test: endpoint returns expected HTTP response
 
 #### Security Notes
 - JWT authorizer required for any non-public route — make this the default
@@ -362,7 +362,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Mandatory WAF association
 - [ ] Access logging to S3 enabled by default
 - [ ] Minimum protocol version TLSv1.2_2021
-- [ ] Required `tags` enforced
+- [x] Required `tags` enforced
 - [ ] Outputs: `distribution_id`, `distribution_arn`, `distribution_domain_name`
 
 ---
@@ -379,7 +379,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Support for S3 and DynamoDB Gateway endpoints
 - [ ] Support for Interface endpoints (e.g., kms, logs, execute-api)
 - [ ] Security groups for interface endpoints scoped to VPC CIDR
-- [ ] Required `tags` enforced
+- [x] Required `tags` enforced
 - [ ] Outputs: `s3_endpoint_id`, `dynamodb_endpoint_id`, `interface_endpoint_ids`
 
 ---
@@ -395,7 +395,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 #### Acceptance Criteria
 - [ ] `aws_subnet` with configurable CIDR and AZ
 - [ ] `map_public_ip_on_launch` defaults to `false`
-- [ ] Required `tags` enforced
+- [x] Required `tags` enforced
 - [ ] Outputs: `subnet_id`, `subnet_arn`
 
 ---
@@ -412,7 +412,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] `aws_security_group` with mandatory `description`
 - [ ] No default rules (must be explicitly provided)
 - [ ] Validation: No `0.0.0.0/0` in ingress rules without override
-- [ ] Required `tags` enforced
+- [x] Required `tags` enforced
 - [ ] Outputs: `security_group_id`, `security_group_arn`
 
 ---
