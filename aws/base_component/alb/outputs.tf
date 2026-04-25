@@ -17,3 +17,13 @@ output "alb_zone_id" {
   description = "The canonical hosted zone ID of the load balancer"
   value       = aws_lb.this.zone_id
 }
+
+output "https_listener_arn" {
+  description = "The ARN of the HTTPS listener"
+  value       = try(aws_lb_listener.https[0].arn, null)
+}
+
+output "http_listener_arn" {
+  description = "The ARN of the HTTP listener"
+  value       = try(aws_lb_listener.http[0].arn, null)
+}

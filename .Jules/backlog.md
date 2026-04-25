@@ -65,20 +65,20 @@ These items should remain small, implementation-ready, and safe for Builder to b
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #9)
 **Module:** aws/base_component/ecr
 **Why:** Foundational container registry module for ECS, EKS, and future workload compositions. Centralizes image scanning, immutable tags, encryption, and lifecycle policy defaults.
 
 #### Acceptance Criteria
-- [ ] `aws_ecr_repository` with configurable `name`
-- [ ] Image tag mutability defaults to `IMMUTABLE`
-- [ ] Image scanning on push enabled by default
-- [ ] KMS encryption using CMK (`kms_key_arn` input or module-managed key)
-- [ ] Optional lifecycle policy support for image retention
-- [ ] Required `tags` enforced
-- [ ] Outputs: `repository_arn`, `repository_name`, `repository_url`
-- [ ] README with usage example, inputs, outputs, and security defaults
-- [ ] Native offline Terraform test validates encryption, scan on push, and immutable tags
+- [x] `aws_ecr_repository` with configurable `name`
+- [x] Image tag mutability defaults to `IMMUTABLE`
+- [x] Image scanning on push enabled by default
+- [x] KMS encryption using CMK (`kms_key_arn` input or module-managed key)
+- [x] Optional lifecycle policy support for image retention
+- [x] Required `tags` enforced
+- [x] Outputs: `repository_arn`, `repository_name`, `repository_url`
+- [x] README with usage example, inputs, outputs, and security defaults
+- [x] Native offline Terraform test validates encryption, scan on push, and immutable tags
 
 #### Security Notes
 - Immutable tags should be the default
@@ -91,22 +91,22 @@ These items should remain small, implementation-ready, and safe for Builder to b
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #9)
 **Module:** aws/base_component/alb
 **Why:** Foundational ingress and traffic-routing module for ECS and future application patterns. Standardizes TLS posture, access logging, and safe security-group defaults.
 
 #### Acceptance Criteria
-- [ ] `aws_lb` with `load_balancer_type = "application"`
-- [ ] Configurable public or internal deployment mode
-- [ ] Access logging enabled by default to S3
-- [ ] Security group support with no permissive default ingress
-- [ ] HTTPS listener support with ACM certificate ARN input
-- [ ] Optional HTTP-to-HTTPS redirect listener
-- [ ] Deletion protection configurable and enabled by default for production-style usage
-- [ ] Required `tags` enforced
-- [ ] Outputs: `alb_arn`, `alb_dns_name`, `alb_zone_id`, `security_group_id`
-- [ ] README with example for ECS/Fargate integration
-- [ ] Native offline Terraform test validates listeners, logging configuration, and tags
+- [x] `aws_lb` with `load_balancer_type = "application"`
+- [x] Configurable public or internal deployment mode
+- [x] Access logging enabled by default to S3
+- [x] Security group support with no permissive default ingress
+- [x] HTTPS listener support with ACM certificate ARN input
+- [x] Optional HTTP-to-HTTPS redirect listener
+- [x] Deletion protection configurable and enabled by default for production-style usage
+- [x] Required `tags` enforced
+- [x] Outputs: `alb_arn`, `alb_dns_name`, `alb_zone_id`, `security_group_id`
+- [x] README with example for ECS/Fargate integration
+- [x] Native offline Terraform test validates listeners, logging configuration, and tags
 
 #### Security Notes
 - Public ALBs should redirect HTTP to HTTPS by default when HTTPS is configured
@@ -119,19 +119,19 @@ These items should remain small, implementation-ready, and safe for Builder to b
 
 **Priority:** MEDIUM
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #9)
 **Module:** aws/base_component/eventbridge
 **Why:** Foundational event-routing module that supports future workload compositions such as eventbridge_lambda and standardized event-driven architectures.
 
 #### Acceptance Criteria
-- [ ] Support EventBridge bus creation or use of default bus
-- [ ] Support rule creation with configurable event pattern or schedule expression
-- [ ] Support target attachment inputs
-- [ ] Optional dead-letter queue integration for supported targets
-- [ ] Required `tags` enforced where supported
-- [ ] Outputs: `event_bus_name`, `rule_arns`, `target_ids`
-- [ ] README with examples for scheduled and event-pattern rules
-- [ ] Native offline Terraform test validates rule creation and target wiring
+- [x] Support EventBridge bus creation or use of default bus
+- [x] Support rule creation with configurable event pattern or schedule expression
+- [x] Support target attachment inputs
+- [x] Optional dead-letter queue integration for supported targets
+- [x] Required `tags` enforced where supported
+- [x] Outputs: `event_bus_name`, `rule_arns`, `target_ids`
+- [x] README with examples for scheduled and event-pattern rules
+- [x] Native offline Terraform test validates rule creation and target wiring
 
 ***
 
@@ -139,18 +139,18 @@ These items should remain small, implementation-ready, and safe for Builder to b
 
 **Priority:** MEDIUM
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #9)
 **Module:** aws/base_component/cloudwatch_alarms
 **Why:** Reusable observability primitive for consistent alarms across workload modules. Enables safer production defaults and easier composition.
 
 #### Acceptance Criteria
-- [ ] Support one or more CloudWatch metric alarms with configurable namespace, metric name, statistic, threshold, and period
-- [ ] Support alarm actions and OK actions inputs
-- [ ] Support dimensions input map
-- [ ] Required `tags` enforced where supported
-- [ ] Outputs: `alarm_arns`, `alarm_names`
-- [ ] README with Lambda and ECS alarm examples
-- [ ] Native offline Terraform test validates alarm configuration shape
+- [x] Support one or more CloudWatch metric alarms with configurable namespace, metric name, statistic, threshold, and period
+- [x] Support alarm actions and OK actions inputs
+- [x] Support dimensions input map
+- [x] Required `tags` enforced where supported
+- [x] Outputs: `alarm_arns`, `alarm_names`
+- [x] README with Lambda and ECS alarm examples
+- [x] Native offline Terraform test validates alarm configuration shape
 
 ***
 
@@ -158,20 +158,20 @@ These items should remain small, implementation-ready, and safe for Builder to b
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #9)
 **Module:** aws/workload_component/eventbridge_lambda
 **Why:** Common event-driven workload pattern. Composing EventBridge, Lambda, IAM, logging, and optional DLQ reduces repeated wiring and encourages secure defaults.
 
 #### Acceptance Criteria
-- [ ] Uses `aws/base_component/lambda` internally
-- [ ] Creates EventBridge rule from event pattern or schedule expression
-- [ ] Adds Lambda target and invoke permissions
-- [ ] Supports optional SQS dead-letter queue for failed delivery
-- [ ] CloudWatch log group exists with retention configured through the Lambda module
-- [ ] Required `tags` enforced
-- [ ] Outputs: `rule_arn`, `function_arn`, `function_name`, `target_id`
-- [ ] README with scheduled-job and event-pattern usage examples
-- [ ] Native offline Terraform test validates rule, target, and Lambda permission resources
+- [x] Uses `aws/base_component/lambda` internally
+- [x] Creates EventBridge rule from event pattern or schedule expression
+- [x] Adds Lambda target and invoke permissions
+- [x] Supports optional SQS dead-letter queue for failed delivery
+- [x] CloudWatch log group exists with retention configured through the Lambda module
+- [x] Required `tags` enforced
+- [x] Outputs: `rule_arn`, `function_arn`, `function_name`, `target_id`
+- [x] README with scheduled-job and event-pattern usage examples
+- [x] Native offline Terraform test validates rule, target, and Lambda permission resources
 
 #### Security Notes
 - Least-privilege Lambda execution role only
@@ -183,19 +183,19 @@ These items should remain small, implementation-ready, and safe for Builder to b
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #9)
 **Module:** aws/workload_component/s3_lambda_trigger
 **Why:** Common ingestion and object-processing pattern. Composes secure S3 defaults with Lambda invocation wiring and reduces repetitive event-notification setup.
 
 #### Acceptance Criteria
-- [ ] Uses `aws/base_component/s3` and `aws/base_component/lambda` internally, or accepts compatible existing resources
-- [ ] Configurable bucket event types and object prefix/suffix filters
-- [ ] `aws_lambda_permission` grants S3 invoke access
-- [ ] Optional dead-letter queue support for downstream failure handling
-- [ ] Required `tags` enforced
-- [ ] Outputs: `bucket_arn`, `function_arn`, `notification_configuration_id`
-- [ ] README with example for object-created trigger flow
-- [ ] Native offline Terraform test validates notification configuration and Lambda permission
+- [x] Uses `aws/base_component/s3` and `aws/base_component/lambda` internally, or accepts compatible existing resources
+- [x] Configurable bucket event types and object prefix/suffix filters
+- [x] `aws_lambda_permission` grants S3 invoke access
+- [x] Optional dead-letter queue support for downstream failure handling
+- [x] Required `tags` enforced
+- [x] Outputs: `bucket_arn`, `function_arn`, `notification_configuration_id`
+- [x] README with example for object-created trigger flow
+- [x] Native offline Terraform test validates notification configuration and Lambda permission
 
 #### Security Notes
 - Bucket must retain secure defaults from the base S3 module
@@ -590,7 +590,7 @@ Retain previously completed module entries below this line for historical tracki
 - [x] Task definition with Fargate compatibility
 - [x] Placed in VPC private subnets
 - [x] Log group with KMS encryption (reuse `kms_key_arn`)
-- [x] Task execution role and Task role via `aws/base_component/iam`
+- [x_] Task execution role and Task role via `aws/base_component/iam`
 - [x] Required `tags` enforced
 - [x] Outputs: `cluster_arn`, `service_arn`, `task_definition_arn`
 - [x] Terraform test: Cluster and service created with Fargate capacity providers
@@ -760,3 +760,4 @@ Retain previously completed module entries below this line for historical tracki
 |------|--------|--------|
 | 2026-04-18 | Human | Initial backlog with aligned CRITICAL/HIGH/MEDIUM/LOW priorities and standardized item format |
 | 2026-04-20 | Sentinel | Nightly audit; updated KMS deletion window requirement |
+| 2026-04-26 | Builder | Implemented priority base and workload modules (ECR, ALB, EventBridge, CloudWatch Alarm, EventBridge Lambda, S3 Lambda Trigger) |

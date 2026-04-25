@@ -1,13 +1,18 @@
 variables {
-  alarm_name          = "test-alarm"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = 1
-  metric_name         = "CPUUtilization"
-  namespace           = "AWS/EC2"
-  period              = 60
-  statistic           = "Average"
-  threshold           = 80
-  alarm_description   = "test alarm"
+  alarms = {
+    "test-alarm" = {
+      comparison_operator = "GreaterThanThreshold"
+      evaluation_periods  = 1
+      metric_name         = "CPUUtilization"
+      namespace           = "AWS/EC2"
+      period              = 60
+      statistic           = "Average"
+      threshold           = 80
+      dimensions = {
+        InstanceId = "i-1234567890abcdef0"
+      }
+    }
+  }
   tags = {
     environment = "test"
     owner       = "test-owner"
@@ -29,7 +34,44 @@ run "valid_alarm_creation" {
   command = plan
 
   assert {
-    condition     = aws_cloudwatch_metric_alarm.this.alarm_name == var.alarm_name
-    error_message = "Alarm name does not match expected value"
+    condition     = length(aws_cloudwatch_metric_alarm.this) == 1
+    error_message = "Alarm should be created"
+  }
+
+  assert {
+    condition     = aws_cloudwatch_metric_alarm.this["test-alarm"].metric_name == "CPUUtilization"
+    error_message = "Metric name does not match"
+  }
+}
+
+run "multiple_alarms_creation" {
+  command = plan
+
+  variables {
+    alarms = {
+      "alarm-1" = {
+        comparison_operator = "GreaterThanThreshold"
+        evaluation_periods  = 1
+        metric_name         = "Errors"
+        namespace           = "AWS/Lambda"
+        period              = 60
+        statistic           = "Sum"
+        threshold           = 0
+      },
+      "alarm-2" = {
+        comparison_operator = "LessThanThreshold"
+        evaluation_periods  = 1
+        metric_name         = "Invocations"
+        namespace           = "AWS/Lambda"
+        period              = 3600
+        statistic           = "Sum"
+        threshold           = 1
+      }
+    }
+  }
+
+  assert {
+    condition     = length(aws_cloudwatch_metric_alarm.this) == 2
+    error_message = "Two alarms should be created"
   }
 }

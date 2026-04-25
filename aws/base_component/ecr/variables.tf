@@ -20,9 +20,16 @@ variable "scan_on_push" {
   default     = true
 }
 
-variable "kms_key_arn" {
-  description = "The ARN of the KMS key for encryption. If null, AES256 is used (not recommended by org standards for data at rest)."
+variable "existing_kms_key_arn" {
+  description = "The ARN of an existing KMS key to use for encryption. If null, a new key will be created."
   type        = string
+  default     = null
+}
+
+variable "lifecycle_policy" {
+  description = "The ECR lifecycle policy as a JSON string. If null, a default policy keeping the last 30 images will be used."
+  type        = string
+  default     = null
 }
 
 variable "tags" {

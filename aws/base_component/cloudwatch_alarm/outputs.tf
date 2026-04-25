@@ -1,9 +1,9 @@
-output "alarm_arn" {
-  description = "The ARN of the CloudWatch metric alarm"
-  value       = aws_cloudwatch_metric_alarm.this.arn
+output "alarm_arns" {
+  description = "A map of alarm names to their ARNs"
+  value       = { for k, v in aws_cloudwatch_metric_alarm.this : k => v.arn }
 }
 
-output "alarm_id" {
-  description = "The ID of the CloudWatch metric alarm"
-  value       = aws_cloudwatch_metric_alarm.this.id
+output "alarm_ids" {
+  description = "A map of alarm names to their IDs"
+  value       = { for k, v in aws_cloudwatch_metric_alarm.this : k => v.id }
 }
