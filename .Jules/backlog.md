@@ -11,8 +11,6 @@
 - **Navigator** (Jules, runs daily at 8:00 AM CDT) owns this file. Navigator reviews AWS and Terraform release notes, identifies module gaps, refines acceptance criteria, de-duplicates work, and ensures the highest-priority backlog items are implementation-ready.
 - **Builder** (Jules, runs daily at 10:00 AM CDT) reads this file, works the highest-priority implementation-ready `backlog` items, opens PRs, and marks completed items `done` with PR numbers.
 - **Steward** (Jules, runs daily at 4:00 PM CDT) reviews the day's PRs, fixes clear low-risk issues, and adds new follow-up backlog items when review uncovers durable gaps or recurring quality issues.
-- **Human review is the final PR gate.** Jules prepares, builds, reviews, and fixes, but the human decides whether to merge.
-- Items move through statuses: `backlog` → `in-progress` → `done`.
 
 ### Backlog Item Format
 
