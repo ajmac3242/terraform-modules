@@ -41,6 +41,8 @@ module "execution_role" {
     "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
   ]
 
+  permissions_boundary_arn = var.permissions_boundary_arn
+
   tags = var.tags
 }
 

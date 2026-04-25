@@ -54,6 +54,17 @@ variable "existing_role_arn" {
   default     = null
 }
 
+variable "permissions_boundary_arn" {
+  description = "The ARN of the policy that is used to set the permissions boundary for the role"
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.permissions_boundary_arn == null ? true : can(regex("^arn:aws:iam::[0-9]{12}:policy/.*$|^arn:aws:iam::aws:policy/.*$", var.permissions_boundary_arn))
+    error_message = "The permissions_boundary_arn must be a valid AWS IAM policy ARN."
+  }
+}
+
 variable "dead_letter_config_target_arn" {
   description = "The ARN of an SNS topic or SQS queue to notify when an invocation fails"
   type        = string

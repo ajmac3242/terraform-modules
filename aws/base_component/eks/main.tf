@@ -20,6 +20,8 @@ module "cluster_role" {
     "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
   ]
 
+  permissions_boundary_arn = var.permissions_boundary_arn
+
   tags = var.tags
 }
 
