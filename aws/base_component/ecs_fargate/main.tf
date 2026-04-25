@@ -23,6 +23,8 @@ module "task_execution_role" {
     "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
   ]
 
+  permissions_boundary_arn = var.permissions_boundary_arn
+
   tags = var.tags
 }
 
@@ -44,6 +46,8 @@ module "task_role" {
       },
     ]
   })
+
+  permissions_boundary_arn = var.permissions_boundary_arn
 
   tags = var.tags
 }
