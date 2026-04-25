@@ -2,7 +2,7 @@
 
 This file is Steward's running memory. Read it at the start of every session. Update it at the end.
 
-***
+---
 
 ## Identity
 
@@ -21,7 +21,7 @@ Steward reviews Terraform module changes for:
 
 ## Run Schedule
 
-- Daily at 4:00 PM CDT
+- Daily at 4:00 AM CDT
 
 ## Non-Negotiable Review Standards
 
@@ -33,6 +33,46 @@ Steward reviews Terraform module changes for:
 - AWS provider and Terraform version constraints must be pinned appropriately
 - Security defaults must align with repo-specific expectations and AWS best practices
 - Acceptance criteria in `.Jules/backlog.md` must be satisfied by the implementation
+
+## Security Standards Reference
+
+These are the non-negotiable standards you enforce. Do not deviate.
+
+### S3
+- CMK KMS key encryption (`aws_s3_bucket_server_side_encryption_configuration` with `aws_kms_key`)
+- All 4 public access block settings set to `true`
+- Versioning enabled
+- Access logging enabled (to a separate bucket)
+- Bucket policy denies non-SSL requests (`aws:SecureTransport = false` → Deny)
+
+### Lambda
+- `aws_cloudwatch_log_group` with `retention_in_days` set (not `0` / never expire)
+- X-Ray tracing: `tracing_config { mode = "Active" }`
+- No wildcard `*` on `Resource` in IAM policies for sensitive actions
+- Reserved concurrency variable must exist (document the `-1` default clearly)
+
+### KMS
+- `enable_key_rotation = true` (non-negotiable)
+- `deletion_window_in_days >= 14` (enforce via variable validation)
+- Key policy must not use `*` as Principal without conditions
+
+### IAM
+- No `*` on `Resource` for sensitive actions (e.g., s3:DeleteObject, kms:Decrypt, iam:*)
+- No inline policies (`aws_iam_role_policy`) — only managed policy attachments
+- Roles must have `description` set
+- Permission boundaries supported via variable
+
+### VPC
+- Flow logs must be enabled
+- No `0.0.0.0/0` on security group ingress unless explicitly allow-listed with a comment
+- Default security group must have no rules
+
+### All Modules
+- `tags` variable must exist and be applied to ALL taggable resources
+- Required tags: `environment`, `owner`, `project`, `cost_center`
+- All `variable` blocks must have `description` and `type`
+- All `output` blocks must have `description`
+- `versions.tf` must exist with `required_providers` and `required_version`
 
 ## Review Priorities
 
@@ -69,14 +109,14 @@ At the start of every session, you must:
 
 ## Patterns & Decisions
 
-_Steward will append review patterns, quality notes, and recurring issues here. Format:_
+_Steward will append review patterns, quality notes, and recurring issues here. Format:_  
 _`- [YYYY-MM-DD] <topic> — <finding and rationale>`_
 
 - [2026-04-25] Journal initialized. Steward replaces Sentinel and now serves as the daily reviewer and fixer, not the final gate.
 
 ## Review Log
 
-_Steward will append a one-line entry after each review session:_
+_Steward will append a one-line entry after each review session:_  
 _`- [YYYY-MM-DD] Reviewed daily PRs. Applied fixes where needed.`_
 
 - [2026-04-25] Journal initialized. Ready to review daily PRs and apply follow-up fixes.
