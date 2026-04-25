@@ -100,4 +100,12 @@ _`- [YYYY-MM-DD] <module> — <decision and rationale>`_
 _Builder will append a one-line entry after each completed build:_
 _`- [YYYY-MM-DD] Built <module path>. PR #<number>.`_
 
-- [2026-04-25] Journal initialized. Ready to begin building from backlog.
+- [2026-04-18] Journal initialized. Ready to begin building from backlog.
+- [2026-04-19] Built aws/base_component/kms. PR #1.
+- [2026-04-20] Built aws/base_component/iam. PR #2.
+- [2026-04-20] Built aws/base_component/s3. PR #3.
+- [2026-04-20] Built aws/base_component/lambda. PR #4.
+- [2026-04-21] Built VPC, DynamoDB, RDS, SQS, SSM, ECS Fargate. PR #5.
+- [2026-04-21] Built CloudFront, VPC Endpoints, Subnet, Security Group, SNS, Secrets Manager, Route 53, ElastiCache, EKS. PR #6.
+- [2026-04-21] Added JWT Authorizer and WAF to aws/workload_component/apigw_lambda. PR #7.
+- [2026-04-22] Built 10 new base modules (alb, asg, ec2, ecr, acm, wafv2, eventbridge, step_functions, efs, cloudwatch_alarm) and completed apigw_lambda pattern. PR #8.
