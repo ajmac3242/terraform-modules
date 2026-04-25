@@ -1,6 +1,7 @@
 variables {
-  name        = "test-ecr"
-  kms_key_arn = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
+  name                = "test-ecr"
+  existing_kms_key_arn = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
+  aws_account_id      = "123456789012"
   tags = {
     environment = "test"
     owner       = "test-owner"
@@ -29,5 +30,23 @@ run "valid_ecr_creation" {
   assert {
     condition     = aws_ecr_repository.this.encryption_configuration[0].encryption_type == "KMS"
     error_message = "Encryption type should be KMS"
+  }
+
+  assert {
+    condition     = aws_ecr_repository.this.encryption_configuration[0].kms_key == var.existing_kms_key_arn
+    error_message = "KMS key ARN does not match expected value"
+  }
+}
+
+run "valid_ecr_creation_auto_kms" {
+  command = plan
+
+  variables {
+    existing_kms_key_arn = null
+  }
+
+  assert {
+    condition     = length(module.kms) == 1
+    error_message = "KMS module should be enabled when existing_kms_key_arn is null"
   }
 }

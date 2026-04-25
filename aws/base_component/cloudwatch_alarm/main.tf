@@ -1,18 +1,22 @@
-# Main CloudWatch Metric Alarm resource
+# Main CloudWatch Metric Alarm resources
 resource "aws_cloudwatch_metric_alarm" "this" {
-  alarm_name          = var.alarm_name
-  comparison_operator = var.comparison_operator
-  evaluation_periods  = var.evaluation_periods
-  metric_name         = var.metric_name
-  namespace           = var.namespace
-  period              = var.period
-  statistic           = var.statistic
-  threshold           = var.threshold
+  for_each = var.alarms
 
-  alarm_description = var.alarm_description
-  alarm_actions     = var.alarm_actions
+  alarm_name          = each.key
+  comparison_operator = each.value.comparison_operator
+  evaluation_periods  = each.value.evaluation_periods
+  metric_name         = each.value.metric_name
+  namespace           = each.value.namespace
+  period              = each.value.period
+  statistic           = each.value.statistic
+  threshold           = each.value.threshold
+  unit                = each.value.unit
 
-  dimensions = var.dimensions
+  alarm_description = each.value.alarm_description
+  alarm_actions     = each.value.alarm_actions
+  ok_actions        = each.value.ok_actions
+
+  dimensions = each.value.dimensions
 
   tags = var.tags
 }

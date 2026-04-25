@@ -94,6 +94,9 @@ _Builder will append decisions and architectural notes here as it builds. Format
 _`- [YYYY-MM-DD] <module> — <decision and rationale>`_
 
 - [2026-04-25] Journal initialized. Builder replaces Forge and now executes implementation-ready backlog work with the same quality bar and stronger batching rules.
+- [2026-04-26] ALB — Enforced TLS 1.3 as the minimum for HTTPS listeners.
+- [2026-04-26] EventBridge — Switched to `state` argument for rules to avoid deprecation warnings from `is_enabled`.
+- [2026-04-26] cloudwatch_alarm — Standardized on `for_each` for all alarm modules to support scalable composition.
 
 ## Build Log
 
@@ -109,3 +112,4 @@ _`- [YYYY-MM-DD] Built <module path>. PR #<number>.`_
 - [2026-04-21] Built CloudFront, VPC Endpoints, Subnet, Security Group, SNS, Secrets Manager, Route 53, ElastiCache, EKS. PR #6.
 - [2026-04-21] Added JWT Authorizer and WAF to aws/workload_component/apigw_lambda. PR #7.
 - [2026-04-22] Built 10 new base modules (alb, asg, ec2, ecr, acm, wafv2, eventbridge, step_functions, efs, cloudwatch_alarm) and completed apigw_lambda pattern. PR #8.
+- [2026-04-26] Updated ecr, alb, eventbridge, cloudwatch_alarm and built eventbridge_lambda, s3_lambda_trigger. PR #9.

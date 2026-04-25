@@ -22,7 +22,7 @@ variable "subnets" {
 variable "enable_deletion_protection" {
   description = "If true, deletion of the load balancer will be disabled via the AWS API"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "access_logs_bucket" {
@@ -40,6 +40,24 @@ variable "access_logs_enabled" {
   description = "Boolean to enable / disable access_logs"
   type        = bool
   default     = true
+}
+
+variable "enable_https_listener" {
+  description = "If true, an HTTPS listener will be created"
+  type        = bool
+  default     = false
+}
+
+variable "certificate_arn" {
+  description = "The ARN of the SSL certificate to use for the HTTPS listener"
+  type        = string
+  default     = null
+}
+
+variable "enable_http_redirect" {
+  description = "If true, an HTTP listener will be created that redirects to HTTPS"
+  type        = bool
+  default     = false
 }
 
 variable "tags" {
