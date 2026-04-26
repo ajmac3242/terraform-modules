@@ -52,6 +52,11 @@ variable "certificate_arn" {
   description = "The ARN of the SSL certificate to use for the HTTPS listener"
   type        = string
   default     = null
+
+  validation {
+    condition     = var.certificate_arn == null || can(regex("^arn:aws:acm:[a-z0-9-]+:[0-9]{12}:certificate/[a-z0-9-]+$", var.certificate_arn))
+    error_message = "The certificate_arn must be a valid AWS ACM certificate ARN."
+  }
 }
 
 variable "enable_http_redirect" {
