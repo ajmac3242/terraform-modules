@@ -1,3 +1,14 @@
+# Data sources to get current AWS region and account ID
+data "aws_region" "current" {}
+data "aws_caller_identity" "current" {
+  count = var.aws_account_id == null ? 1 : 0
+}
+
+locals {
+  account_id = var.aws_account_id != null ? var.aws_account_id : data.aws_caller_identity.current[0].account_id
+  region     = data.aws_region.current.name
+}
+
 # IAM Policy for the Step Functions State Machine
 resource "aws_iam_policy" "this" {
   name        = "${var.name}-policy"
@@ -80,7 +91,7 @@ module "step_functions" {
   type                        = var.type
   kms_key_arn                 = var.kms_key_arn
   log_group_retention_in_days = var.log_group_retention_in_days
-  aws_account_id              = var.aws_account_id
+  aws_account_id              = local.account_id
 
   tags = var.tags
 }

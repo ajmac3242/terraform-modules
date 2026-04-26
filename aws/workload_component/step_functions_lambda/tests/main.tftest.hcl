@@ -4,6 +4,7 @@ variables {
   lambda_arns       = ["arn:aws:lambda:us-east-1:123456789012:function:test-function"]
   definition        = "{\"StartAt\":\"Pass\",\"States\":{\"Pass\":{\"Type\":\"Pass\",\"End\":true}}}"
   skip_sfn_creation = true
+  aws_account_id    = "123456789012"
   tags = {
     environment = "test"
     owner       = "test-owner"
