@@ -5,7 +5,13 @@ variable "name" {
 }
 
 variable "kms_key_arn" {
-  description = "The ARN of the KMS key for encryption"
+  description = "DEPRECATED: Use existing_kms_key_arn instead. The ARN of the KMS key for encryption."
+  type        = string
+  default     = null
+}
+
+variable "existing_kms_key_arn" {
+  description = "The ARN of an existing KMS key to use for encryption. If null and create_bus is true, a new key will be created."
   type        = string
   default     = null
 }

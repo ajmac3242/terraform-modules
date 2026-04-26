@@ -68,7 +68,7 @@ module "eventbridge" {
 
 # Lambda Permission for EventBridge to invoke
 resource "aws_lambda_permission" "allow_eventbridge" {
-  statement_id  = "AllowExecutionFromEventBridge"
+  statement_id  = "AllowExecutionFromEventBridge-${var.name}"
   action        = "lambda:InvokeFunction"
   function_name = module.lambda.function_name
   principal     = "events.amazonaws.com"

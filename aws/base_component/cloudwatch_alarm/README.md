@@ -43,6 +43,11 @@ module "lambda_alarm" {
 }
 ```
 
+## Outputs
+
+- `alarm_arns`: A map of alarm names to their ARNs
+- `alarm_names`: A list of alarm names
+
 ### Multiple ECS Alarms
 
 ```hcl

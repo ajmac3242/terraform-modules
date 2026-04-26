@@ -1,5 +1,6 @@
 variables {
-  name = "test-bus"
+  name           = "test-bus"
+  aws_account_id = "123456789012"
   tags = {
     environment = "test"
     owner       = "test-owner"
@@ -38,6 +39,11 @@ run "valid_eventbridge_creation" {
   }
 
   assert {
+    condition     = length(module.kms) == 1
+    error_message = "KMS module should be enabled when creating a bus"
+  }
+
+  assert {
     condition     = length(aws_cloudwatch_event_rule.this) == 1
     error_message = "Event rule should be created"
   }
@@ -64,5 +70,23 @@ run "default_bus_usage" {
   assert {
     condition     = aws_cloudwatch_event_rule.this["test-rule"].event_bus_name == "default"
     error_message = "Rule should be on default bus"
+  }
+}
+
+run "provided_deprecated_kms_key" {
+  command = plan
+
+  variables {
+    kms_key_arn = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
+  }
+
+  assert {
+    condition     = length(module.kms) == 0
+    error_message = "KMS module should be disabled when kms_key_arn is provided"
+  }
+
+  assert {
+    condition     = aws_cloudwatch_event_bus.this[0].kms_key_identifier == var.kms_key_arn
+    error_message = "Event bus should use provided kms_key_arn"
   }
 }

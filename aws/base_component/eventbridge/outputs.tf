@@ -17,3 +17,8 @@ output "target_ids" {
   description = "A list of target IDs"
   value       = [for k, v in aws_cloudwatch_event_target.this : v.target_id]
 }
+
+output "kms_key_arn" {
+  description = "The ARN of the KMS key used for encryption"
+  value       = local.kms_key_arn
+}

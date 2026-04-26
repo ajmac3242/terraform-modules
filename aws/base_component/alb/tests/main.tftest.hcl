@@ -37,6 +37,16 @@ run "valid_alb_creation" {
     condition     = aws_lb.this.enable_deletion_protection == true
     error_message = "Deletion protection should be enabled by default"
   }
+
+  assert {
+    condition     = aws_lb.this.access_logs[0].enabled == true
+    error_message = "Access logs should be enabled by default"
+  }
+
+  assert {
+    condition     = aws_lb.this.tags["environment"] == "test"
+    error_message = "ALB tags are missing environment"
+  }
 }
 
 run "https_listener_creation" {
@@ -55,6 +65,11 @@ run "https_listener_creation" {
   assert {
     condition     = aws_lb_listener.https[0].protocol == "HTTPS"
     error_message = "HTTPS listener protocol should be HTTPS"
+  }
+
+  assert {
+    condition     = aws_lb_listener.https[0].tags["environment"] == "test"
+    error_message = "HTTPS listener tags are missing environment"
   }
 }
 
@@ -75,5 +90,10 @@ run "http_redirect_creation" {
   assert {
     condition     = aws_lb_listener.http[0].default_action[0].type == "redirect"
     error_message = "HTTP listener should have redirect action"
+  }
+
+  assert {
+    condition     = aws_lb_listener.http[0].tags["environment"] == "test"
+    error_message = "HTTP listener tags are missing environment"
   }
 }
