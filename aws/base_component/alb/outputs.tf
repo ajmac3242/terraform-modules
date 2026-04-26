@@ -27,3 +27,8 @@ output "http_listener_arn" {
   description = "The ARN of the HTTP listener"
   value       = try(aws_lb_listener.http[0].arn, null)
 }
+
+output "security_group_id" {
+  description = "The ID of the primary security group associated with the ALB"
+  value       = try(var.security_groups[0], null)
+}

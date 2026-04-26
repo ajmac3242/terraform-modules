@@ -36,6 +36,8 @@ resource "aws_lb_listener" "https" {
     }
   }
 
+  tags = var.tags
+
   lifecycle {
     precondition {
       condition     = var.certificate_arn != null
@@ -72,4 +74,6 @@ resource "aws_lb_listener" "http" {
       }
     }
   }
+
+  tags = var.tags
 }

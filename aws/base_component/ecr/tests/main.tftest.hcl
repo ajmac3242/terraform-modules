@@ -36,6 +36,16 @@ run "valid_ecr_creation" {
     condition     = aws_ecr_repository.this.encryption_configuration[0].kms_key == var.existing_kms_key_arn
     error_message = "KMS key ARN does not match expected value"
   }
+
+  assert {
+    condition     = aws_ecr_repository.this.image_tag_mutability == "IMMUTABLE"
+    error_message = "Image tag mutability should be IMMUTABLE by default"
+  }
+
+  assert {
+    condition     = aws_ecr_repository.this.image_scanning_configuration[0].scan_on_push == true
+    error_message = "Scan on push should be enabled by default"
+  }
 }
 
 run "valid_ecr_creation_auto_kms" {

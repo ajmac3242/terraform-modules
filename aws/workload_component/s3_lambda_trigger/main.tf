@@ -27,7 +27,7 @@ module "lambda" {
 
 # Lambda Permission for S3 to invoke
 resource "aws_lambda_permission" "allow_s3" {
-  statement_id  = "AllowExecutionFromS3Bucket"
+  statement_id  = "AllowExecutionFromS3Bucket-${var.bucket_name}"
   action        = "lambda:InvokeFunction"
   function_name = module.lambda.function_name
   principal     = "s3.amazonaws.com"

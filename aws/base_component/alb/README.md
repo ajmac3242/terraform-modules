@@ -33,6 +33,12 @@ module "alb" {
 }
 ```
 
+## Outputs
+
+- `alb_arn`: The ARN of the ALB
+- `alb_dns_name`: The DNS name of the ALB
+- `security_group_id`: The ID of the primary security group associated with the ALB
+
 ### HTTPS with Redirect
 
 ```hcl

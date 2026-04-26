@@ -120,3 +120,4 @@ _Steward will append a one-line entry after each review session:_
 _`- [YYYY-MM-DD] Reviewed daily PRs. Applied fixes where needed.`_
 
 - [2026-04-25] Journal initialized. Ready to review daily PRs and apply follow-up fixes.
+- [2026-04-26] Reviewed daily PRs (PR #9). Applied follow-up fixes for tagging, missing tests, mandatory CMK for EventBridge, and output completeness.
