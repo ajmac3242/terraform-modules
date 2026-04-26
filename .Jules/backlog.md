@@ -57,7 +57,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #10)
 **Module:** aws/workload_component/step_functions_lambda
 **Why:** Valuable orchestration workload for multi-step serverless processes. Reduces custom state machine wiring and promotes repeatable IAM and logging patterns.
 
@@ -81,7 +81,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #10)
 **Module:** aws/workload_component/alb_ecs_fargate
 **Why:** One of the most common production application deployment patterns. Composes ingress, target groups, listeners, ECS service, and networking into a reusable secure default.
 

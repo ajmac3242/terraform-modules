@@ -1,7 +1,7 @@
 variables {
-  name                = "test-ecr"
+  name                 = "test-ecr"
   existing_kms_key_arn = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
-  aws_account_id      = "123456789012"
+  aws_account_id       = "123456789012"
   tags = {
     environment = "test"
     owner       = "test-owner"

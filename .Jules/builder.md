@@ -97,6 +97,8 @@ _`- [YYYY-MM-DD] <module> — <decision and rationale>`_
 - [2026-04-26] ALB — Enforced TLS 1.3 as the minimum for HTTPS listeners.
 - [2026-04-26] EventBridge — Switched to `state` argument for rules to avoid deprecation warnings from `is_enabled`.
 - [2026-04-26] cloudwatch_alarm — Standardized on `for_each` for all alarm modules to support scalable composition.
+- [2026-04-26] ecs_fargate — Added optional `load_balancer_config` to support integration with ALB.
+- [2026-04-26] step_functions_lambda — Used separate `aws_iam_role_policy_attachment` for custom policies to avoid `for_each` unknown key issues in base IAM module.
 
 ## Build Log
 
@@ -113,3 +115,4 @@ _`- [YYYY-MM-DD] Built <module path>. PR #<number>.`_
 - [2026-04-21] Added JWT Authorizer and WAF to aws/workload_component/apigw_lambda. PR #7.
 - [2026-04-22] Built 10 new base modules (alb, asg, ec2, ecr, acm, wafv2, eventbridge, step_functions, efs, cloudwatch_alarm) and completed apigw_lambda pattern. PR #8.
 - [2026-04-26] Updated ecr, alb, eventbridge, cloudwatch_alarm and built eventbridge_lambda, s3_lambda_trigger. PR #9.
+- [2026-04-26] Updated ecs_fargate and built step_functions_lambda, alb_ecs_fargate. PR #10.
