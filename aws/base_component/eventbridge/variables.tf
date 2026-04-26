@@ -53,10 +53,10 @@ variable "rules" {
 variable "targets" {
   description = "A map of targets to attach to the rules. Key is rule_name/target_id."
   type = map(object({
-    rule_name = string
-    arn       = string
-    role_arn  = optional(string)
-    input     = optional(string)
+    rule_name       = string
+    arn             = string
+    role_arn        = optional(string)
+    input           = optional(string)
     dead_letter_arn = optional(string)
   }))
   default = {}

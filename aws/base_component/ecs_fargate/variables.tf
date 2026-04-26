@@ -8,6 +8,12 @@ variable "private_subnet_ids" {
   type        = list(string)
 }
 
+variable "security_group_ids" {
+  description = "A list of security group IDs to assign to the ECS service"
+  type        = list(string)
+  default     = []
+}
+
 variable "container_image" {
   description = "The image used to start a container"
   type        = string
@@ -35,6 +41,16 @@ variable "desired_count" {
   description = "Number of instances of the task definition to place and keep running"
   type        = number
   default     = 1
+}
+
+variable "load_balancer_config" {
+  description = "Optional load balancer configuration for the ECS service"
+  type = object({
+    target_group_arn = string
+    container_name   = string
+    container_port   = number
+  })
+  default = null
 }
 
 variable "kms_key_arn" {
