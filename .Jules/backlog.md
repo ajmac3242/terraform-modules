@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-04-25
+> **Last reviewed:** 2026-04-26
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -53,11 +53,199 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Immediate Ready Queue
 
-These items should remain small, implementation-ready, and safe for Builder to batch through quickly.
+### aws/workload_component/step_functions_lambda: Step Functions + Lambda orchestration pattern
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/workload_component/step_functions_lambda
+**Why:** Valuable orchestration workload for multi-step serverless processes. Reduces custom state machine wiring and promotes repeatable IAM and logging patterns.
+
+#### Acceptance Criteria
+- [ ] Creates Step Functions state machine with JSON definition input
+- [ ] Uses one or more `aws/base_component/lambda` modules or compatible existing Lambda ARNs
+- [ ] IAM role for Step Functions follows least-privilege rules
+- [ ] CloudWatch logging configured for the state machine using a CMK
+- [ ] X-Ray tracing enabled
+- [ ] Required `tags` enforced
+- [ ] Outputs: `state_machine_arn`, `state_machine_name`, `lambda_function_arns`
+- [ ] README with orchestration example
+- [ ] Native offline Terraform test validates state machine, role, and logging configuration
+
+#### Security Notes
+- State machine role must be scoped to only required Lambda and logging actions
+
+---
+
+### aws/workload_component/alb_ecs_fargate: ALB + ECS Fargate service pattern
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/workload_component/alb_ecs_fargate
+**Why:** One of the most common production application deployment patterns. Composes ingress, target groups, listeners, ECS service, and networking into a reusable secure default.
+
+#### Acceptance Criteria
+- [ ] Uses `aws/base_component/ecs_fargate` internally
+- [ ] Uses `aws/base_component/alb` internally or accepts compatible ALB inputs
+- [ ] Creates target group and listener rule wiring for the ECS service
+- [ ] Supports HTTPS listener integration with ACM certificate
+- [ ] Supports health check configuration
+- [ ] Required `tags` enforced
+- [ ] Outputs: `alb_dns_name`, `service_arn`, `target_group_arn`, `listener_arn`
+- [ ] README with end-to-end example
+- [ ] Native offline Terraform test validates ECS service and ALB integration
 
 ---
 
 ## Module Backlog
+
+---
+
+## Review-Discovered Improvement Queue
+
+### repo-wide: Standardize native Terraform tests across all modules
+
+**Priority:** HIGH
+**Type:** Testing
+**Status:** `backlog`
+**Module:** repo-wide
+**Why:** Tests are critical to safe reuse of these modules. A consistent minimum test standard will help Builder create stronger tests and Steward review them consistently.
+
+#### Acceptance Criteria
+- [ ] Define a minimum native `terraform test` standard for all modules
+- [ ] Document what each module test suite must validate at a minimum
+- [ ] Add backlog follow-up items for modules that fall short of the new test baseline
+- [ ] Update README or contributor guidance with the testing standard
+
+***
+
+### repo-wide: Standardize README structure across all modules
+
+**Priority:** MEDIUM
+**Type:** Documentation
+**Status:** `backlog`
+**Module:** repo-wide
+**Why:** A consistent README structure improves downstream usability and makes Steward review simpler and more objective.
+
+#### Acceptance Criteria
+- [ ] Define a standard README template for all modules
+- [ ] Require sections for purpose, usage example, inputs, outputs, defaults, and security notes
+- [ ] Add backlog follow-up items for modules that do not meet the new template
+
+***
+
+### repo-wide: Normalize legacy security backlog items
+
+**Priority:** HIGH
+**Type:** Maintenance
+**Status:** `backlog`
+**Module:** repo-wide
+**Why:** The backlog currently mixes completed module work with older security backlog entries that may no longer be accurate. This creates confusion for Navigator, Builder, and Steward.
+
+#### Acceptance Criteria
+- [ ] Review the legacy security/compliance backlog entries
+- [ ] Remove or update entries that are already satisfied by completed module work
+- [ ] Convert any still-relevant items into precise module-specific backlog items
+- [ ] Leave the backlog with no duplicate or contradictory open work
+
+***
+
+## Existing Completed Module History
+
+Retain previously completed module entries below this line for historical tracking, but keep new implementation planning focused on the active sections above.
+
+### aws/base_component/acm: Opinionated ACM Certificate module
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `done` (Verified 2026-04-26)
+**Module:** aws/base_component/acm
+**Why:** Standardized certificate management with `create_before_destroy` lifecycle and tagging.
+
+#### Acceptance Criteria
+- [x] `aws_acm_certificate` with configurable `domain_name`
+- [x] `create_before_destroy` lifecycle policy enforced
+- [x] Required `tags` enforced
+- [x] Outputs: `certificate_arn`
+
+---
+
+### aws/base_component/asg: Opinionated Auto Scaling Group module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `done` (Verified 2026-04-26)
+**Module:** aws/base_component/asg
+**Why:** Secure EC2 auto-scaling with mandatory EBS encryption and monitoring.
+
+#### Acceptance Criteria
+- [x] `aws_launch_template` with enforced EBS encryption using CMK
+- [x] `aws_autoscaling_group` with VPC placement
+- [x] Monitoring enabled by default
+- [x] Tag propagation to instances and volumes
+- [x] Required `tags` enforced
+
+---
+
+### aws/base_component/ec2: Opinionated EC2 Instance module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `done` (Verified 2026-04-26)
+**Module:** aws/base_component/ec2
+**Why:** Secure single-instance compute with mandatory EBS encryption and monitoring.
+
+#### Acceptance Criteria
+- [x] `aws_instance` with enforced root block device encryption using CMK
+- [x] Detailed monitoring enabled
+- [x] Required `tags` enforced
+
+---
+
+### aws/base_component/efs: Opinionated EFS File System module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `done` (Verified 2026-04-26)
+**Module:** aws/base_component/efs
+**Why:** Secure elastic file storage with mandatory encryption and backup policy.
+
+#### Acceptance Criteria
+- [x] `aws_efs_file_system` with mandatory CMK encryption
+- [x] `aws_efs_backup_policy` set to `ENABLED`
+- [x] Required `tags` enforced
+
+---
+
+### aws/base_component/step_functions: Opinionated Step Functions module
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `done` (Verified 2026-04-26)
+**Module:** aws/base_component/step_functions
+**Why:** Orchestration primitive with mandatory logging and tracing.
+
+#### Acceptance Criteria
+- [x] `aws_sfn_state_machine` with mandatory CloudWatch logging
+- [x] CloudWatch log group encrypted with CMK
+- [x] X-Ray tracing enabled
+- [x] Required `tags` enforced
+
+---
+
+### aws/base_component/wafv2: Opinionated WAFv2 Web ACL module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `done` (Verified 2026-04-26)
+**Module:** aws/base_component/wafv2
+**Why:** Centralized web application firewall with standard rule sets and visibility.
+
+#### Acceptance Criteria
+- [x] `aws_wafv2_web_acl` with standard visibility config
+- [x] Includes `AWSManagedRulesCommonRuleSet` by default
+- [x] Required `tags` enforced
 
 ---
 
@@ -202,104 +390,6 @@ These items should remain small, implementation-ready, and safe for Builder to b
 - Lambda execution role must remain least-privilege
 
 ***
-
-### aws/workload_component/step_functions_lambda: Step Functions + Lambda orchestration pattern
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/workload_component/step_functions_lambda
-**Why:** Valuable orchestration workload for multi-step serverless processes. Reduces custom state machine wiring and promotes repeatable IAM and logging patterns.
-
-#### Acceptance Criteria
-- [ ] Creates Step Functions state machine with JSON definition input
-- [ ] Uses one or more `aws/base_component/lambda` modules or compatible existing Lambda ARNs
-- [ ] IAM role for Step Functions follows least-privilege rules
-- [ ] CloudWatch logging configured for the state machine
-- [ ] Optional X-Ray tracing support when supported
-- [ ] Required `tags` enforced
-- [ ] Outputs: `state_machine_arn`, `state_machine_name`, `lambda_function_arns`
-- [ ] README with orchestration example
-- [ ] Native offline Terraform test validates state machine, role, and logging configuration
-
-#### Security Notes
-- State machine role must be scoped to only required Lambda and logging actions
-
-***
-
-### aws/workload_component/alb_ecs_fargate: ALB + ECS Fargate service pattern
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/workload_component/alb_ecs_fargate
-**Why:** One of the most common production application deployment patterns. Composes ingress, target groups, listeners, ECS service, and networking into a reusable secure default.
-
-#### Acceptance Criteria
-- [ ] Uses `aws/workload_component/ecs_fargate` internally or composes required base modules safely
-- [ ] Uses `aws/base_component/alb` internally or accepts compatible ALB inputs
-- [ ] Creates target group and listener rule wiring for the ECS service
-- [ ] Supports HTTPS listener integration with ACM certificate
-- [ ] Supports health check configuration
-- [ ] Required `tags` enforced
-- [ ] Outputs: `alb_dns_name`, `service_arn`, `target_group_arn`, `listener_arn`
-- [ ] README with end-to-end example
-- [ ] Native offline Terraform test validates ECS service and ALB integration
-
-***
-
-## Review-Discovered Improvement Queue
-
-### repo-wide: Standardize native Terraform tests across all modules
-
-**Priority:** HIGH
-**Type:** Testing
-**Status:** `backlog`
-**Module:** repo-wide
-**Why:** Tests are critical to safe reuse of these modules. A consistent minimum test standard will help Builder create stronger tests and Steward review them consistently.
-
-#### Acceptance Criteria
-- [ ] Define a minimum native `terraform test` standard for all modules
-- [ ] Document what each module test suite must validate at a minimum
-- [ ] Add backlog follow-up items for modules that fall short of the new test baseline
-- [ ] Update README or contributor guidance with the testing standard
-
-***
-
-### repo-wide: Standardize README structure across all modules
-
-**Priority:** MEDIUM
-**Type:** Documentation
-**Status:** `backlog`
-**Module:** repo-wide
-**Why:** A consistent README structure improves downstream usability and makes Steward review simpler and more objective.
-
-#### Acceptance Criteria
-- [ ] Define a standard README template for all modules
-- [ ] Require sections for purpose, usage example, inputs, outputs, defaults, and security notes
-- [ ] Add backlog follow-up items for modules that do not meet the new template
-
-***
-
-### repo-wide: Normalize legacy security backlog items
-
-**Priority:** HIGH
-**Type:** Maintenance
-**Status:** `backlog`
-**Module:** repo-wide
-**Why:** The backlog currently mixes completed module work with older security backlog entries that may no longer be accurate. This creates confusion for Navigator, Builder, and Steward.
-
-#### Acceptance Criteria
-- [ ] Review the legacy security/compliance backlog entries
-- [ ] Remove or update entries that are already satisfied by completed module work
-- [ ] Convert any still-relevant items into precise module-specific backlog items
-- [ ] Leave the backlog with no duplicate or contradictory open work
-
-***
-
-## Existing Completed Module History
-
-Retain previously completed module entries below this line for historical tracking, but keep new implementation planning focused on the active sections above.
 
 ### aws/base_component/iam: Opinionated IAM role module
 
@@ -457,32 +547,6 @@ Retain previously completed module entries below this line for historical tracki
 
 ---
 
-## Security & Compliance Backlog
-
-| ID | Item | Priority | Status |
-|----|------|----------|--------|
-| SEC-001 | All modules: enforce KMS CMK for at-rest encryption | CRITICAL | `backlog` |
-| SEC-002 | S3: deny HTTP bucket policy (aws:SecureTransport) | CRITICAL | `backlog` |
-| SEC-003 | IAM: permissions boundary variable support | CRITICAL | `backlog` |
-| SEC-004 | Lambda: VPC placement variables | HIGH | `backlog` |
-| SEC-005 | All modules: required tags validation block | CRITICAL | `backlog` |
-| SEC-006 | Lambda: X-Ray tracing enabled by default | HIGH | `backlog` |
-| SEC-007 | Review CIS AWS Foundations Benchmark v3.0 for gaps | MEDIUM | `backlog` |
-| SEC-008 | S3: ownership controls (BucketOwnerEnforced, no ACLs) | HIGH | `backlog` |
-
----
-
-## Provider & Deprecation Watch
-
-| Item | Notes | Action Needed |
-|------|-------|---------------|
-| AWS Provider 5.x | Breaking changes from 4.x | All modules must use `~> 5.0` |
-| `aws_s3_bucket` sub-resources | ACLs deprecated | Use `aws_s3_bucket_ownership_controls` |
-| Terraform 1.6+ test framework | Native `terraform test` available | Evaluate for all new modules |
-| `aws_lambda_function` `filename` vs S3 | S3 source recommended for prod | Document in module README |
-
----
-
 ### aws/base_component/vpc: Opinionated VPC module
 
 **Priority:** CRITICAL
@@ -590,7 +654,7 @@ Retain previously completed module entries below this line for historical tracki
 - [x] Task definition with Fargate compatibility
 - [x] Placed in VPC private subnets
 - [x] Log group with KMS encryption (reuse `kms_key_arn`)
-- [x_] Task execution role and Task role via `aws/base_component/iam`
+- [x] Task execution role and Task role via `aws/base_component/iam`
 - [x] Required `tags` enforced
 - [x] Outputs: `cluster_arn`, `service_arn`, `task_definition_arn`
 - [x] Terraform test: Cluster and service created with Fargate capacity providers
@@ -601,17 +665,17 @@ Retain previously completed module entries below this line for historical tracki
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `done` (PR #6)
+**Status:** `done` (Verified 2026-04-26)
 **Module:** aws/base_component/cloudfront
 **Why:** Secure content delivery. Enforces TLS 1.2+, WAF integration, and logging.
 
 #### Acceptance Criteria
-- [ ] `aws_cloudfront_distribution` with S3 or ALBy origin
-- [ ] Mandatory WAF association
-- [ ] Access logging to S3 enabled by default
-- [ ] Minimum protocol version TLSv1.2_2021
+- [x] `aws_cloudfront_distribution` with S3 or ALB origin
+- [x] Mandatory WAF association
+- [x] Access logging to S3 enabled by default
+- [x] Minimum protocol version TLSv1.2_2021
 - [x] Required `tags` enforced
-- [ ] Outputs: `distribution_id`, `distribution_arn`, `distribution_domain_name`
+- [x] Outputs: `distribution_id`, `distribution_arn`, `distribution_domain_name`
 
 ---
 
@@ -619,16 +683,16 @@ Retain previously completed module entries below this line for historical tracki
 
 **Priority:** MEDIUM
 **Type:** Feature
-**Status:** `done` (PR #6)
+**Status:** `done` (Verified 2026-04-26)
 **Module:** aws/base_component/vpc_endpoints
 **Why:** Enables private access to AWS services without NAT gateways.
 
 #### Acceptance Criteria
-- [ ] Support for S3 and DynamoDB Gateway endpoints
-- [ ] Support for Interface endpoints (e.g., kms, logs, execute-api)
-- [ ] Security groups for interface endpoints scoped to VPC CIDR
+- [x] Support for S3 and DynamoDB Gateway endpoints
+- [x] Support for Interface endpoints (e.g., kms, logs, execute-api)
+- [x] Security groups for interface endpoints scoped to VPC CIDR
 - [x] Required `tags` enforced
-- [ ] Outputs: `s3_endpoint_id`, `dynamodb_endpoint_id`, `interface_endpoint_ids`
+- [x] Outputs: `s3_endpoint_id`, `dynamodb_endpoint_id`, `interface_endpoint_ids`
 
 ---
 
@@ -636,15 +700,15 @@ Retain previously completed module entries below this line for historical tracki
 
 **Priority:** MEDIUM
 **Type:** Feature
-**Status:** `done` (PR #6)
+**Status:** `done` (Verified 2026-04-26)
 **Module:** aws/base_component/subnet
 **Why:** For custom network topologies where the standard VPC module is too rigid.
 
 #### Acceptance Criteria
-- [ ] `aws_subnet` with configurable CIDR and AZ
-- [ ] `map_public_ip_on_launch` defaults to `false`
+- [x] `aws_subnet` with configurable CIDR and AZ
+- [x] `map_public_ip_on_launch` defaults to `false`
 - [x] Required `tags` enforced
-- [ ] Outputs: `subnet_id`, `subnet_arn`
+- [x] Outputs: `subnet_id`, `subnet_arn`
 
 ---
 
@@ -652,16 +716,16 @@ Retain previously completed module entries below this line for historical tracki
 
 **Priority:** MEDIUM
 **Type:** Feature
-**Status:** `done` (PR #6)
+**Status:** `done` (Verified 2026-04-26)
 **Module:** aws/base_component/security_group
 **Why:** Consistent SG management with mandatory descriptions and no 0.0.0.0/0 defaults.
 
 #### Acceptance Criteria
-- [ ] `aws_security_group` with mandatory `description`
-- [ ] No default rules (must be explicitly provided)
-- [ ] Validation: No `0.0.0.0/0` in ingress rules without override
+- [x] `aws_security_group` with mandatory `description`
+- [x] No default rules (must be explicitly provided)
+- [x] Validation: No `0.0.0.0/0` in ingress rules without override
 - [x] Required `tags` enforced
-- [ ] Outputs: `security_group_id`, `security_group_arn`
+- [x] Outputs: `security_group_id`, `security_group_arn`
 
 ---
 
@@ -745,10 +809,30 @@ Retain previously completed module entries below this line for historical tracki
 
 ---
 
+## Security & Compliance Backlog
+
+| ID | Item | Priority | Status |
+|----|------|----------|--------|
+| SEC-001 | All modules: enforce KMS CMK for at-rest encryption | CRITICAL | `backlog` |
+| SEC-007 | Review CIS AWS Foundations Benchmark v3.0 for gaps | MEDIUM | `backlog` |
+
+---
+
+## Provider & Deprecation Watch
+
+| Item | Notes | Action Needed |
+|------|-------|---------------|
+| AWS Provider 5.x | Breaking changes from 4.x | All modules must use `~> 5.0` |
+| `aws_s3_bucket` sub-resources | ACLs deprecated | Use `aws_s3_bucket_ownership_controls` |
+| Terraform 1.6+ test framework | Native `terraform test` available | Evaluate for all new modules |
+| `aws_lambda_function` `filename` vs S3 | S3 source recommended for prod | Document in module README |
+
+---
+
 ## Future Module Ideas
 
-- `aws/workload_component/eventbridge_lambda` — EventBridge rule → Lambda pattern
-- `aws/workload_component/s3_lambda_trigger` — S3 event notification → Lambda
+- `aws/workload_component/step_functions_lambda` — (Promoted to Ready Queue)
+- `aws/workload_component/alb_ecs_fargate` — (Promoted to Ready Queue)
 - `gcp/base_component/gcs` — (Future) GCP Cloud Storage equivalent
 - `azure/base_component/storage` — (Future) Azure Blob Storage equivalent
 
@@ -762,3 +846,4 @@ Retain previously completed module entries below this line for historical tracki
 | 2026-04-20 | Sentinel | Nightly audit; updated KMS deletion window requirement |
 | 2026-04-26 | Builder | Implemented priority base and workload modules (ECR, ALB, EventBridge, CloudWatch Alarm, EventBridge Lambda, S3 Lambda Trigger) |
 | 2026-04-26 | Steward | Reviewed PR #9. Fixed tagging in ALB, added missing tests for ECR/ALB, enforced CMK for EventBridge, and added missing outputs. |
+| 2026-04-26 | Navigator | Synchronized backlog with existing modules (ACM, ASG, EC2, EFS, Step Functions, WAFv2). Promoted Step Functions Lambda and ALB ECS Fargate to ready queue. |
