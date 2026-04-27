@@ -27,6 +27,46 @@ variable "ec2_metadata_hop_limit" {
   }
 }
 
+variable "enable_ebs_encryption_by_default" {
+  description = "Whether to enable account-level EBS encryption by default"
+  type        = bool
+  default     = true
+}
+
+variable "ebs_kms_key_arn" {
+  description = "The ARN of the KMS key for default EBS encryption. If null, the default aws/ebs key is used."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.ebs_kms_key_arn == null || can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/.*$", var.ebs_kms_key_arn))
+    error_message = "The ebs_kms_key_arn must be a valid AWS KMS key ARN."
+  }
+}
+
+variable "enable_iam_password_policy" {
+  description = "Whether to enable the account-level IAM password policy"
+  type        = bool
+  default     = true
+}
+
+variable "password_policy_min_length" {
+  description = "Minimum length to require for IAM user passwords"
+  type        = number
+  default     = 14
+
+  validation {
+    condition     = var.password_policy_min_length >= 8 && var.password_policy_min_length <= 128
+    error_message = "The minimum password length must be between 8 and 128."
+  }
+}
+
+variable "enable_access_analyzer" {
+  description = "Whether to enable IAM Access Analyzer for the account"
+  type        = bool
+  default     = true
+}
+
 variable "tags" {
   description = "A map of tags to assign to the resources"
   type        = map(string)

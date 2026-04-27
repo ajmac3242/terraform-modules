@@ -37,3 +37,43 @@ resource "aws_ec2_instance_metadata_defaults" "this" {
   http_endpoint               = "enabled"
   instance_metadata_tags      = "enabled"
 }
+
+# 4. EBS Encryption by Default
+# Enforces that all new EBS volumes are encrypted at rest.
+resource "aws_ebs_encryption_by_default" "this" {
+  count   = var.enable_ebs_encryption_by_default ? 1 : 0
+  enabled = true
+}
+
+# Sets the default KMS key for EBS encryption.
+resource "aws_ebs_default_kms_key" "this" {
+  count       = var.enable_ebs_encryption_by_default && var.ebs_kms_key_arn != null ? 1 : 0
+  key_arn     = var.ebs_kms_key_arn
+  depends_on  = [aws_ebs_encryption_by_default.this]
+}
+
+# 5. IAM Account Password Policy
+# Enforces strong passwords for IAM users in the account.
+resource "aws_iam_account_password_policy" "this" {
+  count = var.enable_iam_password_policy ? 1 : 0
+
+  minimum_password_length        = var.password_policy_min_length
+  require_lowercase_characters   = true
+  require_numbers                = true
+  require_uppercase_characters   = true
+  require_symbols                = true
+  allow_users_to_change_password = true
+  password_reuse_prevention      = 24
+  max_password_age               = 90
+}
+
+# 6. IAM Access Analyzer
+# Monitors the account for resources that are shared with external entities.
+resource "aws_accessanalyzer_analyzer" "this" {
+  count = var.enable_access_analyzer ? 1 : 0
+
+  analyzer_name = "${var.tags["project"]}-analyzer"
+  type          = "ACCOUNT"
+
+  tags = var.tags
+}

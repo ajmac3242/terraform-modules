@@ -34,4 +34,19 @@ run "validate_account_security" {
     condition     = aws_ec2_instance_metadata_defaults.this[0].http_put_response_hop_limit == 1
     error_message = "IMDS hop limit must be 1."
   }
+
+  assert {
+    condition     = aws_ebs_encryption_by_default.this[0].enabled == true
+    error_message = "EBS encryption by default must be enabled."
+  }
+
+  assert {
+    condition     = aws_iam_account_password_policy.this[0].minimum_password_length == 14
+    error_message = "IAM password policy minimum length must be 14."
+  }
+
+  assert {
+    condition     = aws_accessanalyzer_analyzer.this[0].type == "ACCOUNT"
+    error_message = "IAM Access Analyzer must be of type ACCOUNT."
+  }
 }

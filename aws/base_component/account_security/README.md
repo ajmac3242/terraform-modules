@@ -11,6 +11,9 @@ While individual resources (like S3 buckets) should have their own security conf
 - **S3 Account-level Public Access Block**: Enforces `block_public_acls`, `block_public_policy`, `ignore_public_acls`, and `restrict_public_buckets` for the entire AWS account.
 - **Default Security Group Hardening**: Removes all ingress and egress rules from the `default` security group of a VPC.
 - **EC2 Instance Metadata Defaults**: Enforces IMDSv2 (Session Tokens Required) and sets the hop limit to `1` by default to prevent metadata access from within containers.
+- **EBS Encryption by Default**: Enforces that all new EBS volumes created in the account/region are encrypted.
+- **IAM Account Password Policy**: Enforces strong password requirements for IAM users.
+- **IAM Access Analyzer**: Enables continuous monitoring of resource sharing with external entities.
 
 ## Usage
 
