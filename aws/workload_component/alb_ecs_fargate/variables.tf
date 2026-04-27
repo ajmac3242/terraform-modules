@@ -51,6 +51,11 @@ variable "desired_count" {
 variable "kms_key_arn" {
   description = "The ARN of the KMS key for encryption"
   type        = string
+
+  validation {
+    condition     = can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/.*$", var.kms_key_arn))
+    error_message = "The kms_key_arn must be a valid AWS KMS key ARN."
+  }
 }
 
 variable "alb_security_group_ids" {
@@ -86,6 +91,11 @@ variable "certificate_arn" {
   description = "The ARN of the SSL certificate for HTTPS"
   type        = string
   default     = null
+
+  validation {
+    condition     = var.certificate_arn == null || can(regex("^arn:aws:acm:[a-z0-9-]+:[0-9]{12}:certificate/.*$", var.certificate_arn))
+    error_message = "The certificate_arn must be a valid AWS ACM certificate ARN."
+  }
 }
 
 variable "access_logs_bucket" {
@@ -104,6 +114,11 @@ variable "permissions_boundary_arn" {
   description = "The ARN of the policy for permissions boundary"
   type        = string
   default     = null
+
+  validation {
+    condition     = var.permissions_boundary_arn == null || can(regex("^arn:aws:iam::[0-9]{12}:policy/.*$|^arn:aws:iam::aws:policy/.*$", var.permissions_boundary_arn))
+    error_message = "The permissions_boundary_arn must be a valid AWS IAM policy ARN."
+  }
 }
 
 variable "tags" {

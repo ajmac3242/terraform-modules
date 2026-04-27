@@ -64,14 +64,20 @@ module "role" {
       },
     ]
   })
-  managed_policy_arns = [
-    "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
-    "arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess"
-  ]
 
   permissions_boundary_arn = var.permissions_boundary_arn
 
   tags = var.tags
+}
+
+# Attach managed policies to the role
+resource "aws_iam_role_policy_attachment" "managed" {
+  for_each = toset([
+    "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
+    "arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess"
+  ])
+  role       = module.role.role_name
+  policy_arn = each.value
 }
 
 # Attach the custom policy to the role

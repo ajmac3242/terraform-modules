@@ -90,7 +90,7 @@ resource "aws_cloudwatch_log_group" "api_gw" {
 
 # Permission for API Gateway to invoke Lambda
 resource "aws_lambda_permission" "apigw" {
-  statement_id  = "AllowExecutionFromAPIGateway"
+  statement_id  = "AllowExecutionFromAPIGateway-${var.name}"
   action        = "lambda:InvokeFunction"
   function_name = module.lambda.function_name
   principal     = "apigateway.amazonaws.com"

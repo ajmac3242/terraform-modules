@@ -624,6 +624,27 @@ Retain previously completed module entries below this line for historical tracki
 
 ---
 
+### aws/base_component/account_security: Account-level security baseline module
+
+**Priority:** HIGH
+**Type:** Security
+**Status:** `done` (Verified 2026-04-27)
+**Module:** aws/base_component/account_security
+**Why:** Provides an account-wide security "safety net" including S3 public access blocks, default security group hardening, and IMDSv2 enforcement.
+
+#### Acceptance Criteria
+- [x] `aws_s3_account_public_access_block` enforces account-wide S3 security
+- [x] `aws_default_security_group` removes all rules from VPC default security group
+- [x] `aws_ec2_instance_metadata_defaults` enforces IMDSv2 and hop limit 1
+- [x] `aws_ebs_encryption_by_default` enforces regional disk encryption
+- [x] `aws_iam_account_password_policy` enforces strong IAM user passwords
+- [x] `aws_accessanalyzer_analyzer` enables external access monitoring
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates configurations
+- [x] Outputs: `s3_account_public_block_enabled`, `default_security_group_id`
+
+---
+
 ### aws/base_component/ssm: Opinionated SSM Parameter module
 
 **Priority:** MEDIUM
@@ -815,6 +836,7 @@ Retain previously completed module entries below this line for historical tracki
 |----|------|----------|--------|
 | SEC-001 | All modules: enforce KMS CMK for at-rest encryption | CRITICAL | `backlog` |
 | SEC-007 | Review CIS AWS Foundations Benchmark v3.0 for gaps | MEDIUM | `backlog` |
+| SEC-008 | Continuous Review: Account Security baseline module updates | CRITICAL | `backlog` |
 
 ---
 
