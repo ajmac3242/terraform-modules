@@ -121,4 +121,4 @@ _`- [YYYY-MM-DD] Reviewed daily PRs. Applied fixes where needed.`_
 
 - [2026-04-25] Journal initialized. Ready to review daily PRs and apply follow-up fixes.
 - [2026-04-26] Reviewed daily PRs (PR #9). Applied follow-up fixes for tagging, missing tests, mandatory CMK for EventBridge, and output completeness.
-- [2026-04-27] Reviewed follow-up changes for workload components. Hardened `apigw_lambda`, `step_functions_lambda`, and `alb_ecs_fargate` with unique Lambda permission IDs, separate IAM policy attachments to avoid mock test errors, and enhanced variable ARN regex validation across base and workload modules. Cleaned up build artifacts (.terraform.lock.hcl).
+- [2026-04-27] Reviewed follow-up changes for workload components. Hardened `apigw_lambda`, `step_functions_lambda`, and `alb_ecs_fargate` with unique Lambda permission IDs, separate IAM policy attachments to avoid mock test errors, and enhanced variable ARN regex validation across base and workload modules. Cleaned up build artifacts (.terraform.lock.hcl). Implemented and reviewed `account_security` module for account-level baseline hardening.
