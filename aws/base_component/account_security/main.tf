@@ -41,11 +41,11 @@ resource "aws_ec2_instance_metadata_defaults" "this" {
   count = var.enable_ec2_metadata_defaults ? 1 : 0
 
   # Require IMDSv2 (session-token based) for all new instances
-  http_tokens                 = "required"
+  http_tokens = "required"
   # Hop limit of 1 prevents metadata access from within containers
   http_put_response_hop_limit = var.ec2_metadata_hop_limit
   # Disable instance tags in metadata unless explicitly needed
-  instance_metadata_tags      = "disabled"
+  instance_metadata_tags = "disabled"
 }
 
 # -----------------------------------------------------------------------------

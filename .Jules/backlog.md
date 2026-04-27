@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-04-26
+> **Last reviewed:** 2026-04-28
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -53,57 +53,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Immediate Ready Queue
 
-### aws/workload_component/step_functions_lambda: Step Functions + Lambda orchestration pattern
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `done` (PR #10)
-**Module:** aws/workload_component/step_functions_lambda
-**Why:** Valuable orchestration workload for multi-step serverless processes. Reduces custom state machine wiring and promotes repeatable IAM and logging patterns.
-
-#### Acceptance Criteria
-- [ ] Creates Step Functions state machine with JSON definition input
-- [ ] Uses one or more `aws/base_component/lambda` modules or compatible existing Lambda ARNs
-- [ ] IAM role for Step Functions follows least-privilege rules
-- [ ] CloudWatch logging configured for the state machine using a CMK
-- [ ] X-Ray tracing enabled
-- [ ] Required `tags` enforced
-- [ ] Outputs: `state_machine_arn`, `state_machine_name`, `lambda_function_arns`
-- [ ] README with orchestration example
-- [ ] Native offline Terraform test validates state machine, role, and logging configuration
-
-#### Security Notes
-- State machine role must be scoped to only required Lambda and logging actions
-
----
-
-### aws/workload_component/alb_ecs_fargate: ALB + ECS Fargate service pattern
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `done` (PR #10)
-**Module:** aws/workload_component/alb_ecs_fargate
-**Why:** One of the most common production application deployment patterns. Composes ingress, target groups, listeners, ECS service, and networking into a reusable secure default.
-
-#### Acceptance Criteria
-- [ ] Uses `aws/base_component/ecs_fargate` internally
-- [ ] Uses `aws/base_component/alb` internally or accepts compatible ALB inputs
-- [ ] Creates target group and listener rule wiring for the ECS service
-- [ ] Supports HTTPS listener integration with ACM certificate
-- [ ] Supports health check configuration
-- [ ] Required `tags` enforced
-- [ ] Outputs: `alb_dns_name`, `service_arn`, `target_group_arn`, `listener_arn`
-- [ ] README with end-to-end example
-- [ ] Native offline Terraform test validates ECS service and ALB integration
-
----
-
-## Module Backlog
-
----
-
-## Review-Discovered Improvement Queue
-
 ### repo-wide: Standardize native Terraform tests across all modules
 
 **Priority:** HIGH
@@ -113,10 +62,10 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Tests are critical to safe reuse of these modules. A consistent minimum test standard will help Builder create stronger tests and Steward review them consistently.
 
 #### Acceptance Criteria
-- [ ] Define a minimum native `terraform test` standard for all modules
-- [ ] Document what each module test suite must validate at a minimum
+- [ ] Define a minimum native `terraform test` standard (e.g., `tests/main.tftest.hcl` must exist)
+- [ ] Document what each module test suite must validate (e.g., resource creation, encryption, mandatory tags)
 - [ ] Add backlog follow-up items for modules that fall short of the new test baseline
-- [ ] Update README or contributor guidance with the testing standard
+- [ ] Update repository root `CONTRIBUTING.md` or similar with the testing standard
 
 ***
 
@@ -129,8 +78,8 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** A consistent README structure improves downstream usability and makes Steward review simpler and more objective.
 
 #### Acceptance Criteria
-- [ ] Define a standard README template for all modules
-- [ ] Require sections for purpose, usage example, inputs, outputs, defaults, and security notes
+- [ ] Define a standard README template with a specific header sequence: Purpose, Usage, Security, Variables, Outputs
+- [ ] Require HCL usage examples to be valid code snippets
 - [ ] Add backlog follow-up items for modules that do not meet the new template
 
 ***
@@ -144,16 +93,103 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** The backlog currently mixes completed module work with older security backlog entries that may no longer be accurate. This creates confusion for Navigator, Builder, and Steward.
 
 #### Acceptance Criteria
-- [ ] Review the legacy security/compliance backlog entries
+- [ ] Audit all modules against `SEC-001` (KMS CMK enforcement)
+- [ ] Audit `account_security` module against CIS AWS Foundations Benchmark v3.0
 - [ ] Remove or update entries that are already satisfied by completed module work
 - [ ] Convert any still-relevant items into precise module-specific backlog items
-- [ ] Leave the backlog with no duplicate or contradictory open work
+
+---
+
+## Module Backlog
+
+### aws/base_component/cognito: Opinionated Cognito User Pool module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/cognito
+**Why:** Essential for modern serverless authentication patterns and a key missing dependency for the `apigw_lambda` JWT authorizer examples.
+
+#### Acceptance Criteria
+- [ ] `aws_cognito_user_pool` with mandatory CMK encryption for at-rest data
+- [ ] `aws_cognito_user_pool_client` with secure defaults (no client secret for SPAs, PKCE enabled)
+- [ ] Advanced security mode enabled (`AUDIT` or `ENFORCED`)
+- [ ] Required `tags` enforced
+- [ ] Outputs: `user_pool_id`, `user_pool_arn`, `client_id`
+- [ ] Native offline Terraform test validates encryption and security settings
+
+---
+
+### aws/base_component/bedrock_agent: Opinionated Bedrock Agent module
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_agent
+**Why:** Responding to 2026 trends in Agentic AI. Provides a secure foundation for autonomous systems on AWS.
+
+#### Acceptance Criteria
+- [ ] `aws_bedrockagent_agent` with configurable instruction and foundation model
+- [ ] `aws_bedrockagent_agent_alias` support
+- [ ] Mandatory CMK encryption for any associated data stores
+- [ ] IAM roles for agents follow strict least-privilege (no `*` actions)
+- [ ] Required `tags` enforced
+- [ ] Outputs: `agent_id`, `agent_arn`, `agent_alias_id`
+- [ ] Native offline Terraform test validates agent configuration and IAM role scoping
+
+---
+
+## Review-Discovered Improvement Queue
+
+_Empty — standardizing current backlog items._
 
 ***
 
 ## Existing Completed Module History
 
 Retain previously completed module entries below this line for historical tracking, but keep new implementation planning focused on the active sections above.
+
+### aws/workload_component/step_functions_lambda: Step Functions + Lambda orchestration pattern
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `done` (PR #10)
+**Module:** aws/workload_component/step_functions_lambda
+**Why:** Valuable orchestration workload for multi-step serverless processes. Reduces custom state machine wiring and promotes repeatable IAM and logging patterns.
+
+#### Acceptance Criteria
+- [x] Creates Step Functions state machine with JSON definition input
+- [x] Uses one or more `aws/base_component/lambda` modules or compatible existing Lambda ARNs
+- [x] IAM role for Step Functions follows least-privilege rules
+- [x] CloudWatch logging configured for the state machine using a CMK
+- [x] X-Ray tracing enabled
+- [x] Required `tags` enforced
+- [x] Outputs: `state_machine_arn`, `state_machine_name`, `lambda_function_arns`
+- [x] README with orchestration example
+- [x] Native offline Terraform test validates state machine, role, and logging configuration
+
+---
+
+### aws/workload_component/alb_ecs_fargate: ALB + ECS Fargate service pattern
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `done` (PR #10)
+**Module:** aws/workload_component/alb_ecs_fargate
+**Why:** One of the most common production application deployment patterns. Composes ingress, target groups, listeners, ECS service, and networking into a reusable secure default.
+
+#### Acceptance Criteria
+- [x] Uses `aws/base_component/ecs_fargate` internally
+- [x] Uses `aws/base_component/alb` internally or accepts compatible ALB inputs
+- [x] Creates target group and listener rule wiring for the ECS service
+- [x] Supports HTTPS listener integration with ACM certificate
+- [x] Supports health check configuration
+- [x] Required `tags` enforced
+- [x] Outputs: `alb_dns_name`, `service_arn`, `target_group_arn`, `listener_arn`
+- [x] README with end-to-end example
+- [x] Native offline Terraform test validates ECS service and ALB integration
+
+---
 
 ### aws/base_component/acm: Opinionated ACM Certificate module
 
@@ -853,8 +889,7 @@ Retain previously completed module entries below this line for historical tracki
 
 ## Future Module Ideas
 
-- `aws/workload_component/step_functions_lambda` — (Promoted to Ready Queue)
-- `aws/workload_component/alb_ecs_fargate` — (Promoted to Ready Queue)
+- `aws/workload_component/lambda_powertools` — (Future) Lambda with Powertools and standardized observability
 - `gcp/base_component/gcs` — (Future) GCP Cloud Storage equivalent
 - `azure/base_component/storage` — (Future) Azure Blob Storage equivalent
 
@@ -869,3 +904,4 @@ Retain previously completed module entries below this line for historical tracki
 | 2026-04-26 | Builder | Implemented priority base and workload modules (ECR, ALB, EventBridge, CloudWatch Alarm, EventBridge Lambda, S3 Lambda Trigger) |
 | 2026-04-26 | Steward | Reviewed PR #9. Fixed tagging in ALB, added missing tests for ECR/ALB, enforced CMK for EventBridge, and added missing outputs. |
 | 2026-04-26 | Navigator | Synchronized backlog with existing modules (ACM, ASG, EC2, EFS, Step Functions, WAFv2). Promoted Step Functions Lambda and ALB ECS Fargate to ready queue. |
+| 2026-04-28 | Navigator | Updated backlog to promote standardization tasks, added Cognito and Bedrock Agent modules, and synchronized completed workload components to history. |

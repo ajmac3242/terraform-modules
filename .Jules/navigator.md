@@ -81,6 +81,9 @@ _`- [YYYY-MM-DD] <topic> — <decision and rationale>`_
 - [2026-04-25] Journal initialized. Navigator now owns backlog clarity, backlog sequencing, release-note intake, and implementation readiness.
 - [2026-04-26] Base Module Stabilization — Synchronized backlog with existing repository modules (ACM, ASG, EC2, EFS, Step Functions, WAFv2). The core base component library is now largely complete and documented.
 - [2026-04-26] Pivot to Workload Components — Prioritizing `step_functions_lambda` and `alb_ecs_fargate` to demonstrate the value of composing base components into secure, high-level organizational patterns.
+- [2026-04-28] Foundational Auth Gap — Identifying Cognito as a missing foundational dependency for secure API patterns. Added Cognito base module to high priority.
+- [2026-04-28] Agentic AI Strategic Alignment — Adding Bedrock Agent base module to the roadmap to support autonomous system patterns emerging in early 2026 service updates.
+- [2026-04-28] Library Standardization — Promoting repo-wide README and test standardization to the ready queue. This is critical for scaling the library and ensuring consistent "opinionated" defaults are visible and verified.
 
 ## Session Log
 
@@ -89,3 +92,4 @@ _`- [YYYY-MM-DD] Reviewed backlog and updated priorities.`_
 
 - [2026-04-25] Journal initialized. Ready to maintain backlog and roadmap.
 - [2026-04-26] Synchronized backlog with filesystem and promoted priority workload components.
+- [2026-04-28] Refined backlog with Cognito and Bedrock; promoted library-wide standardization tasks.
