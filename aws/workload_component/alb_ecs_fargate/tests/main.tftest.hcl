@@ -1,13 +1,13 @@
 variables {
-  name               = "test-alb-ecs"
-  vpc_id             = "vpc-12345678"
-  private_subnet_ids = ["subnet-12345678", "subnet-87654321"]
-  public_subnet_ids  = ["subnet-11111111", "subnet-22222222"]
-  container_image    = "nginx:latest"
-  kms_key_arn        = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
-  access_logs_bucket = "test-log-bucket"
+  name                           = "test-alb-ecs"
+  vpc_id                         = "vpc-12345678"
+  private_subnet_ids             = ["subnet-12345678", "subnet-87654321"]
+  public_subnet_ids              = ["subnet-11111111", "subnet-22222222"]
+  container_image                = "nginx:latest"
+  kms_key_arn                    = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
+  access_logs_bucket             = "test-log-bucket"
   ecs_service_security_group_ids = ["sg-12345678"]
-  aws_account_id     = "123456789012"
+  aws_account_id                 = "123456789012"
 
   tags = {
     environment = "test"
