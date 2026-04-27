@@ -116,3 +116,4 @@ _`- [YYYY-MM-DD] Built <module path>. PR #<number>.`_
 - [2026-04-22] Built 10 new base modules (alb, asg, ec2, ecr, acm, wafv2, eventbridge, step_functions, efs, cloudwatch_alarm) and completed apigw_lambda pattern. PR #8.
 - [2026-04-26] Updated ecr, alb, eventbridge, cloudwatch_alarm and built eventbridge_lambda, s3_lambda_trigger. PR #9.
 - [2026-04-26] Updated ecs_fargate and built step_functions_lambda, alb_ecs_fargate. PR #10.
+- [2026-04-28] Standardized repo documentation/testing and built cognito, bedrock_agent base modules. PR #11.

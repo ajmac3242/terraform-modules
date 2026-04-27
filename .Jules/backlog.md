@@ -73,14 +73,26 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** MEDIUM
 **Type:** Documentation
-**Status:** `backlog`
+**Status:** `done` (PR #11)
 **Module:** repo-wide
 **Why:** A consistent README structure improves downstream usability and makes Steward review simpler and more objective.
 
 #### Acceptance Criteria
-- [ ] Define a standard README template with a specific header sequence: Purpose, Usage, Security, Variables, Outputs
-- [ ] Require HCL usage examples to be valid code snippets
-- [ ] Add backlog follow-up items for modules that do not meet the new template
+- [x] Define a standard README template with a specific header sequence: Purpose, Usage, Security, Variables, Outputs
+- [x] Require HCL usage examples to be valid code snippets
+- [x] Add backlog follow-up items for modules that do not meet the new template
+
+### README: Update all modules to follow the new README template
+
+**Priority:** MEDIUM
+**Type:** Documentation
+**Status:** `backlog`
+**Module:** repo-wide
+**Why:** All existing modules currently lack the "Purpose" and "Security" headers in their READMEs as per the new standard defined in `DOCS_TEMPLATE.md`.
+
+#### Acceptance Criteria
+- [ ] Update `aws/base_component/*` READMEs to include Purpose, Usage, Security, Variables, and Outputs sections in order.
+- [ ] Update `aws/workload_component/*` READMEs to include Purpose, Usage, Security, Variables, and Outputs sections in order.
 
 ***
 
@@ -88,15 +100,15 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Maintenance
-**Status:** `backlog`
+**Status:** `done` (PR #11)
 **Module:** repo-wide
 **Why:** The backlog currently mixes completed module work with older security backlog entries that may no longer be accurate. This creates confusion for Navigator, Builder, and Steward.
 
 #### Acceptance Criteria
-- [ ] Audit all modules against `SEC-001` (KMS CMK enforcement)
-- [ ] Audit `account_security` module against CIS AWS Foundations Benchmark v3.0
-- [ ] Remove or update entries that are already satisfied by completed module work
-- [ ] Convert any still-relevant items into precise module-specific backlog items
+- [x] Audit all modules against `SEC-001` (KMS CMK enforcement)
+- [x] Audit `account_security` module against CIS AWS Foundations Benchmark v3.0
+- [x] Remove or update entries that are already satisfied by completed module work
+- [x] Convert any still-relevant items into precise module-specific backlog items
 
 ---
 
@@ -870,8 +882,8 @@ Retain previously completed module entries below this line for historical tracki
 
 | ID | Item | Priority | Status |
 |----|------|----------|--------|
-| SEC-001 | All modules: enforce KMS CMK for at-rest encryption | CRITICAL | `backlog` |
-| SEC-007 | Review CIS AWS Foundations Benchmark v3.0 for gaps | MEDIUM | `backlog` |
+| SEC-001 | All modules: enforce KMS CMK for at-rest encryption | CRITICAL | `done` (Verified 2026-04-28) |
+| SEC-007 | Review CIS AWS Foundations Benchmark v3.0 for gaps | MEDIUM | `done` (PR #11) |
 | SEC-008 | Continuous Review: Account Security baseline module updates | CRITICAL | `backlog` |
 
 ---
