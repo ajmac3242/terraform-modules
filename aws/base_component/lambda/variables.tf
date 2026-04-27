@@ -46,6 +46,11 @@ variable "kms_key_arn" {
   description = "The ARN of the KMS key used to encrypt your function's environment variables. If null, a new key will be created."
   type        = string
   default     = null
+
+  validation {
+    condition     = var.kms_key_arn == null || can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/.*$", var.kms_key_arn))
+    error_message = "The kms_key_arn must be a valid AWS KMS key ARN."
+  }
 }
 
 variable "existing_role_arn" {
@@ -69,6 +74,11 @@ variable "dead_letter_config_target_arn" {
   description = "The ARN of an SNS topic or SQS queue to notify when an invocation fails"
   type        = string
   default     = null
+
+  validation {
+    condition     = var.dead_letter_config_target_arn == null || can(regex("^arn:aws:(sns|sqs):[a-z0-9-]+:[0-9]{12}:.*$", var.dead_letter_config_target_arn))
+    error_message = "The dead_letter_config_target_arn must be a valid AWS SNS topic or SQS queue ARN."
+  }
 }
 
 variable "aws_account_id" {

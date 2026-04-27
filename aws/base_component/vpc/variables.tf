@@ -42,6 +42,11 @@ variable "single_nat_gateway" {
 variable "kms_key_arn" {
   description = "KMS key ARN for VPC Flow Logs encryption"
   type        = string
+
+  validation {
+    condition     = can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/.*$", var.kms_key_arn))
+    error_message = "The kms_key_arn must be a valid AWS KMS key ARN."
+  }
 }
 
 variable "tags" {
