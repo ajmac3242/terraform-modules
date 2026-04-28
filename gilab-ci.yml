@@ -1,36 +1,77 @@
 stages:
   - validate
-  - deploy
+  - plan
+  - apply
 
 variables:
-  TERRAFORM_VERSION: "1.8.5"
-  TERRAFORM_MODULE_DIR: "${CI_PROJECT_DIR}"
-  TERRAFORM_MODULE_NAME: "${CI_PROJECT_NAME}"
-  TERRAFORM_MODULE_SYSTEM: "aws"
-  TERRAFORM_MODULE_VERSION: "${CI_COMMIT_TAG}"
+  TF_IN_AUTOMATION: "true"
+  TF_INPUT: "false"
+  AWS_DEFAULT_REGION: "us-east-1"
+  TERRAGRUNT_NON_INTERACTIVE: "true"
+
+default:
+  image:
+    name: ghcr.io/gruntwork-io/terragrunt:latest
+    entrypoint: [""]
+  cache:
+    key: terraform
+    paths:
+      - .terraform/
+      - .terragrunt-cache/
+      - .terraform-plugin-cache/
+  before_script:
+    - terraform --version
+    - terragrunt --version
+
+.aws_oidc:
+  id_tokens:
+    GITLAB_OIDC_TOKEN:
+      aud: https://gitlab.com
+  before_script:
+    - export AWS_WEB_IDENTITY_TOKEN_FILE="$CI_PROJECT_DIR/web_identity_token"
+    - printf '%s' "$GITLAB_OIDC_TOKEN" > "$AWS_WEB_IDENTITY_TOKEN_FILE"
+    - export AWS_ROLE_ARN="$AWS_ROLE_ARN"
+    - export AWS_REGION="$AWS_DEFAULT_REGION"
+    - export AWS_DEFAULT_REGION="$AWS_DEFAULT_REGION"
 
 validate:
   stage: validate
-  image: hashicorp/terraform:${TERRAFORM_VERSION}
+  extends: .aws_oidc
   script:
-    - terraform -chdir="${TERRAFORM_MODULE_DIR}" fmt -check -recursive
-    - terraform -chdir="${TERRAFORM_MODULE_DIR}" init -backend=false
-    - terraform -chdir="${TERRAFORM_MODULE_DIR}" validate
+    - cd infrastructure
+    - terragrunt run-all validate
   rules:
-    - if: $CI_COMMIT_BRANCH
-    - if: $CI_COMMIT_TAG
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes:
+        - infrastructure/**/*
 
-deploy:
-  stage: deploy
-  image: curlimages/curl:latest
+plan:
+  stage: plan
+  extends: .aws_oidc
   script:
-    - MODULE_NAME="$(echo "${TERRAFORM_MODULE_NAME}" | tr ' _' '-')"
-    - ARCHIVE="${MODULE_NAME}-${TERRAFORM_MODULE_SYSTEM}-${TERRAFORM_MODULE_VERSION}.tgz"
-    - tar -czf "/tmp/${ARCHIVE}" -C "${TERRAFORM_MODULE_DIR}" --exclude=.git .
-    - >
-      curl --fail-with-body --location
-      --header "JOB-TOKEN: ${CI_JOB_TOKEN}"
-      --upload-file "/tmp/${ARCHIVE}"
-      "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/terraform/modules/${MODULE_NAME}/${TERRAFORM_MODULE_SYSTEM}/${TERRAFORM_MODULE_VERSION}/file"
+    - cd infrastructure
+    - terragrunt run-all plan -no-color
+  artifacts:
+    when: always
+    expire_in: 1 day
+    paths:
+      - infrastructure/**/.terragrunt-cache
   rules:
-    - if: $CI_COMMIT_TAG
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes:
+        - infrastructure/**/*
+
+apply:
+  stage: apply
+  extends: .aws_oidc
+  script:
+    - cd infrastructure
+    - terragrunt run-all apply -auto-approve -no-color
+  environment:
+    name: production
+  resource_group: production
+  when: manual
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - infrastructure/**/*
