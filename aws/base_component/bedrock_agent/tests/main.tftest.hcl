@@ -1,8 +1,8 @@
 variables {
-  agent_name              = "test-agent"
-  foundation_model        = "anthropic.claude-v2"
-  instruction             = "You are a test agent. Your purpose is to provide a long enough instruction to satisfy the minimum length requirement of the AWS Bedrock Agent resource."
-  agent_resource_role_arn = "arn:aws:iam::123456789012:role/test-role"
+  agent_name                  = "test-agent"
+  foundation_model            = "anthropic.claude-v2"
+  instruction                 = "You are a test agent. Your purpose is to provide a long enough instruction to satisfy the minimum length requirement of the AWS Bedrock Agent resource."
+  agent_resource_role_arn     = "arn:aws:iam::123456789012:role/test-role"
   customer_encryption_key_arn = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
   tags = {
     environment = "test"

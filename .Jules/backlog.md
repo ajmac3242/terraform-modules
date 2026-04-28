@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-04-28
+> **Last reviewed:** 2026-04-29
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -63,7 +63,9 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 #### Acceptance Criteria
 - [ ] Define a minimum native `terraform test` standard (e.g., `tests/main.tftest.hcl` must exist)
-- [ ] Document what each module test suite must validate (e.g., resource creation, encryption, mandatory tags)
+- [ ] Ensure all tests use mock providers to allow offline execution in CI
+- [ ] Validate mandatory tags (`environment`, `owner`, `project`, `cost_center`) in every `tftest.hcl`
+- [ ] Validate CMK encryption for all data-at-rest resources in every `tftest.hcl`
 - [ ] Add backlog follow-up items for modules that fall short of the new test baseline
 - [ ] Update repository root `CONTRIBUTING.md` or similar with the testing standard
 
@@ -114,40 +116,40 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Module Backlog
 
-### aws/base_component/cognito: Opinionated Cognito User Pool module
+### aws/workload_component/static_website: S3 + CloudFront + ACM + Route53 pattern
 
 **Priority:** HIGH
 **Type:** Feature
 **Status:** `backlog`
-**Module:** aws/base_component/cognito
-**Why:** Essential for modern serverless authentication patterns and a key missing dependency for the `apigw_lambda` JWT authorizer examples.
+**Module:** aws/workload_component/static_website
+**Why:** High-demand pattern for hosting frontend SPAs. Composes multiple base components into a secure, performant, and cost-effective hosting solution with TLS and custom domain support.
 
 #### Acceptance Criteria
-- [ ] `aws_cognito_user_pool` with advanced security settings (CMK for user data is not currently supported by Cognito)
-- [ ] `aws_cognito_user_pool_client` with secure defaults (no client secret for SPAs, PKCE enabled)
-- [ ] Advanced security mode enabled (`AUDIT` or `ENFORCED`)
-- [ ] Required `tags` enforced
-- [ ] Outputs: `user_pool_id`, `user_pool_arn`, `client_id`
-- [ ] Native offline Terraform test validates encryption and security settings
+- [ ] Uses `aws/base_component/s3` for origin (OAC/OAI enabled, public access blocked)
+- [ ] Uses `aws/base_component/cloudfront` for distribution (WAF enabled, TLS 1.2+ forced)
+- [ ] Uses `aws/base_component/acm` for certificate management
+- [ ] Uses `aws/base_component/route53` for DNS records (A/AAAA alias to CloudFront)
+- [ ] Required `tags` enforced across all resources
+- [ ] Outputs: `cloudfront_domain_name`, `s3_bucket_arn`, `website_url`
+- [ ] Native offline Terraform test validates the composition and security headers
 
 ---
 
-### aws/base_component/bedrock_agent: Opinionated Bedrock Agent module
+### aws/base_component/athena: Opinionated Athena module
 
 **Priority:** MEDIUM
 **Type:** Feature
 **Status:** `backlog`
-**Module:** aws/base_component/bedrock_agent
-**Why:** Responding to 2026 trends in Agentic AI. Provides a secure foundation for autonomous systems on AWS.
+**Module:** aws/base_component/athena
+**Why:** Enables secure, serverless ad-hoc querying of S3 data. Standardizes workgroup settings, encryption of results, and data access patterns.
 
 #### Acceptance Criteria
-- [ ] `aws_bedrockagent_agent` with configurable instruction and foundation model
-- [ ] `aws_bedrockagent_agent_alias` support
-- [ ] Mandatory CMK encryption for any associated data stores
-- [ ] IAM roles for agents follow strict least-privilege (no `*` actions)
+- [ ] `aws_athena_workgroup` with enforced configuration (prevent client-side overrides)
+- [ ] Mandatory CMK encryption for query results at rest
+- [ ] `publish_cloudwatch_metrics_enabled = true` by default
 - [ ] Required `tags` enforced
-- [ ] Outputs: `agent_id`, `agent_arn`, `agent_alias_id`
-- [ ] Native offline Terraform test validates agent configuration and IAM role scoping
+- [ ] Outputs: `workgroup_name`, `workgroup_arn`
+- [ ] Native offline Terraform test validates workgroup encryption and metric settings
 
 ---
 
@@ -158,6 +160,43 @@ _Empty — standardizing current backlog items._
 ***
 
 ## Existing Completed Module History
+
+### aws/base_component/cognito: Opinionated Cognito User Pool module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `done` (Verified 2026-04-29)
+**Module:** aws/base_component/cognito
+**Why:** Essential for modern serverless authentication patterns and a key missing dependency for the `apigw_lambda` JWT authorizer examples.
+
+#### Acceptance Criteria
+- [x] `aws_cognito_user_pool` with advanced security settings (CMK for user data is not currently supported by Cognito)
+- [x] `aws_cognito_user_pool_client` with secure defaults (no client secret for SPAs, PKCE enabled)
+- [x] Advanced security mode enabled (`AUDIT` or `ENFORCED`)
+- [x] Required `tags` enforced
+- [x] Outputs: `user_pool_id`, `user_pool_arn`, `client_id`
+- [x] Native offline Terraform test validates encryption and security settings
+
+---
+
+### aws/base_component/bedrock_agent: Opinionated Bedrock Agent module
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `done` (Verified 2026-04-29)
+**Module:** aws/base_component/bedrock_agent
+**Why:** Responding to 2026 trends in Agentic AI. Provides a secure foundation for autonomous systems on AWS.
+
+#### Acceptance Criteria
+- [x] `aws_bedrockagent_agent` with configurable instruction and foundation model
+- [x] `aws_bedrockagent_agent_alias` support
+- [x] Mandatory CMK encryption for any associated data stores
+- [x] IAM roles for agents follow strict least-privilege (no `*` actions)
+- [x] Required `tags` enforced
+- [x] Outputs: `agent_id`, `agent_arn`, `agent_alias_id`
+- [x] Native offline Terraform test validates agent configuration and IAM role scoping
+
+---
 
 Retain previously completed module entries below this line for historical tracking, but keep new implementation planning focused on the active sections above.
 
@@ -917,3 +956,4 @@ Retain previously completed module entries below this line for historical tracki
 | 2026-04-26 | Steward | Reviewed PR #9. Fixed tagging in ALB, added missing tests for ECR/ALB, enforced CMK for EventBridge, and added missing outputs. |
 | 2026-04-26 | Navigator | Synchronized backlog with existing modules (ACM, ASG, EC2, EFS, Step Functions, WAFv2). Promoted Step Functions Lambda and ALB ECS Fargate to ready queue. |
 | 2026-04-28 | Navigator | Updated backlog to promote standardization tasks, added Cognito and Bedrock Agent modules, and synchronized completed workload components to history. |
+| 2026-04-29 | Navigator | Synchronized Cognito and Bedrock Agent to history. Added `static_website` workload and `athena` base component candidates. |
