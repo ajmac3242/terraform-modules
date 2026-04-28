@@ -1,4 +1,6 @@
 # aws_cognito_user_pool
+# TODO: Monitor for AWS support of CMK for User Pool data-at-rest.
+# Currently Cognito only supports AWS-managed keys for user data storage.
 resource "aws_cognito_user_pool" "this" {
   name = var.user_pool_name
 

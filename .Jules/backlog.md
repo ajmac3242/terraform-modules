@@ -123,7 +123,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Essential for modern serverless authentication patterns and a key missing dependency for the `apigw_lambda` JWT authorizer examples.
 
 #### Acceptance Criteria
-- [ ] `aws_cognito_user_pool` with mandatory CMK encryption for at-rest data
+- [ ] `aws_cognito_user_pool` with advanced security settings (CMK for user data is not currently supported by Cognito)
 - [ ] `aws_cognito_user_pool_client` with secure defaults (no client secret for SPAs, PKCE enabled)
 - [ ] Advanced security mode enabled (`AUDIT` or `ENFORCED`)
 - [ ] Required `tags` enforced
