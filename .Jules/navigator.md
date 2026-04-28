@@ -84,6 +84,9 @@ _`- [YYYY-MM-DD] <topic> — <decision and rationale>`_
 - [2026-04-28] Foundational Auth Gap — Identifying Cognito as a missing foundational dependency for secure API patterns. Added Cognito base module to high priority.
 - [2026-04-28] Agentic AI Strategic Alignment — Adding Bedrock Agent base module to the roadmap to support autonomous system patterns emerging in early 2026 service updates.
 - [2026-04-28] Library Standardization — Promoting repo-wide README and test standardization to the ready queue. This is critical for scaling the library and ensuring consistent "opinionated" defaults are visible and verified.
+- [2026-04-29] Foundational Auth and AI Milestone — Cognito and Bedrock Agent base modules are now fully implemented and verified. This completes the core foundational expansion for Q2.
+- [2026-04-29] Advanced Workload Composition — Initiating the `static_website` pattern to demonstrate multi-service composition (S3, CloudFront, ACM, Route53) with opinionated security defaults.
+- [2026-04-29] Testing Baseline — Elevating repository-wide test standardization to a HIGH priority. All modules must soon pass a baseline of CMK and tagging validation via native `terraform test` to ensure production readiness at scale.
 
 ## Session Log
 
@@ -93,3 +96,4 @@ _`- [YYYY-MM-DD] Reviewed backlog and updated priorities.`_
 - [2026-04-25] Journal initialized. Ready to maintain backlog and roadmap.
 - [2026-04-26] Synchronized backlog with filesystem and promoted priority workload components.
 - [2026-04-28] Refined backlog with Cognito and Bedrock; promoted library-wide standardization tasks.
+- [2026-04-29] Synchronized Cognito/Bedrock to history; introduced `static_website` and `athena` candidates; refined test standardization criteria.
