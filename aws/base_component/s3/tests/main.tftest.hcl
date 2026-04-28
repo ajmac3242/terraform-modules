@@ -37,4 +37,9 @@ run "valid_bucket_creation" {
     condition     = aws_s3_bucket_public_access_block.this.block_public_acls == true
     error_message = "Public access block should be enabled"
   }
+
+  assert {
+    condition     = aws_s3_bucket.this.tags["environment"] == "test" && aws_s3_bucket.this.tags["owner"] == "test-owner" && aws_s3_bucket.this.tags["project"] == "test-project" && aws_s3_bucket.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on S3 bucket"
+  }
 }

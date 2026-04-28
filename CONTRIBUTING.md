@@ -20,9 +20,9 @@ Native `terraform test` coverage is mandatory for every module.
 1. **File Location**: All tests must reside in the `tests/` directory within the module (e.g., `tests/main.tftest.hcl`).
 2. **Offline Execution**: Use mock providers to ensure tests can run without real AWS credentials.
 3. **Resource Creation**: Validate that all primary resources are correctly defined in the plan or apply.
-4. **Security & Encryption**: Explicitly assert that CMK encryption is enabled for all data-at-rest resources.
-5. **Tagging**: Validate that the mandatory tags (`environment`, `owner`, `project`, `cost_center`) are applied to all taggable resources.
-6. **Negative Testing**: Where applicable, include tests that assert failure for invalid configurations.
+4. **Security & Encryption**: Explicitly assert that CMK encryption is enabled for all data-at-rest resources. For resources using `kms_key_arn` or `kms_master_key_id`, verify the value matches the expected input.
+5. **Tagging**: Validate that the mandatory tags (`environment`, `owner`, `project`, `cost_center`) are applied to all taggable resources by checking `aws_resource.this.tags`.
+6. **Negative Testing**: Where applicable, include tests that assert failure for invalid configurations using `expect_failures`.
 
 ### Mock Provider Example:
 ```hcl

@@ -1,65 +1,45 @@
 # aws/workload_component/eventbridge_lambda
 
-EventBridge rule + Lambda pattern.
-
-## Features
-
-- Composes `aws/base_component/lambda` and `aws/base_component/eventbridge`
-- Supports Event Pattern or Scheduled rules
-- Automatic Lambda invocation permission
-- Optional SQS Dead Letter Queue (DLQ) with CMK encryption
-- Tags validation
+## Purpose
+EventBridge rule + Lambda pattern. Common event-driven workload pattern, composing EventBridge, Lambda, IAM, and optional DLQ for secure event processing.
 
 ## Usage
-
-### Scheduled Job (Cron)
-
 ```hcl
-module "nightly_job" {
+module "worker" {
   source = "./aws/workload_component/eventbridge_lambda"
 
-  name                = "nightly-cleanup"
-  description         = "Runs nightly cleanup task"
-  schedule_expression = "cron(0 2 * * ? *)"
-
-  lambda_function_name = "cleanup-function"
-  lambda_handler       = "index.handler"
-  lambda_runtime       = "nodejs18.x"
-  lambda_source_path   = "path/to/source.zip"
+  name           = "my-event-worker"
+  event_pattern  = jsonencode({ source = ["my.app"] })
+  kms_key_arn    = module.kms.key_arn
 
   tags = {
     environment = "prod"
     owner       = "platform-team"
-    project     = "maintenance"
-    cost_center = "CC-1234"
+    project     = "standardization"
+    cost_center = "12345"
   }
 }
 ```
 
-### Event Pattern Trigger with DLQ
+## Security
+- **Encryption**: Lambda environment variables and logs are encrypted via CMK. EventBridge bus encryption is also enforced.
+- **IAM**: Lambda execution role is scoped to least-privilege. API GW / EventBridge invoke permissions are tightly scoped.
+- **Resilience**: Supports optional SQS dead-letter queue (DLQ) for failed event deliveries.
 
-```hcl
-module "event_trigger" {
-  source = "./aws/workload_component/eventbridge_lambda"
+## Variables
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| `name` | Name of the rule and Lambda function | `string` | n/a | yes |
+| `event_bus_name` | Name of the event bus | `string` | `"default"` | no |
+| `event_pattern` | Event pattern for the rule | `string` | `null` | no |
+| `schedule_expression` | Schedule expression for the rule | `string` | `null` | no |
+| `kms_key_arn` | KMS key ARN for encryption | `string` | n/a | yes |
+| `tags` | Standard tags for all resources | `map(string)` | n/a | yes |
 
-  name          = "order-processor"
-  event_pattern = jsonencode({
-    source      = ["my.orders"]
-    detail-type = ["OrderCreated"]
-  })
-
-  enable_dlq = true
-
-  lambda_function_name = "order-processor"
-  lambda_handler       = "app.lambda_handler"
-  lambda_runtime       = "python3.11"
-  lambda_source_path   = "path/to/source.zip"
-
-  tags = {
-    environment = "prod"
-    owner       = "ecommerce-team"
-    project     = "order-system"
-    cost_center = "CC-5678"
-  }
-}
-```
+## Outputs
+| Name | Description |
+|------|-------------|
+| `rule_arn` | The ARN of the EventBridge rule |
+| `function_arn` | The ARN of the Lambda function |
+| `function_name` | The name of the Lambda function |
+| `target_id` | The ID of the EventBridge target |

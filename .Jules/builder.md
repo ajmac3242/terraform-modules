@@ -99,6 +99,10 @@ _`- [YYYY-MM-DD] <module> — <decision and rationale>`_
 - [2026-04-26] cloudwatch_alarm — Standardized on `for_each` for all alarm modules to support scalable composition.
 - [2026-04-26] ecs_fargate — Added optional `load_balancer_config` to support integration with ALB.
 - [2026-04-26] step_functions_lambda — Used separate `aws_iam_role_policy_attachment` for custom policies to avoid `for_each` unknown key issues in base IAM module.
+- [2026-04-29] repo-wide — Standardized all 37 module READMEs to use the header sequence: Purpose, Usage, Security, Variables, Outputs.
+- [2026-04-29] repo-wide — Enhanced `CONTRIBUTING.md` with explicit native Terraform test requirements for mandatory tags and CMK encryption.
+- [2026-04-29] route53 — Enhanced to support Alias records via dynamic blocks and `optional()` attributes.
+- [2026-04-29] s3 — Added `bucket_regional_domain_name` output to support CloudFront OAC origins.
 
 ## Build Log
 
@@ -117,3 +121,4 @@ _`- [YYYY-MM-DD] Built <module path>. PR #<number>.`_
 - [2026-04-26] Updated ecr, alb, eventbridge, cloudwatch_alarm and built eventbridge_lambda, s3_lambda_trigger. PR #9.
 - [2026-04-26] Updated ecs_fargate and built step_functions_lambda, alb_ecs_fargate. PR #10.
 - [2026-04-28] Standardized repo documentation/testing and built cognito, bedrock_agent base modules. PR #11.
+- [2026-04-29] Standardized tests/docs across all modules and built athena, static_website modules. PR #12.

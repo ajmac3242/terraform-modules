@@ -57,17 +57,31 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Testing
-**Status:** `backlog`
+**Status:** `done` (PR #12)
 **Module:** repo-wide
 **Why:** Tests are critical to safe reuse of these modules. A consistent minimum test standard will help Builder create stronger tests and Steward review them consistently.
 
 #### Acceptance Criteria
-- [ ] Define a minimum native `terraform test` standard (e.g., `tests/main.tftest.hcl` must exist)
-- [ ] Ensure all tests use mock providers to allow offline execution in CI
-- [ ] Validate mandatory tags (`environment`, `owner`, `project`, `cost_center`) in every `tftest.hcl`
-- [ ] Validate CMK encryption for all data-at-rest resources in every `tftest.hcl`
-- [ ] Add backlog follow-up items for modules that fall short of the new test baseline
-- [ ] Update repository root `CONTRIBUTING.md` or similar with the testing standard
+- [x] Define a minimum native `terraform test` standard (e.g., `tests/main.tftest.hcl` must exist)
+- [x] Ensure all tests use mock providers to allow offline execution in CI
+- [x] Validate mandatory tags (`environment`, `owner`, `project`, `cost_center`) in every `tftest.hcl`
+- [x] Validate CMK encryption for all data-at-rest resources in every `tftest.hcl`
+- [x] Add backlog follow-up items for modules that fall short of the new test baseline
+- [x] Update repository root `CONTRIBUTING.md` or similar with the testing standard
+
+***
+
+### tests: Update all modules to follow the new testing standard
+
+**Priority:** HIGH
+**Type:** Testing
+**Status:** `backlog`
+**Module:** repo-wide
+**Why:** Audit on 2026-04-29 revealed that while most modules have tests, they lack assertions for mandatory tags and CMK encryption.
+
+#### Acceptance Criteria
+- [ ] Update `aws/base_component/*` tests to include tag and CMK assertions.
+- [ ] Update `aws/workload_component/*` tests to include tag and CMK assertions.
 
 ***
 
@@ -88,13 +102,13 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** MEDIUM
 **Type:** Documentation
-**Status:** `backlog`
+**Status:** `done` (PR #12)
 **Module:** repo-wide
 **Why:** All existing modules currently lack the "Purpose" and "Security" headers in their READMEs as per the new standard defined in `DOCS_TEMPLATE.md`.
 
 #### Acceptance Criteria
-- [ ] Update `aws/base_component/*` READMEs to include Purpose, Usage, Security, Variables, and Outputs sections in order.
-- [ ] Update `aws/workload_component/*` READMEs to include Purpose, Usage, Security, Variables, and Outputs sections in order.
+- [x] Update `aws/base_component/*` READMEs to include Purpose, Usage, Security, Variables, and Outputs sections in order.
+- [x] Update `aws/workload_component/*` READMEs to include Purpose, Usage, Security, Variables, and Outputs sections in order.
 
 ***
 

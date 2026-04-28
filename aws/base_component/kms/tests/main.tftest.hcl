@@ -47,6 +47,11 @@ run "verify_kms_key" {
     condition     = aws_kms_key.this.deletion_window_in_days == 30
     error_message = "KMS deletion window should be 30 days by default."
   }
+
+  assert {
+    condition     = aws_kms_key.this.tags["environment"] == "test" && aws_kms_key.this.tags["owner"] == "forge" && aws_kms_key.this.tags["project"] == "test-project" && aws_kms_key.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on KMS key."
+  }
 }
 
 run "verify_kms_key_validation" {

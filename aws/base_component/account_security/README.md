@@ -12,7 +12,7 @@ Designed for member accounts within an AWS Organization using Control Tower or a
 ## Usage
 ```hcl
 module "account_security" {
-  source = "../../aws/base_component/account_security"
+  source = "./aws/base_component/account_security"
 
   # Required
   tags = {

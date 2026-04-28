@@ -1,55 +1,48 @@
 # aws/base_component/kms
 
-Opinionated KMS Customer Managed Key (CMK) module. Creates a KMS key with rotation enabled, a configurable deletion window, and least-privilege key policies.
-
-## Features
-
-- Key rotation enabled by default (non-configurable)
-- Deletion window configurable (14-30 days)
-- Key alias created automatically as `alias/${var.name}`
-- Least-privilege key policy with separate admin and usage principals
-- Multi-region support
-- Required tags enforced (environment, owner, project, cost_center)
+## Purpose
+Opinionated KMS Customer Managed Key module. Foundational module for at-rest encryption across the organization. Centralizes key creation, rotation, and least-privilege key policies.
 
 ## Usage
-
 ```hcl
 module "kms" {
   source = "./aws/base_component/kms"
 
   name        = "my-app-key"
-  description = "CMK for my-app S3 and Lambda encryption"
+  description = "Encryption key for my application"
 
-  admin_principal_arns = ["arn:aws:iam::123456789012:role/KMSAdminRole"]
-  usage_principal_arns = ["arn:aws:iam::123456789012:role/AppRole"]
+  admin_principal_arns = ["arn:aws:iam::123456789012:role/admin"]
+  usage_principal_arns = ["arn:aws:iam::123456789012:role/app-execution-role"]
 
   tags = {
     environment = "prod"
     owner       = "platform-team"
-    project     = "my-app"
-    cost_center = "CC-1234"
+    project     = "standardization"
+    cost_center = "12345"
   }
 }
 ```
 
-## Inputs
+## Security
+- **Rotation**: Automatic annual key rotation is enabled by default and cannot be disabled.
+- **Policies**: Enforces least-privilege key policies by separating admin and usage principals. Denies all access if no principal is specified.
+- **Alias**: Automatically creates an alias for the key using `alias/<name>`.
 
+## Variables
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| `name` | The name of the KMS key (used for the alias prefix `alias/`) | `string` | n/a | yes |
-| `description` | The description of the KMS key | `string` | n/a | yes |
-| `admin_principal_arns` | A list of IAM ARNs that are allowed to administer the KMS key | `list(string)` | n/a | yes |
-| `usage_principal_arns` | A list of IAM ARNs that are allowed to use the KMS key for cryptographic operations | `list(string)` | n/a | yes |
-| `tags` | A map of tags to assign to the resources. Required keys: environment, owner, project, cost_center. | `map(string)` | n/a | yes |
-| `aws_account_id` | The AWS Account ID to use for the key policy. If not provided, it is looked up via a data source. | `string` | `null` | no |
-| `deletion_window_in_days` | The waiting period, specified in number of days. (14-30) | `number` | `30` | no |
-| `multi_region` | Indicates whether the KMS key is a multi-Region (true) or regional (false) key | `bool` | `false` | no |
+| `name` | Name of the KMS key (used for alias) | `string` | n/a | yes |
+| `description` | Description of the KMS key | `string` | n/a | yes |
+| `admin_principal_arns` | List of IAM ARNs that can manage the key | `list(string)` | `[]` | no |
+| `usage_principal_arns` | List of IAM ARNs that can use the key for encryption/decryption | `list(string)` | `[]` | no |
+| `deletion_window_in_days` | Number of days before the key is deleted (7-30) | `number` | `30` | no |
+| `multi_region` | Whether to create a multi-region key | `bool` | `false` | no |
+| `tags` | Standard tags for all resources | `map(string)` | n/a | yes |
 
 ## Outputs
-
 | Name | Description |
 |------|-------------|
-| `key_id` | The ID of the KMS key |
 | `key_arn` | The ARN of the KMS key |
-| `alias_arn` | The ARN of the KMS key alias |
-| `alias_name` | The name of the KMS key alias |
+| `key_id` | The ID of the KMS key |
+| `alias_arn` | The ARN of the KMS alias |
+| `alias_name` | The name of the KMS alias |

@@ -1,65 +1,61 @@
 # aws/base_component/rds
 
-Opinionated RDS instance module. Enforces CMK encryption, Multi-AZ for prod, and VPC placement.
-
-## Features
-
-- `aws_db_instance` (Postgres/MySQL) with configurable engine, version, instance class
-- Mandatory `kms_key_id` for storage encryption
-- `multi_az` defaults to `true`
-- `storage_encrypted` must be `true`
-- Placed in VPC private subnets via `aws_db_subnet_group`
-- Required tags enforced
+## Purpose
+Opinionated RDS instance module. Core relational storage, enforcing CMK encryption, Multi-AZ for production, and private VPC placement.
 
 ## Usage
-
 ```hcl
 module "rds" {
   source = "./aws/base_component/rds"
 
-  identifier     = "my-db-prod"
+  identifier     = "my-db"
   engine         = "postgres"
   engine_version = "15.3"
   instance_class = "db.t3.medium"
-  db_name        = "myapp"
-  username       = "dbadmin"
-  password       = var.db_password
+  allocated_storage = 20
 
-  subnet_ids             = module.vpc.private_subnet_ids
-  vpc_security_group_ids = [module.db_sg.security_group_id]
-  kms_key_id             = module.kms.key_arn
+  db_name  = "myapp"
+  username = "admin"
+
+  vpc_id     = module.vpc.vpc_id
+  subnet_ids = module.vpc.private_subnet_ids
+  kms_key_id = module.kms.key_arn
 
   tags = {
     environment = "prod"
     owner       = "platform-team"
-    project     = "my-app"
-    cost_center = "CC-1234"
+    project     = "standardization"
+    cost_center = "12345"
   }
 }
 ```
 
-## Inputs
+## Security
+- **Encryption**: Mandatory storage encryption using a Customer Managed Key (CMK).
+- **Availability**: `multi_az` defaults to `true` for high availability.
+- **Network**: Placed in private VPC subnets via a DB subnet group. Public access is disabled.
 
+## Variables
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | `identifier` | The name of the RDS instance | `string` | n/a | yes |
-| `engine` | The database engine to use | `string` | `"postgres"` | no |
+| `engine` | The database engine to use | `string` | n/a | yes |
 | `engine_version` | The engine version to use | `string` | n/a | yes |
-| `instance_class` | The instance type of the RDS instance | `string` | `"db.t3.micro"` | no |
-| `allocated_storage` | The allocated storage in gibibytes | `number` | `20` | no |
-| `db_name` | The name of the database to create | `string` | n/a | yes |
+| `instance_class` | The instance type of the RDS instance | `string` | n/a | yes |
+| `allocated_storage` | The allocated storage in gigabytes | `number` | n/a | yes |
+| `db_name` | The name of the database to create when the DB instance is created | `string` | `null` | no |
 | `username` | Username for the master DB user | `string` | n/a | yes |
-| `password` | Password for the master DB user | `string` | n/a | yes |
-| `vpc_security_group_ids` | List of VPC security groups to associate | `list(string)` | n/a | yes |
-| `subnet_ids` | A list of VPC subnet IDs | `list(string)` | n/a | yes |
+| `password` | Password for the master DB user. If null, a random password is generated. | `string` | `null` | no |
+| `vpc_id` | VPC ID where the RDS instance will be deployed | `string` | n/a | yes |
+| `subnet_ids` | List of subnet IDs for the DB subnet group | `list(string)` | n/a | yes |
+| `kms_key_id` | ARN for the KMS key to use for storage encryption | `string` | n/a | yes |
 | `multi_az` | Specifies if the RDS instance is multi-AZ | `bool` | `true` | no |
-| `kms_key_id` | The ARN for the KMS encryption key | `string` | n/a | yes |
-| `tags` | A map of tags to assign to the resources. Required keys: `environment`, `owner`, `project`, `cost_center`. | `map(string)` | n/a | yes |
+| `tags` | Standard tags for all resources | `map(string)` | n/a | yes |
 
 ## Outputs
-
 | Name | Description |
 |------|-------------|
 | `db_instance_arn` | The ARN of the RDS instance |
 | `db_instance_endpoint` | The connection endpoint |
 | `db_instance_id` | The RDS instance ID |
+| `db_instance_username` | The master username |
