@@ -1,16 +1,11 @@
 # aws/base_component/sns
 
-Opinionated SNS topic module. Enforces CMK encryption.
-
-## Features
-
-- `aws_sns_topic` with mandatory CMK encryption
-- Required tags enforced
+## Purpose
+Opinionated SNS Topic module. Core messaging component with enforced CMK encryption.
 
 ## Usage
-
 ```hcl
-module "sns" {
+module "sns_topic" {
   source = "./aws/base_component/sns"
 
   name       = "my-topic"
@@ -19,22 +14,25 @@ module "sns" {
   tags = {
     environment = "prod"
     owner       = "platform-team"
-    project     = "my-app"
-    cost_center = "CC-1234"
+    project     = "standardization"
+    cost_center = "12345"
   }
 }
 ```
 
-## Inputs
+## Security
+- **Encryption**: Mandatory Server-Side Encryption using a Customer Managed Key (CMK).
+- **Access**: Least-privilege topic policies are recommended.
 
-| Name | Description | Type | Required |
-|------|-------------|------|:--------:|
-| `name` | The name of the SNS topic | `string` | yes |
-| `kms_key_id` | ARN of the KMS key | `string` | yes |
-| `tags` | Map of tags | `map(string)` | yes |
+## Variables
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| `name` | Name of the SNS topic | `string` | n/a | yes |
+| `kms_key_id` | ARN for the KMS key to use for encryption | `string` | n/a | yes |
+| `tags` | Standard tags for all resources | `map(string)` | n/a | yes |
 
 ## Outputs
-
 | Name | Description |
 |------|-------------|
 | `topic_arn` | The ARN of the SNS topic |
+| `topic_name` | The name of the SNS topic |

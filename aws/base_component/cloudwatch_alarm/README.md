@@ -1,33 +1,22 @@
 # aws/base_component/cloudwatch_alarm
 
-Opinionated CloudWatch Alarm module.
-
-## Features
-
-- Support for one or more CloudWatch metric alarms
-- Configurable dimensions, statistics, and thresholds
-- Support for alarm and OK actions
-- Tags validation
+## Purpose
+Opinionated CloudWatch alarms module. Reusable observability primitive for consistent alarms across workload modules. Enables safer production defaults and easier composition.
 
 ## Usage
-
-### Single Lambda Error Alarm
-
 ```hcl
-module "lambda_alarm" {
+module "lambda_alarms" {
   source = "./aws/base_component/cloudwatch_alarm"
 
   alarms = {
-    "my-function-errors" = {
+    "high-error-rate" = {
       comparison_operator = "GreaterThanThreshold"
       evaluation_periods  = 1
       metric_name         = "Errors"
       namespace           = "AWS/Lambda"
       period              = 60
       statistic           = "Sum"
-      threshold           = 0
-      alarm_description   = "Alarm if function has errors"
-      alarm_actions       = ["arn:aws:sns:us-east-1:123456789012:my-topic"]
+      threshold           = 1
       dimensions = {
         FunctionName = "my-function"
       }
@@ -37,57 +26,26 @@ module "lambda_alarm" {
   tags = {
     environment = "prod"
     owner       = "platform-team"
-    project     = "my-app"
-    cost_center = "CC-1234"
+    project     = "standardization"
+    cost_center = "12345"
   }
 }
 ```
+
+## Security
+- **Visibility**: Alarms provide visibility into service health and potential security incidents (e.g., high error rates, unauthorized access attempts).
+- **Encryption**: CloudWatch Logs integration (if used) is encrypted via CMK.
+
+## Variables
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| `alarms` | Map of alarm configurations | `any` | n/a | yes |
+| `alarm_actions` | List of ARNs to notify when alarm transitions to ALARM state | `list(string)` | `[]` | no |
+| `ok_actions` | List of ARNs to notify when alarm transitions to OK state | `list(string)` | `[]` | no |
+| `tags` | Standard tags for all resources | `map(string)` | n/a | yes |
 
 ## Outputs
-
-- `alarm_arns`: A map of alarm names to their ARNs
-- `alarm_names`: A list of alarm names
-
-### Multiple ECS Alarms
-
-```hcl
-module "ecs_alarms" {
-  source = "./aws/base_component/cloudwatch_alarm"
-
-  alarms = {
-    "cpu-high" = {
-      comparison_operator = "GreaterThanThreshold"
-      evaluation_periods  = 2
-      metric_name         = "CPUUtilization"
-      namespace           = "AWS/ECS"
-      period              = 300
-      statistic           = "Average"
-      threshold           = 80
-      dimensions = {
-        ClusterName = "my-cluster"
-        ServiceName = "my-service"
-      }
-    },
-    "memory-high" = {
-      comparison_operator = "GreaterThanThreshold"
-      evaluation_periods  = 2
-      metric_name         = "MemoryUtilization"
-      namespace           = "AWS/ECS"
-      period              = 300
-      statistic           = "Average"
-      threshold           = 80
-      dimensions = {
-        ClusterName = "my-cluster"
-        ServiceName = "my-service"
-      }
-    }
-  }
-
-  tags = {
-    environment = "prod"
-    owner       = "platform-team"
-    project     = "my-app"
-    cost_center = "CC-1234"
-  }
-}
-```
+| Name | Description |
+|------|-------------|
+| `alarm_arns` | Map of alarm ARNs |
+| `alarm_names` | List of alarm names |

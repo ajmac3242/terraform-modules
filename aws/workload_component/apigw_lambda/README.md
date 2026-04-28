@@ -1,72 +1,52 @@
 # aws/workload_component/apigw_lambda
 
-API Gateway v2 + Lambda pattern. Composed from base modules to eliminate manual wiring of routes, integrations, and permissions.
-
-## Features
-
-- Uses `aws/base_component/lambda` module internally
-- `aws_apigatewayv2_api` (HTTP API type)
-- `aws_apigatewayv2_integration` linked to Lambda function
-- `aws_apigatewayv2_route` with configurable route key
-- `aws_apigatewayv2_stage` with `auto_deploy = true` and CloudWatch access logs (encrypted)
-- `aws_lambda_permission` granting API GW invoke rights
-- Mandatory JWT authorizer (can be disabled)
-- Mandatory WAF association
-- Required tags enforced
+## Purpose
+API Gateway v2 + Lambda pattern. The most common serverless pattern, eliminating the need to wire up routes, integrations, and permissions separately while enforcing JWT authorization.
 
 ## Usage
-
 ```hcl
-module "apigw_lambda" {
+module "api" {
   source = "./aws/workload_component/apigw_lambda"
 
-  name        = "my-api"
-  description = "My Serverless API"
-  runtime     = "nodejs18.x"
-  handler     = "index.handler"
-  filename    = "function.zip"
-  kms_key_arn = module.kms.key_arn
-
-  route_key       = "GET /hello"
-  jwt_issuer      = "https://example.com"
-  jwt_audience    = ["my-audience"]
-  waf_web_acl_arn = "arn:aws:wafv2:us-east-1:123456789012:regional/webacl/my-waf/12345678-1234-1234-1234-123456789012"
+  name          = "my-api"
+  route_key     = "POST /items"
+  jwt_issuer    = "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_..."
+  jwt_audience  = ["my-client-id"]
+  kms_key_arn   = module.kms.key_arn
+  waf_web_acl_arn = module.waf.web_acl_arn
 
   tags = {
     environment = "prod"
     owner       = "platform-team"
-    project     = "my-app"
-    cost_center = "CC-1234"
+    project     = "standardization"
+    cost_center = "12345"
   }
 }
 ```
 
-## Inputs
+## Security
+- **Authentication**: JWT authorizer is required by default for all routes.
+- **Protection**: Mandatory WAFv2 association at the Stage level.
+- **Encryption**: Lambda environment variables and CloudWatch logs are encrypted using a CMK.
+- **Visibility**: API Gateway access logging to CloudWatch is enabled by default.
 
+## Variables
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| `name` | The name of the API Gateway and Lambda function | `string` | n/a | yes |
-| `description` | The description of the API Gateway and Lambda function | `string` | n/a | yes |
-| `runtime` | The runtime for the Lambda function | `string` | n/a | yes |
-| `handler` | The function entrypoint in your code | `string` | n/a | yes |
-| `filename` | The path to the function's deployment package | `string` | `null` | no |
-| `route_key` | The route key for the API Gateway | `string` | `"$default"` | no |
-| `kms_key_arn` | The ARN of the KMS key for encryption | `string` | n/a | yes |
-| `jwt_issuer` | The base URL of the IdP that issues JWTs | `string` | n/a | yes |
-| `jwt_audience` | The list of audiences that are allowed to access the API | `list(string)` | `[]` | no |
-| `waf_web_acl_arn` | The ARN of the WAF Web ACL to associate with the API Gateway stage | `string` | n/a | yes |
-| `disable_authorizer` | Whether to disable the JWT authorizer for the API Gateway route | `bool` | `false` | no |
-| `tags` | A map of tags to assign to the resources. Required keys: `environment`, `owner`, `project`, `cost_center`. | `map(string)` | n/a | yes |
+| `name` | Name of the API and Lambda function | `string` | n/a | yes |
+| `route_key` | Route key for the API (e.g., "GET /items") | `string` | n/a | yes |
+| `jwt_issuer` | JWT issuer URL for the authorizer | `string` | `null` | no |
+| `jwt_audience` | List of allowed JWT audiences | `list(string)` | `[]` | no |
+| `disable_authorizer` | Whether to disable the JWT authorizer (not recommended) | `bool` | `false` | no |
+| `kms_key_arn` | KMS key ARN for encryption | `string` | n/a | yes |
+| `waf_web_acl_arn` | ARN of the WAFv2 Web ACL to associate with the stage | `string` | n/a | yes |
+| `tags` | Standard tags for all resources | `map(string)` | n/a | yes |
 
 ## Outputs
-
 | Name | Description |
 |------|-------------|
-| `api_endpoint` | The HTTP API endpoint |
+| `api_endpoint` | The HTTP endpoint for the API |
 | `api_id` | The ID of the API Gateway |
-| `api_arn` | The ARN of the API Gateway |
 | `function_arn` | The ARN of the Lambda function |
-| `role_arn` | The ARN of the IAM role used by the Lambda function |
-| `stage_id` | The ID of the API Gateway stage |
-| `route_id` | The ID of the API Gateway route |
-| `authorizer_id` | The ID of the API Gateway authorizer |
+| `stage_id` | The ID of the API stage |
+| `route_id` | The ID of the API route |

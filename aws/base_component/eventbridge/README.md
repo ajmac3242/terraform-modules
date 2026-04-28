@@ -1,81 +1,43 @@
 # aws/base_component/eventbridge
 
-Opinionated EventBridge module.
-
-## Features
-
-- EventBridge Bus creation (optional)
-- Mandatory KMS encryption with CMK for the event bus (auto-created or provided)
-- EventBridge Rule creation (event pattern or schedule)
-- EventBridge Target attachment
-- Dead-letter queue support for targets
-- Tags validation
+## Purpose
+Opinionated EventBridge module. Foundational event-routing module that supports rule creation and target attachment with security-by-default.
 
 ## Usage
-
-### Custom Bus with a Rule and Target
-
 ```hcl
 module "eventbridge" {
   source = "./aws/base_component/eventbridge"
 
-  name = "my-bus"
-
-  rules = {
-    "my-rule" = {
-      description   = "My event pattern rule"
-      event_pattern = jsonencode({
-        source = ["my.app"]
-      })
-    }
-  }
-
-  targets = {
-    "my-rule/my-target" = {
-      rule_name = "my-rule"
-      arn       = "arn:aws:lambda:us-east-1:123456789012:function:my-function"
-    }
-  }
-
-  # KMS configuration (Optional)
-  # existing_kms_key_arn = "arn:aws:kms:us-east-1:123456789012:key/..."
+  name          = "my-event-bus"
+  event_bus_name = "custom-bus"
 
   tags = {
     environment = "prod"
     owner       = "platform-team"
-    project     = "my-app"
-    cost_center = "CC-1234"
+    project     = "standardization"
+    cost_center = "12345"
   }
 }
 ```
 
-### Scheduled Rule on Default Bus
+## Security
+- **Encryption**: Event buses are encrypted using a Customer Managed Key (CMK) by default.
+- **Access**: Least-privilege IAM policies are enforced for all targets.
 
-```hcl
-module "eventbridge" {
-  source = "./aws/base_component/eventbridge"
+## Variables
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| `name` | Name of the EventBridge rule | `string` | n/a | yes |
+| `event_bus_name` | Name of the event bus. If null, the default bus is used. | `string` | `null` | no |
+| `event_pattern` | Event pattern for the rule | `string` | `null` | no |
+| `schedule_expression` | Schedule expression for the rule | `string` | `null` | no |
+| `kms_key_arn` | ARN of the KMS key for event bus encryption. If null, a new key is created. | `string` | `null` | no |
+| `tags` | Standard tags for all resources | `map(string)` | n/a | yes |
 
-  create_bus = false
-
-  rules = {
-    "nightly-job" = {
-      description         = "Run nightly at 2 AM"
-      schedule_expression = "cron(0 2 * * ? *)"
-    }
-  }
-
-  targets = {
-    "nightly-job/lambda-target" = {
-      rule_name = "nightly-job"
-      arn       = "arn:aws:lambda:us-east-1:123456789012:function:nightly-task"
-    }
-  }
-
-  tags = {
-    environment = "prod"
-    owner       = "platform-team"
-    project     = "my-app"
-    cost_center = "CC-1234"
-  }
-}
-```
+## Outputs
+| Name | Description |
+|------|-------------|
+| `event_bus_arn` | The ARN of the EventBridge bus |
+| `event_bus_name` | The name of the EventBridge bus |
+| `rule_arn` | The ARN of the EventBridge rule |
+| `kms_key_arn` | The ARN of the KMS key used for encryption |

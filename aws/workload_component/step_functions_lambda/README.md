@@ -1,54 +1,42 @@
 # aws/workload_component/step_functions_lambda
 
-Composed workload module for Step Functions + Lambda orchestration.
-
-## Features
-
-- Creates a Step Functions State Machine using the opinionated base module.
-- Automatically creates an IAM role with least-privilege permissions to invoke specified Lambdas.
-- Configures mandatory CloudWatch logging with CMK encryption and X-Ray tracing.
-- Enforces organization-standard tagging.
+## Purpose
+Step Functions + Lambda orchestration pattern. Valuable for multi-step serverless processes, reducing custom wiring and promoting repeatable IAM and logging patterns.
 
 ## Usage
-
 ```hcl
 module "orchestration" {
   source = "./aws/workload_component/step_functions_lambda"
 
-  name        = "process-order"
+  name       = "my-workflow"
+  definition = jsonencode({ ... })
   kms_key_arn = module.kms.key_arn
-  lambda_arns = [
-    module.validate_order.function_arn,
-    module.charge_card.function_arn
-  ]
-
-  definition = jsonencode({
-    StartAt = "ValidateOrder"
-    States = {
-      ValidateOrder = {
-        Type = "Task"
-        Resource = module.validate_order.function_arn
-        Next = "ChargeCard"
-      }
-      ChargeCard = {
-        Type = "Task"
-        Resource = module.charge_card.function_arn
-        End = true
-      }
-    }
-  })
 
   tags = {
     environment = "prod"
-    owner       = "ecommerce-team"
-    project     = "order-processing"
-    cost_center = "CC-9999"
+    owner       = "platform-team"
+    project     = "standardization"
+    cost_center = "12345"
   }
 }
 ```
 
 ## Security
+- **Encryption**: CloudWatch logging for the state machine is encrypted via CMK. Lambda also uses CMK.
+- **Observability**: X-Ray tracing is enabled by default.
+- **IAM**: Execution roles for both Step Functions and Lambda are scoped to least-privilege.
 
-- The state machine role is scoped to only `lambda:InvokeFunction` on the provided `lambda_arns`.
-- CloudWatch logs are encrypted using the provided `kms_key_arn`.
-- X-Ray tracing is enabled by default.
+## Variables
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| `name` | Name of the state machine and related resources | `string` | n/a | yes |
+| `definition` | JSON-encoded definition of the state machine | `string` | n/a | yes |
+| `kms_key_arn` | KMS key ARN for encryption | `string` | n/a | yes |
+| `tags` | Standard tags for all resources | `map(string)` | n/a | yes |
+
+## Outputs
+| Name | Description |
+|------|-------------|
+| `state_machine_arn` | The ARN of the state machine |
+| `state_machine_name` | The name of the state machine |
+| `lambda_function_arns` | List of Lambda function ARNs associated with the pattern |
