@@ -1,0 +1,36 @@
+stages:
+  - validate
+  - deploy
+
+variables:
+  TERRAFORM_VERSION: "1.8.5"
+  TERRAFORM_MODULE_DIR: "${CI_PROJECT_DIR}"
+  TERRAFORM_MODULE_NAME: "${CI_PROJECT_NAME}"
+  TERRAFORM_MODULE_SYSTEM: "aws"
+  TERRAFORM_MODULE_VERSION: "${CI_COMMIT_TAG}"
+
+validate:
+  stage: validate
+  image: hashicorp/terraform:${TERRAFORM_VERSION}
+  script:
+    - terraform -chdir="${TERRAFORM_MODULE_DIR}" fmt -check -recursive
+    - terraform -chdir="${TERRAFORM_MODULE_DIR}" init -backend=false
+    - terraform -chdir="${TERRAFORM_MODULE_DIR}" validate
+  rules:
+    - if: $CI_COMMIT_BRANCH
+    - if: $CI_COMMIT_TAG
+
+deploy:
+  stage: deploy
+  image: curlimages/curl:latest
+  script:
+    - MODULE_NAME="$(echo "${TERRAFORM_MODULE_NAME}" | tr ' _' '-')"
+    - ARCHIVE="${MODULE_NAME}-${TERRAFORM_MODULE_SYSTEM}-${TERRAFORM_MODULE_VERSION}.tgz"
+    - tar -czf "/tmp/${ARCHIVE}" -C "${TERRAFORM_MODULE_DIR}" --exclude=.git .
+    - >
+      curl --fail-with-body --location
+      --header "JOB-TOKEN: ${CI_JOB_TOKEN}"
+      --upload-file "/tmp/${ARCHIVE}"
+      "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/terraform/modules/${MODULE_NAME}/${TERRAFORM_MODULE_SYSTEM}/${TERRAFORM_MODULE_VERSION}/file"
+  rules:
+    - if: $CI_COMMIT_TAG
