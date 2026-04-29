@@ -52,7 +52,7 @@ Navigator should actively consider and maintain backlog readiness for modules su
 
 - `aws/base_component/ecr`
 - `aws/base_component/alb`
-- `aws/base_component/cloudwatch_alarms`
+- `aws/base_component/cloudwatch_alarm`
 - `aws/workload_component/eventbridge_lambda`
 - `aws/workload_component/s3_lambda_trigger`
 - `aws/workload_component/step_functions_lambda`
@@ -87,6 +87,8 @@ _`- [YYYY-MM-DD] <topic> — <decision and rationale>`_
 - [2026-04-29] Foundational Auth and AI Milestone — Cognito and Bedrock Agent base modules are now fully implemented and verified. This completes the core foundational expansion for Q2.
 - [2026-04-29] Advanced Workload Composition — Initiating the `static_website` pattern to demonstrate multi-service composition (S3, CloudFront, ACM, Route53) with opinionated security defaults.
 - [2026-04-29] Testing Baseline — Elevating repository-wide test standardization to a HIGH priority. All modules must soon pass a baseline of CMK and tagging validation via native `terraform test` to ensure production readiness at scale.
+- [2026-04-29] Strategic Extension: Bedrock Knowledge Base — Following the success of the Bedrock Agent module, we are adding the Knowledge Base as a high-priority base component to support RAG patterns.
+- [2026-04-29] AWS Provider 6.0 Roadmap — With the general availability of AWS Provider 6.0, Navigator is initiating an evaluation of its multi-region and region-attribute features to determine how they can simplify our global module configurations.
 
 ## Session Log
 
@@ -97,3 +99,4 @@ _`- [YYYY-MM-DD] Reviewed backlog and updated priorities.`_
 - [2026-04-26] Synchronized backlog with filesystem and promoted priority workload components.
 - [2026-04-28] Refined backlog with Cognito and Bedrock; promoted library-wide standardization tasks.
 - [2026-04-29] Synchronized Cognito/Bedrock to history; introduced `static_website` and `athena` candidates; refined test standardization criteria.
+- [2026-04-29] Finalized `static_website` and `athena`; expanded roadmap to include Bedrock Knowledge Base and Provider 6.0 evaluation.
