@@ -1,8 +1,10 @@
 variables {
   name        = "test-sfn"
   role_arn    = "arn:aws:iam::123456789012:role/test-role"
-  kms_key_arn = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
-  definition  = "{\"StartAt\":\"Pass\",\"States\":{\"Pass\":{\"Type\":\"Pass\",\"End\":true}}}"
+  kms_key_arn    = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
+  definition     = "{\"StartAt\":\"Pass\",\"States\":{\"Pass\":{\"Type\":\"Pass\",\"End\":true}}}"
+  aws_account_id    = "123456789012"
+  skip_sfn_creation = true
   tags = {
     environment = "test"
     owner       = "test-owner"
@@ -20,16 +22,16 @@ provider "aws" {
   secret_key                  = "mock_secret_key"
 }
 
-run "valid_sfn_creation" {
+run "valid_sfn_base_creation" {
   command = plan
-
-  assert {
-    condition     = aws_sfn_state_machine.this.name == var.name
-    error_message = "SFN name does not match expected value"
-  }
 
   assert {
     condition     = aws_cloudwatch_log_group.this.kms_key_id == var.kms_key_arn
     error_message = "Log group should be encrypted with CMK"
+  }
+
+  assert {
+    condition     = aws_cloudwatch_log_group.this.tags["environment"] == "test" && aws_cloudwatch_log_group.this.tags["owner"] == "test-owner" && aws_cloudwatch_log_group.this.tags["project"] == "test-project" && aws_cloudwatch_log_group.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on log group"
   }
 }

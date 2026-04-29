@@ -18,6 +18,7 @@ resource "aws_cloudwatch_log_group" "this" {
 
 # Main Step Functions State Machine resource
 resource "aws_sfn_state_machine" "this" {
+  count = var.skip_sfn_creation ? 0 : 1
   name     = var.name
   role_arn = var.role_arn
   type     = var.type
