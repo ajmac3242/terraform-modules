@@ -40,7 +40,7 @@ run "valid_static_website_creation" {
   }
 
   assert {
-    condition     = aws_cloudfront_distribution.this.tags["environment"] == "test"
-    error_message = "Mandatory tags are missing on CloudFront distribution"
+    condition     = aws_cloudfront_distribution.this.tags["environment"] == "test" && aws_cloudfront_distribution.this.tags["owner"] == "test-owner" && aws_cloudfront_distribution.this.tags["project"] == "test-project" && aws_cloudfront_distribution.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on CloudFront distribution"
   }
 }

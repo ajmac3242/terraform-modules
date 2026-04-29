@@ -1,6 +1,11 @@
 variable "domain_name" {
   description = "The primary domain name for the website (e.g. example.com)"
   type        = string
+
+  validation {
+    condition     = can(regex("^[a-z0-9.-]+$", var.domain_name))
+    error_message = "The domain_name must be a valid domain name."
+  }
 }
 
 variable "alternate_domains" {
