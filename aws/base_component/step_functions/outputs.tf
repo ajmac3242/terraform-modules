@@ -1,9 +1,9 @@
 output "state_machine_arn" {
   description = "The ARN of the state machine"
-  value       = aws_sfn_state_machine.this.arn
+  value       = try(aws_sfn_state_machine.this[0].arn, null)
 }
 
 output "state_machine_id" {
   description = "The ID of the state machine"
-  value       = aws_sfn_state_machine.this.id
+  value       = try(aws_sfn_state_machine.this[0].id, null)
 }
