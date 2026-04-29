@@ -130,6 +130,66 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Module Backlog
 
+### aws/base_component/bedrock_knowledge_base: Opinionated Bedrock Knowledge Base module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_knowledge_base
+**Why:** Critical for RAG (Retrieval-Augmented Generation) patterns. Complements the Bedrock Agent module by providing a managed data source for LLM augmentation.
+
+#### Acceptance Criteria
+- [ ] `aws_bedrockagent_knowledge_base` with configurable storage type (OpenSearch Serverless, Pinecone, etc.)
+- [ ] Mandatory CMK encryption for data in transit and at rest
+- [ ] Integration with `aws/base_component/s3` for data source ingestion
+- [ ] Required `tags` enforced
+- [ ] Outputs: `knowledge_base_id`, `knowledge_base_arn`
+- [ ] Native offline Terraform test validates encryption and storage settings
+
+---
+
+### repo-wide: Evaluate and plan migration to AWS Provider 6.0
+
+**Priority:** MEDIUM
+**Type:** Maintenance
+**Status:** `backlog`
+**Module:** repo-wide
+**Why:** AWS Provider 6.0 introduces major features like multi-region support in a single provider block and region attribute injection. We need to evaluate the impact on our opinionated modules and plan a safe migration path.
+
+#### Acceptance Criteria
+- [ ] Review breaking changes in the AWS Provider 6.0 upgrade guide
+- [ ] Identify modules that would benefit most from multi-region support (e.g., global WAF, CloudFront)
+- [ ] Update standard `versions.tf` template to allow `~> 6.0` after verification
+- [ ] Document any required changes for module consumers
+
+---
+
+### aws/workload_component/centralized_logging: Secure Centralized Logging pattern
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/workload_component/centralized_logging
+**Why:** Composes S3, KMS, and Athena into a standard "Security Data Lake" pattern for organization-wide logs.
+
+#### Acceptance Criteria
+- [ ] Uses `aws/base_component/s3` for log storage with forced SSL and CMK
+- [ ] Uses `aws/base_component/athena` for querying logs
+- [ ] Standardized bucket policies for common AWS service logging (ALB, CloudFront, VPC Flow Logs)
+- [ ] Required `tags` enforced
+- [ ] Outputs: `log_bucket_arn`, `athena_workgroup_name`
+- [ ] Native offline Terraform test validates the composition and bucket policies
+
+---
+
+## Review-Discovered Improvement Queue
+
+_Empty — standardizing current backlog items._
+
+***
+
+## Existing Completed Module History
+
 ### aws/workload_component/static_website: S3 + CloudFront + ACM + Route53 pattern
 
 **Priority:** HIGH
@@ -139,13 +199,13 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** High-demand pattern for hosting frontend SPAs. Composes multiple base components into a secure, performant, and cost-effective hosting solution with TLS and custom domain support.
 
 #### Acceptance Criteria
-- [ ] Uses `aws/base_component/s3` for origin (OAC/OAI enabled, public access blocked)
-- [ ] Uses `aws/base_component/cloudfront` for distribution (WAF enabled, TLS 1.2+ forced)
-- [ ] Uses `aws/base_component/acm` for certificate management
-- [ ] Uses `aws/base_component/route53` for DNS records (A/AAAA alias to CloudFront)
-- [ ] Required `tags` enforced across all resources
-- [ ] Outputs: `cloudfront_domain_name`, `s3_bucket_arn`, `website_url`
-- [ ] Native offline Terraform test validates the composition and security headers
+- [x] Uses `aws/base_component/s3` for origin (OAC/OAI enabled, public access blocked)
+- [x] Uses `aws/base_component/cloudfront` for distribution (WAF enabled, TLS 1.2+ forced)
+- [x] Uses `aws/base_component/acm` for certificate management
+- [x] Uses `aws/base_component/route53` for DNS records (A/AAAA alias to CloudFront)
+- [x] Required `tags` enforced across all resources
+- [x] Outputs: `cloudfront_domain_name`, `s3_bucket_arn`, `website_url`
+- [x] Native offline Terraform test validates the composition and security headers
 
 ---
 
@@ -158,22 +218,14 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Enables secure, serverless ad-hoc querying of S3 data. Standardizes workgroup settings, encryption of results, and data access patterns.
 
 #### Acceptance Criteria
-- [ ] `aws_athena_workgroup` with enforced configuration (prevent client-side overrides)
-- [ ] Mandatory CMK encryption for query results at rest
-- [ ] `publish_cloudwatch_metrics_enabled = true` by default
-- [ ] Required `tags` enforced
-- [ ] Outputs: `workgroup_name`, `workgroup_arn`
-- [ ] Native offline Terraform test validates workgroup encryption and metric settings
+- [x] `aws_athena_workgroup` with enforced configuration (prevent client-side overrides)
+- [x] Mandatory CMK encryption for query results at rest
+- [x] `publish_cloudwatch_metrics_enabled = true` by default
+- [x] Required `tags` enforced
+- [x] Outputs: `workgroup_name`, `workgroup_arn`
+- [x] Native offline Terraform test validates workgroup encryption and metric settings
 
 ---
-
-## Review-Discovered Improvement Queue
-
-_Empty — standardizing current backlog items._
-
-***
-
-## Existing Completed Module History
 
 ### aws/base_component/cognito: Opinionated Cognito User Pool module
 
@@ -424,12 +476,12 @@ Retain previously completed module entries below this line for historical tracki
 
 ***
 
-### aws/base_component/cloudwatch_alarms: Opinionated CloudWatch alarms module
+### aws/base_component/cloudwatch_alarm: Opinionated CloudWatch alarms module
 
 **Priority:** MEDIUM
 **Type:** Feature
 **Status:** `done` (PR #9)
-**Module:** aws/base_component/cloudwatch_alarms
+**Module:** aws/base_component/cloudwatch_alarm
 **Why:** Reusable observability primitive for consistent alarms across workload modules. Enables safer production defaults and easier composition.
 
 #### Acceptance Criteria
@@ -971,3 +1023,4 @@ Retain previously completed module entries below this line for historical tracki
 | 2026-04-26 | Navigator | Synchronized backlog with existing modules (ACM, ASG, EC2, EFS, Step Functions, WAFv2). Promoted Step Functions Lambda and ALB ECS Fargate to ready queue. |
 | 2026-04-28 | Navigator | Updated backlog to promote standardization tasks, added Cognito and Bedrock Agent modules, and synchronized completed workload components to history. |
 | 2026-04-29 | Navigator | Synchronized Cognito and Bedrock Agent to history. Added `static_website` workload and `athena` base component candidates. |
+| 2026-04-29 | Navigator | Refined roadmap: promoted static_website/athena to history; added Bedrock Knowledge Base and Provider 6.0 evaluation. |
