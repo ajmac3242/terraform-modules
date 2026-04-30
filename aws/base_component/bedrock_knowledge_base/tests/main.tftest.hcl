@@ -45,4 +45,19 @@ run "valid_kb_creation" {
     error_message = "Mandatory tags are missing or incorrect on Knowledge Base"
   }
 
+  assert {
+    condition     = aws_bedrockagent_knowledge_base.this.storage_configuration[0].type == var.storage_type
+    error_message = "Storage type does not match expected value"
+  }
+
+  assert {
+    condition     = aws_bedrockagent_knowledge_base.this.storage_configuration[0].opensearch_serverless_configuration[0].collection_arn == var.opensearch_serverless_configuration.collection_arn
+    error_message = "OpenSearch Serverless collection ARN does not match"
+  }
+
+  assert {
+    condition     = module.iam_role.role_name == "${var.name}-kb-role"
+    error_message = "IAM role name is incorrect"
+  }
+
 }
