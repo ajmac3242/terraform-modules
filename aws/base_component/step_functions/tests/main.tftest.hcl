@@ -1,8 +1,8 @@
 variables {
-  name        = "test-sfn"
-  role_arn    = "arn:aws:iam::123456789012:role/test-role"
-  kms_key_arn    = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
-  definition     = "{\"StartAt\":\"Pass\",\"States\":{\"Pass\":{\"Type\":\"Pass\",\"End\":true}}}"
+  name              = "test-sfn"
+  role_arn          = "arn:aws:iam::123456789012:role/test-role"
+  kms_key_arn       = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
+  definition        = "{\"StartAt\":\"Pass\",\"States\":{\"Pass\":{\"Type\":\"Pass\",\"End\":true}}}"
   aws_account_id    = "123456789012"
   skip_sfn_creation = true
   tags = {

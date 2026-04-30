@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-04-30
+> **Last reviewed:** 2026-05-01
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -77,11 +77,11 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Type:** Testing
 **Status:** `backlog`
 **Module:** repo-wide
-**Why:** Audit on 2026-04-29 revealed that while most modules have tests, they lack assertions for mandatory tags and CMK encryption.
+**Why:** Audit on 2026-05-01 revealed that while most modules have tests, 29 modules still lack mandatory assertions for tagging (`environment`, `owner`, `project`, `cost_center`).
 
 #### Acceptance Criteria
-- [ ] Update `aws/base_component/*` tests to include tag and CMK assertions.
-- [ ] Update `aws/workload_component/*` tests to include tag and CMK assertions.
+- [ ] Update `aws/base_component/` tests: account_security, acm, asg, cloudfront, cloudwatch_alarm, dynamodb, ec2, ecr, ecs_fargate, efs, eks, elasticache, eventbridge, rds, route53, secrets_manager, security_group, sns, sqs, ssm, subnet, vpc, vpc_endpoints, wafv2
+- [ ] Update `aws/workload_component/` tests: alb_ecs_fargate, apigw_lambda, eventbridge_lambda, s3_lambda_trigger, step_functions_lambda
 
 ***
 
@@ -150,17 +150,17 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ### repo-wide: Evaluate and plan migration to AWS Provider 6.0
 
-**Priority:** MEDIUM
+**Priority:** HIGH
 **Type:** Maintenance
 **Status:** `backlog`
 **Module:** repo-wide
-**Why:** AWS Provider 6.0 introduces major features like multi-region support in a single provider block and region attribute injection. We need to evaluate the impact on our opinionated modules and plan a safe migration path.
+**Why:** AWS Provider 6.0 is GA and introduces game-changing multi-region support via the `region` attribute. This allows managing resources across regions without multiple provider aliasing, which is critical for our global patterns (CloudFront/WAF) and multi-region DR strategies.
 
 #### Acceptance Criteria
-- [ ] Review breaking changes in the AWS Provider 6.0 upgrade guide
-- [ ] Identify modules that would benefit most from multi-region support (e.g., global WAF, CloudFront)
-- [ ] Update standard `versions.tf` template to allow `~> 6.0` after verification
-- [ ] Document any required changes for module consumers
+- [ ] Review `region` attribute injection impact on existing base modules
+- [ ] Identify multi-region candidates for immediate simplification (e.g., CloudFront origins, Global WAF, Multi-region KMS)
+- [ ] Update the library-wide `versions.tf` standard template to support AWS Provider `~> 6.0`
+- [ ] Audit all modules for breaking changes (e.g., nullable boolean updates, deprecated resources)
 
 ---
 
