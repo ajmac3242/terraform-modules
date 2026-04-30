@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-04-29
+> **Last reviewed:** 2026-04-30
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -134,17 +134,17 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #24)
 **Module:** aws/base_component/bedrock_knowledge_base
 **Why:** Critical for RAG (Retrieval-Augmented Generation) patterns. Complements the Bedrock Agent module by providing a managed data source for LLM augmentation.
 
 #### Acceptance Criteria
-- [ ] `aws_bedrockagent_knowledge_base` with configurable storage type (OpenSearch Serverless, Pinecone, etc.)
-- [ ] Mandatory CMK encryption for data in transit and at rest
-- [ ] Integration with `aws/base_component/s3` for data source ingestion
-- [ ] Required `tags` enforced
-- [ ] Outputs: `knowledge_base_id`, `knowledge_base_arn`
-- [ ] Native offline Terraform test validates encryption and storage settings
+- [x] `aws_bedrockagent_knowledge_base` with configurable storage type (OpenSearch Serverless, Pinecone, etc.)
+- [x] Mandatory CMK encryption for data in transit and at rest (delegated to storage/source)
+- [x] Integration with `aws/base_component/s3` for data source ingestion
+- [x] Required `tags` enforced
+- [x] Outputs: `knowledge_base_id`, `knowledge_base_arn`
+- [x] Native offline Terraform test validates encryption and storage settings
 
 ---
 

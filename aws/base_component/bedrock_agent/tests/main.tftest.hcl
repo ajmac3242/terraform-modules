@@ -38,4 +38,9 @@ run "valid_agent_creation" {
     condition     = aws_bedrockagent_agent.this.customer_encryption_key_arn == var.customer_encryption_key_arn
     error_message = "KMS encryption key not set correctly"
   }
+
+  assert {
+    condition     = aws_bedrockagent_agent.this.tags["environment"] == "test" && aws_bedrockagent_agent.this.tags["owner"] == "test-owner" && aws_bedrockagent_agent.this.tags["project"] == "test-project" && aws_bedrockagent_agent.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on Bedrock Agent"
+  }
 }

@@ -50,4 +50,9 @@ run "valid_role_creation" {
     condition     = length(aws_iam_role_policy_attachment.this) == 1
     error_message = "Expected 1 policy attachment"
   }
+
+  assert {
+    condition     = aws_iam_role.this.tags["environment"] == "test" && aws_iam_role.this.tags["owner"] == "test-owner" && aws_iam_role.this.tags["project"] == "test-project" && aws_iam_role.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on IAM role"
+  }
 }

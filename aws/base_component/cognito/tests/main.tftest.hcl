@@ -35,4 +35,9 @@ run "valid_cognito_creation" {
     condition     = aws_cognito_user_pool_client.this.generate_secret == false
     error_message = "Client secret should not be generated for SPAs by default"
   }
+
+  assert {
+    condition     = aws_cognito_user_pool.this.tags["environment"] == "test" && aws_cognito_user_pool.this.tags["owner"] == "test-owner" && aws_cognito_user_pool.this.tags["project"] == "test-project" && aws_cognito_user_pool.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on Cognito User Pool"
+  }
 }

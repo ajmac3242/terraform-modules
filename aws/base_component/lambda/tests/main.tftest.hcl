@@ -40,4 +40,14 @@ run "valid_lambda_creation" {
     condition     = aws_cloudwatch_log_group.this.name == "/aws/lambda/${var.function_name}"
     error_message = "Log group name is incorrect"
   }
+
+  assert {
+    condition     = aws_lambda_function.this.kms_key_arn == var.kms_key_arn
+    error_message = "KMS key ARN does not match expected value"
+  }
+
+  assert {
+    condition     = aws_lambda_function.this.tags["environment"] == "test" && aws_lambda_function.this.tags["owner"] == "test-owner" && aws_lambda_function.this.tags["project"] == "test-project" && aws_lambda_function.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on Lambda function"
+  }
 }
