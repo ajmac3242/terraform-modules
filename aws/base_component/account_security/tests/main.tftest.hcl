@@ -49,4 +49,19 @@ run "validate_account_security" {
     condition     = aws_accessanalyzer_analyzer.this[0].type == "ACCOUNT"
     error_message = "IAM Access Analyzer must be of type ACCOUNT."
   }
+
+  assert {
+    condition     = aws_accessanalyzer_analyzer.this[0].tags["environment"] == "test" && aws_accessanalyzer_analyzer.this[0].tags["owner"] == "test-owner" && aws_accessanalyzer_analyzer.this[0].tags["project"] == "test-project" && aws_accessanalyzer_analyzer.this[0].tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on Access Analyzer."
+  }
+
+  assert {
+    condition     = aws_guardduty_detector.this[0].tags["environment"] == "test" && aws_guardduty_detector.this[0].tags["owner"] == "test-owner" && aws_guardduty_detector.this[0].tags["project"] == "test-project" && aws_guardduty_detector.this[0].tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on GuardDuty detector."
+  }
+
+  assert {
+    condition     = aws_default_security_group.this[0].tags["environment"] == "test" && aws_default_security_group.this[0].tags["owner"] == "test-owner" && aws_default_security_group.this[0].tags["project"] == "test-project" && aws_default_security_group.this[0].tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on default security group."
+  }
 }
