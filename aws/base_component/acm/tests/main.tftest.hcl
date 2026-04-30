@@ -25,4 +25,9 @@ run "valid_acm_creation" {
     condition     = aws_acm_certificate.this.domain_name == var.domain_name
     error_message = "Domain name does not match expected value"
   }
+
+  assert {
+    condition     = aws_acm_certificate.this.tags["environment"] == "test" && aws_acm_certificate.this.tags["owner"] == "test-owner" && aws_acm_certificate.this.tags["project"] == "test-project" && aws_acm_certificate.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on ACM certificate."
+  }
 }

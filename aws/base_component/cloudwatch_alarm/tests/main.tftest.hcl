@@ -42,6 +42,11 @@ run "valid_alarm_creation" {
     condition     = aws_cloudwatch_metric_alarm.this["test-alarm"].metric_name == "CPUUtilization"
     error_message = "Metric name does not match"
   }
+
+  assert {
+    condition     = aws_cloudwatch_metric_alarm.this["test-alarm"].tags["environment"] == "test" && aws_cloudwatch_metric_alarm.this["test-alarm"].tags["owner"] == "test-owner" && aws_cloudwatch_metric_alarm.this["test-alarm"].tags["project"] == "test-project" && aws_cloudwatch_metric_alarm.this["test-alarm"].tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on CloudWatch alarm."
+  }
 }
 
 run "multiple_alarms_creation" {

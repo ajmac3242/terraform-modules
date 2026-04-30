@@ -103,6 +103,7 @@ _`- [YYYY-MM-DD] <module> — <decision and rationale>`_
 - [2026-04-29] repo-wide — Enhanced `CONTRIBUTING.md` with explicit native Terraform test requirements for mandatory tags and CMK encryption.
 - [2026-04-29] route53 — Enhanced to support Alias records via dynamic blocks and `optional()` attributes.
 - [2026-04-29] s3 — Added `bucket_regional_domain_name` output to support CloudFront OAC origins.
+- [2026-05-01] tests — Standardized on `kms_key_arn` naming for EFS and added mandatory tag/CMK assertions to 10 base modules.
 
 ## Build Log
 

@@ -42,4 +42,9 @@ run "valid_table_creation" {
     condition     = aws_dynamodb_table.this.server_side_encryption[0].kms_key_arn == var.kms_key_arn
     error_message = "KMS key ARN does not match expected value"
   }
+
+  assert {
+    condition     = aws_dynamodb_table.this.tags["environment"] == "test" && aws_dynamodb_table.this.tags["owner"] == "test-owner" && aws_dynamodb_table.this.tags["project"] == "test-project" && aws_dynamodb_table.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on DynamoDB table."
+  }
 }

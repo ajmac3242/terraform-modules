@@ -46,6 +46,11 @@ run "valid_ecr_creation" {
     condition     = aws_ecr_repository.this.image_scanning_configuration[0].scan_on_push == true
     error_message = "Scan on push should be enabled by default"
   }
+
+  assert {
+    condition     = aws_ecr_repository.this.tags["environment"] == "test" && aws_ecr_repository.this.tags["owner"] == "test-owner" && aws_ecr_repository.this.tags["project"] == "test-project" && aws_ecr_repository.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on ECR repository."
+  }
 }
 
 run "valid_ecr_creation_auto_kms" {

@@ -37,4 +37,9 @@ run "valid_distribution_creation" {
     condition     = aws_cloudfront_distribution.this.web_acl_id == var.waf_web_acl_id
     error_message = "WAF ID does not match"
   }
+
+  assert {
+    condition     = aws_cloudfront_distribution.this.tags["environment"] == "test" && aws_cloudfront_distribution.this.tags["owner"] == "test-owner" && aws_cloudfront_distribution.this.tags["project"] == "test-project" && aws_cloudfront_distribution.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on CloudFront distribution."
+  }
 }

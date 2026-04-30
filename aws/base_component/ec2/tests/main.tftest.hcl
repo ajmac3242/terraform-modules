@@ -32,4 +32,14 @@ run "valid_ec2_creation" {
     condition     = aws_instance.this.root_block_device[0].encrypted == true
     error_message = "Root EBS should be encrypted"
   }
+
+  assert {
+    condition     = aws_instance.this.root_block_device[0].kms_key_id == var.kms_key_arn
+    error_message = "Root EBS KMS key ARN does not match expected value"
+  }
+
+  assert {
+    condition     = aws_instance.this.tags["environment"] == "test" && aws_instance.this.tags["owner"] == "test-owner" && aws_instance.this.tags["project"] == "test-project" && aws_instance.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on EC2 instance."
+  }
 }

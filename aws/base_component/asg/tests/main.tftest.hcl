@@ -32,4 +32,19 @@ run "valid_asg_creation" {
     condition     = tobool(aws_launch_template.this.block_device_mappings[0].ebs[0].encrypted) == true
     error_message = "EBS should be encrypted"
   }
+
+  assert {
+    condition     = aws_launch_template.this.block_device_mappings[0].ebs[0].kms_key_id == var.kms_key_arn
+    error_message = "EBS KMS key ARN does not match expected value"
+  }
+
+  assert {
+    condition     = alltrue([for k in ["environment", "owner", "project", "cost_center"] : anytrue([for t in aws_autoscaling_group.this.tag : t.key == k && t.value == var.tags[k]])])
+    error_message = "Mandatory tags are missing or incorrect on ASG."
+  }
+
+  assert {
+    condition     = aws_launch_template.this.tags["environment"] == "test" && aws_launch_template.this.tags["owner"] == "test-owner" && aws_launch_template.this.tags["project"] == "test-project" && aws_launch_template.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on Launch Template."
+  }
 }

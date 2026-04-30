@@ -39,4 +39,19 @@ run "valid_fargate_creation" {
     condition     = aws_cloudwatch_log_group.this.kms_key_id == var.kms_key_arn
     error_message = "Log group KMS key does not match expected value"
   }
+
+  assert {
+    condition     = aws_ecs_cluster.this.tags["environment"] == "test" && aws_ecs_cluster.this.tags["owner"] == "test-owner" && aws_ecs_cluster.this.tags["project"] == "test-project" && aws_ecs_cluster.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on ECS cluster."
+  }
+
+  assert {
+    condition     = aws_ecs_service.this.tags["environment"] == "test" && aws_ecs_service.this.tags["owner"] == "test-owner" && aws_ecs_service.this.tags["project"] == "test-project" && aws_ecs_service.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on ECS service."
+  }
+
+  assert {
+    condition     = aws_cloudwatch_log_group.this.tags["environment"] == "test" && aws_cloudwatch_log_group.this.tags["owner"] == "test-owner" && aws_cloudwatch_log_group.this.tags["project"] == "test-project" && aws_cloudwatch_log_group.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on CloudWatch log group."
+  }
 }

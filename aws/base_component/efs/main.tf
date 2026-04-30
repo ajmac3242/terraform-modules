@@ -7,7 +7,7 @@ resource "aws_efs_file_system" "this" {
 
   # Enforce encryption with CMK
   encrypted  = true
-  kms_key_id = var.kms_key_id
+  kms_key_id = var.kms_key_arn
 
   tags = merge(
     {
