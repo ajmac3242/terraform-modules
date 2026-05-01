@@ -52,6 +52,16 @@ run "valid_eventbridge_creation" {
     condition     = length(aws_cloudwatch_event_target.this) == 1
     error_message = "Event target should be created"
   }
+
+  assert {
+    condition     = aws_cloudwatch_event_bus.this[0].tags["environment"] == "test" && aws_cloudwatch_event_bus.this[0].tags["owner"] == "test-owner" && aws_cloudwatch_event_bus.this[0].tags["project"] == "test-project" && aws_cloudwatch_event_bus.this[0].tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on EventBridge bus"
+  }
+
+  assert {
+    condition     = aws_cloudwatch_event_rule.this["test-rule"].tags["environment"] == "test" && aws_cloudwatch_event_rule.this["test-rule"].tags["owner"] == "test-owner" && aws_cloudwatch_event_rule.this["test-rule"].tags["project"] == "test-project" && aws_cloudwatch_event_rule.this["test-rule"].tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on EventBridge rule"
+  }
 }
 
 run "default_bus_usage" {

@@ -10,7 +10,7 @@ module "secret" {
 
   name        = "my-app-secret"
   description = "Sensitive credentials for my application"
-  kms_key_id  = module.kms.key_arn
+  kms_key_arn = module.kms.key_arn
 
   tags = {
     environment = "prod"
@@ -31,7 +31,7 @@ module "secret" {
 |------|-------------|------|---------|:--------:|
 | `name` | Name of the secret | `string` | n/a | yes |
 | `description` | Description of the secret | `string` | n/a | yes |
-| `kms_key_id` | ARN or Id of the KMS key to be used to encrypt the secret values | `string` | n/a | yes |
+| `kms_key_arn` | ARN of the KMS key to be used to encrypt the secret values | `string` | n/a | yes |
 | `recovery_window_in_days` | Number of days to retain deleted secrets (7-30) | `number` | `30` | no |
 | `tags` | Standard tags for all resources | `map(string)` | n/a | yes |
 

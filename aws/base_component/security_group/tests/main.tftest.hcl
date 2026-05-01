@@ -26,6 +26,11 @@ run "valid_sg_creation" {
     condition     = aws_security_group.this.name == var.name
     error_message = "Security group name does not match expected value"
   }
+
+  assert {
+    condition     = aws_security_group.this.tags["environment"] == "test" && aws_security_group.this.tags["owner"] == "test-owner" && aws_security_group.this.tags["project"] == "test-project" && aws_security_group.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on security group"
+  }
 }
 
 run "invalid_ingress_rule" {

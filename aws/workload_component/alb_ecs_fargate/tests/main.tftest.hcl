@@ -33,4 +33,14 @@ run "valid_composition" {
     condition     = aws_lb_target_group.this.port == 80
     error_message = "Target group port should default to 80"
   }
+
+  assert {
+    condition     = aws_lb_target_group.this.tags["environment"] == "test" && aws_lb_target_group.this.tags["owner"] == "test-owner" && aws_lb_target_group.this.tags["project"] == "test-project" && aws_lb_target_group.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on ALB target group"
+  }
+
+  assert {
+    condition     = aws_lb_listener_rule.this.tags["environment"] == "test" && aws_lb_listener_rule.this.tags["owner"] == "test-owner" && aws_lb_listener_rule.this.tags["project"] == "test-project" && aws_lb_listener_rule.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on ALB listener rule"
+  }
 }

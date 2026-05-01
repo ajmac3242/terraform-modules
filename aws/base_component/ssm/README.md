@@ -8,9 +8,9 @@ Opinionated SSM Parameter module. Standard secret and configuration management, 
 module "ssm_parameter" {
   source = "./aws/base_component/ssm"
 
-  name   = "/app/config/db-password"
-  value  = var.db_password
-  key_id = module.kms.key_arn
+  name        = "/app/config/db-password"
+  value       = var.db_password
+  kms_key_arn = module.kms.key_arn
 
   tags = {
     environment = "prod"
@@ -30,7 +30,7 @@ module "ssm_parameter" {
 |------|-------------|------|---------|:--------:|
 | `name` | Name of the parameter | `string` | n/a | yes |
 | `value` | Value of the parameter | `string` | n/a | yes |
-| `key_id` | KMS key ID for encryption | `string` | n/a | yes |
+| `kms_key_arn` | KMS key ARN for encryption | `string` | n/a | yes |
 | `description` | Description of the parameter | `string` | `null` | no |
 | `tags` | Standard tags for all resources | `map(string)` | n/a | yes |
 

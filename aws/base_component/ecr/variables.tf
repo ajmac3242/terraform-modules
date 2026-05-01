@@ -24,6 +24,11 @@ variable "existing_kms_key_arn" {
   description = "The ARN of an existing KMS key to use for encryption. If null, a new key will be created."
   type        = string
   default     = null
+
+  validation {
+    condition     = var.existing_kms_key_arn == null || can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/.*$", var.existing_kms_key_arn))
+    error_message = "The existing_kms_key_arn must be a valid KMS key ARN."
+  }
 }
 
 variable "lifecycle_policy" {

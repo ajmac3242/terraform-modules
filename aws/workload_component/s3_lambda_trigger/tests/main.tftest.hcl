@@ -41,4 +41,14 @@ run "valid_s3_lambda_trigger_creation" {
     condition     = length(aws_s3_bucket_notification.this.lambda_function) == 1
     error_message = "S3 bucket notification should have one lambda function target"
   }
+
+  assert {
+    condition     = module.s3.tags["environment"] == "test" && module.s3.tags["owner"] == "test-owner" && module.s3.tags["project"] == "test-project" && module.s3.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on S3 bucket"
+  }
+
+  assert {
+    condition     = module.lambda.tags["environment"] == "test" && module.lambda.tags["owner"] == "test-owner" && module.lambda.tags["project"] == "test-project" && module.lambda.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on Lambda function"
+  }
 }

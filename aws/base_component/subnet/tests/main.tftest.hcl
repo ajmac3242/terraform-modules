@@ -32,4 +32,9 @@ run "valid_subnet_creation" {
     condition     = aws_subnet.this.tags["Name"] == var.name
     error_message = "Subnet Name tag is incorrect"
   }
+
+  assert {
+    condition     = aws_subnet.this.tags["environment"] == "test" && aws_subnet.this.tags["owner"] == "test-owner" && aws_subnet.this.tags["project"] == "test-project" && aws_subnet.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on subnet"
+  }
 }

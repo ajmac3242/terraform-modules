@@ -19,6 +19,16 @@ provider "aws" {
   secret_key                  = "mock_secret_key"
 }
 
-# Plan-only test to verify flow logs and defaults
-# This test is kept as a stub because the upstream VPC module
-# uses data.aws_caller_identity which fails in mock environments.
+run "valid_vpc_creation" {
+  command = plan
+
+  assert {
+    condition     = module.vpc.vpc_cidr_block == var.cidr_block
+    error_message = "VPC CIDR block does not match expected value"
+  }
+
+  assert {
+    condition     = module.vpc.tags["environment"] == "test" && module.vpc.tags["owner"] == "test-owner" && module.vpc.tags["project"] == "test-project" && module.vpc.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on VPC"
+  }
+}

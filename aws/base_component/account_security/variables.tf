@@ -68,6 +68,11 @@ variable "ebs_kms_key_arn" {
   description = "The ARN of the KMS key for default EBS encryption. If null, the default aws/ebs key is used."
   type        = string
   default     = null
+
+  validation {
+    condition     = var.ebs_kms_key_arn == null || can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/.*$", var.ebs_kms_key_arn))
+    error_message = "The ebs_kms_key_arn must be a valid KMS key ARN."
+  }
 }
 
 # -----------------------------------------------------------------------------
