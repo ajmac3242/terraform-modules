@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-01
+> **Last reviewed:** 2026-05-02
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -165,6 +165,62 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ---
 
+### aws/base_component/opensearch_serverless: Opinionated OpenSearch Serverless module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/opensearch_serverless
+**Why:** Foundational dependency for the `bedrock_knowledge_base` module. Provides a secure, scalable vector database for RAG patterns.
+
+#### Acceptance Criteria
+- [ ] `aws_opensearchserverless_collection` with `type = "VECTORSEARCH"`
+- [ ] Mandatory CMK encryption for the collection
+- [ ] Network access policy restricted to VPC (Interface endpoints)
+- [ ] Data access policy scoped to least-privilege for Bedrock service principals
+- [ ] Required `tags` enforced
+- [ ] Outputs: `collection_id`, `collection_arn`, `collection_endpoint`
+- [ ] Native offline Terraform test validates encryption and access policies
+
+---
+
+### aws/base_component/eventbridge_pipes: Opinionated EventBridge Pipes module
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/eventbridge_pipes
+**Why:** Enables modern serverless event routing patterns (e.g., SQS to Step Functions) without custom Lambda "glue" code. Simplifies event transformation and enrichment.
+
+#### Acceptance Criteria
+- [ ] `aws_pipes_pipe` with configurable source and target
+- [ ] Mandatory IAM role creation with least-privilege policies for source/target
+- [ ] Support for enrichment (e.g., Lambda, API Destination)
+- [ ] Mandatory CMK encryption for any associated DLQs
+- [ ] Required `tags` enforced
+- [ ] Outputs: `pipe_arn`, `pipe_name`, `role_arn`
+- [ ] Native offline Terraform test validates pipe configuration and IAM role
+
+---
+
+### aws/base_component/securityhub: Opinionated Security Hub module
+
+**Priority:** MEDIUM
+**Type:** Security
+**Status:** `backlog`
+**Module:** aws/base_component/securityhub
+**Why:** Standardizes the enablement and finding aggregation across accounts, completing the security foundation established by the `account_security` module.
+
+#### Acceptance Criteria
+- [ ] `aws_securityhub_account` enabled
+- [ ] Standardized enablement of foundational security best practices (e.g., AWS Foundational Security Best Practices, CIS)
+- [ ] Finding aggregation enabled for multi-region setups (using AWS Provider 6.0 features if applicable)
+- [ ] Required `tags` enforced where supported
+- [ ] Outputs: `securityhub_arn`
+- [ ] Native offline Terraform test validates enablement and standard association
+
+---
+
 ### aws/workload_component/centralized_logging: Secure Centralized Logging pattern
 
 **Priority:** MEDIUM
@@ -176,7 +232,9 @@ All modules in this repo MUST comply with these non-negotiable standards:
 #### Acceptance Criteria
 - [ ] Uses `aws/base_component/s3` for log storage with forced SSL and CMK
 - [ ] Uses `aws/base_component/athena` for querying logs
-- [ ] Standardized bucket policies for common AWS service logging (ALB, CloudFront, VPC Flow Logs)
+- [ ] Implement ALB access logging bucket policy (ELB service principal access)
+- [ ] Implement CloudFront access logging bucket policy (OAC/OAI or service principal access)
+- [ ] Implement VPC Flow Logs bucket policy (delivery.logs.amazonaws.com access)
 - [ ] Required `tags` enforced
 - [ ] Outputs: `log_bucket_arn`, `athena_workgroup_name`
 - [ ] Native offline Terraform test validates the composition and bucket policies

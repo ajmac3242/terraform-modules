@@ -91,6 +91,7 @@ _`- [YYYY-MM-DD] <topic> — <decision and rationale>`_
 - [2026-04-29] AWS Provider 6.0 Roadmap — With the general availability of AWS Provider 6.0, Navigator is initiating an evaluation of its multi-region and region-attribute features to determine how they can simplify our global module configurations.
 - [2026-05-01] Hardening the Library — Verified significant tag assertion gaps across 29 modules; prioritizing test suite updates to ensure non-negotiable tagging standards are strictly enforced across all resource types.
 - [2026-05-01] AWS Provider 6.0 Strategy — Transitioning evaluation to HIGH priority to leverage native multi-region support, which will significantly simplify the 'static_website' and future 'centralized_logging' patterns.
+- [2026-05-02] Foundational Expansion: OpenSearch and Eventing — Prioritizing OpenSearch Serverless as a critical dependency for Bedrock patterns. Introducing EventBridge Pipes and Security Hub to the roadmap to advance serverless orchestration and finalize the security baseline.
 
 ## Session Log
 
@@ -103,3 +104,4 @@ _`- [YYYY-MM-DD] Reviewed backlog and updated priorities.`_
 - [2026-04-29] Synchronized Cognito/Bedrock to history; introduced `static_website` and `athena` candidates; refined test standardization criteria.
 - [2026-04-29] Finalized `static_website` and `athena`; expanded roadmap to include Bedrock Knowledge Base and Provider 6.0 evaluation.
 - [2026-05-01] Audited all module test suites for tagging compliance; prioritized test hardening and AWS Provider 6.0 migration.
+- [2026-05-02] Refined centralized logging criteria, prioritized OpenSearch Serverless, and expanded security/eventing roadmap.
