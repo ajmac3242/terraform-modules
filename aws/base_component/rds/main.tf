@@ -18,7 +18,7 @@ resource "aws_db_instance" "this" {
   storage_type      = "gp3"
   # Mandatory storage encryption
   storage_encrypted = true
-  kms_key_id        = var.kms_key_id
+  kms_key_id        = var.kms_key_arn
 
   db_name  = var.db_name
   username = var.username

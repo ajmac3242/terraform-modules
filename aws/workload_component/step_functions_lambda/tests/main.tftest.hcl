@@ -34,4 +34,14 @@ run "iam_validation" {
     condition     = aws_iam_policy.this.name == "${var.name}-policy"
     error_message = "IAM policy name should match expected value"
   }
+
+  assert {
+    condition     = module.role.tags["environment"] == "test" && module.role.tags["owner"] == "test-owner" && module.role.tags["project"] == "test-project" && module.role.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on IAM role"
+  }
+
+  assert {
+    condition     = aws_iam_policy.this.tags["environment"] == "test" && aws_iam_policy.this.tags["owner"] == "test-owner" && aws_iam_policy.this.tags["project"] == "test-project" && aws_iam_policy.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on IAM policy"
+  }
 }

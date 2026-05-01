@@ -30,6 +30,11 @@ run "valid_queue_creation" {
     condition     = aws_sqs_queue.this.kms_master_key_id == var.kms_key_arn
     error_message = "KMS key ARN does not match expected value"
   }
+
+  assert {
+    condition     = aws_sqs_queue.this.tags["environment"] == "test" && aws_sqs_queue.this.tags["owner"] == "test-owner" && aws_sqs_queue.this.tags["project"] == "test-project" && aws_sqs_queue.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on SQS queue"
+  }
 }
 
 run "valid_queue_with_dlq" {

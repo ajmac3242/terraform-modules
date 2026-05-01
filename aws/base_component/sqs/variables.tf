@@ -12,6 +12,11 @@ variable "visibility_timeout_seconds" {
 variable "kms_key_arn" {
   description = "The ARN of the KMS key for encryption"
   type        = string
+
+  validation {
+    condition     = can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/.*$", var.kms_key_arn))
+    error_message = "The kms_key_arn must be a valid KMS key ARN."
+  }
 }
 
 variable "use_dead_letter_queue" {

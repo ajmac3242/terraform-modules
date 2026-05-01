@@ -41,6 +41,11 @@ run "valid_eventbridge_lambda_creation" {
     condition     = aws_lambda_permission.allow_eventbridge.principal == "events.amazonaws.com"
     error_message = "Lambda permission principal should be events.amazonaws.com"
   }
+
+  assert {
+    condition     = module.lambda.tags["environment"] == "test" && module.lambda.tags["owner"] == "test-owner" && module.lambda.tags["project"] == "test-project" && module.lambda.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on Lambda function"
+  }
 }
 
 run "with_dlq_enabled" {

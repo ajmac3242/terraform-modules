@@ -2,7 +2,7 @@ variables {
   cluster_id         = "test-redis"
   subnet_ids         = ["subnet-12345"]
   security_group_ids = ["sg-12345"]
-  kms_key_id         = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
+  kms_key_arn        = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
   tags = {
     environment = "test"
     owner       = "test-owner"
@@ -31,5 +31,15 @@ run "valid_elasticache_creation" {
   assert {
     condition     = aws_elasticache_replication_group.this.at_rest_encryption_enabled == "true"
     error_message = "At-rest encryption should be enabled"
+  }
+
+  assert {
+    condition     = aws_elasticache_replication_group.this.tags["environment"] == "test" && aws_elasticache_replication_group.this.tags["owner"] == "test-owner" && aws_elasticache_replication_group.this.tags["project"] == "test-project" && aws_elasticache_replication_group.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on ElastiCache replication group"
+  }
+
+  assert {
+    condition     = aws_elasticache_subnet_group.this.tags["environment"] == "test" && aws_elasticache_subnet_group.this.tags["owner"] == "test-owner" && aws_elasticache_subnet_group.this.tags["project"] == "test-project" && aws_elasticache_subnet_group.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on ElastiCache subnet group"
   }
 }

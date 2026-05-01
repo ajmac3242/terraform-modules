@@ -17,9 +17,9 @@ module "rds" {
   db_name  = "myapp"
   username = "admin"
 
-  vpc_id     = module.vpc.vpc_id
-  subnet_ids = module.vpc.private_subnet_ids
-  kms_key_id = module.kms.key_arn
+  vpc_id      = module.vpc.vpc_id
+  subnet_ids  = module.vpc.private_subnet_ids
+  kms_key_arn = module.kms.key_arn
 
   tags = {
     environment = "prod"
@@ -48,7 +48,7 @@ module "rds" {
 | `password` | Password for the master DB user. If null, a random password is generated. | `string` | `null` | no |
 | `vpc_id` | VPC ID where the RDS instance will be deployed | `string` | n/a | yes |
 | `subnet_ids` | List of subnet IDs for the DB subnet group | `list(string)` | n/a | yes |
-| `kms_key_id` | ARN for the KMS key to use for storage encryption | `string` | n/a | yes |
+| `kms_key_arn` | ARN for the KMS key to use for storage encryption | `string` | n/a | yes |
 | `multi_az` | Specifies if the RDS instance is multi-AZ | `bool` | `true` | no |
 | `tags` | Standard tags for all resources | `map(string)` | n/a | yes |
 

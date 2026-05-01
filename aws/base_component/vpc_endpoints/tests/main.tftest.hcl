@@ -36,4 +36,9 @@ run "valid_endpoints_creation" {
     condition     = aws_vpc_endpoint.this["s3"].service_name == "com.amazonaws.us-east-1.s3"
     error_message = "Service name is incorrect"
   }
+
+  assert {
+    condition     = aws_vpc_endpoint.this["s3"].tags["environment"] == "test" && aws_vpc_endpoint.this["s3"].tags["owner"] == "test-owner" && aws_vpc_endpoint.this["s3"].tags["project"] == "test-project" && aws_vpc_endpoint.this["s3"].tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on VPC endpoint"
+  }
 }

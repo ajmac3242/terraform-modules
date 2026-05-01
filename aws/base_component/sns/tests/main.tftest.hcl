@@ -1,6 +1,6 @@
 variables {
-  name       = "test-topic"
-  kms_key_id = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
+  name        = "test-topic"
+  kms_key_arn = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
   tags = {
     environment = "test"
     owner       = "test-owner"
@@ -27,7 +27,12 @@ run "valid_sns_creation" {
   }
 
   assert {
-    condition     = aws_sns_topic.this.kms_master_key_id == var.kms_key_id
+    condition     = aws_sns_topic.this.kms_master_key_id == var.kms_key_arn
     error_message = "KMS key ID does not match expected value"
+  }
+
+  assert {
+    condition     = aws_sns_topic.this.tags["environment"] == "test" && aws_sns_topic.this.tags["owner"] == "test-owner" && aws_sns_topic.this.tags["project"] == "test-project" && aws_sns_topic.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on SNS topic"
   }
 }

@@ -10,7 +10,7 @@ module "elasticache" {
 
   name               = "my-redis"
   subnet_ids         = module.vpc.private_subnet_ids
-  kms_key_id         = module.kms.key_arn
+  kms_key_arn        = module.kms.key_arn
   security_group_ids = [module.security_group.id]
 
   tags = {
@@ -32,7 +32,7 @@ module "elasticache" {
 |------|-------------|------|---------|:--------:|
 | `name` | Name of the ElastiCache cluster | `string` | n/a | yes |
 | `subnet_ids` | List of subnet IDs for the ElastiCache subnet group | `list(string)` | n/a | yes |
-| `kms_key_id` | ARN for the KMS key to use for encryption at rest | `string` | n/a | yes |
+| `kms_key_arn` | ARN for the KMS key to use for encryption at rest | `string` | n/a | yes |
 | `security_group_ids` | List of security group IDs to associate with | `list(string)` | n/a | yes |
 | `node_type` | Instance class to use | `string` | `"cache.t3.medium"` | no |
 | `num_cache_nodes` | Number of cache nodes in the cluster | `number` | `1` | no |

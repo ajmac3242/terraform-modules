@@ -7,7 +7,7 @@ variables {
   password               = "testpassword"
   subnet_ids             = ["subnet-12345", "subnet-67890"]
   vpc_security_group_ids = ["sg-12345"]
-  kms_key_id             = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
+  kms_key_arn            = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
   tags = {
     environment = "test"
     owner       = "test-owner"
@@ -41,5 +41,15 @@ run "valid_rds_creation" {
   assert {
     condition     = aws_db_instance.this.multi_az == true
     error_message = "Multi-AZ should be enabled by default"
+  }
+
+  assert {
+    condition     = aws_db_instance.this.tags["environment"] == "test" && aws_db_instance.this.tags["owner"] == "test-owner" && aws_db_instance.this.tags["project"] == "test-project" && aws_db_instance.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on RDS instance"
+  }
+
+  assert {
+    condition     = aws_db_subnet_group.this.tags["environment"] == "test" && aws_db_subnet_group.this.tags["owner"] == "test-owner" && aws_db_subnet_group.this.tags["project"] == "test-project" && aws_db_subnet_group.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on DB subnet group"
   }
 }

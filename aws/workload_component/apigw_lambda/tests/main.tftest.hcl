@@ -52,4 +52,14 @@ run "valid_apigw_lambda_creation" {
     condition     = aws_wafv2_web_acl_association.this.web_acl_arn == var.waf_web_acl_arn
     error_message = "WAF Web ACL association ARN does not match"
   }
+
+  assert {
+    condition     = aws_apigatewayv2_api.this.tags["environment"] == "test" && aws_apigatewayv2_api.this.tags["owner"] == "test-owner" && aws_apigatewayv2_api.this.tags["project"] == "test-project" && aws_apigatewayv2_api.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on API Gateway"
+  }
+
+  assert {
+    condition     = aws_apigatewayv2_stage.this.tags["environment"] == "test" && aws_apigatewayv2_stage.this.tags["owner"] == "test-owner" && aws_apigatewayv2_stage.this.tags["project"] == "test-project" && aws_apigatewayv2_stage.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on API Gateway stage"
+  }
 }

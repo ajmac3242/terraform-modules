@@ -31,4 +31,9 @@ run "valid_eks_creation" {
     condition     = length(aws_eks_cluster.this.encryption_config) == 1
     error_message = "Encryption config should be present"
   }
+
+  assert {
+    condition     = aws_eks_cluster.this.tags["environment"] == "test" && aws_eks_cluster.this.tags["owner"] == "test-owner" && aws_eks_cluster.this.tags["project"] == "test-project" && aws_eks_cluster.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on EKS cluster"
+  }
 }

@@ -75,14 +75,14 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Testing
-**Status:** `in-progress` (PR #13)
+**Status:** `done` (PR #28)
 **Module:** repo-wide
 **Why:** Audit on 2026-05-01 revealed that while most modules have tests, 29 modules still lack mandatory assertions for tagging (`environment`, `owner`, `project`, `cost_center`).
 
 #### Acceptance Criteria
 - [x] Update `aws/base_component/` tests (Batch 1): account_security, acm, asg, cloudfront, cloudwatch_alarm, dynamodb, ec2, ecr, ecs_fargate, efs
-- [ ] Update `aws/base_component/` tests (Batch 2): eks, elasticache, eventbridge, rds, route53, secrets_manager, security_group, sns, sqs, ssm, subnet, vpc, vpc_endpoints, wafv2
-- [ ] Update `aws/workload_component/` tests: alb_ecs_fargate, apigw_lambda, eventbridge_lambda, s3_lambda_trigger, step_functions_lambda
+- [x] Update `aws/base_component/` tests (Batch 2): eks, elasticache, eventbridge, rds, route53, secrets_manager, security_group, sns, sqs, ssm, subnet, vpc, vpc_endpoints, wafv2
+- [x] Update `aws/workload_component/` tests: alb_ecs_fargate, apigw_lambda, eventbridge_lambda, s3_lambda_trigger, step_functions_lambda
 
 ***
 

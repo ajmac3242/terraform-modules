@@ -8,8 +8,8 @@ Opinionated SNS Topic module. Core messaging component with enforced CMK encrypt
 module "sns_topic" {
   source = "./aws/base_component/sns"
 
-  name       = "my-topic"
-  kms_key_id = module.kms.key_arn
+  name        = "my-topic"
+  kms_key_arn = module.kms.key_arn
 
   tags = {
     environment = "prod"
@@ -28,7 +28,7 @@ module "sns_topic" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | `name` | Name of the SNS topic | `string` | n/a | yes |
-| `kms_key_id` | ARN for the KMS key to use for encryption | `string` | n/a | yes |
+| `kms_key_arn` | ARN for the KMS key to use for encryption | `string` | n/a | yes |
 | `tags` | Standard tags for all resources | `map(string)` | n/a | yes |
 
 ## Outputs

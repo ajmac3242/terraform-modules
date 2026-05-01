@@ -36,6 +36,11 @@ variable "billing_mode" {
 variable "kms_key_arn" {
   description = "The ARN of the KMS key to use for server-side encryption"
   type        = string
+
+  validation {
+    condition     = can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/.*$", var.kms_key_arn))
+    error_message = "The kms_key_arn must be a valid KMS key ARN."
+  }
 }
 
 variable "pitr_enabled" {
