@@ -105,6 +105,8 @@ _`- [YYYY-MM-DD] <module> — <decision and rationale>`_
 - [2026-04-29] s3 — Added `bucket_regional_domain_name` output to support CloudFront OAC origins.
 - [2026-05-01] tests — Standardized on `kms_key_arn` naming for EFS and added mandatory tag/CMK assertions to 10 base modules.
 - [2026-05-02] opensearch_serverless — Enforced `depends_on` on encryption policy to ensure collection creation succeeds with CMK enabled.
+- [2026-05-03] eventbridge_pipes — Used `source_arn`, `target_arn`, and `enrichment_arn` as variable names because `source` is a reserved word in Terraform module blocks.
+- [2026-05-03] securityhub — Discovered that `aws_securityhub_finding_aggregator` does not export an `arn` attribute, only an `id`.
 
 ## Build Log
 
@@ -125,3 +127,5 @@ _`- [YYYY-MM-DD] Built <module path>. PR #<number>.`_
 - [2026-04-28] Standardized repo documentation/testing and built cognito, bedrock_agent base modules. PR #11.
 - [2026-04-29] Standardized tests/docs across all modules and built athena, static_website modules. PR #12.
 - [2026-05-02] Built aws/base_component/opensearch_serverless. PR #13.
+- [2026-05-03] Built aws/base_component/eventbridge_pipes. PR #14.
+- [2026-05-03] Built aws/base_component/securityhub. PR #14.
