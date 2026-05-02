@@ -46,7 +46,7 @@ module "knowledge_base" {
 | opensearch_serverless_configuration | Configuration for OpenSearch Serverless storage | `object` | `null` | no |
 | pinecone_configuration | Configuration for Pinecone storage | `object` | `null` | no |
 | rds_configuration | Configuration for RDS Aurora storage | `object` | `null` | no |
-| redis_oss_configuration | Configuration for Redis OSS storage | `object` | `null` | no |
+| redis_enterprise_cloud_configuration | Configuration for Redis Enterprise Cloud storage | `object` | `null` | no |
 | managed_policy_arns | List of managed policy ARNs to attach to the KB role | `list(string)` | `[]` | no |
 | permissions_boundary_arn | ARN of the permissions boundary to attach to the KB role | `string` | `null` | no |
 | tags | A map of tags to assign to the resources | `map(string)` | n/a | yes |

@@ -17,3 +17,8 @@ output "unique_id" {
   description = "The unique ID assigned by AWS"
   value       = aws_iam_role.this.unique_id
 }
+
+output "tags" {
+  description = "A map of tags assigned to the resource"
+  value       = aws_iam_role.this.tags
+}

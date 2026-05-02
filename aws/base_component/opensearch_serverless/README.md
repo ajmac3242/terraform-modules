@@ -6,7 +6,7 @@ This module provides an opinionated OpenSearch Serverless collection configured 
 ## Usage
 ```hcl
 module "opensearch_vector_store" {
-  source = "../../aws/base_component/opensearch_serverless"
+  source = "./aws/base_component/opensearch_serverless"
 
   name        = "my-vector-store"
   kms_key_arn = "arn:aws:kms:us-east-1:123456789012:key/your-key-id"
