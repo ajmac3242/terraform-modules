@@ -41,8 +41,8 @@ run "validate_collection" {
   }
 
   assert {
-    condition     = aws_opensearchserverless_collection.this.tags["environment"] == "test"
-    error_message = "Mandatory tags missing on collection"
+    condition     = aws_opensearchserverless_collection.this.tags["environment"] == "test" && aws_opensearchserverless_collection.this.tags["owner"] == "builder" && aws_opensearchserverless_collection.this.tags["project"] == "unit-test" && aws_opensearchserverless_collection.this.tags["cost_center"] == "00000"
+    error_message = "Mandatory tags missing or incorrect on collection"
   }
 }
 

@@ -46,6 +46,11 @@ run "valid_kb_creation" {
   }
 
   assert {
+    condition     = module.iam_role.tags["environment"] == "test" && module.iam_role.tags["owner"] == "test-owner" && module.iam_role.tags["project"] == "test-project" && module.iam_role.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on KB IAM role"
+  }
+
+  assert {
     condition     = aws_bedrockagent_knowledge_base.this.storage_configuration[0].type == var.storage_type
     error_message = "Storage type does not match expected value"
   }
