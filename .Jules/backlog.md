@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-02
+> **Last reviewed:** 2026-05-03
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -153,7 +153,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Maintenance
-**Status:** `backlog`
+**Status:** `in-progress`
 **Module:** repo-wide
 **Why:** AWS Provider 6.0 is GA and introduces game-changing multi-region support via the `region` attribute. This allows managing resources across regions without multiple provider aliasing, which is critical for our global patterns (CloudFront/WAF) and multi-region DR strategies.
 
@@ -193,13 +193,15 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Enables modern serverless event routing patterns (e.g., SQS to Step Functions) without custom Lambda "glue" code. Simplifies event transformation and enrichment.
 
 #### Acceptance Criteria
-- [ ] `aws_pipes_pipe` with configurable source and target
-- [ ] Mandatory IAM role creation with least-privilege policies for source/target
-- [ ] Support for enrichment (e.g., Lambda, API Destination)
-- [ ] Mandatory CMK encryption for any associated DLQs
+- [ ] `aws_pipes_pipe` resource with `source`, `target`, and optional `enrichment`
+- [ ] Support for SQS, DynamoDB Streams, and Kinesis as sources
+- [ ] Support for Lambda, Step Functions, and EventBridge as targets
+- [ ] Mandatory IAM execution role created via `aws/base_component/iam` with least-privilege source/target permissions
+- [ ] Support for `source_parameters` (batch size, etc.) and `target_parameters`
+- [ ] Mandatory CMK encryption for associated SQS DLQs (if used)
 - [ ] Required `tags` enforced
-- [ ] Outputs: `pipe_arn`, `pipe_name`, `role_arn`
-- [ ] Native offline Terraform test validates pipe configuration and IAM role
+- [ ] Outputs: `pipe_arn`, `pipe_id`, `pipe_name`, `role_arn`
+- [ ] Native offline Terraform test validates pipe state, IAM role, and tag enforcement
 
 ---
 
@@ -212,12 +214,14 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Standardizes the enablement and finding aggregation across accounts, completing the security foundation established by the `account_security` module.
 
 #### Acceptance Criteria
-- [ ] `aws_securityhub_account` enabled
-- [ ] Standardized enablement of foundational security best practices (e.g., AWS Foundational Security Best Practices, CIS)
-- [ ] Finding aggregation enabled for multi-region setups (using AWS Provider 6.0 features if applicable)
-- [ ] Required `tags` enforced where supported
-- [ ] Outputs: `securityhub_arn`
-- [ ] Native offline Terraform test validates enablement and standard association
+- [ ] `aws_securityhub_account` resource enabled
+- [ ] Optional `aws_securityhub_standards_subscription` for AWS Foundational Security Best Practices and CIS
+- [ ] `aws_securityhub_finding_aggregator` for cross-region aggregation
+- [ ] Configurable `control_finding_generator` (SECURITY_CONTROL or STANDARD_CONTROL)
+- [ ] Support for `region` attribute (AWS Provider 6.0) for multi-region enablement
+- [ ] Required `tags` enforced (where supported by Security Hub)
+- [ ] Outputs: `securityhub_id`, `securityhub_arn`
+- [ ] Native offline Terraform test validates enablement and aggregator configuration
 
 ---
 
@@ -775,6 +779,23 @@ Retain previously completed module entries below this line for historical tracki
 - [x] Required `tags` enforced on VPC and all subnets
 - [x] Outputs: `vpc_id`, `public_subnet_ids`, `private_subnet_ids`, `vpc_cidr_block`
 - [x] Terraform test: VPC created with expected subnets and tags
+
+---
+
+### aws/base_component/acm: Enhance ACM module for Provider 6.0 region support
+
+**Priority:** MEDIUM
+**Type:** Maintenance
+**Status:** `backlog`
+**Module:** aws/base_component/acm
+**Why:** CloudFront requires certificates to be in `us-east-1`. Leveraging the Provider 6.0 `region` attribute allows our global `static_website` pattern to provision its own certificate without complex provider aliasing in the calling module.
+
+#### Acceptance Criteria
+- [ ] Expose `region` variable to the module
+- [ ] Pass `region` attribute to `aws_acm_certificate` resource
+- [ ] Update `aws/workload_component/static_website` to pass `region = "us-east-1"` to its ACM submodule
+- [ ] Maintain backward compatibility for single-region deployments
+- [ ] Native offline Terraform test validates resource creation with regional intent
 
 ---
 
