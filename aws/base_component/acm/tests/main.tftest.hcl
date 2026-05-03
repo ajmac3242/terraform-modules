@@ -31,3 +31,16 @@ run "valid_acm_creation" {
     error_message = "Mandatory tags are missing or incorrect on ACM certificate."
   }
 }
+
+run "regional_acm_creation" {
+  command = plan
+
+  variables {
+    region = "us-west-2"
+  }
+
+  assert {
+    condition     = aws_acm_certificate.this.region == "us-west-2"
+    error_message = "Certificate region does not match expected value"
+  }
+}

@@ -30,7 +30,7 @@ Every module you create MUST follow this structure:
 - `tags` variable of type `map(string)` must exist and be merged onto all taggable resources
 - Required tag keys: `environment`, `owner`, `project`, `cost_center`
 - No hardcoded region, account ID, or ARN values — use variables or `data` sources
-- AWS provider pinned to `~> 5.0`, Terraform to `>= 1.5`
+- AWS provider pinned to `~> 6.0`, Terraform to `>= 1.5` (Migrated from 5.0 on 2026-05-04)
 - No inline IAM policies — managed policy ARNs only
 - CMK encryption for all data-at-rest resources
 - All variables and outputs must include descriptions
@@ -129,3 +129,4 @@ _`- [YYYY-MM-DD] Built <module path>. PR #<number>.`_
 - [2026-05-02] Built aws/base_component/opensearch_serverless. PR #13.
 - [2026-05-03] Built aws/base_component/eventbridge_pipes. PR #14.
 - [2026-05-03] Built aws/base_component/securityhub. PR #14.
+- [2026-05-04] Updated iam, kms, s3, vpc, route53, acm, static_website to AWS Provider 6.0 and enhanced ACM with regional support. PR #15.

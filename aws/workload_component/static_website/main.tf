@@ -20,9 +20,12 @@ resource "aws_cloudfront_origin_access_control" "this" {
 }
 
 # ACM Certificate for the domain
+# CloudFront requires certificates in us-east-1 for global distributions.
+# Leveraging AWS Provider 6.0 region attribute in the ACM module.
 module "acm" {
   source = "../../base_component/acm"
 
+  region                    = "us-east-1"
   domain_name               = var.domain_name
   subject_alternative_names = var.alternate_domains
 

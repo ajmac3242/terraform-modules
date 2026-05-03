@@ -153,15 +153,15 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Maintenance
-**Status:** `in-progress`
+**Status:** `done` (PR #15)
 **Module:** repo-wide
 **Why:** AWS Provider 6.0 is GA and introduces game-changing multi-region support via the `region` attribute. This allows managing resources across regions without multiple provider aliasing, which is critical for our global patterns (CloudFront/WAF) and multi-region DR strategies.
 
 #### Acceptance Criteria
-- [ ] Review `region` attribute injection impact on existing base modules
-- [ ] Identify multi-region candidates for immediate simplification (e.g., CloudFront origins, Global WAF, Multi-region KMS)
-- [ ] Update the library-wide `versions.tf` standard template to support AWS Provider `~> 6.0`
-- [ ] Audit all modules for breaking changes (e.g., nullable boolean updates, deprecated resources)
+- [x] Review `region` attribute injection impact on existing base modules
+- [x] Identify multi-region candidates for immediate simplification (e.g., CloudFront origins, Global WAF, Multi-region KMS)
+- [x] Update the library-wide `versions.tf` standard template to support AWS Provider `~> 6.0`
+- [x] Audit all modules for breaking changes (e.g., nullable boolean updates, deprecated resources)
 
 ---
 
@@ -786,7 +786,7 @@ Retain previously completed module entries below this line for historical tracki
 
 **Priority:** MEDIUM
 **Type:** Maintenance
-**Status:** `backlog`
+**Status:** `done` (PR #15)
 **Module:** aws/base_component/acm
 **Why:** CloudFront requires certificates to be in `us-east-1`. Leveraging the Provider 6.0 `region` attribute allows our global `static_website` pattern to provision its own certificate without complex provider aliasing in the calling module.
 
