@@ -6,10 +6,9 @@ This module enables and configures AWS Security Hub, providing a centralized vie
 ## Usage
 ```hcl
 module "securityhub" {
-  source = "../../aws/base_component/securityhub"
+  source = "./aws/base_component/securityhub"
 
   enable_finding_aggregator = true
-  finding_aggregation_region = "us-east-1"
 
   tags = {
     environment = "prod"
@@ -32,11 +31,11 @@ module "securityhub" {
 | auto_enable_controls | Automatically enable new controls | `bool` | `true` | no |
 | standards_subscriptions | List of standards ARNs to subscribe to | `list(string)` | `[]` | no |
 | enable_finding_aggregator | Enable finding aggregation | `bool` | `false` | no |
-| finding_aggregation_region | Region to aggregate findings in | `string` | `null` | no |
 | tags | Standard tags for all resources | `map(string)` | n/a | yes |
 
 ## Outputs
 | Name | Description |
 |------|-------------|
 | securityhub_id | The ID of the Security Hub account |
+| securityhub_arn | The ARN of the Security Hub account |
 | finding_aggregator_id | The ID of the finding aggregator |

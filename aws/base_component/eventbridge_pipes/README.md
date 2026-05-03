@@ -6,7 +6,7 @@ This module provides an opinionated way to create Amazon EventBridge Pipes, enab
 ## Usage
 ```hcl
 module "sqs_to_lambda" {
-  source = "../../aws/base_component/eventbridge_pipes"
+  source = "./aws/base_component/eventbridge_pipes"
 
   name       = "my-sqs-to-lambda-pipe"
   source_arn = aws_sqs_queue.source.arn

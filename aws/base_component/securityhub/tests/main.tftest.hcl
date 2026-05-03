@@ -21,6 +21,18 @@ variables {
 run "validate_securityhub_creation" {
   command = plan
 
+  # Security Hub resources (account, standards_subscription, finding_aggregator)
+  # do not support AWS tags.
+
+  override_data {
+    target = data.aws_caller_identity.current
+    values = {
+      account_id = "123456789012"
+      arn        = "arn:aws:iam::123456789012:user/test"
+      user_id    = "test"
+    }
+  }
+
   assert {
     condition     = aws_securityhub_account.this.enable_default_standards == true
     error_message = "Default standards should be enabled"

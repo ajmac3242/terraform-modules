@@ -57,4 +57,24 @@ run "validate_pipe_creation" {
     condition     = aws_pipes_pipe.this.tags["cost_center"] == "12345"
     error_message = "Mandatory tag 'cost_center' is missing or incorrect"
   }
+
+  assert {
+    condition     = module.iam_role.tags["environment"] == "test"
+    error_message = "IAM role mandatory tag 'environment' is missing or incorrect"
+  }
+
+  assert {
+    condition     = module.iam_role.tags["owner"] == "platform-team"
+    error_message = "IAM role mandatory tag 'owner' is missing or incorrect"
+  }
+
+  assert {
+    condition     = module.iam_role.tags["project"] == "standardization"
+    error_message = "IAM role mandatory tag 'project' is missing or incorrect"
+  }
+
+  assert {
+    condition     = module.iam_role.tags["cost_center"] == "12345"
+    error_message = "IAM role mandatory tag 'cost_center' is missing or incorrect"
+  }
 }
