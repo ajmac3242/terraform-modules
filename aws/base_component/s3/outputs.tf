@@ -22,3 +22,8 @@ output "kms_key_id" {
   description = "The ID of the KMS key used for encryption"
   value       = var.existing_kms_key_arn != null ? var.existing_kms_key_arn : module.kms[0].key_id
 }
+
+output "tags" {
+  description = "The tags assigned to the resource"
+  value       = aws_s3_bucket.this.tags_all
+}

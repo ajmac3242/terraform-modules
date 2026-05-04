@@ -153,15 +153,15 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Maintenance
-**Status:** `in-progress`
+**Status:** `done` (PR #15)
 **Module:** repo-wide
 **Why:** AWS Provider 6.0 is GA and introduces game-changing multi-region support via the `region` attribute. This allows managing resources across regions without multiple provider aliasing, which is critical for our global patterns (CloudFront/WAF) and multi-region DR strategies.
 
 #### Acceptance Criteria
-- [ ] Review `region` attribute injection impact on existing base modules
-- [ ] Identify multi-region candidates for immediate simplification (e.g., CloudFront origins, Global WAF, Multi-region KMS)
-- [ ] Update the library-wide `versions.tf` standard template to support AWS Provider `~> 6.0`
-- [ ] Audit all modules for breaking changes (e.g., nullable boolean updates, deprecated resources)
+- [x] Review `region` attribute injection impact on existing base modules
+- [x] Identify multi-region candidates for immediate simplification (e.g., CloudFront origins, Global WAF, Multi-region KMS)
+- [x] Update the library-wide `versions.tf` standard template to support AWS Provider `~> 6.0` (Standardized to `">= 5.0, < 7.0"`)
+- [x] Audit all modules for breaking changes (e.g., nullable boolean updates, deprecated resources)
 
 ---
 
@@ -229,19 +229,19 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** MEDIUM
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #15)
 **Module:** aws/workload_component/centralized_logging
 **Why:** Composes S3, KMS, and Athena into a standard "Security Data Lake" pattern for organization-wide logs.
 
 #### Acceptance Criteria
-- [ ] Uses `aws/base_component/s3` for log storage with forced SSL and CMK
-- [ ] Uses `aws/base_component/athena` for querying logs
-- [ ] Implement ALB access logging bucket policy (ELB service principal access)
-- [ ] Implement CloudFront access logging bucket policy (OAC/OAI or service principal access)
-- [ ] Implement VPC Flow Logs bucket policy (delivery.logs.amazonaws.com access)
-- [ ] Required `tags` enforced
-- [ ] Outputs: `log_bucket_arn`, `athena_workgroup_name`
-- [ ] Native offline Terraform test validates the composition and bucket policies
+- [x] Uses `aws/base_component/s3` for log storage with forced SSL and CMK
+- [x] Uses `aws/base_component/athena` for querying logs
+- [x] Implement ALB access logging bucket policy (ELB service principal access)
+- [x] Implement CloudFront access logging bucket policy (OAC/OAI or service principal access)
+- [x] Implement VPC Flow Logs bucket policy (delivery.logs.amazonaws.com access)
+- [x] Required `tags` enforced
+- [x] Outputs: `log_bucket_arn`, `athena_workgroup_name`
+- [x] Native offline Terraform test validates the composition and bucket policies
 
 ---
 
@@ -786,16 +786,16 @@ Retain previously completed module entries below this line for historical tracki
 
 **Priority:** MEDIUM
 **Type:** Maintenance
-**Status:** `backlog`
+**Status:** `done` (PR #15)
 **Module:** aws/base_component/acm
 **Why:** CloudFront requires certificates to be in `us-east-1`. Leveraging the Provider 6.0 `region` attribute allows our global `static_website` pattern to provision its own certificate without complex provider aliasing in the calling module.
 
 #### Acceptance Criteria
-- [ ] Expose `region` variable to the module
-- [ ] Pass `region` attribute to `aws_acm_certificate` resource
-- [ ] Update `aws/workload_component/static_website` to pass `region = "us-east-1"` to its ACM submodule
-- [ ] Maintain backward compatibility for single-region deployments
-- [ ] Native offline Terraform test validates resource creation with regional intent
+- [x] Expose `region` variable to the module
+- [x] Pass `region` attribute to `aws_acm_certificate` resource
+- [x] Update `aws/workload_component/static_website` to pass `region = "us-east-1"` to its ACM submodule
+- [x] Maintain backward compatibility for single-region deployments
+- [x] Native offline Terraform test validates resource creation with regional intent
 
 ---
 
