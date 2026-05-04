@@ -39,4 +39,5 @@ module "securityhub" {
 | Name | Description |
 |------|-------------|
 | securityhub_id | The ID of the Security Hub account |
+| securityhub_arn | The ARN of the Security Hub account |
 | finding_aggregator_id | The ID of the finding aggregator |

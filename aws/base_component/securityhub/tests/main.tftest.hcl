@@ -18,6 +18,20 @@ variables {
   }
 }
 
+override_data {
+  target = data.aws_region.current
+  values = {
+    id = "us-east-1"
+  }
+}
+
+override_data {
+  target = data.aws_caller_identity.current
+  values = {
+    account_id = "123456789012"
+  }
+}
+
 run "validate_securityhub_creation" {
   command = plan
 
@@ -34,5 +48,10 @@ run "validate_securityhub_creation" {
   assert {
     condition     = length(aws_securityhub_finding_aggregator.this) == 1
     error_message = "Finding aggregator should be created"
+  }
+
+  assert {
+    condition     = output.securityhub_arn == "arn:aws:securityhub:us-east-1:123456789012:hub/default"
+    error_message = "Security Hub ARN does not match expected value"
   }
 }
