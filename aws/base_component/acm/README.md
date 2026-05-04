@@ -27,6 +27,7 @@ module "acm" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | `domain_name` | The domain name for which the certificate should be issued | `string` | n/a | yes |
+| region | The AWS region to provision the certificate in (AWS Provider 6.0+) | `string` | `null` | no |
 | `validation_method` | Which method to use for validation. DNS or EMAIL. | `string` | `"DNS"` | no |
 | `subject_alternative_names` | Set of domains that should be SANs in the issued certificate | `list(string)` | `[]` | no |
 | `tags` | Standard tags for all resources | `map(string)` | n/a | yes |

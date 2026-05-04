@@ -3,6 +3,12 @@ variable "domain_name" {
   type        = string
 }
 
+variable "region" {
+  description = "The AWS region to provision the certificate in (AWS Provider 6.0+)"
+  type        = string
+  default     = null
+}
+
 variable "validation_method" {
   description = "Which method to use for validation. DNS or EMAIL"
   type        = string

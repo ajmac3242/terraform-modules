@@ -107,6 +107,8 @@ _`- [YYYY-MM-DD] <module> — <decision and rationale>`_
 - [2026-05-02] opensearch_serverless — Enforced `depends_on` on encryption policy to ensure collection creation succeeds with CMK enabled.
 - [2026-05-03] eventbridge_pipes — Used `source_arn`, `target_arn`, and `enrichment_arn` as variable names because `source` is a reserved word in Terraform module blocks.
 - [2026-05-03] securityhub — Discovered that `aws_securityhub_finding_aggregator` does not export an `arn` attribute, only an `id`.
+- [2026-05-04] repo-wide — Standardized provider version to `">= 5.0, < 7.0"` across all 45+ modules to support AWS Provider 6.0 migration and its native `region` attribute.
+- [2026-05-04] s3 — Refactored to support `additional_policy_document` via `source_policy_documents` in `data.aws_iam_policy_document` to enable clean policy merging in workload modules.
 
 ## Build Log
 
@@ -129,3 +131,4 @@ _`- [YYYY-MM-DD] Built <module path>. PR #<number>.`_
 - [2026-05-02] Built aws/base_component/opensearch_serverless. PR #13.
 - [2026-05-03] Built aws/base_component/eventbridge_pipes. PR #14.
 - [2026-05-03] Built aws/base_component/securityhub. PR #14.
+- [2026-05-04] Built aws/workload_component/centralized_logging and enhanced ACM for Provider 6.0. PR #15.
