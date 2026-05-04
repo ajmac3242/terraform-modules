@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-03
+> **Last reviewed:** 2026-05-04
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -153,15 +153,48 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Maintenance
-**Status:** `in-progress`
+**Status:** `done` (Verified 2026-05-04)
 **Module:** repo-wide
 **Why:** AWS Provider 6.0 is GA and introduces game-changing multi-region support via the `region` attribute. This allows managing resources across regions without multiple provider aliasing, which is critical for our global patterns (CloudFront/WAF) and multi-region DR strategies.
 
 #### Acceptance Criteria
-- [ ] Review `region` attribute injection impact on existing base modules
-- [ ] Identify multi-region candidates for immediate simplification (e.g., CloudFront origins, Global WAF, Multi-region KMS)
-- [ ] Update the library-wide `versions.tf` standard template to support AWS Provider `~> 6.0`
-- [ ] Audit all modules for breaking changes (e.g., nullable boolean updates, deprecated resources)
+- [x] Review `region` attribute injection impact on existing base modules
+- [x] Identify multi-region candidates for immediate simplification (e.g., CloudFront origins, Global WAF, Multi-region KMS)
+- [x] Update the library-wide `versions.tf` standard template to support AWS Provider `~> 6.0`
+- [x] Audit all modules for breaking changes (e.g., nullable boolean updates, deprecated resources)
+
+---
+
+### repo-wide: Implementation: Migrate foundational modules to AWS Provider 6.0
+
+**Priority:** CRITICAL
+**Type:** Maintenance
+**Status:** `backlog`
+**Module:** repo-wide
+**Why:** Standardizing on AWS Provider 6.0 is necessary to leverage the native `region` attribute and maintain provider support. Foundational modules must be updated first to support high-priority workload components.
+
+#### Acceptance Criteria
+- [ ] Update `aws/base_component/` modules (iam, kms, s3, vpc, route53, acm) to AWS Provider `~> 6.0`
+- [ ] Update `aws/workload_component/static_website` to AWS Provider `~> 6.0`
+- [ ] Ensure all tests pass with the new provider version
+- [ ] Verify that no breaking changes (like nullable boolean defaults) impact resource stability
+
+---
+
+### aws/base_component/acm: Enhance ACM module for Provider 6.0 region support
+
+**Priority:** HIGH
+**Type:** Maintenance
+**Status:** `backlog`
+**Module:** aws/base_component/acm
+**Why:** CloudFront requires certificates to be in `us-east-1`. Leveraging the Provider 6.0 `region` attribute allows our global `static_website` pattern to provision its own certificate without complex provider aliasing in the calling module.
+
+#### Acceptance Criteria
+- [ ] Expose `region` variable to the module
+- [ ] Pass `region` attribute to `aws_acm_certificate` resource
+- [ ] Update `aws/workload_component/static_website` to pass `region = "us-east-1"` to its ACM submodule
+- [ ] Maintain backward compatibility for single-region deployments
+- [ ] Native offline Terraform test validates resource creation with regional intent
 
 ---
 
@@ -214,14 +247,30 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Standardizes the enablement and finding aggregation across accounts, completing the security foundation established by the `account_security` module.
 
 #### Acceptance Criteria
-- [ ] `aws_securityhub_account` resource enabled
-- [ ] Optional `aws_securityhub_standards_subscription` for AWS Foundational Security Best Practices and CIS
-- [ ] `aws_securityhub_finding_aggregator` for cross-region aggregation
-- [ ] Configurable `control_finding_generator` (SECURITY_CONTROL or STANDARD_CONTROL)
-- [ ] Support for `region` attribute (AWS Provider 6.0) for multi-region enablement
-- [ ] Required `tags` enforced (where supported by Security Hub)
-- [ ] Outputs: `securityhub_id`, `securityhub_arn`
-- [ ] Native offline Terraform test validates enablement and aggregator configuration
+- [x] `aws_securityhub_account` resource enabled
+- [x] Optional `aws_securityhub_standards_subscription` for AWS Foundational Security Best Practices and CIS
+- [x] `aws_securityhub_finding_aggregator` for cross-region aggregation
+- [x] Configurable `control_finding_generator` (SECURITY_CONTROL or STANDARD_CONTROL)
+- [x] Support for `region` attribute (AWS Provider 6.0) for multi-region enablement
+- [x] Required `tags` enforced (where supported by Security Hub)
+- [x] Outputs: `securityhub_id`, `securityhub_arn`
+- [x] Native offline Terraform test validates enablement and aggregator configuration
+
+---
+
+### aws/base_component/securityhub: Harden Security Hub module with manual ARN construction
+
+**Priority:** HIGH
+**Type:** Security
+**Status:** `backlog`
+**Module:** aws/base_component/securityhub
+**Why:** The `aws_securityhub_account` resource does not export an `arn` attribute. The hub ARN must be constructed manually to ensure it's available for downstream cross-account or cross-service integrations.
+
+#### Acceptance Criteria
+- [ ] Construct Security Hub ARN manually using data sources: `arn:aws:securityhub:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:hub/default`
+- [ ] Add `security_hub_arn` output to the module
+- [ ] Use `data.aws_region.current.id` for Provider 6.0 compatibility
+- [ ] Native offline Terraform test validates the ARN format in the output
 
 ---
 
@@ -236,8 +285,8 @@ All modules in this repo MUST comply with these non-negotiable standards:
 #### Acceptance Criteria
 - [ ] Uses `aws/base_component/s3` for log storage with forced SSL and CMK
 - [ ] Uses `aws/base_component/athena` for querying logs
-- [ ] Implement ALB access logging bucket policy (ELB service principal access)
-- [ ] Implement CloudFront access logging bucket policy (OAC/OAI or service principal access)
+- [ ] Implement ALB access logging bucket policy (ELB service principal access: `elasticloadbalancing.amazonaws.com`)
+- [ ] Implement CloudFront access logging bucket policy (OAC/service principal access: `cloudfront.amazonaws.com`)
 - [ ] Implement VPC Flow Logs bucket policy (delivery.logs.amazonaws.com access)
 - [ ] Required `tags` enforced
 - [ ] Outputs: `log_bucket_arn`, `athena_workgroup_name`
@@ -1086,9 +1135,11 @@ Retain previously completed module entries below this line for historical tracki
 
 ## Future Module Ideas
 
-- `aws/workload_component/lambda_powertools` — (Future) Lambda with Powertools and standardized observability
-- `gcp/base_component/gcs` — (Future) GCP Cloud Storage equivalent
-- `azure/base_component/storage` — (Future) Azure Blob Storage equivalent
+- `aws/base_component/aws_interconnect` — (High Priority) Standardized L3 networking for multicloud connectivity (GA April 2026).
+- `aws/base_component/sagemaker_inference` — (Medium Priority) Optimized SageMaker endpoints for GenAI inference (GA April 2026).
+- `aws/workload_component/lambda_powertools` — (Future) Lambda with Powertools and standardized observability.
+- `gcp/base_component/gcs` — (Future) GCP Cloud Storage equivalent.
+- `azure/base_component/storage` — (Future) Azure Blob Storage equivalent.
 
 ---
 
