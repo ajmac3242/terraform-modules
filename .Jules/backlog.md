@@ -250,18 +250,18 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #41)
 **Module:** aws/base_component/apigateway_v2
 **Why:** Formalizing the HTTP API as a base component allows for better composition in workload modules like `apigw_lambda` and ensures consistent security/logging defaults across all API implementations.
 
 #### Acceptance Criteria
-- [ ] `aws_apigatewayv2_api` with `protocol_type = "HTTP"`
-- [ ] Mandatory CloudWatch access logging enabled by default with CMK-encrypted Log Group
-- [ ] Support for custom domain names and ACM certificates
-- [ ] Standardized CORS configuration defaults
-- [ ] Required `tags` enforced
-- [ ] Outputs: `api_id`, `api_arn`, `api_endpoint`, `execution_arn`
-- [ ] Native offline Terraform test validates API configuration and logging
+- [x] `aws_apigatewayv2_api` with `protocol_type = "HTTP"`
+- [x] Mandatory CloudWatch access logging enabled by default with CMK-encrypted Log Group
+- [x] Support for custom domain names and ACM certificates
+- [x] Standardized CORS configuration defaults
+- [x] Required `tags` enforced
+- [x] Outputs: `api_id`, `api_arn`, `api_endpoint`, `execution_arn`
+- [x] Native offline Terraform test validates API configuration and logging
 
 ---
 
@@ -269,17 +269,17 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #41)
 **Module:** aws/base_component/sagemaker_inference
 **Why:** Supports optimized GenAI inference patterns (GA April 2026). Standardizes secure deployment of foundation and custom models with enforced encryption and private networking.
 
 #### Acceptance Criteria
-- [ ] `aws_sagemaker_model` with mandatory VPC configuration
-- [ ] `aws_sagemaker_endpoint_configuration` with mandatory CMK encryption for models and data
-- [ ] `aws_sagemaker_endpoint` for real-time inference
-- [ ] IAM execution role created via `aws/base_component/iam` with least-privilege access
-- [ ] Required `tags` enforced
-- [ ] Outputs: `endpoint_arn`, `endpoint_name`, `model_arn`
+- [x] `aws_sagemaker_model` with mandatory VPC configuration
+- [x] `aws_sagemaker_endpoint_configuration` with mandatory CMK encryption for models and data
+- [x] `aws_sagemaker_endpoint` for real-time inference
+- [x] IAM execution role created via `aws/base_component/iam` with least-privilege access
+- [x] Required `tags` enforced
+- [x] Outputs: `endpoint_arn`, `endpoint_name`, `model_arn`
 - [ ] Native offline Terraform test validates encryption and VPC placement
 
 ---
@@ -288,16 +288,16 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** MEDIUM
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #41)
 **Module:** aws/base_component/aws_interconnect
 **Why:** Standardizes multicloud L3 networking (GA April 2026). Provides a secure, opinionated way to connect AWS environments to other cloud providers or on-premises data centers.
 
 #### Acceptance Criteria
-- [ ] `aws_interconnect_gateway` (or equivalent resource) for L3 connectivity
-- [ ] Mandatory encryption for all transit data
-- [ ] Integration with `aws/base_component/vpc` for routing
-- [ ] Required `tags` enforced
-- [ ] Outputs: `gateway_arn`, `gateway_id`
+- [x] `aws_interconnect_gateway` (or equivalent resource) for L3 connectivity
+- [x] Mandatory encryption for all transit data
+- [x] Integration with `aws/base_component/vpc` for routing
+- [x] Required `tags` enforced
+- [x] Outputs: `gateway_arn`, `gateway_id`
 - [ ] Native offline Terraform test validates gateway configuration and routing
 
 ---

@@ -39,7 +39,7 @@ override_data {
 override_data {
   target = module.vpc.data.aws_partition.current[0]
   values = {
-    partition = "aws"
+    partition  = "aws"
     dns_suffix = "amazonaws.com"
   }
 }
