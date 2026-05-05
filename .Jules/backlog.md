@@ -161,6 +161,21 @@ All modules in this repo MUST comply with these non-negotiable standards:
 #### Acceptance Criteria
 - [x] Review `region` attribute injection impact on existing base modules
 - [x] Identify multi-region candidates for immediate simplification (e.g., CloudFront origins, Global WAF, Multi-region KMS)
+
+---
+
+### repo-wide: Implement AWS Provider 6.0 Migration
+
+**Priority:** HIGH
+**Type:** Maintenance
+**Status:** `backlog`
+**Module:** repo-wide
+**Why:** Following the Navigator's 2026-05-04 evaluation, this task tracks the implementation of the migration, starting with the core template update and service-by-service audit for breaking changes.
+
+#### Acceptance Criteria
+- [ ] Update the library-wide `versions.tf` standard template to support AWS Provider `~> 6.0`
+- [ ] Audit all modules for breaking changes (e.g., nullable boolean updates, deprecated resources) and submit PRs for any required refactors
+- [ ] Update documentation to reflect the new `region` attribute standard
 - [x] Update the library-wide `versions.tf` standard template to support AWS Provider `~> 6.0`
 - [x] Audit all modules for breaking changes (e.g., nullable boolean updates, deprecated resources)
 
@@ -334,6 +349,62 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [x] Required `tags` enforced
 - [x] Outputs: `gateway_arn`, `gateway_id`
 - [ ] Native offline Terraform test validates gateway configuration and routing
+
+---
+
+### aws/base_component/interconnect: Opinionated AWS Interconnect (Multicloud) module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/interconnect
+**Why:** Responding to April 2026 GA of AWS Interconnect. Provides managed Layer 3 private connectivity between AWS VPCs and other cloud providers, reducing the complexity of multicloud networking.
+
+#### Acceptance Criteria
+- [ ] `aws_interconnect_connection` (or equivalent resource from Provider 6.0+) for multicloud peering
+- [ ] Support for bandwidth-limited virtual interfaces
+- [ ] Mandatory CMK encryption for any associated transit gateway attachments or logging
+- [ ] Integration with `aws/base_component/vpc` for attachment
+- [ ] Required `tags` enforced
+- [ ] Outputs: `connection_id`, `connection_arn`
+- [ ] Native offline Terraform test validates connection state and routing configuration
+
+---
+
+### aws/base_component/sagemaker_inference: Optimized GenAI Inference Recommendations module
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/sagemaker_inference
+**Why:** Leverages new SageMaker AI features (April 2026) to automatically identify optimized deployment configurations for generative AI models.
+
+#### Acceptance Criteria
+- [ ] `aws_sagemaker_device_fleet` or equivalent for optimized deployment
+- [ ] Support for specifying model, instance type, and inference parameters
+- [ ] Mandatory CMK encryption for model artifacts and endpoint logs
+- [ ] Placed in VPC private subnets
+- [ ] Required `tags` enforced
+- [ ] Outputs: `endpoint_arn`, `recommendation_id`
+- [ ] Native offline Terraform test validates security settings and VPC placement
+
+---
+
+### aws/base_component/acm: Enhance ACM module for Provider 6.0 region support
+
+**Priority:** MEDIUM
+**Type:** Maintenance
+**Status:** `backlog`
+**Module:** aws/base_component/acm
+**Why:** CloudFront requires certificates to be in `us-east-1`. Leveraging the Provider 6.0 `region` attribute allows our global `static_website` pattern to provision its own certificate without complex provider aliasing in the calling module.
+
+#### Acceptance Criteria
+- [ ] Update `versions.tf` to require AWS Provider `~> 6.0`
+- [ ] Expose `region` variable in `variables.tf` (type string, default null)
+- [ ] Pass `region` attribute to `aws_acm_certificate` resource in `main.tf`
+- [ ] Update `aws/workload_component/static_website` to pass `region = "us-east-1"` to its ACM submodule
+- [ ] Ensure all `terraform test` files in the ACM module are updated to use the 6.0 provider
+- [ ] Native offline Terraform test validates resource creation with regional intent
 
 ---
 
@@ -1198,3 +1269,4 @@ Retain previously completed module entries below this line for historical tracki
 | 2026-04-28 | Navigator | Updated backlog to promote standardization tasks, added Cognito and Bedrock Agent modules, and synchronized completed workload components to history. |
 | 2026-04-29 | Navigator | Synchronized Cognito and Bedrock Agent to history. Added `static_website` workload and `athena` base component candidates. |
 | 2026-04-29 | Navigator | Refined roadmap: promoted static_website/athena to history; added Bedrock Knowledge Base and Provider 6.0 evaluation. |
+| 2026-05-04 | Navigator | Completed AWS Provider 6.0 evaluation; refined ACM and Centralized Logging criteria; added Interconnect and SageMaker Inference candidates. |
