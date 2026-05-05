@@ -39,7 +39,7 @@ variable "enable_finding_aggregator" {
 }
 
 variable "finding_aggregation_region" {
-  description = "The region to aggregate findings in."
+  description = "The region to aggregate findings in. (Optional, defaults to current region if aggregator is enabled)"
   type        = string
   default     = null
 }

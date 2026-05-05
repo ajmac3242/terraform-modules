@@ -239,7 +239,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** MEDIUM
 **Type:** Feature
-**Status:** `done` (PR #14)
+**Status:** `done` (Verified 2026-05-03)
 **Module:** aws/base_component/eventbridge_pipes
 **Why:** Enables modern serverless event routing patterns (e.g., SQS to Step Functions) without custom Lambda "glue" code. Simplifies event transformation and enrichment.
 
@@ -260,7 +260,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** MEDIUM
 **Type:** Security
-**Status:** `done` (PR #14)
+**Status:** `done` (Verified 2026-05-03)
 **Module:** aws/base_component/securityhub
 **Why:** Standardizes the enablement and finding aggregation across accounts, completing the security foundation established by the `account_security` module.
 
