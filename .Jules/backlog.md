@@ -154,13 +154,48 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Maintenance
-**Status:** `done` (PR #15)
+**Status:** `done` (Verified 2026-05-04)
 **Module:** repo-wide
 **Why:** AWS Provider 6.0 is GA and introduces game-changing multi-region support via the `region` attribute. This allows managing resources across regions without multiple provider aliasing, which is critical for our global patterns (CloudFront/WAF) and multi-region DR strategies.
 
 #### Acceptance Criteria
 - [x] Review `region` attribute injection impact on existing base modules
 - [x] Identify multi-region candidates for immediate simplification (e.g., CloudFront origins, Global WAF, Multi-region KMS)
+- [x] Update the library-wide `versions.tf` standard template to support AWS Provider `~> 6.0`
+- [x] Audit all modules for breaking changes (e.g., nullable boolean updates, deprecated resources)
+
+---
+
+### repo-wide: Implementation: Migrate foundational modules to AWS Provider 6.0
+
+**Priority:** CRITICAL
+**Type:** Maintenance
+**Status:** `backlog`
+**Module:** repo-wide
+**Why:** Standardizing on AWS Provider 6.0 is necessary to leverage the native `region` attribute and maintain provider support. Foundational modules must be updated first to support high-priority workload components.
+
+#### Acceptance Criteria
+- [ ] Update `aws/base_component/` modules (iam, kms, s3, vpc, route53, acm) to AWS Provider `~> 6.0`
+- [ ] Update `aws/workload_component/static_website` to AWS Provider `~> 6.0`
+- [ ] Ensure all tests pass with the new provider version
+- [ ] Verify that no breaking changes (like nullable boolean defaults) impact resource stability
+
+---
+
+### aws/base_component/acm: Enhance ACM module for Provider 6.0 region support
+
+**Priority:** HIGH
+**Type:** Maintenance
+**Status:** `backlog`
+**Module:** aws/base_component/acm
+**Why:** CloudFront requires certificates to be in `us-east-1`. Leveraging the Provider 6.0 `region` attribute allows our global `static_website` pattern to provision its own certificate without complex provider aliasing in the calling module.
+
+#### Acceptance Criteria
+- [ ] Expose `region` variable to the module
+- [ ] Pass `region` attribute to `aws_acm_certificate` resource
+- [ ] Update `aws/workload_component/static_website` to pass `region = "us-east-1"` to its ACM submodule
+- [ ] Maintain backward compatibility for single-region deployments
+- [ ] Native offline Terraform test validates resource creation with regional intent
 - [x] Update the library-wide `versions.tf` standard template to support AWS Provider `~> 6.0` (Standardized to `">= 5.0, < 7.0"`)
 - [x] Audit all modules for breaking changes (e.g., nullable boolean updates, deprecated resources)
 
@@ -1143,9 +1178,11 @@ Retain previously completed module entries below this line for historical tracki
 
 ## Future Module Ideas
 
-- `aws/workload_component/lambda_powertools` — (Future) Lambda with Powertools and standardized observability
-- `gcp/base_component/gcs` — (Future) GCP Cloud Storage equivalent
-- `azure/base_component/storage` — (Future) Azure Blob Storage equivalent
+- `aws/base_component/aws_interconnect` — (High Priority) Standardized L3 networking for multicloud connectivity (GA April 2026).
+- `aws/base_component/sagemaker_inference` — (Medium Priority) Optimized SageMaker endpoints for GenAI inference (GA April 2026).
+- `aws/workload_component/lambda_powertools` — (Future) Lambda with Powertools and standardized observability.
+- `gcp/base_component/gcs` — (Future) GCP Cloud Storage equivalent.
+- `azure/base_component/storage` — (Future) Azure Blob Storage equivalent.
 
 ---
 
