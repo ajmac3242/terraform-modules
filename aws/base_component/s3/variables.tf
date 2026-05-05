@@ -65,6 +65,12 @@ variable "tags" {
   }
 }
 
+variable "additional_policy_document" {
+  description = "An additional IAM policy document in JSON format to merge with the default SSL-only policy"
+  type        = string
+  default     = null
+}
+
 # Validation to ensure log_bucket_id is provided if access logging is enabled
 # Using a null resource or local variable for complex validation if needed,
 # but Terraform 1.5+ allows check blocks or we can use a local with an error.

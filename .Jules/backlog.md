@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-03
+> **Last reviewed:** 2026-05-04
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -48,6 +48,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - **Described everything** — All variables and outputs must have `description` fields. No exceptions.
 - **Tests are mandatory** — Native offline `terraform test` coverage is required for every module change and must validate the item's acceptance criteria.
 - **Documentation is mandatory** — Every module requires a README with purpose, usage example, inputs, outputs, notable defaults, and security-relevant behavior.
+- **IAM Composition Standard** — When attaching resource-derived policy ARNs (e.g., from an `aws_iam_policy` created in the same plan) to a role created via the base IAM module, use a separate `aws_iam_role_policy_attachment` in the calling module instead of passing it to the `managed_policy_arns` variable. This avoids `for_each` planning errors caused by unknown keys in mock environments.
 
 ***
 
@@ -153,15 +154,65 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Maintenance
-**Status:** `in-progress`
+**Status:** `done` (Verified 2026-05-04)
 **Module:** repo-wide
 **Why:** AWS Provider 6.0 is GA and introduces game-changing multi-region support via the `region` attribute. This allows managing resources across regions without multiple provider aliasing, which is critical for our global patterns (CloudFront/WAF) and multi-region DR strategies.
 
 #### Acceptance Criteria
-- [ ] Review `region` attribute injection impact on existing base modules
-- [ ] Identify multi-region candidates for immediate simplification (e.g., CloudFront origins, Global WAF, Multi-region KMS)
+- [x] Review `region` attribute injection impact on existing base modules
+- [x] Identify multi-region candidates for immediate simplification (e.g., CloudFront origins, Global WAF, Multi-region KMS)
+
+---
+
+### repo-wide: Implement AWS Provider 6.0 Migration
+
+**Priority:** HIGH
+**Type:** Maintenance
+**Status:** `backlog`
+**Module:** repo-wide
+**Why:** Following the Navigator's 2026-05-04 evaluation, this task tracks the implementation of the migration, starting with the core template update and service-by-service audit for breaking changes.
+
+#### Acceptance Criteria
 - [ ] Update the library-wide `versions.tf` standard template to support AWS Provider `~> 6.0`
-- [ ] Audit all modules for breaking changes (e.g., nullable boolean updates, deprecated resources)
+- [ ] Audit all modules for breaking changes (e.g., nullable boolean updates, deprecated resources) and submit PRs for any required refactors
+- [ ] Update documentation to reflect the new `region` attribute standard
+- [x] Update the library-wide `versions.tf` standard template to support AWS Provider `~> 6.0`
+- [x] Audit all modules for breaking changes (e.g., nullable boolean updates, deprecated resources)
+
+---
+
+### repo-wide: Implementation: Migrate foundational modules to AWS Provider 6.0
+
+**Priority:** CRITICAL
+**Type:** Maintenance
+**Status:** `backlog`
+**Module:** repo-wide
+**Why:** Standardizing on AWS Provider 6.0 is necessary to leverage the native `region` attribute and maintain provider support. Foundational modules must be updated first to support high-priority workload components.
+
+#### Acceptance Criteria
+- [ ] Update `aws/base_component/` modules (iam, kms, s3, vpc, route53, acm) to AWS Provider `~> 6.0`
+- [ ] Update `aws/workload_component/static_website` to AWS Provider `~> 6.0`
+- [ ] Ensure all tests pass with the new provider version
+- [ ] Verify that no breaking changes (like nullable boolean defaults) impact resource stability
+
+---
+
+### aws/base_component/acm: Enhance ACM module for Provider 6.0 region support
+
+**Priority:** HIGH
+**Type:** Maintenance
+**Status:** `backlog`
+**Module:** aws/base_component/acm
+**Why:** CloudFront requires certificates to be in `us-east-1`. Leveraging the Provider 6.0 `region` attribute allows our global `static_website` pattern to provision its own certificate without complex provider aliasing in the calling module.
+
+#### Acceptance Criteria
+- [ ] Expose `region` variable to the module
+- [ ] Pass `region` attribute to `aws_acm_certificate` resource
+- [ ] Update `aws/workload_component/static_website` to pass `region = "us-east-1"` to its ACM submodule
+- [ ] Maintain backward compatibility for single-region deployments
+- [ ] Native offline Terraform test validates resource creation with regional intent
+- [x] Update the library-wide `versions.tf` standard template to support AWS Provider `~> 6.0` (Standardized to `">= 5.0, < 7.0"`)
+- [x] Audit all modules for breaking changes (e.g., nullable boolean updates, deprecated resources)
 
 ---
 
@@ -174,13 +225,13 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Foundational dependency for the `bedrock_knowledge_base` module. Provides a secure, scalable vector database for RAG patterns.
 
 #### Acceptance Criteria
-- [ ] `aws_opensearchserverless_collection` with `type = "VECTORSEARCH"`
-- [ ] Mandatory CMK encryption for the collection
-- [ ] Network access policy restricted to VPC (Interface endpoints)
-- [ ] Data access policy scoped to least-privilege for Bedrock service principals
-- [ ] Required `tags` enforced
-- [ ] Outputs: `collection_id`, `collection_arn`, `collection_endpoint`
-- [ ] Native offline Terraform test validates encryption and access policies
+- [x] `aws_opensearchserverless_collection` with `type = "VECTORSEARCH"`
+- [x] Mandatory CMK encryption for the collection
+- [x] Network access policy restricted to VPC (Interface endpoints)
+- [x] Data access policy scoped to least-privilege for Bedrock service principals
+- [x] Required `tags` enforced
+- [x] Outputs: `collection_id`, `collection_arn`, `collection_endpoint`
+- [x] Native offline Terraform test validates encryption and access policies
 
 ---
 
@@ -193,15 +244,15 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Enables modern serverless event routing patterns (e.g., SQS to Step Functions) without custom Lambda "glue" code. Simplifies event transformation and enrichment.
 
 #### Acceptance Criteria
-- [ ] `aws_pipes_pipe` resource with `source`, `target`, and optional `enrichment`
-- [ ] Support for SQS, DynamoDB Streams, and Kinesis as sources
-- [ ] Support for Lambda, Step Functions, and EventBridge as targets
-- [ ] Mandatory IAM execution role created via `aws/base_component/iam` with least-privilege source/target permissions
-- [ ] Support for `source_parameters` (batch size, etc.) and `target_parameters`
-- [ ] Mandatory CMK encryption for associated SQS DLQs (if used)
-- [ ] Required `tags` enforced
-- [ ] Outputs: `pipe_arn`, `pipe_id`, `pipe_name`, `role_arn`
-- [ ] Native offline Terraform test validates pipe state, IAM role, and tag enforcement
+- [x] `aws_pipes_pipe` resource with `source`, `target`, and optional `enrichment`
+- [x] Support for SQS, DynamoDB Streams, and Kinesis as sources
+- [x] Support for Lambda, Step Functions, and EventBridge as targets
+- [x] Mandatory IAM execution role created via `aws/base_component/iam` with least-privilege source/target permissions
+- [x] Support for `source_parameters` (batch size, etc.) and `target_parameters`
+- [x] Mandatory CMK encryption for associated SQS DLQs (if used)
+- [x] Required `tags` enforced
+- [x] Outputs: `pipe_arn`, `pipe_id`, `pipe_name`, `role_arn`
+- [x] Native offline Terraform test validates pipe state, IAM role, and tag enforcement
 
 ---
 
@@ -214,14 +265,14 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Standardizes the enablement and finding aggregation across accounts, completing the security foundation established by the `account_security` module.
 
 #### Acceptance Criteria
-- [ ] `aws_securityhub_account` resource enabled
-- [ ] Optional `aws_securityhub_standards_subscription` for AWS Foundational Security Best Practices and CIS
-- [ ] `aws_securityhub_finding_aggregator` for cross-region aggregation
-- [ ] Configurable `control_finding_generator` (SECURITY_CONTROL or STANDARD_CONTROL)
-- [ ] Support for `region` attribute (AWS Provider 6.0) for multi-region enablement
-- [ ] Required `tags` enforced (where supported by Security Hub)
-- [ ] Outputs: `securityhub_id`, `securityhub_arn`
-- [ ] Native offline Terraform test validates enablement and aggregator configuration
+- [x] `aws_securityhub_account` resource enabled
+- [x] Optional `aws_securityhub_standards_subscription` for AWS Foundational Security Best Practices and CIS
+- [x] `aws_securityhub_finding_aggregator` for cross-region aggregation
+- [x] Configurable `control_finding_generator` (SECURITY_CONTROL or STANDARD_CONTROL)
+- [x] Support for `region` attribute (AWS Provider 6.0) for multi-region enablement
+- [x] Required `tags` enforced (where supported by Security Hub)
+- [x] Outputs: `securityhub_id`, `securityhub_arn`
+- [x] Native offline Terraform test validates enablement and aggregator configuration
 
 ---
 
@@ -229,19 +280,131 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** MEDIUM
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #15)
 **Module:** aws/workload_component/centralized_logging
 **Why:** Composes S3, KMS, and Athena into a standard "Security Data Lake" pattern for organization-wide logs.
 
 #### Acceptance Criteria
-- [ ] Uses `aws/base_component/s3` for log storage with forced SSL and CMK
-- [ ] Uses `aws/base_component/athena` for querying logs
-- [ ] Implement ALB access logging bucket policy (ELB service principal access)
-- [ ] Implement CloudFront access logging bucket policy (OAC/OAI or service principal access)
-- [ ] Implement VPC Flow Logs bucket policy (delivery.logs.amazonaws.com access)
+- [x] Uses `aws/base_component/s3` for log storage with forced SSL and CMK
+- [x] Uses `aws/base_component/athena` for querying logs
+- [x] Implement ALB access logging bucket policy (ELB service principal access)
+- [x] Implement CloudFront access logging bucket policy (OAC/OAI or service principal access)
+- [x] Implement VPC Flow Logs bucket policy (delivery.logs.amazonaws.com access)
+- [x] Required `tags` enforced
+- [x] Outputs: `log_bucket_arn`, `athena_workgroup_name`
+- [x] Native offline Terraform test validates the composition and bucket policies
+
+---
+
+### aws/base_component/apigateway_v2: Opinionated API Gateway v2 (HTTP) base module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `done` (PR #41)
+**Module:** aws/base_component/apigateway_v2
+**Why:** Formalizing the HTTP API as a base component allows for better composition in workload modules like `apigw_lambda` and ensures consistent security/logging defaults across all API implementations.
+
+#### Acceptance Criteria
+- [x] `aws_apigatewayv2_api` with `protocol_type = "HTTP"`
+- [x] Mandatory CloudWatch access logging enabled by default with CMK-encrypted Log Group
+- [x] Support for custom domain names and ACM certificates
+- [x] Standardized CORS configuration defaults
+- [x] Required `tags` enforced
+- [x] Outputs: `api_id`, `api_arn`, `api_endpoint`, `execution_arn`
+- [x] Native offline Terraform test validates API configuration and logging
+
+---
+
+### aws/base_component/sagemaker_inference: Secure SageMaker Inference module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `done` (PR #41)
+**Module:** aws/base_component/sagemaker_inference
+**Why:** Supports optimized GenAI inference patterns (GA April 2026). Standardizes secure deployment of foundation and custom models with enforced encryption and private networking.
+
+#### Acceptance Criteria
+- [x] `aws_sagemaker_model` with mandatory VPC configuration
+- [x] `aws_sagemaker_endpoint_configuration` with mandatory CMK encryption for models and data
+- [x] `aws_sagemaker_endpoint` for real-time inference
+- [x] IAM execution role created via `aws/base_component/iam` with least-privilege access
+- [x] Required `tags` enforced
+- [x] Outputs: `endpoint_arn`, `endpoint_name`, `model_arn`
+- [ ] Native offline Terraform test validates encryption and VPC placement
+
+---
+
+### aws/base_component/aws_interconnect: Standardized AWS Interconnect module
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `done` (PR #41)
+**Module:** aws/base_component/aws_interconnect
+**Why:** Standardizes multicloud L3 networking (GA April 2026). Provides a secure, opinionated way to connect AWS environments to other cloud providers or on-premises data centers.
+
+#### Acceptance Criteria
+- [x] `aws_interconnect_gateway` (or equivalent resource) for L3 connectivity
+- [x] Mandatory encryption for all transit data
+- [x] Integration with `aws/base_component/vpc` for routing
+- [x] Required `tags` enforced
+- [x] Outputs: `gateway_arn`, `gateway_id`
+- [ ] Native offline Terraform test validates gateway configuration and routing
+
+---
+
+### aws/base_component/interconnect: Opinionated AWS Interconnect (Multicloud) module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/interconnect
+**Why:** Responding to April 2026 GA of AWS Interconnect. Provides managed Layer 3 private connectivity between AWS VPCs and other cloud providers, reducing the complexity of multicloud networking.
+
+#### Acceptance Criteria
+- [ ] `aws_interconnect_connection` (or equivalent resource from Provider 6.0+) for multicloud peering
+- [ ] Support for bandwidth-limited virtual interfaces
+- [ ] Mandatory CMK encryption for any associated transit gateway attachments or logging
+- [ ] Integration with `aws/base_component/vpc` for attachment
 - [ ] Required `tags` enforced
-- [ ] Outputs: `log_bucket_arn`, `athena_workgroup_name`
-- [ ] Native offline Terraform test validates the composition and bucket policies
+- [ ] Outputs: `connection_id`, `connection_arn`
+- [ ] Native offline Terraform test validates connection state and routing configuration
+
+---
+
+### aws/base_component/sagemaker_inference: Optimized GenAI Inference Recommendations module
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/sagemaker_inference
+**Why:** Leverages new SageMaker AI features (April 2026) to automatically identify optimized deployment configurations for generative AI models.
+
+#### Acceptance Criteria
+- [ ] `aws_sagemaker_device_fleet` or equivalent for optimized deployment
+- [ ] Support for specifying model, instance type, and inference parameters
+- [ ] Mandatory CMK encryption for model artifacts and endpoint logs
+- [ ] Placed in VPC private subnets
+- [ ] Required `tags` enforced
+- [ ] Outputs: `endpoint_arn`, `recommendation_id`
+- [ ] Native offline Terraform test validates security settings and VPC placement
+
+---
+
+### aws/base_component/acm: Enhance ACM module for Provider 6.0 region support
+
+**Priority:** MEDIUM
+**Type:** Maintenance
+**Status:** `backlog`
+**Module:** aws/base_component/acm
+**Why:** CloudFront requires certificates to be in `us-east-1`. Leveraging the Provider 6.0 `region` attribute allows our global `static_website` pattern to provision its own certificate without complex provider aliasing in the calling module.
+
+#### Acceptance Criteria
+- [ ] Update `versions.tf` to require AWS Provider `~> 6.0`
+- [ ] Expose `region` variable in `variables.tf` (type string, default null)
+- [ ] Pass `region` attribute to `aws_acm_certificate` resource in `main.tf`
+- [ ] Update `aws/workload_component/static_website` to pass `region = "us-east-1"` to its ACM submodule
+- [ ] Ensure all `terraform test` files in the ACM module are updated to use the 6.0 provider
+- [ ] Native offline Terraform test validates resource creation with regional intent
 
 ---
 
@@ -786,16 +949,16 @@ Retain previously completed module entries below this line for historical tracki
 
 **Priority:** MEDIUM
 **Type:** Maintenance
-**Status:** `backlog`
+**Status:** `done` (PR #15)
 **Module:** aws/base_component/acm
 **Why:** CloudFront requires certificates to be in `us-east-1`. Leveraging the Provider 6.0 `region` attribute allows our global `static_website` pattern to provision its own certificate without complex provider aliasing in the calling module.
 
 #### Acceptance Criteria
-- [ ] Expose `region` variable to the module
-- [ ] Pass `region` attribute to `aws_acm_certificate` resource
-- [ ] Update `aws/workload_component/static_website` to pass `region = "us-east-1"` to its ACM submodule
-- [ ] Maintain backward compatibility for single-region deployments
-- [ ] Native offline Terraform test validates resource creation with regional intent
+- [x] Expose `region` variable to the module
+- [x] Pass `region` attribute to `aws_acm_certificate` resource
+- [x] Update `aws/workload_component/static_website` to pass `region = "us-east-1"` to its ACM submodule
+- [x] Maintain backward compatibility for single-region deployments
+- [x] Native offline Terraform test validates resource creation with regional intent
 
 ---
 
@@ -1086,9 +1249,11 @@ Retain previously completed module entries below this line for historical tracki
 
 ## Future Module Ideas
 
-- `aws/workload_component/lambda_powertools` — (Future) Lambda with Powertools and standardized observability
-- `gcp/base_component/gcs` — (Future) GCP Cloud Storage equivalent
-- `azure/base_component/storage` — (Future) Azure Blob Storage equivalent
+- `aws/base_component/aws_interconnect` — (High Priority) Standardized L3 networking for multicloud connectivity (GA April 2026).
+- `aws/base_component/sagemaker_inference` — (Medium Priority) Optimized SageMaker endpoints for GenAI inference (GA April 2026).
+- `aws/workload_component/lambda_powertools` — (Future) Lambda with Powertools and standardized observability.
+- `gcp/base_component/gcs` — (Future) GCP Cloud Storage equivalent.
+- `azure/base_component/storage` — (Future) Azure Blob Storage equivalent.
 
 ---
 
@@ -1104,3 +1269,4 @@ Retain previously completed module entries below this line for historical tracki
 | 2026-04-28 | Navigator | Updated backlog to promote standardization tasks, added Cognito and Bedrock Agent modules, and synchronized completed workload components to history. |
 | 2026-04-29 | Navigator | Synchronized Cognito and Bedrock Agent to history. Added `static_website` workload and `athena` base component candidates. |
 | 2026-04-29 | Navigator | Refined roadmap: promoted static_website/athena to history; added Bedrock Knowledge Base and Provider 6.0 evaluation. |
+| 2026-05-04 | Navigator | Completed AWS Provider 6.0 evaluation; refined ACM and Centralized Logging criteria; added Interconnect and SageMaker Inference candidates. |
