@@ -13,9 +13,9 @@ module "log_storage" {
 data "aws_iam_policy_document" "log_delivery" {
   # ALB Log Delivery
   statement {
-    sid    = "AllowALBLogDelivery"
-    effect = "Allow"
-    actions = ["s3:PutObject"]
+    sid       = "AllowALBLogDelivery"
+    effect    = "Allow"
+    actions   = ["s3:PutObject"]
     resources = ["arn:aws:s3:::${var.name_prefix}-centralized-logs/alb/*"]
 
     principals {
@@ -51,9 +51,9 @@ data "aws_iam_policy_document" "log_delivery" {
 
   # CloudFront OAC Access (for logs)
   statement {
-    sid    = "AllowCloudFrontLogDelivery"
-    effect = "Allow"
-    actions = ["s3:PutObject"]
+    sid       = "AllowCloudFrontLogDelivery"
+    effect    = "Allow"
+    actions   = ["s3:PutObject"]
     resources = ["arn:aws:s3:::${var.name_prefix}-centralized-logs/cloudfront/*"]
 
     principals {

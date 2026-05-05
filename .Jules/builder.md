@@ -132,3 +132,9 @@ _`- [YYYY-MM-DD] Built <module path>. PR #<number>.`_
 - [2026-05-03] Built aws/base_component/eventbridge_pipes. PR #14.
 - [2026-05-03] Built aws/base_component/securityhub. PR #14.
 - [2026-05-04] Built aws/workload_component/centralized_logging and enhanced ACM for Provider 6.0. PR #15.
+- [2026-05-05] Built aws/base_component/apigateway_v2. PR #41.
+- [2026-05-05] Built aws/base_component/sagemaker_inference. PR #41.
+- [2026-05-05] Built aws/base_component/aws_interconnect. PR #41.
+- [2026-05-05] apigateway_v2 — Enforced HTTP protocol and CMK-encrypted access logs for standardization.
+- [2026-05-05] sagemaker_inference — Enforced VPC isolation and CMK encryption for GenAI inference.
+- [2026-05-05] aws_interconnect — Standardized multicloud L3 connectivity for OCI and Azure with mandatory MACsec encryption.
