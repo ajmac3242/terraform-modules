@@ -96,6 +96,11 @@ _`- [YYYY-MM-DD] <topic> — <decision and rationale>`_
 - [2026-05-04] AWS Provider 6.0 Migration Strategy — Concluded evaluation. Standardizing on AWS Provider 6.0 for all new and majorly updated modules to leverage the native `region` attribute, simplifying multi-region patterns like CloudFront-ACM.
 - [2026-05-04] Multicloud Networking — Introducing AWS Interconnect (GA April 2026) as a high-priority base component to standardize private Layer 3 connectivity with other cloud providers.
 - [2026-05-04] SageMaker Inference Optimization — Adding a dedicated module for optimized GenAI inference configurations to leverage April 2026 SageMaker updates.
+- [2026-05-04] AWS Provider 6.0 Migration Phase 1 — Initiating implementation for foundational modules. Standardizing on `region` attribute to simplify global patterns.
+- [2026-05-04] Roadmap Expansion — Adding AWS Interconnect and SageMaker Inference to the roadmap following their April 2026 GA.
+- [2026-05-04] Provider 6.0 & Hardening Completion — Reconciled the repository state with Provider 6.0 migration goals. Finalized compliance for 44/44 modules, including the 'lambda' and 'vpc' 'tags' output fixes and VPC test mock provider overrides. All modules now support a standardized provider range and native offline test verification.
+- [2026-05-04] IAM Composition Standard — Formalized the requirement to use external policy attachments for dynamic ARNs to ensure offline test compatibility and prevent planning errors.
+- [2026-05-04] Strategic Roadmap Expansion — Initiated tracks for GenAI (SageMaker Inference) and Multicloud (AWS Interconnect) based on April 2026 GA announcements. Promoting API Gateway v2 to a dedicated base component for better composition in workload patterns.
 
 ## Session Log
 
@@ -111,3 +116,4 @@ _`- [YYYY-MM-DD] Reviewed backlog and updated priorities.`_
 - [2026-05-02] Refined centralized logging criteria, prioritized OpenSearch Serverless, and expanded security/eventing roadmap.
 - [2026-05-03] Initiated AWS Provider 6.0 migration and refined serverless eventing/security backlog items.
 - [2026-05-04] Completed Provider 6.0 evaluation and refined backlog with new April 2026 service releases. Addressed code review feedback on backlog organization and task status.
+- [2026-05-04] Completed Provider 6.0 evaluation, prioritized foundational migration, and expanded roadmap with April 2026 service updates.

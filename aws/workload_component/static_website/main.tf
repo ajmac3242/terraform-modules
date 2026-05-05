@@ -23,6 +23,7 @@ resource "aws_cloudfront_origin_access_control" "this" {
 module "acm" {
   source = "../../base_component/acm"
 
+  region                    = "us-east-1" # CloudFront requires ACM certificates in us-east-1
   domain_name               = var.domain_name
   subject_alternative_names = var.alternate_domains
 

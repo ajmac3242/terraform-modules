@@ -27,3 +27,8 @@ output "kms_key_arn" {
   description = "The ARN of the KMS key used for encryption"
   value       = local.kms_key_arn
 }
+
+output "tags" {
+  description = "A map of tags assigned to the Lambda function"
+  value       = aws_lambda_function.this.tags
+}

@@ -1,5 +1,6 @@
 variables {
   domain_name       = "example.com"
+  region            = "us-east-1"
   validation_method = "DNS"
   tags = {
     environment = "test"
@@ -24,6 +25,11 @@ run "valid_acm_creation" {
   assert {
     condition     = aws_acm_certificate.this.domain_name == var.domain_name
     error_message = "Domain name does not match expected value"
+  }
+
+  assert {
+    condition     = aws_acm_certificate.this.region == "us-east-1"
+    error_message = "Region attribute was not correctly passed to the ACM resource"
   }
 
   assert {
