@@ -19,6 +19,31 @@ provider "aws" {
   secret_key                  = "mock_secret_key"
 }
 
+override_data {
+  target = module.vpc.data.aws_caller_identity.current[0]
+  values = {
+    account_id = "123456789012"
+    arn        = "arn:aws:iam::123456789012:user/test"
+    user_id    = "test-user"
+  }
+}
+
+override_data {
+  target = module.vpc.data.aws_region.current[0]
+  values = {
+    name = "us-east-1"
+    id   = "us-east-1"
+  }
+}
+
+override_data {
+  target = module.vpc.data.aws_partition.current[0]
+  values = {
+    partition  = "aws"
+    dns_suffix = "amazonaws.com"
+  }
+}
+
 run "valid_vpc_creation" {
   command = plan
 
@@ -28,7 +53,7 @@ run "valid_vpc_creation" {
   }
 
   assert {
-    condition     = module.vpc.tags["environment"] == "test" && module.vpc.tags["owner"] == "test-owner" && module.vpc.tags["project"] == "test-project" && module.vpc.tags["cost_center"] == "test-cc"
+    condition     = output.tags["environment"] == "test" && output.tags["owner"] == "test-owner" && output.tags["project"] == "test-project" && output.tags["cost_center"] == "test-cc"
     error_message = "Mandatory tags are missing or incorrect on VPC"
   }
 }

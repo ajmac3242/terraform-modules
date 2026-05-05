@@ -29,7 +29,7 @@ resource "aws_opensearchserverless_security_policy" "network" {
           Resource     = ["collection/${var.name}"]
         }
       ]
-      AllowFromPublic   = false
+      AllowFromPublic    = false
       SourceVPCEndpoints = var.vpc_endpoint_ids
     }
   ])
