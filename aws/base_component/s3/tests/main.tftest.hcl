@@ -42,4 +42,9 @@ run "valid_bucket_creation" {
     condition     = aws_s3_bucket.this.tags["environment"] == "test" && aws_s3_bucket.this.tags["owner"] == "test-owner" && aws_s3_bucket.this.tags["project"] == "test-project" && aws_s3_bucket.this.tags["cost_center"] == "test-cc"
     error_message = "Mandatory tags are missing or incorrect on S3 bucket"
   }
+
+  assert {
+    condition     = alltrue([for r in aws_s3_bucket_server_side_encryption_configuration.this.rule : r.apply_server_side_encryption_by_default[0].sse_algorithm == "aws:kms"])
+    error_message = "S3 bucket must use KMS encryption"
+  }
 }

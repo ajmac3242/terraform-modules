@@ -1,14 +1,6 @@
-# aws/base_component/cloudfront
+# Purpose
 
 Opinionated CloudFront distribution module. Enforces TLS 1.2+, mandatory WAF integration, and S3 access logging.
-
-## Features
-
-- `aws_cloudfront_distribution` with S3 origin defaults
-- Mandatory WAF association
-- Access logging to S3 enabled by default
-- Minimum protocol version TLSv1.2_2021 enforced
-- Required tags enforced
 
 ## Usage
 
@@ -30,7 +22,14 @@ module "cloudfront" {
 }
 ```
 
-## Inputs
+## Security
+
+- **TLS Enforcement**: Minimum protocol version is set to `TLSv1.2_2021`.
+- **WAF Integration**: Association with a WAF Web ACL is mandatory.
+- **Logging**: Access logging to a designated S3 bucket is enabled by default.
+- **Encryption**: Uses default CloudFront certificates or ACM certificates (recommended).
+
+## Variables
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
