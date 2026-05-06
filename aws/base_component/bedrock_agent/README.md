@@ -25,6 +25,7 @@ module "bedrock_agent" {
 - **Encryption**: Mandatory CMK encryption for any associated data stores or customer-managed resources.
 - **IAM**: Execution roles follow strict least-privilege principles (no `*` actions).
 - **Control**: Access is controlled via resource-based and identity-based policies.
+- **Cost Attribution**: Granular cost attribution is supported via tagging. AI spend can be charged back to individual IAM principals, teams, or projects by analyzing tags in usage reports.
 
 ## Variables
 | Name | Description | Type | Default | Required |

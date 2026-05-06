@@ -140,6 +140,9 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Module:** aws/base_component/sagemaker_inference
 **Why:** Leverages new "Optimized Generative AI Inference Recommendations" feature (GA April 2026) to automatically identify optimized deployment configurations for generative AI models, including instance type and container parameters.
 
+> [!IMPORTANT]
+> **Blocker:** The `aws_sagemaker_inference_recommendations_job` resource is not yet supported in the AWS Terraform provider (v5.x/v6.x). Implementation is deferred until provider support is added.
+
 #### Acceptance Criteria
 - [ ] `aws_sagemaker_inference_recommendations_job` or equivalent for optimized deployment
 - [ ] Support for specifying model, instance type, and inference parameters
@@ -155,16 +158,16 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #42)
 **Module:** aws/base_component/bedrock_agent
 **Why:** April 2026 update enables granular cost attribution for Bedrock. Tagging agents allows AI spend to be charged back to individual IAM principals, teams, and projects.
 
 #### Acceptance Criteria
-- [ ] Ensure all Bedrock Agent resources support and propagate tags for cost attribution
-- [ ] Validate that tagging correctly attributes costs in usage reports (where testable)
-- [ ] Update documentation to highlight cost attribution via tagging
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates tag enforcement
+- [x] Ensure all Bedrock Agent resources support and propagate tags for cost attribution
+- [x] Validate that tagging correctly attributes costs in usage reports (where testable)
+- [x] Update documentation to highlight cost attribution via tagging
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates tag enforcement
 
 ---
 
@@ -172,15 +175,15 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #42)
 **Module:** aws/base_component/bedrock_knowledge_base
 **Why:** April 2026 update enables granular cost attribution for Bedrock. Tagging knowledge bases allows AI spend to be charged back to individual IAM principals, teams, and projects.
 
 #### Acceptance Criteria
-- [ ] Ensure all Bedrock Knowledge Base resources support and propagate tags for cost attribution
-- [ ] Update documentation to highlight cost attribution via tagging
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates tag enforcement
+- [x] Ensure all Bedrock Knowledge Base resources support and propagate tags for cost attribution
+- [x] Update documentation to highlight cost attribution via tagging
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates tag enforcement
 
 ---
 

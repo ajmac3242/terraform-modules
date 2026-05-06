@@ -99,11 +99,11 @@ variable "permissions_boundary_arn" {
 }
 
 variable "tags" {
-  description = "A map of tags to assign to the resources"
+  description = "A map of tags to assign to the resources. Required keys: environment, owner, project, cost_center."
   type        = map(string)
 
   validation {
-    condition     = contains(keys(var.tags), "environment") && contains(keys(var.tags), "owner") && contains(keys(var.tags), "project") && contains(keys(var.tags), "cost_center")
-    error_message = "The tags map must contain the following keys: environment, owner, project, cost_center."
+    condition     = alltrue([for k in ["environment", "owner", "project", "cost_center"] : contains(keys(var.tags), k)])
+    error_message = "The tags map must contain environment, owner, project, and cost_center keys."
   }
 }
