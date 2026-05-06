@@ -4,6 +4,8 @@ variables {
   bandwidth      = "1Gbps"
   location       = "EqDC2"
   vlan           = 100
+  amazon_side_asn = "64512"
+  customer_bgp_asn = 65000
   tags = {
     environment = "test"
     owner       = "test-owner"
@@ -30,6 +32,11 @@ run "valid_interconnect_creation" {
   }
 
   assert {
+    condition     = aws_dx_gateway.this.amazon_side_asn == var.amazon_side_asn
+    error_message = "DX Gateway Amazon side ASN does not match expected value"
+  }
+
+  assert {
     condition     = aws_dx_connection.this.bandwidth == var.bandwidth
     error_message = "Bandwidth does not match expected value"
   }
@@ -37,6 +44,11 @@ run "valid_interconnect_creation" {
   assert {
     condition     = aws_dx_private_virtual_interface.this.vlan == var.vlan
     error_message = "VLAN ID does not match expected value"
+  }
+
+  assert {
+    condition     = aws_dx_private_virtual_interface.this.bgp_asn == var.customer_bgp_asn
+    error_message = "Customer BGP ASN does not match expected value"
   }
 
   assert {

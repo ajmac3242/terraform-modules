@@ -30,9 +30,14 @@ variable "location" {
 }
 
 variable "amazon_side_asn" {
-  description = "The Autonomous System Number (ASN) for the Amazon side of the gateway"
+  description = "The Autonomous System Number (ASN) for the Amazon side of the gateway. Valid values: 64512-65534 or 4294967294."
   type        = string
   default     = "64512"
+
+  validation {
+    condition     = (tonumber(var.amazon_side_asn) >= 64512 && tonumber(var.amazon_side_asn) <= 65534) || var.amazon_side_asn == "4294967294"
+    error_message = "The amazon_side_asn must be between 64512 and 65534, or equal to 4294967294."
+  }
 }
 
 variable "vlan" {
@@ -41,9 +46,14 @@ variable "vlan" {
 }
 
 variable "customer_bgp_asn" {
-  description = "The BGP ASN for the customer side of the virtual interface"
+  description = "The BGP ASN for the customer side of the virtual interface. Valid values: 1-65534 or 4294967294."
   type        = number
   default     = 65000
+
+  validation {
+    condition     = (var.customer_bgp_asn >= 1 && var.customer_bgp_asn <= 65534) || var.customer_bgp_asn == 4294967294
+    error_message = "The customer_bgp_asn must be between 1 and 65534, or equal to 4294967294."
+  }
 }
 
 variable "tags" {

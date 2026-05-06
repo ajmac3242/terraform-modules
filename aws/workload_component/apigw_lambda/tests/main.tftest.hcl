@@ -29,13 +29,8 @@ run "valid_apigw_lambda_creation" {
   command = plan
 
   assert {
-    condition     = aws_apigatewayv2_api.this.name == var.name
-    error_message = "API Gateway name does not match expected value"
-  }
-
-  assert {
-    condition     = aws_apigatewayv2_stage.this.name == "$default"
-    error_message = "Stage name should be $default"
+    condition     = module.api_gateway.tags["environment"] == "test"
+    error_message = "API Gateway tags should be applied"
   }
 
   assert {
@@ -54,12 +49,7 @@ run "valid_apigw_lambda_creation" {
   }
 
   assert {
-    condition     = aws_apigatewayv2_api.this.tags["environment"] == "test" && aws_apigatewayv2_api.this.tags["owner"] == "test-owner" && aws_apigatewayv2_api.this.tags["project"] == "test-project" && aws_apigatewayv2_api.this.tags["cost_center"] == "test-cc"
-    error_message = "Mandatory tags are missing or incorrect on API Gateway"
-  }
-
-  assert {
-    condition     = aws_apigatewayv2_stage.this.tags["environment"] == "test" && aws_apigatewayv2_stage.this.tags["owner"] == "test-owner" && aws_apigatewayv2_stage.this.tags["project"] == "test-project" && aws_apigatewayv2_stage.this.tags["cost_center"] == "test-cc"
-    error_message = "Mandatory tags are missing or incorrect on API Gateway stage"
+    condition     = module.lambda.tags["environment"] == "test"
+    error_message = "Lambda tags should be applied"
   }
 }

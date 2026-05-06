@@ -15,17 +15,23 @@ module "lambda" {
   tags = var.tags
 }
 
-# HTTP API Gateway resource
-resource "aws_apigatewayv2_api" "this" {
-  name          = var.name
-  protocol_type = "HTTP"
+# Composed API Gateway using the base module
+module "api_gateway" {
+  source = "../../base_component/apigateway_v2"
+
+  name        = var.name
+  kms_key_arn = var.kms_key_arn
+
+  cors_configuration = var.cors_configuration
+  domain_name        = var.domain_name
+  certificate_arn    = var.certificate_arn
 
   tags = var.tags
 }
 
 # Integration between API Gateway and Lambda
 resource "aws_apigatewayv2_integration" "this" {
-  api_id           = aws_apigatewayv2_api.this.id
+  api_id           = module.api_gateway.api_id
   integration_type = "AWS_PROXY"
 
   integration_method = "POST"
@@ -35,7 +41,7 @@ resource "aws_apigatewayv2_integration" "this" {
 # API Gateway Authorizer
 resource "aws_apigatewayv2_authorizer" "this" {
   count            = var.disable_authorizer ? 0 : 1
-  api_id           = aws_apigatewayv2_api.this.id
+  api_id           = module.api_gateway.api_id
   authorizer_type  = "JWT"
   identity_sources = ["$request.header.Authorization"]
   name             = "${var.name}-authorizer"
@@ -48,44 +54,12 @@ resource "aws_apigatewayv2_authorizer" "this" {
 
 # API Gateway Route
 resource "aws_apigatewayv2_route" "this" {
-  api_id    = aws_apigatewayv2_api.this.id
+  api_id    = module.api_gateway.api_id
   route_key = var.route_key
 
   target             = "integrations/${aws_apigatewayv2_integration.this.id}"
   authorization_type = var.disable_authorizer ? "NONE" : "JWT"
   authorizer_id      = var.disable_authorizer ? null : aws_apigatewayv2_authorizer.this[0].id
-}
-
-# API Gateway Stage with auto-deploy and access logging
-resource "aws_apigatewayv2_stage" "this" {
-  api_id      = aws_apigatewayv2_api.this.id
-  name        = "$default"
-  auto_deploy = true
-
-  access_log_settings {
-    destination_arn = aws_cloudwatch_log_group.api_gw.arn
-    format = jsonencode({
-      requestId      = "$context.requestId"
-      ip             = "$context.identity.sourceIp"
-      requestTime    = "$context.requestTime"
-      httpMethod     = "$context.httpMethod"
-      routeKey       = "$context.routeKey"
-      status         = "$context.status"
-      protocol       = "$context.protocol"
-      responseLength = "$context.responseLength"
-    })
-  }
-
-  tags = var.tags
-}
-
-# Encrypted log group for API Gateway access logs
-resource "aws_cloudwatch_log_group" "api_gw" {
-  name              = "/aws/apigateway/${var.name}"
-  retention_in_days = 30
-  kms_key_id        = var.kms_key_arn
-
-  tags = var.tags
 }
 
 # Permission for API Gateway to invoke Lambda
@@ -95,11 +69,11 @@ resource "aws_lambda_permission" "apigw" {
   function_name = module.lambda.function_name
   principal     = "apigateway.amazonaws.com"
 
-  source_arn = "${aws_apigatewayv2_api.this.execution_arn}/*/*"
+  source_arn = "${module.api_gateway.execution_arn}/*/*"
 }
 
 # WAF association with API Gateway stage
 resource "aws_wafv2_web_acl_association" "this" {
-  resource_arn = aws_apigatewayv2_stage.this.arn
+  resource_arn = module.api_gateway.stage_arn
   web_acl_arn  = var.waf_web_acl_arn
 }

@@ -42,6 +42,16 @@ run "valid_sagemaker_creation" {
   }
 
   assert {
+    condition     = alltrue([for s in var.vpc_config.subnets : contains(aws_sagemaker_model.this.vpc_config[0].subnets, s)])
+    error_message = "VPC configuration subnets do not match expected values"
+  }
+
+  assert {
+    condition     = alltrue([for sg in var.vpc_config.security_group_ids : contains(aws_sagemaker_model.this.vpc_config[0].security_group_ids, sg)])
+    error_message = "VPC configuration security group IDs do not match expected values"
+  }
+
+  assert {
     condition     = aws_sagemaker_endpoint.this.tags["environment"] == "test" && aws_sagemaker_endpoint.this.tags["owner"] == "test-owner" && aws_sagemaker_endpoint.this.tags["project"] == "test-project" && aws_sagemaker_endpoint.this.tags["cost_center"] == "test-cc"
     error_message = "Mandatory tags are missing or incorrect on Endpoint"
   }
