@@ -34,6 +34,7 @@ module "knowledge_base" {
 - **Least-Privilege IAM**: The module creates a dedicated IAM role for the knowledge base with a strict trust policy and SourceAccount/SourceArn conditions.
 - **CMK Encryption**: The security of the Knowledge Base is anchored by the encryption of the underlying storage (e.g., OpenSearch Serverless, RDS Aurora, or Pinecone) and the data sources (e.g., S3). Users must ensure that these components are configured with Customer Managed Keys (CMK) as per organizational standards.
 - **Mandatory Tagging**: All resources are tagged with organizational defaults for tracking and cost allocation.
+- **Cost Attribution**: Granular cost attribution is supported via tagging. AI spend can be charged back to individual IAM principals, teams, or projects by analyzing tags in usage reports.
 
 ## Variables
 | Name | Description | Type | Default | Required |

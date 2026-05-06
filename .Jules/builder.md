@@ -138,3 +138,7 @@ _`- [YYYY-MM-DD] Built <module path>. PR #<number>.`_
 - [2026-05-05] apigateway_v2 — Enforced HTTP protocol and CMK-encrypted access logs for standardization.
 - [2026-05-05] sagemaker_inference — Enforced VPC isolation and CMK encryption for GenAI inference.
 - [2026-05-05] aws_interconnect — Standardized multicloud L3 connectivity for OCI and Azure with mandatory MACsec encryption.
+- [2026-05-06] bedrock_agent — Enhanced documentation to highlight granular cost attribution via tagging.
+- [2026-05-06] bedrock_knowledge_base — Enhanced documentation to highlight granular cost attribution via tagging.
+- [2026-05-06] sagemaker_inference — Identified blocker for "Optimized Generative AI Inference Recommendations" due to missing provider support for aws_sagemaker_inference_recommendations_job.
+- [2026-05-06] Updated Bedrock modules for cost attribution. PR #42.
