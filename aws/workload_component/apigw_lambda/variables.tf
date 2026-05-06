@@ -40,12 +40,43 @@ variable "kms_key_arn" {
   }
 }
 
+variable "cors_configuration" {
+  description = "CORS configuration for the HTTP API"
+  type = object({
+    allow_credentials = optional(bool)
+    allow_headers     = optional(list(string))
+    allow_methods     = optional(list(string))
+    allow_origins     = optional(list(string))
+    expose_headers    = optional(list(string))
+    max_age           = optional(number)
+  })
+  default = null
+}
+
+variable "domain_name" {
+  description = "Custom domain name for the API Gateway"
+  type        = string
+  default     = null
+}
+
+variable "certificate_arn" {
+  description = "The ARN of the ACM certificate for the custom domain"
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.certificate_arn == null ? true : can(regex("^arn:aws:acm:[a-z0-9-]+:[0-9]{12}:certificate/.*$", var.certificate_arn))
+    error_message = "The certificate_arn must be a valid AWS ACM certificate ARN."
+  }
+}
+
 variable "jwt_issuer" {
   description = "The base URL of the IdP that issues JWTs"
   type        = string
+  default     = null
 
   validation {
-    condition     = can(regex("^https://", var.jwt_issuer))
+    condition     = var.jwt_issuer == null ? true : can(regex("^https://", var.jwt_issuer))
     error_message = "The jwt_issuer must be an HTTPS URL."
   }
 }
@@ -84,11 +115,11 @@ variable "permissions_boundary_arn" {
 }
 
 variable "tags" {
-  description = "A map of tags to assign to the resources"
+  description = "A map of tags to assign to the resources. Must include environment, owner, project, and cost_center."
   type        = map(string)
 
   validation {
-    condition     = contains(keys(var.tags), "environment") && contains(keys(var.tags), "owner") && contains(keys(var.tags), "project") && contains(keys(var.tags), "cost_center")
+    condition     = alltrue([for k in ["environment", "owner", "project", "cost_center"] : contains(keys(var.tags), k)])
     error_message = "The tags map must contain the following keys: environment, owner, project, cost_center."
   }
 }

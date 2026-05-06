@@ -1,16 +1,16 @@
 output "api_endpoint" {
   description = "The HTTP API endpoint"
-  value       = aws_apigatewayv2_api.this.api_endpoint
+  value       = module.api_gateway.api_endpoint
 }
 
 output "api_id" {
   description = "The ID of the API Gateway"
-  value       = aws_apigatewayv2_api.this.id
+  value       = module.api_gateway.api_id
 }
 
 output "api_arn" {
   description = "The ARN of the API Gateway"
-  value       = aws_apigatewayv2_api.this.arn
+  value       = module.api_gateway.api_arn
 }
 
 output "function_arn" {
@@ -23,9 +23,9 @@ output "role_arn" {
   value       = module.lambda.role_arn
 }
 
-output "stage_id" {
-  description = "The ID of the API Gateway stage"
-  value       = aws_apigatewayv2_stage.this.id
+output "stage_arn" {
+  description = "The ARN of the API Gateway stage"
+  value       = module.api_gateway.stage_arn
 }
 
 output "route_id" {

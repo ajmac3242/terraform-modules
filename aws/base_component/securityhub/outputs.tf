@@ -5,7 +5,7 @@ output "securityhub_id" {
 
 output "securityhub_arn" {
   description = "The ARN of the Security Hub account"
-  value       = "arn:aws:securityhub:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:hub/default"
+  value       = "arn:aws:securityhub:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:hub/default"
 }
 
 output "finding_aggregator_id" {

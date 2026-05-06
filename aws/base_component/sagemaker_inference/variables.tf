@@ -1,6 +1,11 @@
 variable "name" {
   description = "The name of the SageMaker inference resources"
   type        = string
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9-]+$", var.name))
+    error_message = "The name must contain only alphanumeric characters and hyphens."
+  }
 }
 
 variable "execution_role_arn" {

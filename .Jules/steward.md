@@ -29,7 +29,7 @@ Steward reviews Terraform module changes for:
 - README documentation must be complete enough for downstream users, including usage, inputs, outputs, and important defaults
 - Module structure must be complete: `main.tf`, `variables.tf`, `outputs.tf`, `versions.tf`, `README.md`
 - All variables and outputs must have descriptions
-- Required `tags` variable must exist and required keys must be enforced
+- Required `tags` variable must exist and required keys are enforced
 - AWS provider and Terraform version constraints must be pinned appropriately
 - Security defaults must align with repo-specific expectations and AWS best practices
 - Acceptance criteria in `.Jules/backlog.md` must be satisfied by the implementation
@@ -113,6 +113,8 @@ _Steward will append review patterns, quality notes, and recurring issues here. 
 _`- [YYYY-MM-DD] <topic> — <finding and rationale>`_
 
 - [2026-04-25] Journal initialized. Steward replaces Sentinel and now serves as the daily reviewer and fixer, not the final gate.
+- [2026-05-05] API Gateway Refactor — Moved raw `aws_apigatewayv2_api` resources from `apigw_lambda` workload module into a new `apigateway_v2` base module to promote reuse and centralize security/logging defaults.
+- [2026-05-05] Validation Standard — Enforced resource naming regex validation for SageMaker and numeric range validation for Direct Connect ASNs to improve module robustness.
 
 ## Review Log
 
@@ -130,3 +132,4 @@ _`- [YYYY-MM-DD] Reviewed daily PRs. Applied fixes where needed.`_
 - [2026-05-03] Reviewed daily module changes (EventBridge Pipes and Security Hub). Hardened `eventbridge_pipes` with nested IAM role tag assertions in tests and standardized README source paths. Hardened `securityhub` with standardized README paths, implementation of missing `securityhub_arn` output, and addition of `override_data` to tests to handle `data.aws_caller_identity`. Verified all changes via `terraform test`. Cleaned up environment build artifacts (.terraform).
 - [2026-05-03] Reviewed daily module changes. Applied follow-up fixes for `eventbridge_pipes` and `securityhub`.
 - [2026-05-04] Reviewed all modules for repo-wide quality. Hardened `cloudfront` README with missing sections. Added missing `tags` output to `lambda` and `vpc` modules to fix `terraform test` failures in dependent workload components. Hardened `vpc` tests with `override_data` to support offline testing of data sources. Verified all 44 modules with native `terraform test`. Cleaned up build artifacts.
+- [2026-05-05] Reviewed and hardened `apigateway_v2`, `sagemaker_inference`, `aws_interconnect`, and `securityhub` modules. Implemented `apigateway_v2` base module and refactored `apigw_lambda` workload component. Verified all 5 modified modules with native `terraform test`.
