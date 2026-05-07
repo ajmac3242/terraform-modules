@@ -160,6 +160,45 @@ resource "aws_account_alternate_contact" "operations" {
 }
 
 # -----------------------------------------------------------------------------
+# 9. EC2 Serial Console Access
+# CIS Benchmark recommends disabling serial console access.
+# -----------------------------------------------------------------------------
+resource "aws_ec2_serial_console_access" "this" {
+  enabled = var.enable_serial_console_access
+}
+
+# -----------------------------------------------------------------------------
+# 10. IAM Support Role
+# CIS Benchmark requires a support role with AWSSupportAccess policy.
+# -----------------------------------------------------------------------------
+module "support_role" {
+  count  = var.create_support_role ? 1 : 0
+  source = "../iam"
+
+  role_name   = "aws-support-access-role"
+  description = "Support role for AWS account management (CIS compliant)"
+  tags        = var.tags
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        }
+      }
+    ]
+  })
+
+  managed_policy_arns = [
+    "arn:aws:iam::aws:policy/AWSSupportAccess"
+  ]
+}
+
+# -----------------------------------------------------------------------------
 # Data sources
 # -----------------------------------------------------------------------------
 data "aws_region" "current" {}
+data "aws_caller_identity" "current" {}
