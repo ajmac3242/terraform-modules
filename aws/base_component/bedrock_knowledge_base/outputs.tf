@@ -17,3 +17,8 @@ output "role_name" {
   description = "The name of the IAM role used by the knowledge base"
   value       = module.iam_role.role_name
 }
+
+output "tags" {
+  description = "A map of tags assigned to the knowledge base"
+  value       = aws_bedrockagent_knowledge_base.this.tags
+}

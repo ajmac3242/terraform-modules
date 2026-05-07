@@ -8,9 +8,10 @@ Opinionated Bedrock Agent module. Provides a secure foundation for autonomous sy
 module "bedrock_agent" {
   source = "./aws/base_component/bedrock_agent"
 
-  agent_name      = "my-ai-assistant"
-  foundation_model = "anthropic.claude-3-sonnet-20240229-v1:0"
-  instruction      = "You are a helpful assistant."
+  agent_name              = "my-ai-assistant"
+  foundation_model        = "anthropic.claude-3-sonnet-20240229-v1:0"
+  instruction             = "You are a helpful assistant."
+  agent_resource_role_arn = "arn:aws:iam::123456789012:role/my-agent-role"
 
   tags = {
     environment = "prod"
@@ -33,12 +34,15 @@ module "bedrock_agent" {
 | `agent_name` | Name of the Bedrock Agent | `string` | n/a | yes |
 | `foundation_model` | The foundation model used by the agent | `string` | n/a | yes |
 | `instruction` | Instructions for the agent | `string` | n/a | yes |
-| `customer_encryption_key_arn` | KMS key ARN for encryption | `string` | `null` | no |
+| `agent_resource_role_arn` | The ARN of the IAM role with permissions to invoke the agent | `string` | n/a | yes |
+| `kms_key_arn` | KMS key ARN for encryption | `string` | `null` | no |
 | `tags` | Standard tags for all resources | `map(string)` | n/a | yes |
 
 ## Outputs
 | Name | Description |
 |------|-------------|
-| `agent_id` | The ID of the Bedrock Agent |
-| `agent_arn` | The ARN of the Bedrock Agent |
+| `agent_id` | The unique identifier of the agent |
+| `agent_arn` | The ARN of the agent |
+| `agent_alias_id` | The unique identifier of the agent alias |
 | `agent_role_arn` | The ARN of the IAM role used by the agent |
+| `tags` | A map of tags assigned to the agent |
