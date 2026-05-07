@@ -102,6 +102,7 @@ _`- [YYYY-MM-DD] <topic> — <decision and rationale>`_
 - [2026-05-04] IAM Composition Standard — Formalized the requirement to use external policy attachments for dynamic ARNs to ensure offline test compatibility and prevent planning errors.
 - [2026-05-04] Strategic Roadmap Expansion — Initiated tracks for GenAI (SageMaker Inference) and Multicloud (AWS Interconnect) based on April 2026 GA announcements. Promoting API Gateway v2 to a dedicated base component for better composition in workload patterns.
 - [2026-05-05] Post-Migration Focus — With the AWS Provider 6.0 foundational migration and April 2026 service baseline (SageMaker, Interconnect, API GW v2) complete, the roadmap shifts to optimizing GenAI operations (Bedrock cost attribution, SageMaker recommendations) and multicloud networking maturity.
+- [2026-05-06] GenAI Agent Expansion — Following the May 4, 2026 "What's Next" event, we are expanding the roadmap to include Bedrock AgentCore and Amazon Quick. These additions represent the next phase of agentic infrastructure, prioritizing control, visibility, and multi-app connectivity.
 
 ## Session Log
 
@@ -119,3 +120,4 @@ _`- [YYYY-MM-DD] Reviewed backlog and updated priorities.`_
 - [2026-05-04] Completed Provider 6.0 evaluation and refined backlog with new April 2026 service releases. Addressed code review feedback on backlog organization and task status.
 - [2026-05-04] Completed Provider 6.0 evaluation, prioritized foundational migration, and expanded roadmap with April 2026 service updates.
 - [2026-05-05] Consolidated Provider 6.0 migration; finalized foundational April 2026 service releases; prioritized Bedrock cost attribution and SageMaker recommendations.
+- [2026-05-06] Updated backlog and journal with May 2026 GenAI announcements (Bedrock AgentCore, Amazon Quick).
