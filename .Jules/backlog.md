@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-05
+> **Last reviewed:** 2026-05-06
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -141,7 +141,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Leverages new "Optimized Generative AI Inference Recommendations" feature (GA April 2026) to automatically identify optimized deployment configurations for generative AI models, including instance type and container parameters.
 
 > [!IMPORTANT]
-> **Blocker:** The `aws_sagemaker_inference_recommendations_job` resource is not yet supported in the AWS Terraform provider (v5.x/v6.x). Implementation is deferred until provider support is added.
+> **Blocker:** (As of 2026-05-06) The `aws_sagemaker_inference_recommendations_job` resource is not yet supported in the AWS Terraform provider (v5.x/v6.x). Implementation is deferred until provider support is added.
 
 #### Acceptance Criteria
 - [ ] `aws_sagemaker_inference_recommendations_job` or equivalent for optimized deployment
@@ -184,6 +184,23 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [x] Update documentation to highlight cost attribution via tagging
 - [x] Required `tags` enforced
 - [x] Native offline Terraform test validates tag enforcement
+
+---
+
+### aws/base_component/bedrock_agent_core: Bedrock AgentCore module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_agent_core
+**Why:** Following the May 4, 2026 announcement, Bedrock AgentCore provides enhanced capabilities for building and managing autonomous agents with improved control and visibility.
+
+#### Acceptance Criteria
+- [ ] `aws_bedrockagent_core` resource implementation (pending provider support)
+- [ ] Support for advanced control loops and visibility into agent reasoning
+- [ ] Mandatory CMK encryption for all data stores and logs
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates security and configuration
 
 ---
 
@@ -1185,6 +1202,7 @@ Retain previously completed module entries below this line for historical tracki
 
 ## Future Module Ideas
 
+- `aws/base_component/amazon_quick` — (Future) Infrastructure for Amazon Quick AI assistant integrations.
 - `aws/workload_component/lambda_powertools` — (Future) Lambda with Powertools and standardized observability.
 - `gcp/base_component/gcs` — (Future) GCP Cloud Storage equivalent.
 - `azure/base_component/storage` — (Future) Azure Blob Storage equivalent.
@@ -1205,3 +1223,4 @@ Retain previously completed module entries below this line for historical tracki
 | 2026-04-29 | Navigator | Refined roadmap: promoted static_website/athena to history; added Bedrock Knowledge Base and Provider 6.0 evaluation. |
 | 2026-05-04 | Navigator | Completed AWS Provider 6.0 evaluation; refined ACM and Centralized Logging criteria; added Interconnect and SageMaker Inference candidates. |
 | 2026-05-05 | Navigator | Mark Provider 6.0 foundational migration complete; mark SageMaker, Interconnect, and API GW v2 base modules done; introduced Bedrock cost attribution and SageMaker optimization items. |
+| 2026-05-06 | Navigator | Updated backlog for May 2026 "What's Next" announcements; added Bedrock AgentCore and Amazon Quick candidates. |
