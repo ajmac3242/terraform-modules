@@ -39,23 +39,24 @@ module "knowledge_base" {
 ## Variables
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| name | Name of the knowledge base | `string` | n/a | yes |
-| region | AWS region | `string` | `"us-east-1"` | no |
-| aws_account_id | AWS account ID | `string` | n/a | yes |
-| embedding_model_arn | ARN of the embedding model | `string` | n/a | yes |
-| storage_type | Type of storage for the knowledge base | `string` | `"OPENSEARCH_SERVERLESS"` | no |
-| opensearch_serverless_configuration | Configuration for OpenSearch Serverless storage | `object` | `null` | no |
-| pinecone_configuration | Configuration for Pinecone storage | `object` | `null` | no |
-| rds_configuration | Configuration for RDS Aurora storage | `object` | `null` | no |
-| redis_enterprise_cloud_configuration | Configuration for Redis Enterprise Cloud storage | `object` | `null` | no |
-| managed_policy_arns | List of managed policy ARNs to attach to the KB role | `list(string)` | `[]` | no |
-| permissions_boundary_arn | ARN of the permissions boundary to attach to the KB role | `string` | `null` | no |
-| tags | A map of tags to assign to the resources | `map(string)` | n/a | yes |
+| `name` | Name of the knowledge base | `string` | n/a | yes |
+| `region` | AWS region | `string` | `"us-east-1"` | no |
+| `aws_account_id` | AWS account ID | `string` | n/a | yes |
+| `embedding_model_arn` | ARN of the embedding model | `string` | n/a | yes |
+| `storage_type` | Type of storage for the knowledge base | `string` | `"OPENSEARCH_SERVERLESS"` | no |
+| `opensearch_serverless_configuration` | Configuration for OpenSearch Serverless storage | `object` | `null` | no |
+| `pinecone_configuration` | Configuration for Pinecone storage | `object` | `null` | no |
+| `rds_configuration` | Configuration for RDS Aurora storage | `object` | `null` | no |
+| `redis_enterprise_cloud_configuration` | Configuration for Redis Enterprise Cloud storage | `object` | `null` | no |
+| `managed_policy_arns` | List of managed policy ARNs to attach to the KB role | `list(string)` | `[]` | no |
+| `permissions_boundary_arn` | ARN of the permissions boundary to attach to the KB role | `string` | `null` | no |
+| `tags` | A map of tags to assign to the resources | `map(string)` | n/a | yes |
 
 ## Outputs
 | Name | Description |
 |------|-------------|
-| knowledge_base_id | The ID of the knowledge base |
-| knowledge_base_arn | The ARN of the knowledge base |
-| role_arn | The ARN of the IAM role used by the knowledge base |
-| role_name | The name of the IAM role used by the knowledge base |
+| `knowledge_base_id` | The ID of the knowledge base |
+| `knowledge_base_arn` | The ARN of the knowledge base |
+| `role_arn` | The ARN of the IAM role used by the knowledge base |
+| `role_name` | The name of the IAM role used by the knowledge base |
+| `tags` | A map of tags assigned to the knowledge base |

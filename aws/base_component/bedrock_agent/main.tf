@@ -4,7 +4,7 @@ resource "aws_bedrockagent_agent" "this" {
   foundation_model            = var.foundation_model
   instruction                 = var.instruction
   agent_resource_role_arn     = var.agent_resource_role_arn
-  customer_encryption_key_arn = var.customer_encryption_key_arn
+  customer_encryption_key_arn = var.kms_key_arn
 
   tags = var.tags
 }
