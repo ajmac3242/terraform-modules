@@ -54,4 +54,9 @@ run "valid_fargate_creation" {
     condition     = aws_cloudwatch_log_group.this.tags["environment"] == "test" && aws_cloudwatch_log_group.this.tags["owner"] == "test-owner" && aws_cloudwatch_log_group.this.tags["project"] == "test-project" && aws_cloudwatch_log_group.this.tags["cost_center"] == "test-cc"
     error_message = "Mandatory tags are missing or incorrect on CloudWatch log group."
   }
+
+  assert {
+    condition     = jsondecode(aws_ecs_task_definition.this.container_definitions)[0].logConfiguration.options["awslogs-region"] == "us-east-1"
+    error_message = "ECS task definition log region does not match expected value"
+  }
 }

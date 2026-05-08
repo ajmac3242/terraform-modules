@@ -6,7 +6,7 @@ data "aws_caller_identity" "current" {
 
 locals {
   account_id = var.aws_account_id != null ? var.aws_account_id : data.aws_caller_identity.current[0].account_id
-  region     = data.aws_region.current.name
+  region     = data.aws_region.current.id
 }
 
 # ALB using base module (conditionally created)
