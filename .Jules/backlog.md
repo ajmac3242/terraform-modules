@@ -1218,7 +1218,7 @@ Retain previously completed module entries below this line for historical tracki
 |----|------|----------|--------|
 | SEC-001 | All modules: enforce KMS CMK for at-rest encryption | CRITICAL | `done` (Verified 2026-04-28) |
 | SEC-007 | Review CIS AWS Foundations Benchmark v3.0 for gaps | MEDIUM | `done` (PR #11) |
-| SEC-008 | Continuous Review: Account Security baseline module updates | CRITICAL | `backlog` |
+| SEC-008 | Continuous Review: Account Security baseline module updates | CRITICAL | `done` (PR #43) |
 
 ---
 
