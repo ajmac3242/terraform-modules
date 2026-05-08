@@ -1224,3 +1224,21 @@ Retain previously completed module entries below this line for historical tracki
 | 2026-05-04 | Navigator | Completed AWS Provider 6.0 evaluation; refined ACM and Centralized Logging criteria; added Interconnect and SageMaker Inference candidates. |
 | 2026-05-05 | Navigator | Mark Provider 6.0 foundational migration complete; mark SageMaker, Interconnect, and API GW v2 base modules done; introduced Bedrock cost attribution and SageMaker optimization items. |
 | 2026-05-06 | Navigator | Updated backlog for May 2026 "What's Next" announcements; added Bedrock AgentCore and Amazon Quick candidates. |
+
+## Technical Debt & Maintenance
+
+### aws/base_component/account_security: Migrate GuardDuty to Feature resources
+
+**Priority:** MEDIUM
+**Type:** Maintenance
+**Status:** `backlog`
+**Module:** aws/base_component/account_security
+**Why:** The `datasources` block in `aws_guardduty_detector` is deprecated. Migrating to `aws_guardduty_detector_feature` resources aligns with AWS and Terraform provider best practices.
+
+#### Acceptance Criteria
+- [ ] Refactor `aws_guardduty_detector` to remove the `datasources` block
+- [ ] Implement `aws_guardduty_detector_feature` resources for S3 Logs, Kubernetes, and Malware Protection
+- [ ] Ensure parity with current functionality
+- [ ] Update tests to validate new resource structure
+
+---

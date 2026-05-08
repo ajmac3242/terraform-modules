@@ -64,3 +64,13 @@ output "operations_contact_email" {
   description = "The email address of the registered alternate operations contact, or null if not set"
   value       = try(aws_account_alternate_contact.operations[0].email_address, null)
 }
+
+output "support_role_arn" {
+  description = "The ARN of the IAM Support role"
+  value       = try(module.support_role[0].role_arn, null)
+}
+
+output "support_role_name" {
+  description = "The name of the IAM Support role"
+  value       = try(module.support_role[0].role_name, null)
+}

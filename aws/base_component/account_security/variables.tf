@@ -91,6 +91,24 @@ variable "password_policy_min_length" {
 }
 
 # -----------------------------------------------------------------------------
+# EC2 Serial Console Access
+# -----------------------------------------------------------------------------
+variable "enable_serial_console_access" {
+  description = "Whether to enable EC2 serial console access. CIS recommends false."
+  type        = bool
+  default     = false
+}
+
+# -----------------------------------------------------------------------------
+# IAM Support Role
+# -----------------------------------------------------------------------------
+variable "create_support_role" {
+  description = "Whether to create the CIS-required IAM Support role"
+  type        = bool
+  default     = true
+}
+
+# -----------------------------------------------------------------------------
 # IAM Access Analyzer
 # -----------------------------------------------------------------------------
 variable "enable_access_analyzer" {

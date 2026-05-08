@@ -17,6 +17,15 @@ provider "aws" {
   secret_key                  = "mock_secret_key"
 }
 
+override_data {
+  target = data.aws_caller_identity.current
+  values = {
+    account_id = "123456789012"
+    arn        = "arn:aws:iam::123456789012:root"
+    userid     = "123456789012"
+  }
+}
+
 run "validate_account_security" {
   command = plan
 
@@ -63,5 +72,15 @@ run "validate_account_security" {
   assert {
     condition     = aws_default_security_group.this[0].tags["environment"] == "test" && aws_default_security_group.this[0].tags["owner"] == "test-owner" && aws_default_security_group.this[0].tags["project"] == "test-project" && aws_default_security_group.this[0].tags["cost_center"] == "test-cc"
     error_message = "Mandatory tags are missing or incorrect on default security group."
+  }
+
+  assert {
+    condition     = aws_ec2_serial_console_access.this.enabled == false
+    error_message = "EC2 serial console access must be disabled."
+  }
+
+  assert {
+    condition     = module.support_role[0].role_name == "aws-support-access-role"
+    error_message = "IAM Support role must be created with the correct name."
   }
 }

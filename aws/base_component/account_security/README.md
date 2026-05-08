@@ -1,7 +1,7 @@
 # aws/base_component/account_security
 
 ## Purpose
-This module enforces account-level and region-level security standards to provide a safe baseline for AWS member accounts operating within an AWS Organization managed by Control Tower. While individual resources (like S3 buckets) should have their own security configurations, this module provides an account-wide "safety net" that prevents accidental exposure even if a resource-level setting is misconfigured.
+This module enforces account-level and region-level security standards (CIS AWS Foundations Benchmark v3.0 compliant) to provide a safe baseline for AWS member accounts operating within an AWS Organization managed by Control Tower. While individual resources (like S3 buckets) should have their own security configurations, this module provides an account-wide "safety net" that prevents accidental exposure even if a resource-level setting is misconfigured.
 
 ### Org-Managed Account Assumptions
 Designed for member accounts within an AWS Organization using Control Tower or an equivalent landing zone. The following services are **not** managed by this module because they are owned at the org/landing-zone level:
@@ -36,9 +36,10 @@ module "account_security" {
 ```
 
 ## Security
+- **Compliance**: Aligned with CIS AWS Foundations Benchmark v3.0 standards.
 - **Encryption**: Enforces account-level EBS encryption by default using AWS-managed keys or a provided CMK (`ebs_kms_key_arn`).
-- **Exposure Control**: Enforces account-wide S3 Public Access Block and hardens the default VPC security group (removes all rules).
-- **Identity Hardening**: Enforces a strong IAM password policy (CIS compliant) and enables IAM Access Analyzer for external access monitoring.
+- **Exposure Control**: Enforces account-wide S3 Public Access Block, disables EC2 Serial Console access, and hardens the default VPC security group (removes all rules).
+- **Identity Hardening**: Enforces a strong IAM password policy, creates the required IAM Support role, and enables IAM Access Analyzer for external access monitoring.
 - **Threat Detection**: Enables Amazon GuardDuty (including S3 and Malware Protection) at the account/region level.
 - **Instance Security**: Enforces IMDSv2 (Session Tokens Required) for all new EC2 instances with a hop limit of 1.
 
@@ -64,6 +65,8 @@ module "account_security" {
 | `ebs_kms_key_arn` | KMS key ARN for EBS encryption. If null, uses the default `aws/ebs` key. | `string` | `null` | no |
 | `enable_iam_password_policy` | Enable the account-level IAM password policy | `bool` | `true` | no |
 | `password_policy_min_length` | Minimum password length. CIS recommends 14+. | `number` | `14` | no |
+| `enable_serial_console_access` | Whether to enable EC2 serial console access. CIS recommends false. | `bool` | `false` | no |
+| `create_support_role` | Whether to create the CIS-required IAM Support role | `bool` | `true` | no |
 | `enable_access_analyzer` | Enable IAM Access Analyzer for the account | `bool` | `true` | no |
 | `enable_guardduty` | Enable GuardDuty for the account/region | `bool` | `true` | no |
 | `enable_guardduty_kubernetes` | Enable GuardDuty Kubernetes Audit Log monitoring | `bool` | `true` | no |
