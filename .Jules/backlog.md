@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-06
+> **Last reviewed:** 2026-05-07
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -54,23 +54,21 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Immediate Ready Queue
 
-### repo-wide: Standardize native Terraform tests across all modules
+### repo-wide: Fix AWS Provider 6.0 deprecation warnings
 
 **Priority:** HIGH
-**Type:** Testing
-**Status:** `done` (PR #12)
+**Type:** Maintenance
+**Status:** `done` (PR #43)
 **Module:** repo-wide
-**Why:** Tests are critical to safe reuse of these modules. A consistent minimum test standard will help Builder create stronger tests and Steward review them consistently.
+**Why:** Audit on 2026-05-07 identified remaining uses of `data.aws_region.current.name`. AWS Provider 6.0 standardizes on `.id` for the region name to avoid deprecation warnings.
 
 #### Acceptance Criteria
-- [x] Define a minimum native `terraform test` standard (e.g., `tests/main.tftest.hcl` must exist)
-- [x] Ensure all tests use mock providers to allow offline execution in CI
-- [x] Validate mandatory tags (`environment`, `owner`, `project`, `cost_center`) in every `tftest.hcl`
-- [x] Validate CMK encryption for all data-at-rest resources in every `tftest.hcl`
-- [x] Add backlog follow-up items for modules that fall short of the new test baseline
-- [x] Update repository root `CONTRIBUTING.md` or similar with the testing standard
+- [ ] Update `aws/workload_component/step_functions_lambda/main.tf` to use `data.aws_region.current.id`
+- [ ] Update `aws/workload_component/alb_ecs_fargate/main.tf` to use `data.aws_region.current.id`
+- [ ] Update `aws/base_component/ecs_fargate/main.tf` to use `data.aws_region.current.id`
+- [ ] Verify all tests pass without deprecation warnings
 
-***
+---
 
 ### tests: Update all modules to follow the new testing standard
 
@@ -131,6 +129,23 @@ All modules in this repo MUST comply with these non-negotiable standards:
 ---
 
 ## Module Backlog
+
+### aws/base_component/amazon_quick: Opinionated Amazon Quick module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/amazon_quick
+**Why:** Standardized infrastructure for Amazon Quick AI assistant integrations. Promoted from future ideas following the May 2026 GenAI roadmap updates.
+
+#### Acceptance Criteria
+- [ ] `aws_amazon_quick` resource implementation (pending provider support)
+- [ ] Support for standardized AI assistant configurations
+- [ ] Mandatory CMK encryption for all data stores and logs
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates security and configuration
+
+---
 
 ### aws/base_component/sagemaker_inference: Optimized GenAI Inference Recommendations module
 
@@ -211,6 +226,24 @@ _Empty — standardizing current backlog items._
 ***
 
 ## Existing Completed Module History
+
+### repo-wide: Standardize native Terraform tests across all modules
+
+**Priority:** HIGH
+**Type:** Testing
+**Status:** `done` (PR #12)
+**Module:** repo-wide
+**Why:** Tests are critical to safe reuse of these modules. A consistent minimum test standard will help Builder create stronger tests and Steward review them consistently.
+
+#### Acceptance Criteria
+- [x] Define a minimum native `terraform test` standard (e.g., `tests/main.tftest.hcl` must exist)
+- [x] Ensure all tests use mock providers to allow offline execution in CI
+- [x] Validate mandatory tags (`environment`, `owner`, `project`, `cost_center`) in every `tftest.hcl`
+- [x] Validate CMK encryption for all data-at-rest resources in every `tftest.hcl`
+- [x] Add backlog follow-up items for modules that fall short of the new test baseline
+- [x] Update repository root `CONTRIBUTING.md` or similar with the testing standard
+
+---
 
 ### aws/base_component/bedrock_knowledge_base: Opinionated Bedrock Knowledge Base module
 
@@ -532,7 +565,7 @@ Retain previously completed module entries below this line for historical tracki
 - [x] `aws_launch_template` with enforced EBS encryption using CMK
 - [x] `aws_autoscaling_group` with VPC placement
 - [x] Monitoring enabled by default
-- [x] Tag propagation to instances and volumes
+- [x] Tag propagation to initiatives and volumes
 - [x] Required `tags` enforced
 
 ---
@@ -1202,7 +1235,6 @@ Retain previously completed module entries below this line for historical tracki
 
 ## Future Module Ideas
 
-- `aws/base_component/amazon_quick` — (Future) Infrastructure for Amazon Quick AI assistant integrations.
 - `aws/workload_component/lambda_powertools` — (Future) Lambda with Powertools and standardized observability.
 - `gcp/base_component/gcs` — (Future) GCP Cloud Storage equivalent.
 - `azure/base_component/storage` — (Future) Azure Blob Storage equivalent.
@@ -1242,3 +1274,4 @@ Retain previously completed module entries below this line for historical tracki
 - [ ] Update tests to validate new resource structure
 
 ---
+| 2026-05-07 | Navigator | Updated backlog and journal for May 2026 GenAI roadmap; promoted Amazon Quick to active backlog; identified AWS Provider 6.0 deprecation fixes. |
