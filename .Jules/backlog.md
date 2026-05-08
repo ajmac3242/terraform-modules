@@ -58,7 +58,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Maintenance
-**Status:** `backlog`
+**Status:** `done` (PR #43)
 **Module:** repo-wide
 **Why:** Audit on 2026-05-07 identified remaining uses of `data.aws_region.current.name`. AWS Provider 6.0 standardizes on `.id` for the region name to avoid deprecation warnings.
 
