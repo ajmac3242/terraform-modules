@@ -103,6 +103,7 @@ _`- [YYYY-MM-DD] <topic> — <decision and rationale>`_
 - [2026-05-04] Strategic Roadmap Expansion — Initiated tracks for GenAI (SageMaker Inference) and Multicloud (AWS Interconnect) based on April 2026 GA announcements. Promoting API Gateway v2 to a dedicated base component for better composition in workload patterns.
 - [2026-05-05] Post-Migration Focus — With the AWS Provider 6.0 foundational migration and April 2026 service baseline (SageMaker, Interconnect, API GW v2) complete, the roadmap shifts to optimizing GenAI operations (Bedrock cost attribution, SageMaker recommendations) and multicloud networking maturity.
 - [2026-05-06] GenAI Agent Expansion — Following the May 4, 2026 "What's Next" event, we are expanding the roadmap to include Bedrock AgentCore and Amazon Quick. These additions represent the next phase of agentic infrastructure, prioritizing control, visibility, and multi-app connectivity.
+- [2026-05-07] AWS Provider 6.0 Hygiene — Identified remaining uses of `data.aws_region.current.name`. Standardizing on `.id` across all modules to eliminate deprecation warnings and align with Provider 6.0 best practices. Promoting Amazon Quick to the active backlog to accelerate the next phase of agentic AI integration.
 
 ## Session Log
 
@@ -121,3 +122,4 @@ _`- [YYYY-MM-DD] Reviewed backlog and updated priorities.`_
 - [2026-05-04] Completed Provider 6.0 evaluation, prioritized foundational migration, and expanded roadmap with April 2026 service updates.
 - [2026-05-05] Consolidated Provider 6.0 migration; finalized foundational April 2026 service releases; prioritized Bedrock cost attribution and SageMaker recommendations.
 - [2026-05-06] Updated backlog and journal with May 2026 GenAI announcements (Bedrock AgentCore, Amazon Quick).
+- [2026-05-07] Reviewed backlog, updated priorities for Amazon Quick, and identified remaining AWS Provider 6.0 deprecation fixes.
