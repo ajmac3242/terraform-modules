@@ -1263,7 +1263,7 @@ Retain previously completed module entries below this line for historical tracki
 
 **Priority:** MEDIUM
 **Type:** Maintenance
-**Status:** `backlog`
+**Status:** `done` (PR #49)
 **Module:** aws/base_component/account_security
 **Why:** The `datasources` block in `aws_guardduty_detector` is deprecated. Migrating to `aws_guardduty_detector_feature` resources aligns with AWS and Terraform provider best practices.
 

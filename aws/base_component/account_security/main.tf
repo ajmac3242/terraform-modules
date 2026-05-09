@@ -102,25 +102,28 @@ resource "aws_guardduty_detector" "this" {
   count  = var.enable_guardduty ? 1 : 0
   enable = true
 
-  datasources {
-    s3_logs {
-      enable = true
-    }
-    kubernetes {
-      audit_logs {
-        enable = var.enable_guardduty_kubernetes
-      }
-    }
-    malware_protection {
-      scan_ec2_instance_with_findings {
-        ebs_volumes {
-          enable = true
-        }
-      }
-    }
-  }
-
   tags = var.tags
+}
+
+resource "aws_guardduty_detector_feature" "s3_logs" {
+  count       = var.enable_guardduty ? 1 : 0
+  detector_id = aws_guardduty_detector.this[0].id
+  name        = "S3_DATA_EVENTS"
+  status      = "ENABLED"
+}
+
+resource "aws_guardduty_detector_feature" "kubernetes" {
+  count       = var.enable_guardduty ? 1 : 0
+  detector_id = aws_guardduty_detector.this[0].id
+  name        = "EKS_AUDIT_LOGS"
+  status      = var.enable_guardduty_kubernetes ? "ENABLED" : "DISABLED"
+}
+
+resource "aws_guardduty_detector_feature" "malware_protection" {
+  count       = var.enable_guardduty ? 1 : 0
+  detector_id = aws_guardduty_detector.this[0].id
+  name        = "EBS_MALWARE_PROTECTION"
+  status      = "ENABLED"
 }
 
 # -----------------------------------------------------------------------------
