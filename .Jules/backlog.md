@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-07
+> **Last reviewed:** 2026-05-08
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -54,6 +54,119 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Immediate Ready Queue
 
+_Empty — standardizing current backlog items._
+
+***
+
+## Module Backlog
+
+### aws/base_component/amazon_quick: Opinionated Amazon Quick module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/amazon_quick
+**Why:** Standardized infrastructure for Amazon Quick AI assistant integrations. Promoted from future ideas following the May 2026 GenAI roadmap updates.
+
+#### Acceptance Criteria
+- [ ] `aws_amazon_quick` resource implementation (pending provider support)
+- [ ] Support for desktop app preview integration
+- [ ] Support for visual asset generation (documents, presentations, infographics)
+- [ ] Connectivity to local files, calendars, and communications
+- [ ] Support for standardized AI assistant configurations
+- [ ] Mandatory CMK encryption for all data stores and logs
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates security and configuration
+
+---
+
+### aws/base_component/sagemaker_inference: Optimized GenAI Inference Recommendations module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/sagemaker_inference
+**Why:** Leverages new "Optimized Generative AI Inference Recommendations" feature (GA April 2026) to automatically identify optimized deployment configurations for generative AI models, including instance type and container parameters.
+
+> [!IMPORTANT]
+> **Blocker:** (As of 2026-05-06) The `aws_sagemaker_inference_recommendations_job` resource is not yet supported in the AWS Terraform provider (v5.x/v6.x). Implementation is deferred until provider support is added.
+
+#### Acceptance Criteria
+- [ ] `aws_sagemaker_inference_recommendations_job` or equivalent for optimized deployment
+- [ ] Support for specifying model, instance type, and inference parameters
+- [ ] Mandatory CMK encryption for model artifacts and endpoint logs
+- [ ] Placed in VPC private subnets
+- [ ] Required `tags` enforced
+- [ ] Outputs: `endpoint_arn`, `recommendation_id`
+- [ ] Native offline Terraform test validates security settings and VPC placement
+
+---
+
+### aws/base_component/bedrock_agent_core: Bedrock AgentCore module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_agent_core
+**Why:** Following the May 4, 2026 announcement, Bedrock AgentCore provides enhanced capabilities for building and managing autonomous agents with improved control and visibility.
+
+#### Acceptance Criteria
+- [ ] `aws_bedrockagent_core` resource implementation (pending provider support)
+- [ ] Support for advanced control loops and enhanced visibility into agent reasoning
+- [ ] Support for autonomous agent orchestration
+- [ ] Mandatory CMK encryption for all data stores and logs
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates security and configuration
+
+---
+
+### aws/base_component/backup: Opinionated AWS Backup module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/backup
+**Why:** Provides a standardized way to manage backup plans, vaults, and selections for organizational compliance and disaster recovery.
+
+#### Acceptance Criteria
+- [ ] `aws_backup_vault` with mandatory CMK encryption
+- [ ] `aws_backup_vault_lock_configuration` support for immutable backups
+- [ ] `aws_backup_plan` with configurable rules (schedule, retention, lifecycle)
+- [ ] `aws_backup_selection` using tags or resource ARNs
+- [ ] Mandatory IAM role via base IAM module
+- [ ] Required `tags` enforced
+- [ ] Outputs: `vault_arn`, `plan_id`, `vault_id`
+- [ ] Native offline Terraform test validates encryption and lock settings
+
+---
+
+### aws/workload_component/multicloud_hub: Enterprise Multicloud Networking pattern
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/workload_component/multicloud_hub
+**Why:** Composes `aws_interconnect` with Transit Gateway to provide a standardized regional hub for cross-cloud connectivity (OCI/Azure) with route propagation and security monitoring.
+
+#### Acceptance Criteria
+- [ ] Uses `aws/base_component/aws_interconnect` for L3 connectivity
+- [ ] Integrates with `aws_ec2_transit_gateway` for regional routing
+- [ ] Supports cross-cloud route propagation via BGP
+- [ ] Mandatory MACsec encryption enforced at the connection layer
+- [ ] Required `tags` enforced
+- [ ] Outputs: `tgw_id`, `dx_gateway_id`, `hub_arn`
+- [ ] Native offline Terraform test validates route table and interconnect wiring
+
+---
+
+## Review-Discovered Improvement Queue
+
+_Empty — standardizing current backlog items._
+
+***
+
+## Existing Completed Module History
+
 ### repo-wide: Fix AWS Provider 6.0 deprecation warnings
 
 **Priority:** HIGH
@@ -63,10 +176,59 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Audit on 2026-05-07 identified remaining uses of `data.aws_region.current.name`. AWS Provider 6.0 standardizes on `.id` for the region name to avoid deprecation warnings.
 
 #### Acceptance Criteria
-- [ ] Update `aws/workload_component/step_functions_lambda/main.tf` to use `data.aws_region.current.id`
-- [ ] Update `aws/workload_component/alb_ecs_fargate/main.tf` to use `data.aws_region.current.id`
-- [ ] Update `aws/base_component/ecs_fargate/main.tf` to use `data.aws_region.current.id`
-- [ ] Verify all tests pass without deprecation warnings
+- [x] Update `aws/workload_component/step_functions_lambda/main.tf` to use `data.aws_region.current.id`
+- [x] Update `aws/workload_component/alb_ecs_fargate/main.tf` to use `data.aws_region.current.id`
+- [x] Update `aws/base_component/ecs_fargate/main.tf` to use `data.aws_region.current.id`
+- [x] Verify all tests pass without deprecation warnings
+
+---
+
+### aws/base_component/account_security: Migrate GuardDuty to Feature resources
+
+**Priority:** MEDIUM
+**Type:** Maintenance
+**Status:** `done` (PR #49)
+**Module:** aws/base_component/account_security
+**Why:** The `datasources` block in `aws_guardduty_detector` is deprecated. Migrating to `aws_guardduty_detector_feature` resources aligns with AWS and Terraform provider best practices.
+
+#### Acceptance Criteria
+- [x] Refactor `aws_guardduty_detector` to remove the `datasources` block
+- [x] Implement `aws_guardduty_detector_feature` resources for S3 Logs, Kubernetes, and Malware Protection
+- [x] Ensure parity with current functionality
+- [x] Update tests to validate new resource structure
+
+---
+
+### aws/base_component/bedrock_agent: Support granular cost attribution
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `done` (PR #42)
+**Module:** aws/base_component/bedrock_agent
+**Why:** April 2026 update enables granular cost attribution for Bedrock. Tagging agents allows AI spend to be charged back to individual IAM principals, teams, and projects.
+
+#### Acceptance Criteria
+- [x] Ensure all Bedrock Agent resources support and propagate tags for cost attribution
+- [x] Validate that tagging correctly attributes costs in usage reports (where testable)
+- [x] Update documentation to highlight cost attribution via tagging
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates tag enforcement
+
+---
+
+### aws/base_component/bedrock_knowledge_base: Support granular cost attribution
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `done` (PR #42)
+**Module:** aws/base_component/bedrock_knowledge_base
+**Why:** April 2026 update enables granular cost attribution for Bedrock. Tagging knowledge bases allows AI spend to be charged back to individual IAM principals, teams, and projects.
+
+#### Acceptance Criteria
+- [x] Ensure all Bedrock Knowledge Base resources support and propagate tags for cost attribution
+- [x] Update documentation to highlight cost attribution via tagging
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates tag enforcement
 
 ---
 
@@ -127,105 +289,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [x] Convert any still-relevant items into precise module-specific backlog items
 
 ---
-
-## Module Backlog
-
-### aws/base_component/amazon_quick: Opinionated Amazon Quick module
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/amazon_quick
-**Why:** Standardized infrastructure for Amazon Quick AI assistant integrations. Promoted from future ideas following the May 2026 GenAI roadmap updates.
-
-#### Acceptance Criteria
-- [ ] `aws_amazon_quick` resource implementation (pending provider support)
-- [ ] Support for standardized AI assistant configurations
-- [ ] Mandatory CMK encryption for all data stores and logs
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates security and configuration
-
----
-
-### aws/base_component/sagemaker_inference: Optimized GenAI Inference Recommendations module
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/sagemaker_inference
-**Why:** Leverages new "Optimized Generative AI Inference Recommendations" feature (GA April 2026) to automatically identify optimized deployment configurations for generative AI models, including instance type and container parameters.
-
-> [!IMPORTANT]
-> **Blocker:** (As of 2026-05-06) The `aws_sagemaker_inference_recommendations_job` resource is not yet supported in the AWS Terraform provider (v5.x/v6.x). Implementation is deferred until provider support is added.
-
-#### Acceptance Criteria
-- [ ] `aws_sagemaker_inference_recommendations_job` or equivalent for optimized deployment
-- [ ] Support for specifying model, instance type, and inference parameters
-- [ ] Mandatory CMK encryption for model artifacts and endpoint logs
-- [ ] Placed in VPC private subnets
-- [ ] Required `tags` enforced
-- [ ] Outputs: `endpoint_arn`, `recommendation_id`
-- [ ] Native offline Terraform test validates security settings and VPC placement
-
----
-
-### aws/base_component/bedrock_agent: Support granular cost attribution
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `done` (PR #42)
-**Module:** aws/base_component/bedrock_agent
-**Why:** April 2026 update enables granular cost attribution for Bedrock. Tagging agents allows AI spend to be charged back to individual IAM principals, teams, and projects.
-
-#### Acceptance Criteria
-- [x] Ensure all Bedrock Agent resources support and propagate tags for cost attribution
-- [x] Validate that tagging correctly attributes costs in usage reports (where testable)
-- [x] Update documentation to highlight cost attribution via tagging
-- [x] Required `tags` enforced
-- [x] Native offline Terraform test validates tag enforcement
-
----
-
-### aws/base_component/bedrock_knowledge_base: Support granular cost attribution
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `done` (PR #42)
-**Module:** aws/base_component/bedrock_knowledge_base
-**Why:** April 2026 update enables granular cost attribution for Bedrock. Tagging knowledge bases allows AI spend to be charged back to individual IAM principals, teams, and projects.
-
-#### Acceptance Criteria
-- [x] Ensure all Bedrock Knowledge Base resources support and propagate tags for cost attribution
-- [x] Update documentation to highlight cost attribution via tagging
-- [x] Required `tags` enforced
-- [x] Native offline Terraform test validates tag enforcement
-
----
-
-### aws/base_component/bedrock_agent_core: Bedrock AgentCore module
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/bedrock_agent_core
-**Why:** Following the May 4, 2026 announcement, Bedrock AgentCore provides enhanced capabilities for building and managing autonomous agents with improved control and visibility.
-
-#### Acceptance Criteria
-- [ ] `aws_bedrockagent_core` resource implementation (pending provider support)
-- [ ] Support for advanced control loops and visibility into agent reasoning
-- [ ] Mandatory CMK encryption for all data stores and logs
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates security and configuration
-
----
-
-## Review-Discovered Improvement Queue
-
-_Empty — standardizing current backlog items._
-
-***
-
-## Existing Completed Module History
 
 ### repo-wide: Standardize native Terraform tests across all modules
 
@@ -347,7 +410,7 @@ _Empty — standardizing current backlog items._
 ### aws/base_component/securityhub: Opinionated Security Hub module
 
 **Priority:** MEDIUM
-**Type:** Security
+**Type:** Feature
 **Status:** `done` (Verified 2026-05-03)
 **Module:** aws/base_component/securityhub
 **Why:** Standardizes enablement and cross-region finding aggregation.
@@ -1256,22 +1319,5 @@ Retain previously completed module entries below this line for historical tracki
 | 2026-05-04 | Navigator | Completed AWS Provider 6.0 evaluation; refined ACM and Centralized Logging criteria; added Interconnect and SageMaker Inference candidates. |
 | 2026-05-05 | Navigator | Mark Provider 6.0 foundational migration complete; mark SageMaker, Interconnect, and API GW v2 base modules done; introduced Bedrock cost attribution and SageMaker optimization items. |
 | 2026-05-06 | Navigator | Updated backlog for May 2026 "What's Next" announcements; added Bedrock AgentCore and Amazon Quick candidates. |
-
-## Technical Debt & Maintenance
-
-### aws/base_component/account_security: Migrate GuardDuty to Feature resources
-
-**Priority:** MEDIUM
-**Type:** Maintenance
-**Status:** `done` (PR #49)
-**Module:** aws/base_component/account_security
-**Why:** The `datasources` block in `aws_guardduty_detector` is deprecated. Migrating to `aws_guardduty_detector_feature` resources aligns with AWS and Terraform provider best practices.
-
-#### Acceptance Criteria
-- [ ] Refactor `aws_guardduty_detector` to remove the `datasources` block
-- [ ] Implement `aws_guardduty_detector_feature` resources for S3 Logs, Kubernetes, and Malware Protection
-- [ ] Ensure parity with current functionality
-- [ ] Update tests to validate new resource structure
-
----
 | 2026-05-07 | Navigator | Updated backlog and journal for May 2026 GenAI roadmap; promoted Amazon Quick to active backlog; identified AWS Provider 6.0 deprecation fixes. |
+| 2026-05-08 | Navigator | Refined backlog for GenAI modules; introduced AWS Backup and Multicloud Hub modules; archived completed PRs #42, #43, and #49. |

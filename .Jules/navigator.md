@@ -104,11 +104,9 @@ _`- [YYYY-MM-DD] <topic> — <decision and rationale>`_
 - [2026-05-05] Post-Migration Focus — With the AWS Provider 6.0 foundational migration and April 2026 service baseline (SageMaker, Interconnect, API GW v2) complete, the roadmap shifts to optimizing GenAI operations (Bedrock cost attribution, SageMaker recommendations) and multicloud networking maturity.
 - [2026-05-06] GenAI Agent Expansion — Following the May 4, 2026 "What's Next" event, we are expanding the roadmap to include Bedrock AgentCore and Amazon Quick. These additions represent the next phase of agentic infrastructure, prioritizing control, visibility, and multi-app connectivity.
 - [2026-05-07] AWS Provider 6.0 Hygiene — Identified remaining uses of `data.aws_region.current.name`. Standardizing on `.id` across all modules to eliminate deprecation warnings and align with Provider 6.0 best practices. Promoting Amazon Quick to the active backlog to accelerate the next phase of agentic AI integration.
+- [2026-05-08] Roadmap Archiving & Expansion — Archived completed PRs #42, #43, and #49 in the backlog history. Refined GenAI module criteria (Amazon Quick, Bedrock AgentCore) to reflect May 4, 2026 feature announcements. Introduced `aws/base_component/backup` for compliance and `aws/workload_component/multicloud_hub` to advance the multicloud networking roadmap.
 
 ## Session Log
-
-_Navigator will append a one-line entry after each session:_
-_`- [YYYY-MM-DD] Reviewed backlog and updated priorities.`_
 
 - [2026-04-25] Journal initialized. Ready to maintain backlog and roadmap.
 - [2026-04-26] Synchronized backlog with filesystem and promoted priority workload components.
@@ -123,3 +121,4 @@ _`- [YYYY-MM-DD] Reviewed backlog and updated priorities.`_
 - [2026-05-05] Consolidated Provider 6.0 migration; finalized foundational April 2026 service releases; prioritized Bedrock cost attribution and SageMaker recommendations.
 - [2026-05-06] Updated backlog and journal with May 2026 GenAI announcements (Bedrock AgentCore, Amazon Quick).
 - [2026-05-07] Reviewed backlog, updated priorities for Amazon Quick, and identified remaining AWS Provider 6.0 deprecation fixes.
+- [2026-05-08] Refined backlog, archived completed PRs, and introduced AWS Backup and Multicloud Hub to the roadmap.
