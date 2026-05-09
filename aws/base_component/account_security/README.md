@@ -40,7 +40,7 @@ module "account_security" {
 - **Encryption**: Enforces account-level EBS encryption by default using AWS-managed keys or a provided CMK (`ebs_kms_key_arn`).
 - **Exposure Control**: Enforces account-wide S3 Public Access Block, disables EC2 Serial Console access, and hardens the default VPC security group (removes all rules).
 - **Identity Hardening**: Enforces a strong IAM password policy, creates the required IAM Support role, and enables IAM Access Analyzer for external access monitoring.
-- **Threat Detection**: Enables Amazon GuardDuty (including S3 and Malware Protection) at the account/region level.
+- **Threat Detection**: Enables Amazon GuardDuty (including S3, EKS Audit Logs, and EBS Malware Protection) at the account/region level using granular detector features.
 - **Instance Security**: Enforces IMDSv2 (Session Tokens Required) for all new EC2 instances with a hop limit of 1.
 
 ### Continuous Review

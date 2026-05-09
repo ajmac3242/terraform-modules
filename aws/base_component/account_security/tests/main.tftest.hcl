@@ -70,6 +70,21 @@ run "validate_account_security" {
   }
 
   assert {
+    condition     = !var.enable_guardduty || (aws_guardduty_detector_feature.s3_logs[0].status == "ENABLED" && aws_guardduty_detector_feature.s3_logs[0].name == "S3_DATA_EVENTS")
+    error_message = "GuardDuty S3 data events feature must be enabled when GuardDuty is enabled."
+  }
+
+  assert {
+    condition     = !var.enable_guardduty || (aws_guardduty_detector_feature.kubernetes[0].status == (var.enable_guardduty_kubernetes ? "ENABLED" : "DISABLED") && aws_guardduty_detector_feature.kubernetes[0].name == "EKS_AUDIT_LOGS")
+    error_message = "GuardDuty EKS audit logs feature status does not match enable_guardduty_kubernetes."
+  }
+
+  assert {
+    condition     = !var.enable_guardduty || (aws_guardduty_detector_feature.malware_protection[0].status == "ENABLED" && aws_guardduty_detector_feature.malware_protection[0].name == "EBS_MALWARE_PROTECTION")
+    error_message = "GuardDuty EBS malware protection feature must be enabled when GuardDuty is enabled."
+  }
+
+  assert {
     condition     = aws_default_security_group.this[0].tags["environment"] == "test" && aws_default_security_group.this[0].tags["owner"] == "test-owner" && aws_default_security_group.this[0].tags["project"] == "test-project" && aws_default_security_group.this[0].tags["cost_center"] == "test-cc"
     error_message = "Mandatory tags are missing or incorrect on default security group."
   }
