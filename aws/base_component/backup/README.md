@@ -43,7 +43,7 @@ module "backup" {
 ## Variables
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| name | The base name for the AWS Backup resources | `string` | n/a | yes |
+| name | The base name for the AWS Backup resources (Max 50 characters, alphanumeric and _-) | `string` | n/a | yes |
 | kms_key_arn | The ARN of the KMS key to use for the backup vault | `string` | n/a | yes |
 | vault_lock_configuration | Optional configuration for AWS Backup Vault Lock | `object` | `null` | no |
 | rules | A list of rules for the backup plan | `list(object)` | n/a | yes |

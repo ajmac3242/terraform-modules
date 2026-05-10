@@ -64,4 +64,54 @@ run "validate_backup_module" {
     condition     = alltrue([for k in ["environment", "owner", "project", "cost_center"] : contains(keys(aws_backup_plan.this.tags), k)])
     error_message = "Mandatory tags are missing from the backup plan."
   }
+
+  assert {
+    condition     = aws_backup_selection.this.name == "test-backup-selection"
+    error_message = "Backup selection name is incorrect."
+  }
+
+  assert {
+    condition     = contains(aws_backup_selection.this.resources, "arn:aws:ec2:us-east-1:123456789012:instance/i-0123456789abcdef0")
+    error_message = "Backup selection resources are missing the test instance."
+  }
+
+  assert {
+    condition     = aws_backup_vault.this.name == "test-backup"
+    error_message = "Backup vault name is incorrect."
+  }
+}
+
+run "validate_tag_selection" {
+  command = plan
+
+  variables {
+    name        = "tag-test"
+    kms_key_arn = "arn:aws:kms:us-east-1:123456789012:key/00000000-0000-0000-0000-000000000000"
+
+    rules = [
+      {
+        rule_name = "daily"
+      }
+    ]
+
+    selection_tags = [
+      {
+        type  = "STRINGEQUALS"
+        key   = "backup"
+        value = "true"
+      }
+    ]
+
+    tags = {
+      environment = "test"
+      owner       = "test-owner"
+      project     = "test-project"
+      cost_center = "test-cc"
+    }
+  }
+
+  assert {
+    condition     = anytrue([for t in aws_backup_selection.this.selection_tag : t.key == "backup" && t.value == "true"])
+    error_message = "Backup selection tag criteria is incorrect."
+  }
 }
