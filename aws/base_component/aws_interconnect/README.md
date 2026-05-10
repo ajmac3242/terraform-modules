@@ -40,6 +40,7 @@ module "interconnect_oci" {
 | location | The Direct Connect location for the connection | `string` | n/a | yes |
 | amazon_side_asn | The ASN for the Amazon side of the gateway | `string` | `"64512"` | no |
 | vlan | The VLAN ID for the virtual interface | `number` | n/a | yes |
+| vif_type | The type of virtual interface to create (PRIVATE, TRANSIT) | `string` | `"PRIVATE"` | no |
 | customer_bgp_asn | The BGP ASN for the customer side | `number` | `65000` | no |
 | tags | A map of tags to assign to the resources | `map(string)` | n/a | yes |
 
@@ -50,4 +51,6 @@ module "interconnect_oci" {
 | gateway_id | The ID of the Direct Connect Gateway |
 | connection_id | The ID of the Direct Connect connection |
 | connection_arn | The ARN of the Direct Connect connection |
+| vif_id | The ID of the virtual interface |
+| vif_arn | The ARN of the virtual interface |
 | tags | A map of tags assigned to the connection |

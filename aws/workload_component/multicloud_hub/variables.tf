@@ -1,5 +1,5 @@
 variable "name" {
-  description = "The name of the Interconnect gateway"
+  description = "The name of the Multicloud Hub"
   type        = string
 }
 
@@ -45,17 +45,6 @@ variable "vlan" {
   type        = number
 }
 
-variable "vif_type" {
-  description = "The type of virtual interface to create. Valid values: PRIVATE, TRANSIT."
-  type        = string
-  default     = "PRIVATE"
-
-  validation {
-    condition     = contains(["PRIVATE", "TRANSIT"], var.vif_type)
-    error_message = "The vif_type variable must be either PRIVATE or TRANSIT."
-  }
-}
-
 variable "customer_bgp_asn" {
   description = "The BGP ASN for the customer side of the virtual interface. Valid values: 1-65534 or 4294967294."
   type        = number
@@ -64,6 +53,16 @@ variable "customer_bgp_asn" {
   validation {
     condition     = (var.customer_bgp_asn >= 1 && var.customer_bgp_asn <= 65534) || var.customer_bgp_asn == 4294967294
     error_message = "The customer_bgp_asn must be between 1 and 65534, or equal to 4294967294."
+  }
+}
+
+variable "kms_key_arn" {
+  description = "The ARN of the KMS key for CloudWatch Log Group encryption"
+  type        = string
+
+  validation {
+    condition     = can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/.*$", var.kms_key_arn))
+    error_message = "The kms_key_arn must be a valid AWS KMS key ARN."
   }
 }
 
