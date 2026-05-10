@@ -105,6 +105,7 @@ _`- [YYYY-MM-DD] <topic> — <decision and rationale>`_
 - [2026-05-06] GenAI Agent Expansion — Following the May 4, 2026 "What's Next" event, we are expanding the roadmap to include Bedrock AgentCore and Amazon Quick. These additions represent the next phase of agentic infrastructure, prioritizing control, visibility, and multi-app connectivity.
 - [2026-05-07] AWS Provider 6.0 Hygiene — Identified remaining uses of `data.aws_region.current.name`. Standardizing on `.id` across all modules to eliminate deprecation warnings and align with Provider 6.0 best practices. Promoting Amazon Quick to the active backlog to accelerate the next phase of agentic AI integration.
 - [2026-05-08] Roadmap Archiving & Expansion — Archived completed PRs #42, #43, and #49 in the backlog history. Refined GenAI module criteria (Amazon Quick, Bedrock AgentCore) to reflect May 4, 2026 feature announcements. Introduced `aws/base_component/backup` for compliance and `aws/workload_component/multicloud_hub` to advance the multicloud networking roadmap.
+- [2026-05-09] Roadmap Refinement — Moved `aws/base_component/backup` to history after successful hardening. Promoted `aws/workload_component/multicloud_hub` to the ready queue following the stabilization of the `aws_interconnect` base module.
 
 ## Session Log
 
@@ -122,3 +123,4 @@ _`- [YYYY-MM-DD] <topic> — <decision and rationale>`_
 - [2026-05-06] Updated backlog and journal with May 2026 GenAI announcements (Bedrock AgentCore, Amazon Quick).
 - [2026-05-07] Reviewed backlog, updated priorities for Amazon Quick, and identified remaining AWS Provider 6.0 deprecation fixes.
 - [2026-05-08] Refined backlog, archived completed PRs, and introduced AWS Backup and Multicloud Hub to the roadmap.
+- [2026-05-09] Archived AWS Backup to history; promoted Multicloud Hub to the Immediate Ready Queue.

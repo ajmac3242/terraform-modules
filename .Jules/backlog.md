@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-08
+> **Last reviewed:** 2026-05-09
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -54,7 +54,22 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Immediate Ready Queue
 
-_Empty — standardizing current backlog items._
+### aws/workload_component/multicloud_hub: Enterprise Multicloud Networking pattern
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/workload_component/multicloud_hub
+**Why:** Composes `aws_interconnect` with Transit Gateway to provide a standardized regional hub for cross-cloud connectivity (OCI/Azure) with route propagation and security monitoring.
+
+#### Acceptance Criteria
+- [ ] Uses `aws/base_component/aws_interconnect` for L3 connectivity
+- [ ] Integrates with `aws_ec2_transit_gateway` for regional routing
+- [ ] Supports cross-cloud route propagation via BGP
+- [ ] Mandatory MACsec encryption enforced at the connection layer
+- [ ] Required `tags` enforced
+- [ ] Outputs: `tgw_id`, `dx_gateway_id`, `hub_arn`
+- [ ] Native offline Terraform test validates route table and interconnect wiring
 
 ***
 
@@ -118,7 +133,14 @@ _Empty — standardizing current backlog items._
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates security and configuration
 
----
+
+## Review-Discovered Improvement Queue
+
+_Empty — standardizing current backlog items._
+
+***
+
+## Existing Completed Module History
 
 ### aws/base_component/backup: Opinionated AWS Backup module
 
@@ -129,43 +151,16 @@ _Empty — standardizing current backlog items._
 **Why:** Provides a standardized way to manage backup plans, vaults, and selections for organizational compliance and disaster recovery.
 
 #### Acceptance Criteria
-- [ ] `aws_backup_vault` with mandatory CMK encryption
-- [ ] `aws_backup_vault_lock_configuration` support for immutable backups
-- [ ] `aws_backup_plan` with configurable rules (schedule, retention, lifecycle)
-- [ ] `aws_backup_selection` using tags or resource ARNs
-- [ ] Mandatory IAM role via base IAM module
-- [ ] Required `tags` enforced
-- [ ] Outputs: `vault_arn`, `plan_id`, `vault_id`
-- [ ] Native offline Terraform test validates encryption and lock settings
+- [x] `aws_backup_vault` with mandatory CMK encryption
+- [x] `aws_backup_vault_lock_configuration` support for immutable backups
+- [x] `aws_backup_plan` with configurable rules (schedule, retention, lifecycle)
+- [x] `aws_backup_selection` using tags or resource ARNs
+- [x] Mandatory IAM role via base IAM module
+- [x] Required `tags` enforced
+- [x] Outputs: `vault_arn`, `plan_id`, `vault_id`
+- [x] Native offline Terraform test validates encryption and lock settings
 
 ---
-
-### aws/workload_component/multicloud_hub: Enterprise Multicloud Networking pattern
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/workload_component/multicloud_hub
-**Why:** Composes `aws_interconnect` with Transit Gateway to provide a standardized regional hub for cross-cloud connectivity (OCI/Azure) with route propagation and security monitoring.
-
-#### Acceptance Criteria
-- [ ] Uses `aws/base_component/aws_interconnect` for L3 connectivity
-- [ ] Integrates with `aws_ec2_transit_gateway` for regional routing
-- [ ] Supports cross-cloud route propagation via BGP
-- [ ] Mandatory MACsec encryption enforced at the connection layer
-- [ ] Required `tags` enforced
-- [ ] Outputs: `tgw_id`, `dx_gateway_id`, `hub_arn`
-- [ ] Native offline Terraform test validates route table and interconnect wiring
-
----
-
-## Review-Discovered Improvement Queue
-
-_Empty — standardizing current backlog items._
-
-***
-
-## Existing Completed Module History
 
 ### repo-wide: Fix AWS Provider 6.0 deprecation warnings
 
