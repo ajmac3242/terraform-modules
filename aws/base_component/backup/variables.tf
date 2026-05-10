@@ -1,6 +1,11 @@
 variable "name" {
   description = "The base name for the AWS Backup resources"
   type        = string
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_-]{1,50}$", var.name))
+    error_message = "The name must be between 1 and 50 characters and can only contain alphanumeric characters, underscores, and hyphens."
+  }
 }
 
 variable "kms_key_arn" {

@@ -124,7 +124,7 @@ _Empty — standardizing current backlog items._
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #54)
 **Module:** aws/base_component/backup
 **Why:** Provides a standardized way to manage backup plans, vaults, and selections for organizational compliance and disaster recovery.
 
