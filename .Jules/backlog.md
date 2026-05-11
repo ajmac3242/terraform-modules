@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-09
+> **Last reviewed:** 2026-05-11
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -54,7 +54,21 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Immediate Ready Queue
 
-_Empty — following roadmap prioritizations._
+### aws/base_component/bedrock_agent_core: Bedrock AgentCore module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_agent_core
+**Why:** Following the May 4, 2026 announcement, Bedrock AgentCore provides enhanced capabilities for building and managing autonomous agents with improved control and visibility. Support confirmed in AWS Provider >= 6.27.0.
+
+#### Acceptance Criteria
+- [ ] `aws_bedrockagentcore_gateway` resource implementation
+- [ ] Support for advanced control loops and enhanced visibility into agent reasoning
+- [ ] Support for autonomous agent orchestration
+- [ ] Mandatory CMK encryption for all data stores and logs
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates security and configuration
 
 ***
 
@@ -71,12 +85,32 @@ _Empty — following roadmap prioritizations._
 #### Acceptance Criteria
 - [ ] `aws_amazon_quick` resource implementation (pending provider support)
 - [ ] Support for desktop app preview integration
+- [ ] Support for "Generate Analysis" (natural language dashboard generation from prompts)
 - [ ] Support for visual asset generation (documents, presentations, infographics)
 - [ ] Connectivity to local files, calendars, and communications
 - [ ] Support for standardized AI assistant configurations
 - [ ] Mandatory CMK encryption for all data stores and logs
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates security and configuration
+
+---
+
+### aws/workload_component/genai_agent_workspace: GenAI Agent Collaborative Workspace pattern
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/workload_component/genai_agent_workspace
+**Why:** Strategic composition of Bedrock AgentCore and Amazon Quick to provide a standardized, secure environment for autonomous agent collaboration and analytics.
+
+#### Acceptance Criteria
+- [ ] Composes `aws/base_component/bedrock_agent_core` (Gateways)
+- [ ] Composes `aws/base_component/amazon_quick` (Assistant and Analytics)
+- [ ] Composes `aws/base_component/s3` for shared document storage
+- [ ] Mandatory CMK encryption for all shared data at rest
+- [ ] Least-privilege IAM roles for cross-service collaboration
+- [ ] Required `tags` enforced across all composed resources
+- [ ] Native offline Terraform test validates the end-to-end composition
 
 ---
 
@@ -100,23 +134,6 @@ _Empty — following roadmap prioritizations._
 - [ ] Outputs: `endpoint_arn`, `recommendation_id`
 - [ ] Native offline Terraform test validates security settings and VPC placement
 
----
-
-### aws/base_component/bedrock_agent_core: Bedrock AgentCore module
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/bedrock_agent_core
-**Why:** Following the May 4, 2026 announcement, Bedrock AgentCore provides enhanced capabilities for building and managing autonomous agents with improved control and visibility.
-
-#### Acceptance Criteria
-- [ ] `aws_bedrockagent_core` resource implementation (pending provider support)
-- [ ] Support for advanced control loops and enhanced visibility into agent reasoning
-- [ ] Support for autonomous agent orchestration
-- [ ] Mandatory CMK encryption for all data stores and logs
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates security and configuration
 
 
 ## Review-Discovered Improvement Queue
