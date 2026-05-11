@@ -42,12 +42,12 @@ run "valid_interconnect_creation" {
   }
 
   assert {
-    condition     = aws_dx_private_virtual_interface.this.vlan == var.vlan
+    condition     = aws_dx_private_virtual_interface.this[0].vlan == var.vlan
     error_message = "VLAN ID does not match expected value"
   }
 
   assert {
-    condition     = aws_dx_private_virtual_interface.this.bgp_asn == var.customer_bgp_asn
+    condition     = aws_dx_private_virtual_interface.this[0].bgp_asn == var.customer_bgp_asn
     error_message = "Customer BGP ASN does not match expected value"
   }
 

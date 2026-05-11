@@ -54,22 +54,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Immediate Ready Queue
 
-### aws/workload_component/multicloud_hub: Enterprise Multicloud Networking pattern
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/workload_component/multicloud_hub
-**Why:** Composes `aws_interconnect` with Transit Gateway to provide a standardized regional hub for cross-cloud connectivity (OCI/Azure) with route propagation and security monitoring.
-
-#### Acceptance Criteria
-- [ ] Uses `aws/base_component/aws_interconnect` for L3 connectivity
-- [ ] Integrates with `aws_ec2_transit_gateway` for regional routing
-- [ ] Supports cross-cloud route propagation via BGP
-- [ ] Mandatory MACsec encryption enforced at the connection layer
-- [ ] Required `tags` enforced
-- [ ] Outputs: `tgw_id`, `dx_gateway_id`, `hub_arn`
-- [ ] Native offline Terraform test validates route table and interconnect wiring
+_Empty — following roadmap prioritizations._
 
 ***
 
@@ -141,6 +126,25 @@ _Empty — standardizing current backlog items._
 ***
 
 ## Existing Completed Module History
+
+### aws/workload_component/multicloud_hub: Enterprise Multicloud Networking pattern
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `done` (PR #55)
+**Module:** aws/workload_component/multicloud_hub
+**Why:** Composes `aws_interconnect` with Transit Gateway to provide a standardized regional hub for cross-cloud connectivity (OCI/Azure) with route propagation and security monitoring.
+
+#### Acceptance Criteria
+- [x] Uses `aws/base_component/aws_interconnect` for L3 connectivity
+- [x] Integrates with `aws_ec2_transit_gateway` for regional routing
+- [x] Supports cross-cloud route propagation via BGP
+- [x] Mandatory MACsec encryption enforced at the connection layer
+- [x] Required `tags` enforced
+- [x] Outputs: `tgw_id`, `dx_gateway_id`, `hub_arn`
+- [x] Native offline Terraform test validates route table and interconnect wiring
+
+---
 
 ### aws/base_component/backup: Opinionated AWS Backup module
 
