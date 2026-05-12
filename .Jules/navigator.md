@@ -107,9 +107,12 @@ _`- [YYYY-MM-DD] <topic> — <decision and rationale>`_
 - [2026-05-08] Roadmap Archiving & Expansion — Archived completed PRs #42, #43, and #49 in the backlog history. Refined GenAI module criteria (Amazon Quick, Bedrock AgentCore) to reflect May 4, 2026 feature announcements. Introduced `aws/base_component/backup` for compliance and `aws/workload_component/multicloud_hub` to advance the multicloud networking roadmap.
 - [2026-05-09] Roadmap Refinement — Moved `aws/base_component/backup` to history after successful hardening. Promoted `aws/workload_component/multicloud_hub` to the ready queue following the stabilization of the `aws_interconnect` base module.
 - [2026-05-11] GenAI Readiness — Promoted Bedrock AgentCore to the ready queue following confirmation of provider support (>= 6.27.0) for `aws_bedrockagentcore_gateway`. Refined Amazon Quick criteria to include "Generate Analysis" capability. Introduced the `genai_agent_workspace` workload pattern to compose gateways, analytics, and shared storage for secure agent collaboration.
+- [2026-05-12] Agentic Commerce Expansion — Added `aws/base_component/bedrock_agent_core` payment features to the roadmap following May 7, 2026 announcements regarding agentic transactions (x402 protocol). While the base module is implemented, the payment configuration remains blocked by provider support (est. v6.29.0).
+- [2026-05-12] Service Lifecycle Awareness — Noted AWS service availability updates for May 2026. While no immediate library impact for existing modules, future candidates like App Runner and certain RDS Custom features are now de-prioritized as they enter maintenance/sunset.
 
 ## Session Log
 
+- [2026-05-12] Expanded Agentic AI roadmap to include Bedrock AgentCore payment features (x402). Noted service lifecycle updates for RDS Custom and App Runner (Maintenance/Sunset).
 - [2026-05-11] Promoted Bedrock AgentCore and introduced GenAI Agent Workspace pattern. Refined Amazon Quick criteria. Verified repo health.
 - [2026-04-25] Journal initialized. Ready to maintain backlog and roadmap.
 - [2026-04-26] Synchronized backlog with filesystem and promoted priority workload components.

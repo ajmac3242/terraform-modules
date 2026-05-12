@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-11
+> **Last reviewed:** 2026-05-12
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -73,6 +73,26 @@ All modules in this repo MUST comply with these non-negotiable standards:
 ---
 
 ## Module Backlog
+
+### aws/base_component/bedrock_agent_core: Support Agentic Payment Features
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_agent_core
+**Why:** May 7, 2026 update introduced agentic payment features for Bedrock AgentCore, enabling agents to make purchases using the x402 protocol.
+
+> [!IMPORTANT]
+> **Blocker:** Pending AWS Provider support for `payment_configuration` (or equivalent) in `aws_bedrockagentcore_gateway`. Support likely in AWS Provider >= 6.29.0.
+
+#### Acceptance Criteria
+- [ ] Implement `payment_configuration` block in `aws_bedrockagentcore_gateway`
+- [ ] Support for x402 protocol configuration
+- [ ] Mandatory CMK encryption for transaction logs/data
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates payment configuration
+
+---
 
 ### aws/base_component/amazon_quick: Opinionated Amazon Quick module
 
