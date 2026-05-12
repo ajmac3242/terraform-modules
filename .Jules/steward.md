@@ -115,6 +115,7 @@ _`- [YYYY-MM-DD] <topic> — <finding and rationale>`_
 - [2026-04-25] Journal initialized. Steward replaces Sentinel and now serves as the daily reviewer and fixer, not the final gate.
 - [2026-05-05] API Gateway Refactor — Moved raw `aws_apigatewayv2_api` resources from `apigw_lambda` workload module into a new `apigateway_v2` base module to promote reuse and centralize security/logging defaults.
 - [2026-05-05] Validation Standard — Enforced resource naming regex validation for SageMaker and numeric range validation for Direct Connect ASNs to improve module robustness.
+- [2026-05-11] IAM Composition Standard — Refactored `multicloud_hub` to replace inline `aws_iam_role_policy` with managed `aws_iam_policy` and attachment, maintaining repo-wide testing and security standards.
 
 ## Review Log
 
@@ -137,3 +138,4 @@ _`- [YYYY-MM-DD] Reviewed daily PRs. Applied fixes where needed.`_
 - [2026-05-08] Reviewed daily module changes and backlog. Hardened `account_security` for CIS v3.0 by refactoring GuardDuty to use modern `aws_guardduty_detector_feature` resources, resolving deprecation warnings. Hardened test suite for conditional resources using more resilient assertion patterns. Verified Bedrock Agent and Knowledge Base modules for tag propagation and output completeness. Maintained environment hygiene by removing stray lock files.
 - [2026-05-09] Reviewed and hardened `aws/base_component/backup` module (PR #54). Standardized AWS provider constraints to `">= 5.0, < 7.0"`, added resource naming validation, and expanded the native test suite with deeper resource and output assertions. Verified module health via `terraform test` and maintained environment hygiene.
 - [2026-05-10] Reviewed and hardened `aws/workload_component/multicloud_hub` (PR #55). Standardized AWS provider constraint to `">= 5.0, < 7.0"`. Refactored `tgw_log_role` to use separate `aws_iam_role_policy_attachment` for policy composition, adhering to repo-wide IAM standards. Verified both `multicloud_hub` and the dependent `aws_interconnect` updates via native `terraform test`.
+- [2026-05-11] Reviewed and hardened `aws/base_component/bedrock_agent_core` and `aws/workload_component/multicloud_hub` (PR #60). Verified `bedrock_agent_core` implementation against all security and documentation standards. Refactored `multicloud_hub` to eliminate inline IAM policies, ensuring compliance with organizational standards. Verified repo health across 45+ modules and enforced environment hygiene by removing stray build artifacts.
