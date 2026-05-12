@@ -102,6 +102,9 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Module:** aws/base_component/amazon_quick
 **Why:** Standardized infrastructure for Amazon Quick AI assistant integrations. Promoted from future ideas following the May 2026 GenAI roadmap updates.
 
+> [!IMPORTANT]
+> **Blocker:** Pending AWS Provider support for `aws_amazon_quick` (or equivalent) resource. Implementation is deferred until provider support is added.
+
 #### Acceptance Criteria
 - [ ] `aws_amazon_quick` resource implementation (pending provider support)
 - [ ] Support for desktop app preview integration
@@ -122,6 +125,9 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Status:** `backlog`
 **Module:** aws/workload_component/genai_agent_workspace
 **Why:** Strategic composition of Bedrock AgentCore and Amazon Quick to provide a standardized, secure environment for autonomous agent collaboration and analytics.
+
+> [!IMPORTANT]
+> **Blocker:** Pending implementation of prerequisite `aws/base_component/amazon_quick` module, which is currently blocked by provider support.
 
 #### Acceptance Criteria
 - [ ] Composes `aws/base_component/bedrock_agent_core` (Gateways)
