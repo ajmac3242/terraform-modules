@@ -73,9 +73,9 @@ module "tgw_log_role" {
   tags = var.tags
 }
 
-resource "aws_iam_role_policy" "tgw_logs" {
-  name = "tgw-logs-policy"
-  role = module.tgw_log_role.role_name
+resource "aws_iam_policy" "tgw_logs" {
+  name        = "tgw-logs-policy-${var.name}"
+  description = "IAM policy for Transit Gateway Flow Logs delivery to CloudWatch"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -92,4 +92,11 @@ resource "aws_iam_role_policy" "tgw_logs" {
       }
     ]
   })
+
+  tags = var.tags
+}
+
+resource "aws_iam_role_policy_attachment" "tgw_logs" {
+  role       = module.tgw_log_role.role_name
+  policy_arn = aws_iam_policy.tgw_logs.arn
 }

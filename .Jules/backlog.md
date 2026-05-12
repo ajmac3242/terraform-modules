@@ -58,19 +58,19 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #60)
 **Module:** aws/base_component/bedrock_agent_core
 **Why:** Following the May 4, 2026 announcement, Bedrock AgentCore provides enhanced capabilities for building and managing autonomous agents with improved control and visibility. Support confirmed in AWS Provider >= 6.27.0.
 
 #### Acceptance Criteria
-- [ ] `aws_bedrockagentcore_gateway` resource implementation
-- [ ] Support for advanced control loops and enhanced visibility into agent reasoning
-- [ ] Support for autonomous agent orchestration
-- [ ] Mandatory CMK encryption for all data stores and logs
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates security and configuration
+- [x] `aws_bedrockagentcore_gateway` resource implementation
+- [x] Support for advanced control loops and enhanced visibility into agent reasoning
+- [x] Support for autonomous agent orchestration
+- [x] Mandatory CMK encryption for all data stores and logs
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates security and configuration
 
-***
+---
 
 ## Module Backlog
 
