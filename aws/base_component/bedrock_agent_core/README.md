@@ -3,6 +3,9 @@
 ## Purpose
 This module provisions an AWS Bedrock AgentCore Gateway, which enables developers to convert APIs, Lambda functions, and existing services into Model Context Protocol (MCP)-compatible tools for autonomous agent orchestration.
 
+> [!IMPORTANT]
+> **Provider Requirement:** This module requires AWS Provider `v6.27.0` or later to support the `aws_bedrockagentcore_gateway` resource.
+
 ## Usage
 ```hcl
 module "bedrock_agent_core" {
