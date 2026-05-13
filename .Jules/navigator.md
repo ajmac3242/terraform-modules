@@ -109,9 +109,11 @@ _`- [YYYY-MM-DD] <topic> — <decision and rationale>`_
 - [2026-05-11] GenAI Readiness — Promoted Bedrock AgentCore to the ready queue following confirmation of provider support (>= 6.27.0) for `aws_bedrockagentcore_gateway`. Refined Amazon Quick criteria to include "Generate Analysis" capability. Introduced the `genai_agent_workspace` workload pattern to compose gateways, analytics, and shared storage for secure agent collaboration.
 - [2026-05-12] Agentic Commerce Expansion — Added `aws/base_component/bedrock_agent_core` payment features to the roadmap following May 7, 2026 announcements regarding agentic transactions (x402 protocol). While the base module is implemented, the payment configuration remains blocked by provider support (est. v6.29.0).
 - [2026-05-12] Service Lifecycle Awareness — Noted AWS service availability updates for May 2026. While no immediate library impact for existing modules, future candidates like App Runner and certain RDS Custom features are now de-prioritized as they enter maintenance/sunset.
+- [2026-05-14] Strategic Pivot: Networking and Data Foundations — While GenAI features (Amazon Quick, SageMaker recommendations) remain blocked by the AWS Provider, the roadmap is expanding into VPC Lattice and AWS Glue. Lattice is critical for cross-account service networking, while Glue provides the data cataloging foundation required for future analytics and GenAI workloads.
 
 ## Session Log
 
+- [2026-05-14] Expanded roadmap to include VPC Lattice and AWS Glue. Documented continued provider blockers for Amazon Quick and SageMaker Inference recommendations.
 - [2026-05-12] Expanded Agentic AI roadmap to include Bedrock AgentCore payment features (x402). Noted service lifecycle updates for RDS Custom and App Runner (Maintenance/Sunset).
 - [2026-05-11] Promoted Bedrock AgentCore and introduced GenAI Agent Workspace pattern. Refined Amazon Quick criteria. Verified repo health.
 - [2026-04-25] Journal initialized. Ready to maintain backlog and roadmap.
