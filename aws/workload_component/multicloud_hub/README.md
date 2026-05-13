@@ -55,4 +55,5 @@ module "multicloud_hub" {
 | hub_arn | The ARN of the Transit Gateway |
 | interconnect_connection_id | The ID of the Direct Connect connection |
 | vif_id | The ID of the Transit Virtual Interface |
+| tgw_log_role_arn | The ARN of the IAM role used for Transit Gateway Flow Logs |
 | tags | A map of tags assigned to the resources |
