@@ -31,6 +31,21 @@ run "validate_tags" {
     condition     = aws_vpclattice_service.this.tags["owner"] == "builder"
     error_message = "Mandatory tag 'owner' is missing or incorrect on service."
   }
+
+  assert {
+    condition     = aws_vpclattice_service_network_vpc_association.this.tags["project"] == "unit-test"
+    error_message = "Mandatory tag 'project' is missing or incorrect on VPC association."
+  }
+
+  assert {
+    condition     = aws_vpclattice_service_network_service_association.this.tags["cost_center"] == "0000"
+    error_message = "Mandatory tag 'cost_center' is missing or incorrect on service association."
+  }
+
+  assert {
+    condition     = aws_cloudwatch_log_group.this.tags["environment"] == "test"
+    error_message = "Mandatory tag 'environment' is missing or incorrect on log group."
+  }
 }
 
 run "validate_encryption" {

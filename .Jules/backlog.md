@@ -166,7 +166,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `done` (PR #61)
+**Status:** `done` (Verified 2026-05-14)
 **Module:** aws/base_component/vpc_lattice
 **Why:** VPC Lattice simplifies service-to-service connectivity and security across accounts and VPCs. It is a critical component for modern microservices and cross-team collaboration.
 
@@ -202,7 +202,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** MEDIUM
 **Type:** Feature
-**Status:** `done` (PR #61)
+**Status:** `done` (Verified 2026-05-14)
 **Module:** aws/workload_component/glue_etl_pattern
 **Why:** Composes S3, Glue, and IAM into a secure data processing pipeline. Demonstrates best practices for data lake ingestion and transformation.
 

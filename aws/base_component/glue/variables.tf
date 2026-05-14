@@ -25,6 +25,11 @@ variable "vpc_config" {
     security_group_ids = list(string)
   })
   default = null
+
+  validation {
+    condition     = var.vpc_config == null || length(try(var.vpc_config.subnet_ids, [])) > 0
+    error_message = "At least one subnet ID must be provided in vpc_config."
+  }
 }
 
 variable "role_arn" {
