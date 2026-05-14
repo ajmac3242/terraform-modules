@@ -166,17 +166,17 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (Verified 2026-05-14)
 **Module:** aws/base_component/vpc_lattice
 **Why:** VPC Lattice simplifies service-to-service connectivity and security across accounts and VPCs. It is a critical component for modern microservices and cross-team collaboration.
 
 #### Acceptance Criteria
-- [ ] `aws_vpclattice_service_network` with configurable auth type
-- [ ] `aws_vpclattice_service` with mandatory CMK for logs (if supported)
-- [ ] `aws_vpclattice_service_network_vpc_association` support
-- [ ] `aws_vpclattice_auth_policy` with least-privilege defaults
-- [ ] Required `tags` enforced across all resources
-- [ ] Native offline Terraform test validates configuration and associations
+- [x] `aws_vpclattice_service_network` with configurable auth type
+- [x] `aws_vpclattice_service` with mandatory CMK for logs (if supported)
+- [x] `aws_vpclattice_service_network_vpc_association` support
+- [x] `aws_vpclattice_auth_policy` with least-privilege defaults
+- [x] Required `tags` enforced across all resources
+- [x] Native offline Terraform test validates configuration and associations
 
 ---
 
@@ -184,17 +184,17 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (Verified 2026-05-14)
 **Module:** aws/base_component/glue
 **Why:** Foundational data catalog and ETL primitive. Required for centralizing metadata and preparing data for analytics and GenAI workloads.
 
 #### Acceptance Criteria
-- [ ] `aws_glue_catalog_database` creation
-- [ ] `aws_glue_catalog_table` support
-- [ ] `aws_glue_crawler` with mandatory CMK encryption for results and security configurations
-- [ ] `aws_glue_job` with VPC placement support and CMK-encrypted logs
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates encryption and catalog settings
+- [x] `aws_glue_catalog_database` creation
+- [x] `aws_glue_catalog_table` support
+- [x] `aws_glue_crawler` with mandatory CMK encryption for results and security configurations
+- [x] `aws_glue_job` with VPC placement support and CMK-encrypted logs
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates encryption and catalog settings
 
 ---
 
@@ -202,17 +202,17 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** MEDIUM
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (Verified 2026-05-14)
 **Module:** aws/workload_component/glue_etl_pattern
 **Why:** Composes S3, Glue, and IAM into a secure data processing pipeline. Demonstrates best practices for data lake ingestion and transformation.
 
 #### Acceptance Criteria
-- [ ] Uses `aws/base_component/s3` for raw and processed data stores
-- [ ] Uses `aws/base_component/glue` for metadata catalog and ETL jobs
-- [ ] IAM roles follow strict least-privilege (scoped to specific S3 buckets and Glue databases)
-- [ ] Mandatory CMK encryption for all data at rest and logs
-- [ ] Required `tags` enforced across all composed resources
-- [ ] Native offline Terraform test validates end-to-end security posture
+- [x] Uses `aws/base_component/s3` for raw and processed data stores
+- [x] Uses `aws/base_component/glue` for metadata catalog and ETL jobs
+- [x] IAM roles follow strict least-privilege (scoped to specific S3 buckets and Glue databases)
+- [x] Mandatory CMK encryption for all data at rest and logs
+- [x] Required `tags` enforced across all composed resources
+- [x] Native offline Terraform test validates end-to-end security posture
 
 ## Review-Discovered Improvement Queue
 
