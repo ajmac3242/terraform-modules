@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-14
+> **Last reviewed:** 2026-05-15
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -54,21 +54,21 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Immediate Ready Queue
 
-### aws/base_component/bedrock_agent_core: Bedrock AgentCore module
+### aws/base_component/bedrock_guardrail: Opinionated Bedrock Guardrail module
 
 **Priority:** HIGH
-**Type:** Feature
-**Status:** `done` (PR #60)
-**Module:** aws/base_component/bedrock_agent_core
-**Why:** Following the May 4, 2026 announcement, Bedrock AgentCore provides enhanced capabilities for building and managing autonomous agents with improved control and visibility. Support confirmed in AWS Provider >= 6.27.0.
+**Type:** Security
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_guardrail
+**Why:** Bedrock Guardrails provide a critical safety layer for LLM applications, filtering harmful content, blocking topics, and masking PII. Standardizing this is essential for organizational GenAI adoption.
 
 #### Acceptance Criteria
-- [x] `aws_bedrockagentcore_gateway` resource implementation
-- [x] Support for advanced control loops and enhanced visibility into agent reasoning
-- [x] Support for autonomous agent orchestration
-- [x] Mandatory CMK encryption for all data stores and logs
-- [x] Required `tags` enforced
-- [x] Native offline Terraform test validates security and configuration
+- [ ] `aws_bedrock_guardrail` resource implementation
+- [ ] Support for all six safety layers: Content Filters, Denied Topics, Word Filters, PII Filters, Contextual Grounding, and Prompt Attack Detection
+- [ ] Support for `aws_bedrock_guardrail_version` to enable immutable safety baselines
+- [ ] Mandatory CMK encryption for all data stores and logs
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates safety configurations
 
 ---
 
@@ -136,6 +136,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Mandatory CMK encryption for all shared data at rest
 - [ ] Least-privilege IAM roles for cross-service collaboration
 - [ ] Required `tags` enforced across all composed resources
+- [ ] Mandatory Bedrock Guardrail association for all workspace agents
 - [ ] Native offline Terraform test validates the end-to-end composition
 
 ---
@@ -159,6 +160,66 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Required `tags` enforced
 - [ ] Outputs: `endpoint_arn`, `recommendation_id`
 - [ ] Native offline Terraform test validates security settings and VPC placement
+
+---
+
+### aws/base_component/elasticache: Support Valkey 9.0 engine
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/elasticache
+**Why:** Valkey 9.0 (announced May 2026) offers significant performance improvements and built-in search capabilities. Supporting this engine is critical for low-latency AI and analytics workloads.
+
+#### Acceptance Criteria
+- [ ] Support `engine = "valkey"` and `engine_version = "9.0"` in `aws_elasticache_replication_group`
+- [ ] Validate compatibility with existing CMK and VPC placement defaults
+- [ ] Support for full-text and hybrid search configurations (if applicable via provider)
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates Valkey configuration
+
+---
+
+### aws/base_component/bedrock_agent: Support Guardrail association
+
+**Priority:** HIGH
+**Type:** Security
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_agent
+**Why:** Following the May 2026 safety updates, agents should be associated with Guardrails to ensure consistent safety posture during autonomous orchestration.
+
+#### Acceptance Criteria
+- [ ] Support `guardrail_configuration` block in `aws_bedrockagent_agent`
+- [ ] Support for specifying `guardrail_identifier` and `guardrail_version`
+- [ ] Update documentation to highlight the safety-first agent pattern
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates Guardrail association
+
+---
+
+## Review-Discovered Improvement Queue
+
+_Empty — standardizing current backlog items._
+
+***
+
+## Existing Completed Module History
+
+### aws/base_component/bedrock_agent_core: Bedrock AgentCore module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `done` (PR #60)
+**Module:** aws/base_component/bedrock_agent_core
+**Why:** Following the May 4, 2026 announcement, Bedrock AgentCore provides enhanced capabilities for building and managing autonomous agents with improved control and visibility. Support confirmed in AWS Provider >= 6.27.0.
+
+#### Acceptance Criteria
+- [x] `aws_bedrockagentcore_gateway` resource implementation
+- [x] Support for advanced control loops and enhanced visibility into agent reasoning
+- [x] Support for autonomous agent orchestration
+- [x] Mandatory CMK encryption for all data stores and logs
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates security and configuration
 
 ---
 
@@ -214,13 +275,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [x] Required `tags` enforced across all composed resources
 - [x] Native offline Terraform test validates end-to-end security posture
 
-## Review-Discovered Improvement Queue
-
-_Empty — standardizing current backlog items._
-
-***
-
-## Existing Completed Module History
+---
 
 ### aws/workload_component/multicloud_hub: Enterprise Multicloud Networking pattern
 
@@ -1415,3 +1470,4 @@ Retain previously completed module entries below this line for historical tracki
 | 2026-05-06 | Navigator | Updated backlog for May 2026 "What's Next" announcements; added Bedrock AgentCore and Amazon Quick candidates. |
 | 2026-05-07 | Navigator | Updated backlog and journal for May 2026 GenAI roadmap; promoted Amazon Quick to active backlog; identified AWS Provider 6.0 deprecation fixes. |
 | 2026-05-08 | Navigator | Refined backlog for GenAI modules; introduced AWS Backup and Multicloud Hub modules; archived completed PRs #42, #43, and #49. |
+| 2026-05-15 | Navigator | Promoted Bedrock Guardrails to ready queue; added Valkey 9.0 and Guardrail association items; archived completed VPC Lattice and Glue modules. |

@@ -110,9 +110,11 @@ _`- [YYYY-MM-DD] <topic> — <decision and rationale>`_
 - [2026-05-12] Agentic Commerce Expansion — Added `aws/base_component/bedrock_agent_core` payment features to the roadmap following May 7, 2026 announcements regarding agentic transactions (x402 protocol). While the base module is implemented, the payment configuration remains blocked by provider support (est. v6.29.0).
 - [2026-05-12] Service Lifecycle Awareness — Noted AWS service availability updates for May 2026. While no immediate library impact for existing modules, future candidates like App Runner and certain RDS Custom features are now de-prioritized as they enter maintenance/sunset.
 - [2026-05-14] Strategic Pivot: Networking and Data Foundations — While GenAI features (Amazon Quick, SageMaker recommendations) remain blocked by the AWS Provider, the roadmap is expanding into VPC Lattice and AWS Glue. Lattice is critical for cross-account service networking, while Glue provides the data cataloging foundation required for future analytics and GenAI workloads.
+- [2026-05-15] Security and Performance Acceleration — Prioritizing Bedrock Guardrails and ElastiCache Valkey 9.0 support following May 2026 AWS updates. These items are unblocked by the provider and critical for GenAI safety and application performance. Introduced Guardrail association for agents as a new security baseline.
 
 ## Session Log
 
+- [2026-05-15] Promoted Bedrock Guardrails to the Immediate Ready Queue. Added Valkey 9.0 support and Agent Guardrail association to the active backlog. Archived completed VPC Lattice and Glue modules.
 - [2026-05-14] Expanded roadmap to include VPC Lattice and AWS Glue. Documented continued provider blockers for Amazon Quick and SageMaker Inference recommendations.
 - [2026-05-12] Expanded Agentic AI roadmap to include Bedrock AgentCore payment features (x402). Noted service lifecycle updates for RDS Custom and App Runner (Maintenance/Sunset).
 - [2026-05-11] Promoted Bedrock AgentCore and introduced GenAI Agent Workspace pattern. Refined Amazon Quick criteria. Verified repo health.
