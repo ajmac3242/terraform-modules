@@ -68,7 +68,11 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Support for `aws_bedrock_guardrail_version` to enable immutable safety baselines
 - [ ] Mandatory CMK encryption for all data stores and logs
 - [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates safety configurations
+- [ ] Native offline Terraform test validates:
+  - [ ] Content filter strength configurations
+  - [ ] PII masking and sensitive word filters
+  - [ ] Contextual grounding thresholds
+  - [ ] Mandatory CMK and tagging compliance
 
 ---
 
@@ -103,7 +107,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Standardized infrastructure for Amazon Quick AI assistant integrations. Promoted from future ideas following the May 2026 GenAI roadmap updates.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_amazon_quick` (or equivalent) resource. Implementation is deferred until provider support is added.
+> **Blocker:** Pending AWS Provider support for `aws_amazon_quick` (or equivalent) resource. Verified still blocked in AWS Provider 6.44.0. Implementation is deferred until provider support is added.
 
 #### Acceptance Criteria
 - [ ] `aws_amazon_quick` resource implementation (pending provider support)
@@ -150,7 +154,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Leverages new "Optimized Generative AI Inference Recommendations" feature (GA April 2026) to automatically identify optimized deployment configurations for generative AI models, including instance type and container parameters.
 
 > [!IMPORTANT]
-> **Blocker:** (As of 2026-05-06) The `aws_sagemaker_inference_recommendations_job` resource is not yet supported in the AWS Terraform provider (v5.x/v6.x). Implementation is deferred until provider support is added.
+> **Blocker:** (As of 2026-05-15) The `aws_sagemaker_inference_recommendations_job` resource is not yet supported in the AWS Terraform provider (v6.44.0). Implementation is deferred until provider support is added.
 
 #### Acceptance Criteria
 - [ ] `aws_sagemaker_inference_recommendations_job` or equivalent for optimized deployment
@@ -194,6 +198,47 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Update documentation to highlight the safety-first agent pattern
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates Guardrail association
+
+---
+
+### aws/base_component/cloudtrail: Opinionated CloudTrail module
+
+**Priority:** MEDIUM
+**Type:** Security
+**Status:** `backlog`
+**Module:** aws/base_component/cloudtrail
+**Why:** Standardizes organizational governance, audit logging, and compliance monitoring. Ensures consistent audit posture across all accounts.
+
+#### Acceptance Criteria
+- [ ] `aws_cloudtrail` resource implementation
+- [ ] Mandatory CMK encryption for trail logs (`kms_key_id`)
+- [ ] Multi-region trail enabled by default
+- [ ] Global service events enabled by default
+- [ ] Log file integrity validation enabled
+- [ ] CloudWatch Logs integration with CMK-encrypted Log Group
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates:
+  - [ ] CMK encryption for both S3 and CloudWatch Logs
+  - [ ] Multi-region and global service event settings
+  - [ ] Mandatory tagging compliance
+
+---
+
+### aws/workload_component/lambda_powertools: Standardized Lambda with Powertools
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/workload_component/lambda_powertools
+**Why:** Standardizes serverless observability (logging, metrics, tracing) using AWS Lambda Powertools. Promoted from future ideas to ensure high-quality, observable serverless patterns.
+
+#### Acceptance Criteria
+- [ ] Composes `aws/base_component/lambda`
+- [ ] Integrates Lambda Powertools Layer (via ARN or managed resource)
+- [ ] Configures opinionated environment variables for Powertools (LOG_LEVEL, POWERTOOLS_SERVICE_NAME, etc.)
+- [ ] Mandatory CMK encryption for CloudWatch Logs
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates Powertools configuration and security defaults
 
 ---
 
@@ -1447,7 +1492,6 @@ Retain previously completed module entries below this line for historical tracki
 
 ## Future Module Ideas
 
-- `aws/workload_component/lambda_powertools` — (Future) Lambda with Powertools and standardized observability.
 - `gcp/base_component/gcs` — (Future) GCP Cloud Storage equivalent.
 - `azure/base_component/storage` — (Future) Azure Blob Storage equivalent.
 
