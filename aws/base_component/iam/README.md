@@ -57,3 +57,4 @@ module "iam_role" {
 | `role_name` | The name of the IAM role |
 | `role_id` | The stable and unique string identifying the role |
 | `unique_id` | The unique ID assigned by AWS |
+| `tags` | A map of tags assigned to the resource |

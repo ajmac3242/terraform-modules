@@ -44,3 +44,4 @@ module "vpc" {
 | `public_subnet_ids` | List of public subnet IDs |
 | `private_subnet_ids` | List of private subnet IDs |
 | `cidr_block` | The CIDR block of the VPC |
+| `tags` | A map of tags assigned to the VPC |

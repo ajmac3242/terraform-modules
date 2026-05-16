@@ -6,7 +6,7 @@ This module provisions an opinionated VPC Lattice service network and service, h
 ## Usage
 ```hcl
 module "vpc_lattice" {
-  source = "../../base_component/vpc_lattice"
+  source = "./aws/base_component/vpc_lattice"
 
   name        = "my-app-network"
   vpc_id      = "vpc-12345678"

@@ -6,7 +6,7 @@ This workload module composes S3, Glue, and IAM into a secure, opinionated data 
 ## Usage
 ```hcl
 module "glue_etl" {
-  source = "../../workload_component/glue_etl_pattern"
+  source = "./aws/workload_component/glue_etl_pattern"
 
   name            = "sales-etl"
   kms_key_arn     = "arn:aws:kms:us-east-1:123456789012:key/mrk-1234"
@@ -49,6 +49,9 @@ module "glue_etl" {
 | scripts_bucket_arn | The ARN of the scripts S3 bucket |
 | glue_role_arn | The ARN of the Glue IAM role |
 | glue_database_name | The name of the Glue catalog database |
+| glue_database_arn | The ARN of the Glue catalog database |
 | glue_crawler_name | The name of the Glue crawler |
+| glue_crawler_arn | The ARN of the Glue crawler |
 | glue_job_name | The name of the Glue job |
+| glue_job_arn | The ARN of the Glue job |
 | tags | The tags assigned to the resources |

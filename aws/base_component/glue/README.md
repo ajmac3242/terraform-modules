@@ -6,7 +6,7 @@ This module provisions opinionated AWS Glue components, including a catalog data
 ## Usage
 ```hcl
 module "glue" {
-  source = "../../base_component/glue"
+  source = "./aws/base_component/glue"
 
   name        = "my-data-pipeline"
   role_arn    = "arn:aws:iam::123456789012:role/glue-service-role"
@@ -55,5 +55,7 @@ module "glue" {
 | database_arn | The ARN of the Glue catalog database |
 | security_configuration_name | The name of the Glue security configuration |
 | crawler_name | The name of the Glue crawler |
+| crawler_arn | The ARN of the Glue crawler |
 | job_name | The name of the Glue job |
+| job_arn | The ARN of the Glue job |
 | tags | The tags assigned to the resources |
