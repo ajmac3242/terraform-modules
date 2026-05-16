@@ -54,3 +54,5 @@ module "lambda" {
 | `role_arn` | The ARN of the IAM role used by the function |
 | `invoke_arn` | The ARN to be used for invoking the Lambda function from API Gateway |
 | `log_group_name` | The name of the CloudWatch log group |
+| `kms_key_arn` | The ARN of the KMS key used for encryption |
+| `tags` | A map of tags assigned to the Lambda function |

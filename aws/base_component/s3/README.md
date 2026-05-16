@@ -42,4 +42,7 @@ module "s3_bucket" {
 |------|-------------|
 | `bucket_arn` | The ARN of the S3 bucket |
 | `bucket_id` | The ID (name) of the S3 bucket |
+| `bucket_regional_domain_name` | The bucket region-specific domain name |
 | `kms_key_arn` | The ARN of the KMS key used for encryption |
+| `kms_key_id` | The ID of the KMS key used for encryption |
+| `tags` | The tags assigned to the resource |
