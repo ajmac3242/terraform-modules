@@ -111,9 +111,12 @@ _`- [YYYY-MM-DD] <topic> — <decision and rationale>`_
 - [2026-05-12] Service Lifecycle Awareness — Noted AWS service availability updates for May 2026. While no immediate library impact for existing modules, future candidates like App Runner and certain RDS Custom features are now de-prioritized as they enter maintenance/sunset.
 - [2026-05-14] Strategic Pivot: Networking and Data Foundations — While GenAI features (Amazon Quick, SageMaker recommendations) remain blocked by the AWS Provider, the roadmap is expanding into VPC Lattice and AWS Glue. Lattice is critical for cross-account service networking, while Glue provides the data cataloging foundation required for future analytics and GenAI workloads.
 - [2026-05-15] Security and Performance Acceleration — Prioritizing Bedrock Guardrails and ElastiCache Valkey 9.0 support following May 2026 AWS updates. These items are unblocked by the provider and critical for GenAI safety and application performance. Introduced Guardrail association for agents as a new security baseline.
+- [2026-05-15] Governance Standard — Adding CloudTrail to the roadmap to standardize organizational audit logging and governance.
+- [2026-05-15] Observability Strategy — Promoting Lambda Powertools to a workload pattern to standardize serverless observability across the library.
 
 ## Session Log
 
+- [2026-05-15] Audit of AWS Provider 6.44.0 confirmed continued blockers for Amazon Quick and SageMaker Inference optimization. Promoted Bedrock Guardrails to the Immediate Ready Queue with hardened acceptance criteria. Added CloudTrail base module and Lambda Powertools workload pattern to the roadmap. Verified repository health via `terraform test` in `aws/base_component/iam`.
 - [2026-05-15] Promoted Bedrock Guardrails to the Immediate Ready Queue. Added Valkey 9.0 support and Agent Guardrail association to the active backlog. Archived completed VPC Lattice and Glue modules.
 - [2026-05-14] Expanded roadmap to include VPC Lattice and AWS Glue. Documented continued provider blockers for Amazon Quick and SageMaker Inference recommendations.
 - [2026-05-12] Expanded Agentic AI roadmap to include Bedrock AgentCore payment features (x402). Noted service lifecycle updates for RDS Custom and App Runner (Maintenance/Sunset).
