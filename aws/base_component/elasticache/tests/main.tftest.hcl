@@ -43,3 +43,23 @@ run "valid_elasticache_creation" {
     error_message = "Mandatory tags are missing or incorrect on ElastiCache subnet group"
   }
 }
+
+run "valid_valkey_creation" {
+  command = plan
+
+  variables {
+    cluster_id     = "test-valkey"
+    engine         = "valkey"
+    engine_version = "9.0"
+  }
+
+  assert {
+    condition     = aws_elasticache_replication_group.this.engine == "valkey"
+    error_message = "Engine should be valkey"
+  }
+
+  assert {
+    condition     = aws_elasticache_replication_group.this.engine_version == "9.0"
+    error_message = "Engine version should be 9.0"
+  }
+}

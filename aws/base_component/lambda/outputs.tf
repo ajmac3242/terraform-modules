@@ -28,6 +28,16 @@ output "kms_key_arn" {
   value       = local.kms_key_arn
 }
 
+output "layers" {
+  description = "List of Lambda Layer Version ARNs attached to the function"
+  value       = aws_lambda_function.this.layers
+}
+
+output "environment_variables" {
+  description = "A map of environment variables assigned to the Lambda function"
+  value       = aws_lambda_function.this.environment[0].variables
+}
+
 output "tags" {
   description = "A map of tags assigned to the Lambda function"
   value       = aws_lambda_function.this.tags
