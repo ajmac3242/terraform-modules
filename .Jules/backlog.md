@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-15
+> **Last reviewed:** 2026-05-16
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -201,6 +201,27 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ---
 
+### aws/base_component/devops_agent: Opinionated AWS DevOps Agent module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/devops_agent
+**Why:** AWS DevOps Agent (GA May 2026) is an autonomous "frontier agent" for incident investigation and SRE tasks. Standardizing "Spaces" and MCP integrations is key for platform operations.
+
+> [!IMPORTANT]
+> **Blocker:** Pending AWS Provider support for `aws_devopsagent_space` (or equivalent) resource. Verified still blocked in AWS Provider 6.44.0.
+
+#### Acceptance Criteria
+- [ ] `aws_devopsagent_space` resource implementation (pending provider support)
+- [ ] Support for defining investigation scope (CloudWatch, GitHub, etc.)
+- [ ] Support for MCP (Model Context Protocol) tool integration
+- [ ] Mandatory CMK encryption for all data at rest and logs
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates space configuration and security
+
+---
+
 ### aws/base_component/cloudtrail: Opinionated CloudTrail module
 
 **Priority:** MEDIUM
@@ -215,7 +236,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Multi-region trail enabled by default
 - [ ] Global service events enabled by default
 - [ ] Log file integrity validation enabled
-- [ ] CloudWatch Logs integration with CMK-encrypted Log Group
+- [ ] CloudWatch Logs integration with mandatory CMK-encrypted Log Group
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates:
   - [ ] CMK encryption for both S3 and CloudWatch Logs
@@ -239,6 +260,28 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Mandatory CMK encryption for CloudWatch Logs
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates Powertools configuration and security defaults
+
+---
+
+### aws/workload_component/agentic_sre: Secure Agentic SRE pattern
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/workload_component/agentic_sre
+**Why:** Composes AWS DevOps Agent with CloudWatch and Slack (via MCP) to provide an end-to-end autonomous incident response solution.
+
+> [!IMPORTANT]
+> **Blocker:** Pending implementation of prerequisite `aws/base_component/devops_agent` module.
+
+#### Acceptance Criteria
+- [ ] Composes `aws/base_component/devops_agent`
+- [ ] Integrates with CloudWatch for automated incident triggers
+- [ ] Configures Slack MCP agent for notifications and human-in-the-loop approvals
+- [ ] Least-privilege IAM roles for cross-service and cross-tool investigation
+- [ ] Mandatory CMK encryption for all session data and logs
+- [ ] Required `tags` enforced across all composed resources
+- [ ] Native offline Terraform test validates the end-to-end orchestration
 
 ---
 
@@ -1515,3 +1558,4 @@ Retain previously completed module entries below this line for historical tracki
 | 2026-05-07 | Navigator | Updated backlog and journal for May 2026 GenAI roadmap; promoted Amazon Quick to active backlog; identified AWS Provider 6.0 deprecation fixes. |
 | 2026-05-08 | Navigator | Refined backlog for GenAI modules; introduced AWS Backup and Multicloud Hub modules; archived completed PRs #42, #43, and #49. |
 | 2026-05-15 | Navigator | Promoted Bedrock Guardrails to ready queue; added Valkey 9.0 and Guardrail association items; archived completed VPC Lattice and Glue modules. |
+| 2026-05-16 | Navigator | Conducted May 2026 service intake; added AWS DevOps Agent and Agentic SRE pattern to backlog; refined CloudTrail CMK criteria. |
