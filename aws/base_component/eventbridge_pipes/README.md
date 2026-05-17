@@ -47,3 +47,4 @@ module "sqs_to_lambda" {
 | pipe_id | The ID of the EventBridge Pipe |
 | pipe_name | The name of the EventBridge Pipe |
 | role_arn | The ARN of the IAM role created for the pipe |
+| `tags` | A map of tags assigned to the resource |

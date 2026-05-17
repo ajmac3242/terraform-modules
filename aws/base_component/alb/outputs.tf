@@ -32,3 +32,8 @@ output "security_group_id" {
   description = "The ID of the primary security group associated with the ALB"
   value       = try(var.security_groups[0], null)
 }
+
+output "tags" {
+  description = "A map of tags assigned to the resource"
+  value       = aws_lb.this.tags_all
+}

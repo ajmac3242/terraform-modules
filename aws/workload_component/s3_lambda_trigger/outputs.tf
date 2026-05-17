@@ -22,3 +22,8 @@ output "notification_id" {
   description = "The ID of the S3 bucket notification"
   value       = aws_s3_bucket_notification.this.id
 }
+
+output "tags" {
+  description = "A map of tags assigned to the resources"
+  value       = var.tags
+}

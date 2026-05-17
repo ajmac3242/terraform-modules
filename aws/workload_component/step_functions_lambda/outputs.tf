@@ -12,3 +12,8 @@ output "role_arn" {
   description = "The ARN of the IAM role for the state machine"
   value       = module.role.role_arn
 }
+
+output "tags" {
+  description = "A map of tags assigned to the resources"
+  value       = var.tags
+}

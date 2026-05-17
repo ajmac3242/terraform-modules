@@ -12,3 +12,8 @@ output "db_instance_id" {
   description = "The RDS instance ID"
   value       = aws_db_instance.this.id
 }
+
+output "tags" {
+  description = "A map of tags assigned to the resource"
+  value       = aws_db_instance.this.tags_all
+}

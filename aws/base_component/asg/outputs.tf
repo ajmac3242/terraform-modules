@@ -17,3 +17,8 @@ output "launch_template_arn" {
   description = "The ARN of the launch template"
   value       = aws_launch_template.this.arn
 }
+
+output "tags" {
+  description = "A map of tags assigned to the resources"
+  value       = var.tags
+}

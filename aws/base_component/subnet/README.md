@@ -41,3 +41,4 @@ module "custom_subnet" {
 |------|-------------|
 | `subnet_id` | The ID of the subnet |
 | `subnet_arn` | The ARN of the subnet |
+| `tags` | A map of tags assigned to the resource |

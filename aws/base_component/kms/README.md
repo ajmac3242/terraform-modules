@@ -46,3 +46,4 @@ module "kms" {
 | `key_id` | The ID of the KMS key |
 | `alias_arn` | The ARN of the KMS alias |
 | `alias_name` | The name of the KMS alias |
+| `tags` | A map of tags assigned to the resource |

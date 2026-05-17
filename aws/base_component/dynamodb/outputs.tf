@@ -12,3 +12,8 @@ output "table_id" {
   description = "The ID of the DynamoDB table"
   value       = aws_dynamodb_table.this.id
 }
+
+output "tags" {
+  description = "A map of tags assigned to the resource"
+  value       = aws_dynamodb_table.this.tags_all
+}

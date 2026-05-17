@@ -49,3 +49,4 @@ module "lambda_alarms" {
 |------|-------------|
 | `alarm_arns` | Map of alarm ARNs |
 | `alarm_names` | List of alarm names |
+| `tags` | A map of tags assigned to the resources |

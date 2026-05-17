@@ -45,3 +45,4 @@ module "dns_records" {
 |------|-------------|
 | `record_names` | List of record names created |
 | `record_fqdns` | List of FQDNs created |
+| `tags` | A map of tags assigned to the resources |

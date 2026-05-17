@@ -74,3 +74,8 @@ output "support_role_name" {
   description = "The name of the IAM Support role"
   value       = try(module.support_role[0].role_name, null)
 }
+
+output "tags" {
+  description = "A map of tags assigned to the resources"
+  value       = var.tags
+}

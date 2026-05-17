@@ -46,3 +46,4 @@ module "cloudfront" {
 | `distribution_id` | The ID of the distribution |
 | `distribution_arn` | The ARN of the distribution |
 | `distribution_domain_name` | The domain name of the distribution |
+| `tags` | A map of tags assigned to the resource |
