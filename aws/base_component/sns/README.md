@@ -36,3 +36,4 @@ module "sns_topic" {
 |------|-------------|
 | `topic_arn` | The ARN of the SNS topic |
 | `topic_name` | The name of the SNS topic |
+| `tags` | A map of tags assigned to the resource |

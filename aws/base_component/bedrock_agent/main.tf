@@ -6,6 +6,14 @@ resource "aws_bedrockagent_agent" "this" {
   agent_resource_role_arn     = var.agent_resource_role_arn
   customer_encryption_key_arn = var.kms_key_arn
 
+  dynamic "guardrail_configuration" {
+    for_each = var.guardrail_configuration != null ? [var.guardrail_configuration] : []
+    content {
+      guardrail_identifier = guardrail_configuration.value.guardrail_identifier
+      guardrail_version    = guardrail_configuration.value.guardrail_version
+    }
+  }
+
   tags = var.tags
 }
 

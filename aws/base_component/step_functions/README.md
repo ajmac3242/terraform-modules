@@ -41,3 +41,4 @@ module "state_machine" {
 | `state_machine_arn` | The ARN of the state machine |
 | `state_machine_id` | The ID of the state machine |
 | `log_group_name` | The name of the CloudWatch log group |
+| `tags` | A map of tags assigned to the resources |

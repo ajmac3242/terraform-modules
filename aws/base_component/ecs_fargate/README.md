@@ -51,3 +51,4 @@ module "ecs_fargate" {
 | `task_definition_arn` | The ARN of the task definition |
 | `task_role_arn` | The ARN of the task IAM role |
 | `execution_role_arn` | The ARN of the execution IAM role |
+| `tags` | A map of tags assigned to the resource |

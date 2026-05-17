@@ -40,3 +40,4 @@ module "sqs_queue" {
 | `queue_arn` | The ARN of the SQS queue |
 | `queue_url` | The URL of the SQS queue |
 | `queue_id` | The ID of the SQS queue |
+| `tags` | A map of tags assigned to the resource |

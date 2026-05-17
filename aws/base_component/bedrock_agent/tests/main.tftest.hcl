@@ -44,3 +44,24 @@ run "valid_agent_creation" {
     error_message = "Mandatory tags are missing or incorrect on Bedrock Agent"
   }
 }
+
+run "valid_agent_creation_with_guardrail" {
+  command = plan
+
+  variables {
+    guardrail_configuration = {
+      guardrail_identifier = "test-guardrail-id"
+      guardrail_version    = "1"
+    }
+  }
+
+  assert {
+    condition     = length(aws_bedrockagent_agent.this.guardrail_configuration) > 0
+    error_message = "Guardrail configuration is missing"
+  }
+
+  assert {
+    condition     = aws_bedrockagent_agent.this.guardrail_configuration[0].guardrail_identifier == "test-guardrail-id"
+    error_message = "Guardrail identifier does not match"
+  }
+}

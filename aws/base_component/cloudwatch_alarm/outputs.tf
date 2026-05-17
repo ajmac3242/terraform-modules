@@ -12,3 +12,8 @@ output "alarm_names" {
   description = "A list of alarm names"
   value       = keys(aws_cloudwatch_metric_alarm.this)
 }
+
+output "tags" {
+  description = "A map of tags assigned to the resources"
+  value       = var.tags
+}

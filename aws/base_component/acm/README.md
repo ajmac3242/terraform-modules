@@ -37,3 +37,4 @@ module "acm" {
 |------|-------------|
 | `certificate_arn` | The ARN of the certificate |
 | `domain_name` | The domain name for which the certificate should be issued |
+| `tags` | A map of tags assigned to the resource |

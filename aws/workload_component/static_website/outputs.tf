@@ -27,3 +27,8 @@ output "website_url" {
   description = "The primary URL of the website"
   value       = "https://${var.domain_name}"
 }
+
+output "tags" {
+  description = "A map of tags assigned to the resources"
+  value       = var.tags
+}

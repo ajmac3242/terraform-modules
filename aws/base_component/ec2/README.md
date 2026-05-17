@@ -45,3 +45,4 @@ module "ec2" {
 | `instance_arn` | The ARN of the EC2 instance |
 | `instance_id` | The ID of the EC2 instance |
 | `private_ip` | The private IP address of the instance |
+| `tags` | A map of tags assigned to the resource |

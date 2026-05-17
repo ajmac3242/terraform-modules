@@ -22,3 +22,8 @@ output "kms_key_arn" {
   description = "The ARN of the KMS key used for encryption"
   value       = local.kms_key_arn
 }
+
+output "tags" {
+  description = "A map of tags assigned to the resource"
+  value       = var.create_bus ? aws_cloudwatch_event_bus.this[0].tags_all : var.tags
+}

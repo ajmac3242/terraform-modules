@@ -40,3 +40,4 @@ module "ssm_parameter" {
 | `parameter_arn` | The ARN of the SSM parameter |
 | `parameter_name` | The name of the SSM parameter |
 | `parameter_version` | The version of the SSM parameter |
+| `tags` | A map of tags assigned to the resource |

@@ -48,3 +48,4 @@ module "asg" {
 | `asg_id` | The ID of the Auto Scaling Group |
 | `launch_template_arn` | The ARN of the Launch Template |
 | `launch_template_id` | The ID of the Launch Template |
+| `tags` | A map of tags assigned to the resources |

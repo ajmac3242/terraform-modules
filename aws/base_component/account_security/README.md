@@ -97,3 +97,4 @@ module "account_security" {
 | `security_contact_email` | Registered security contact email |
 | `billing_contact_email` | Registered billing contact email |
 | `operations_contact_email` | Registered operations contact email |
+| `tags` | A map of tags assigned to the resources |

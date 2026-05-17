@@ -17,3 +17,8 @@ output "kms_key_arn" {
   description = "The KMS key ARN used for encryption"
   value       = aws_efs_file_system.this.kms_key_id
 }
+
+output "tags" {
+  description = "A map of tags assigned to the resource"
+  value       = aws_efs_file_system.this.tags_all
+}

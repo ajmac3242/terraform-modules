@@ -118,6 +118,7 @@ _`- [YYYY-MM-DD] <topic> — <finding and rationale>`_
 - [2026-05-11] IAM Composition Standard — Refactored `multicloud_hub` to replace inline `aws_iam_role_policy` with managed `aws_iam_policy` and attachment, maintaining repo-wide testing and security standards.
 
 ## Review Log
+- [2026-05-17] Conducted repository-wide quality audit. Standardized `tags` output across 37 modules. Applied fixes where needed.
 
 _Steward will append a one-line entry after each review session:_  
 _`- [YYYY-MM-DD] Reviewed daily PRs. Applied fixes where needed.`_
@@ -142,3 +143,4 @@ _`- [YYYY-MM-DD] Reviewed daily PRs. Applied fixes where needed.`_
 - [2026-05-13] Reviewed PR #60 (final updates) and subsequent module changes. Hardened `bedrock_agent_core` documentation by explicitly noting the high provider version requirement (v6.27.0+). Hardened `multicloud_hub` by syncing README documentation with actual module outputs. Verified both modules via native `terraform test` and maintained environment hygiene.
 - [2026-05-14] Reviewed and hardened `vpc_lattice`, `glue`, and `glue_etl_pattern` modules. Strengthened `terraform test` suites for all three modules to enforce 100% tag coverage across all resources and deeper validation of security configurations (CMK encryption, VPC connection details). Verified all changes pass native `terraform test` and ensured environment hygiene by removing build artifacts.
 - [2026-05-16] Reviewed daily module changes and PRs. Hardened documentation for seven modules (base and workload) to ensure output completeness and usage clarity. Fixed CI configuration typo (renamed `gilab-ci.yml` to `.gitlab-ci.yml`). Verified all changes pass native `terraform test` and maintained environment hygiene by removing stray lock files.
+- [2026-05-17] Repository-wide Quality Audit — Conducted a comprehensive audit and addressed a systemic documentation/output deficiency. Appended the mandatory `tags` output and updated README 'Outputs' tables for 37 modules (30 base, 7 workload). Hardened output logic for `sqs`, `account_security`, and `alb` to ensure stability across conditional resource states. Verified all changes pass native `terraform test` and maintained environment hygiene by removing build artifacts.

@@ -40,3 +40,4 @@ module "efs" {
 | `file_system_arn` | The ARN of the EFS File System |
 | `file_system_id` | The ID of the EFS File System |
 | `dns_name` | The DNS name of the EFS File System |
+| `tags` | A map of tags assigned to the resource |

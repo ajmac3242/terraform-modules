@@ -36,6 +36,12 @@ variable "filename" {
   default     = null
 }
 
+variable "layers" {
+  description = "List of Lambda Layer Version ARNs (maximum of 5) to attach to your Lambda Function"
+  type        = list(string)
+  default     = []
+}
+
 variable "environment_variables" {
   description = "A map of environment variables to assign to the Lambda function"
   type        = map(string)

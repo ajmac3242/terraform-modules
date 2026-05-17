@@ -39,3 +39,4 @@ module "cognito" {
 | `user_pool_id` | The ID of the User Pool |
 | `user_pool_arn` | The ARN of the User Pool |
 | `client_id` | The ID of the User Pool Client |
+| `tags` | A map of tags assigned to the resource |

@@ -43,3 +43,4 @@ module "eks" {
 | `cluster_endpoint` | The endpoint for the EKS cluster |
 | `cluster_certificate_authority_data` | The base64 encoded certificate data required to communicate with the cluster |
 | `cluster_role_arn` | The ARN of the cluster IAM role |
+| `tags` | A map of tags assigned to the resource |

@@ -17,3 +17,8 @@ output "dlq_arn" {
   description = "The ARN of the dead-letter queue, if enabled"
   value       = var.enable_dlq ? module.dlq[0].queue_arn : null
 }
+
+output "tags" {
+  description = "A map of tags assigned to the resources"
+  value       = var.tags
+}

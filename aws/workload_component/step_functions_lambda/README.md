@@ -40,3 +40,4 @@ module "orchestration" {
 | `state_machine_arn` | The ARN of the state machine |
 | `state_machine_name` | The name of the state machine |
 | `lambda_function_arns` | List of Lambda function ARNs associated with the pattern |
+| `tags` | A map of tags assigned to the resources |

@@ -58,7 +58,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Security
-**Status:** `backlog`
+**Status:** `done` (PR #62)
 **Module:** aws/base_component/bedrock_guardrail
 **Why:** Bedrock Guardrails provide a critical safety layer for LLM applications, filtering harmful content, blocking topics, and masking PII. Standardizing this is essential for organizational GenAI adoption.
 
@@ -201,6 +201,39 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ---
 
+### aws/base_component/elasticache: Support Valkey 9.0 engine
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `done` (PR #62)
+**Module:** aws/base_component/elasticache
+**Why:** Valkey 9.0 (announced May 2026) offers significant performance improvements and built-in search capabilities. Supporting this engine is critical for low-latency AI and analytics workloads.
+
+#### Acceptance Criteria
+- [ ] Support `engine = "valkey"` and `engine_version = "9.0"` in `aws_elasticache_replication_group`
+- [ ] Validate compatibility with existing CMK and VPC placement defaults
+- [ ] Support for full-text and hybrid search configurations (if applicable via provider)
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates Valkey configuration
+
+---
+
+### aws/base_component/bedrock_agent: Support Guardrail association
+
+**Priority:** HIGH
+**Type:** Security
+**Status:** `done` (PR #62)
+**Module:** aws/base_component/bedrock_agent
+**Why:** Following the May 2026 safety updates, agents should be associated with Guardrails to ensure consistent safety posture during autonomous orchestration.
+
+#### Acceptance Criteria
+- [ ] Support `guardrail_configuration` block in `aws_bedrockagent_agent`
+- [ ] Support for specifying `guardrail_identifier` and `guardrail_version`
+- [ ] Update documentation to highlight the safety-first agent pattern
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates Guardrail association
+
+---
 
 ### aws/base_component/devops_agent: Opinionated AWS DevOps Agent module
 
@@ -227,7 +260,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** MEDIUM
 **Type:** Security
-**Status:** `backlog`
+**Status:** `done` (PR #62)
 **Module:** aws/base_component/cloudtrail
 **Why:** Standardizes organizational governance, audit logging, and compliance monitoring. Ensures consistent audit posture across all accounts.
 
@@ -267,7 +300,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #62)
 **Module:** aws/workload_component/lambda_powertools
 **Why:** Standardizes serverless observability (logging, metrics, tracing) using AWS Lambda Powertools. Promoted from future ideas to ensure high-quality, observable serverless patterns.
 

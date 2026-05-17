@@ -41,3 +41,4 @@ module "ecr" {
 | `repository_name` | The name of the ECR repository |
 | `repository_url` | The URL of the ECR repository |
 | `kms_key_arn` | The ARN of the KMS key used for encryption |
+| `tags` | A map of tags assigned to the resource |
