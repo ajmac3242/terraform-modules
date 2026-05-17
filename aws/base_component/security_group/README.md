@@ -50,3 +50,4 @@ module "security_group" {
 |------|-------------|
 | `security_group_id` | The ID of the security group |
 | `security_group_arn` | The ARN of the security group |
+| `tags` | A map of tags assigned to the resource |

@@ -17,3 +17,8 @@ output "athena_workgroup_name" {
   description = "The name of the Athena workgroup"
   value       = module.log_analysis.workgroup_name
 }
+
+output "tags" {
+  description = "A map of tags assigned to the resources"
+  value       = var.tags
+}

@@ -46,3 +46,4 @@ module "alb" {
 | `alb_dns_name` | The DNS name of the ALB |
 | `alb_zone_id` | The canonical hosted zone ID of the ALB |
 | `security_group_id` | The ID of the default security group created for the ALB |
+| `tags` | A map of tags assigned to the resource |

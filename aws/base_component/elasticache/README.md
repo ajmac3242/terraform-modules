@@ -44,3 +44,4 @@ module "elasticache" {
 | `cluster_arn` | The ARN of the ElastiCache cluster |
 | `primary_endpoint_address` | The address of the primary endpoint |
 | `member_clusters` | The list of member clusters |
+| `tags` | A map of tags assigned to the resource |

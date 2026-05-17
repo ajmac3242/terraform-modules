@@ -44,3 +44,4 @@ module "vpc_endpoints" {
 | `interface_endpoint_ids` | Map of Interface endpoint IDs |
 | `s3_endpoint_id` | The ID of the S3 Gateway endpoint |
 | `dynamodb_endpoint_id` | The ID of the DynamoDB Gateway endpoint |
+| `tags` | A map of tags assigned to the resources |

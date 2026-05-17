@@ -59,3 +59,4 @@ module "rds" {
 | `db_instance_endpoint` | The connection endpoint |
 | `db_instance_id` | The RDS instance ID |
 | `db_instance_username` | The master username |
+| `tags` | A map of tags assigned to the resource |

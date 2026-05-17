@@ -41,3 +41,4 @@ module "eventbridge" {
 | `event_bus_name` | The name of the EventBridge bus |
 | `rule_arn` | The ARN of the EventBridge rule |
 | `kms_key_arn` | The ARN of the KMS key used for encryption |
+| `tags` | A map of tags assigned to the resource |

@@ -40,3 +40,4 @@ module "secret" {
 |------|-------------|
 | `secret_arn` | The ARN of the secret |
 | `secret_id` | The ID of the secret |
+| `tags` | A map of tags assigned to the resource |

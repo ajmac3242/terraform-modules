@@ -43,3 +43,4 @@ module "centralized_logging" {
 | log_bucket_arn | The ARN of the centralized log bucket |
 | kms_key_arn | The ARN of the KMS key used for log encryption |
 | athena_workgroup_name | The name of the Athena workgroup |
+| `tags` | A map of tags assigned to the resources |

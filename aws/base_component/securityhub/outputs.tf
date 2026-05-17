@@ -12,3 +12,8 @@ output "finding_aggregator_id" {
   description = "The ID of the finding aggregator"
   value       = try(aws_securityhub_finding_aggregator.this[0].id, null)
 }
+
+output "tags" {
+  description = "A map of tags assigned to the resources (returns var.tags as Security Hub resources do not support tags)"
+  value       = var.tags
+}

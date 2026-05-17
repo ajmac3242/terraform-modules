@@ -50,3 +50,4 @@ module "api" {
 | `function_arn` | The ARN of the Lambda function |
 | `stage_id` | The ID of the API stage |
 | `route_id` | The ID of the API route |
+| `tags` | A map of tags assigned to the resources |

@@ -50,3 +50,4 @@ module "app" {
 | `service_arn` | The ARN of the ECS service |
 | `target_group_arn` | The ARN of the ALB target group |
 | `listener_arn` | The ARN of the ALB listener |
+| `tags` | A map of tags assigned to the resources |

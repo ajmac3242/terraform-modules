@@ -17,3 +17,8 @@ output "alias_name" {
   description = "The name of the KMS key alias"
   value       = aws_kms_alias.this.name
 }
+
+output "tags" {
+  description = "A map of tags assigned to the resource"
+  value       = aws_kms_key.this.tags_all
+}

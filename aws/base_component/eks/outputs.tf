@@ -12,3 +12,8 @@ output "cluster_certificate_authority_data" {
   description = "The base64 encoded certificate data required to communicate with your cluster"
   value       = aws_eks_cluster.this.certificate_authority[0].data
 }
+
+output "tags" {
+  description = "A map of tags assigned to the resource"
+  value       = aws_eks_cluster.this.tags_all
+}

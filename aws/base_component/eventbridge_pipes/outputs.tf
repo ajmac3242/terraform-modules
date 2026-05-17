@@ -17,3 +17,8 @@ output "role_arn" {
   description = "The ARN of the IAM role created for the pipe"
   value       = module.iam_role.role_arn
 }
+
+output "tags" {
+  description = "A map of tags assigned to the resource"
+  value       = aws_pipes_pipe.this.tags_all
+}

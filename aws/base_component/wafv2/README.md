@@ -39,3 +39,4 @@ module "waf" {
 | `web_acl_arn` | The ARN of the WAF Web ACL |
 | `web_acl_id` | The ID of the WAF Web ACL |
 | `web_acl_name` | The name of the WAF Web ACL |
+| `tags` | A map of tags assigned to the resource |

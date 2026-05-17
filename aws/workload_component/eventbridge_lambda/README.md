@@ -43,3 +43,4 @@ module "worker" {
 | `function_arn` | The ARN of the Lambda function |
 | `function_name` | The name of the Lambda function |
 | `target_id` | The ID of the EventBridge target |
+| `tags` | A map of tags assigned to the resources |

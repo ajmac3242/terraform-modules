@@ -46,3 +46,4 @@ module "static_website" {
 | `cloudfront_distribution_arn` | The ARN of the CloudFront distribution |
 | `cloudfront_domain_name` | The domain name of the CloudFront distribution |
 | `website_url` | The primary URL of the website |
+| `tags` | A map of tags assigned to the resources |

@@ -37,3 +37,8 @@ output "authorizer_id" {
   description = "The ID of the API Gateway authorizer"
   value       = var.disable_authorizer ? null : aws_apigatewayv2_authorizer.this[0].id
 }
+
+output "tags" {
+  description = "A map of tags assigned to the resources"
+  value       = var.tags
+}

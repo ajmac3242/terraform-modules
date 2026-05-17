@@ -42,3 +42,4 @@ module "ingestor" {
 | `bucket_arn` | The ARN of the S3 bucket |
 | `function_arn` | The ARN of the Lambda function |
 | `notification_configuration_id` | The ID of the S3 bucket notification configuration |
+| `tags` | A map of tags assigned to the resources |

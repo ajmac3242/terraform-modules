@@ -22,3 +22,8 @@ output "listener_rule_arn" {
   description = "The ARN of the listener rule"
   value       = aws_lb_listener_rule.this.arn
 }
+
+output "tags" {
+  description = "A map of tags assigned to the resources"
+  value       = var.tags
+}

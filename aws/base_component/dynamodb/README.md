@@ -51,3 +51,4 @@ module "dynamodb" {
 | `table_arn` | The ARN of the DynamoDB table |
 | `table_name` | The name of the DynamoDB table |
 | `table_id` | The ID of the DynamoDB table |
+| `tags` | A map of tags assigned to the resource |

@@ -12,3 +12,8 @@ output "distribution_domain_name" {
   description = "The domain name of the distribution"
   value       = aws_cloudfront_distribution.this.domain_name
 }
+
+output "tags" {
+  description = "A map of tags assigned to the resource"
+  value       = aws_cloudfront_distribution.this.tags_all
+}
