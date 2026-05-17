@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-16
+> **Last reviewed:** 2026-05-17
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -73,6 +73,40 @@ All modules in this repo MUST comply with these non-negotiable standards:
   - [ ] PII masking and sensitive word filters
   - [ ] Contextual grounding thresholds
   - [ ] Mandatory CMK and tagging compliance
+
+---
+
+### aws/base_component/elasticache: Support Valkey 9.0 engine
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/elasticache
+**Why:** Valkey 9.0 (announced May 2026) offers significant performance improvements and built-in search capabilities. Supporting this engine is critical for low-latency AI and analytics workloads.
+
+#### Acceptance Criteria
+- [ ] Support `engine = "valkey"` and `engine_version = "9.0"` in `aws_elasticache_replication_group`
+- [ ] Validate compatibility with existing CMK and VPC placement defaults
+- [ ] Support for full-text and hybrid search configurations (if applicable via provider)
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates Valkey configuration
+
+---
+
+### aws/base_component/bedrock_agent: Support Guardrail association
+
+**Priority:** HIGH
+**Type:** Security
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_agent
+**Why:** Following the May 2026 safety updates, agents should be associated with Guardrails to ensure consistent safety posture during autonomous orchestration.
+
+#### Acceptance Criteria
+- [ ] Support `guardrail_configuration` block in `aws_bedrockagent_agent`
+- [ ] Support for specifying `guardrail_identifier` and `guardrail_version`
+- [ ] Update documentation to highlight the safety-first agent pattern
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates Guardrail association
 
 ---
 
@@ -167,39 +201,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ---
 
-### aws/base_component/elasticache: Support Valkey 9.0 engine
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/elasticache
-**Why:** Valkey 9.0 (announced May 2026) offers significant performance improvements and built-in search capabilities. Supporting this engine is critical for low-latency AI and analytics workloads.
-
-#### Acceptance Criteria
-- [ ] Support `engine = "valkey"` and `engine_version = "9.0"` in `aws_elasticache_replication_group`
-- [ ] Validate compatibility with existing CMK and VPC placement defaults
-- [ ] Support for full-text and hybrid search configurations (if applicable via provider)
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates Valkey configuration
-
----
-
-### aws/base_component/bedrock_agent: Support Guardrail association
-
-**Priority:** HIGH
-**Type:** Security
-**Status:** `backlog`
-**Module:** aws/base_component/bedrock_agent
-**Why:** Following the May 2026 safety updates, agents should be associated with Guardrails to ensure consistent safety posture during autonomous orchestration.
-
-#### Acceptance Criteria
-- [ ] Support `guardrail_configuration` block in `aws_bedrockagent_agent`
-- [ ] Support for specifying `guardrail_identifier` and `guardrail_version`
-- [ ] Update documentation to highlight the safety-first agent pattern
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates Guardrail association
-
----
 
 ### aws/base_component/devops_agent: Opinionated AWS DevOps Agent module
 
@@ -235,13 +236,30 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Mandatory CMK encryption for trail logs (`kms_key_id`)
 - [ ] Multi-region trail enabled by default
 - [ ] Global service events enabled by default
-- [ ] Log file integrity validation enabled
+- [ ] Log file integrity validation enabled (`enable_log_file_validation = true`)
 - [ ] CloudWatch Logs integration with mandatory CMK-encrypted Log Group
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates:
   - [ ] CMK encryption for both S3 and CloudWatch Logs
   - [ ] Multi-region and global service event settings
   - [ ] Mandatory tagging compliance
+
+---
+
+### aws/base_component/lambda: Support for mounting S3 buckets as file systems
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/lambda
+**Why:** AWS Provider 6.45.0 (May 13, 2026) introduced support for mounting S3 buckets as file systems with S3 Files.
+
+#### Acceptance Criteria
+- [ ] Support for `s3_files` (or equivalent) in `aws_lambda_function`
+- [ ] Support for configuring mount path and bucket ARN
+- [ ] Ensure compatibility with existing VPC and CMK defaults
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates S3 mount configuration
 
 ---
 
@@ -1559,3 +1577,4 @@ Retain previously completed module entries below this line for historical tracki
 | 2026-05-08 | Navigator | Refined backlog for GenAI modules; introduced AWS Backup and Multicloud Hub modules; archived completed PRs #42, #43, and #49. |
 | 2026-05-15 | Navigator | Promoted Bedrock Guardrails to ready queue; added Valkey 9.0 and Guardrail association items; archived completed VPC Lattice and Glue modules. |
 | 2026-05-16 | Navigator | Conducted May 2026 service intake; added AWS DevOps Agent and Agentic SRE pattern to backlog; refined CloudTrail CMK criteria. |
+| 2026-05-17 | Navigator | Promoted Valkey 9.0 and Bedrock Agent Guardrail association to Ready Queue; added Lambda S3 Files support (Provider 6.45.0) to backlog. |
