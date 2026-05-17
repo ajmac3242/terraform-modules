@@ -25,9 +25,8 @@ variable "agent_resource_role_arn" {
 variable "kms_key_arn" {
   description = "The ARN of the KMS key used to encrypt the agent"
   type        = string
-  default     = null
   validation {
-    condition     = var.kms_key_arn == null || can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/.*$", var.kms_key_arn))
+    condition     = can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/.*$", var.kms_key_arn))
     error_message = "kms_key_arn must be a valid KMS key ARN."
   }
 }

@@ -58,7 +58,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Security
-**Status:** `backlog`
+**Status:** `done` (PR #62)
 **Module:** aws/base_component/bedrock_guardrail
 **Why:** Bedrock Guardrails provide a critical safety layer for LLM applications, filtering harmful content, blocking topics, and masking PII. Standardizing this is essential for organizational GenAI adoption.
 
@@ -167,7 +167,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #62)
 **Module:** aws/base_component/elasticache
 **Why:** Valkey 9.0 (announced May 2026) offers significant performance improvements and built-in search capabilities. Supporting this engine is critical for low-latency AI and analytics workloads.
 
@@ -184,7 +184,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Security
-**Status:** `backlog`
+**Status:** `done` (PR #62)
 **Module:** aws/base_component/bedrock_agent
 **Why:** Following the May 2026 safety updates, agents should be associated with Guardrails to ensure consistent safety posture during autonomous orchestration.
 

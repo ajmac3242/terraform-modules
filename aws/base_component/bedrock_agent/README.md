@@ -1,17 +1,22 @@
 # aws/base_component/bedrock_agent
 
 ## Purpose
-Opinionated Bedrock Agent module. Provides a secure foundation for autonomous systems on AWS, responding to trends in Agentic AI.
+Opinionated Bedrock Agent module. Provides a secure foundation for autonomous systems on AWS with support for instructions, foundation models, and safety guardrails.
 
 ## Usage
 ```hcl
 module "bedrock_agent" {
   source = "./aws/base_component/bedrock_agent"
 
-  agent_name              = "my-ai-assistant"
-  foundation_model        = "anthropic.claude-3-sonnet-20240229-v1:0"
+  agent_name              = "my-assistant"
+  foundation_model        = "amazon.titan-text-express-v1"
   instruction             = "You are a helpful assistant."
-  agent_resource_role_arn = "arn:aws:iam::123456789012:role/my-agent-role"
+  agent_resource_role_arn = module.iam_role.role_arn
+  kms_key_arn             = module.kms.key_arn
+
+  # Optional Guardrail association
+  guardrail_identifier = module.guardrail.guardrail_id
+  guardrail_version    = module.guardrail.guardrail_version
 
   tags = {
     environment = "prod"
@@ -23,9 +28,9 @@ module "bedrock_agent" {
 ```
 
 ## Security
-- **Encryption**: Mandatory CMK encryption for any associated data stores or customer-managed resources.
-- **IAM**: Execution roles follow strict least-privilege principles (no `*` actions).
-- **Control**: Access is controlled via resource-based and identity-based policies.
+- **CMK Encryption**: Mandatory customer-managed KMS key for agent encryption.
+- **Least Privilege**: IAM roles for agents should follow strict least-privilege principles.
+- **Safety**: Support for Bedrock Guardrails to enforce organizational safety filters.
 - **Cost Attribution**: Granular cost attribution is supported via tagging. AI spend can be charged back to individual IAM principals, teams, or projects by analyzing tags in usage reports.
 
 ## Variables
@@ -33,9 +38,11 @@ module "bedrock_agent" {
 |------|-------------|------|---------|:--------:|
 | `agent_name` | Name of the Bedrock Agent | `string` | n/a | yes |
 | `foundation_model` | The foundation model used by the agent | `string` | n/a | yes |
-| `instruction` | Instructions for the agent | `string` | n/a | yes |
-| `agent_resource_role_arn` | The ARN of the IAM role with permissions to invoke the agent | `string` | n/a | yes |
-| `kms_key_arn` | KMS key ARN for encryption | `string` | `null` | no |
+| `instruction` | Instructions that tell the agent what it should do | `string` | n/a | yes |
+| `agent_resource_role_arn` | The ARN of the IAM role for the agent | `string` | n/a | yes |
+| `kms_key_arn` | The ARN of the KMS key used to encrypt the agent | `string` | n/a | yes |
+| `guardrail_identifier` | Unique identifier of the guardrail | `string` | `null` | no |
+| `guardrail_version` | Version of the guardrail | `string` | `null` | no |
 | `tags` | Standard tags for all resources | `map(string)` | n/a | yes |
 
 ## Outputs
