@@ -32,6 +32,15 @@ variable "kms_key_arn" {
   }
 }
 
+variable "guardrail_configuration" {
+  description = "Guardrail configuration for the agent"
+  type = object({
+    guardrail_identifier = string
+    guardrail_version    = string
+  })
+  default = null
+}
+
 variable "tags" {
   description = "A map of tags to assign to the resources. Required keys: environment, owner, project, cost_center."
   type        = map(string)

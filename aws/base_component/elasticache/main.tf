@@ -9,7 +9,9 @@ resource "aws_elasticache_subnet_group" "this" {
 # ElastiCache Redis Replication Group (supports encryption and HA)
 resource "aws_elasticache_replication_group" "this" {
   replication_group_id = var.cluster_id
-  description          = "Redis replication group for ${var.cluster_id}"
+  description          = "Replication group for ${var.cluster_id}"
+  engine               = var.engine
+  engine_version       = var.engine_version
   node_type            = var.node_type
   num_cache_clusters   = var.num_cache_nodes
   port                 = 6379

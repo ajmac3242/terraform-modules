@@ -147,3 +147,10 @@ _`- [YYYY-MM-DD] Built <module path>. PR #<number>.`_
 - [2026-05-10] Built aws/workload_component/multicloud_hub and enhanced aws/base_component/aws_interconnect. PR #55.
 - [2026-05-13] Session concluded early. All current backlog items are blocked by missing AWS Provider resources (aws_amazon_quick, aws_sagemaker_inference_recommendations_job) or attributes (payment_configuration in aws_bedrockagentcore_gateway).
 - [2026-05-14] Built aws/base_component/vpc_lattice, aws/base_component/glue, and aws/workload_component/glue_etl_pattern. PR #61.
+- [2026-05-17] bedrock_guardrail — Implemented safety layers with mandatory CMK encryption.
+- [2026-05-17] bedrock_agent — Added support for Guardrail association.
+- [2026-05-17] elasticache — Added support for Valkey 9.0 engine.
+- [2026-05-17] cloudtrail — Implemented standardized audit trail with mandatory CMK for S3 and CloudWatch.
+- [2026-05-17] lambda — Enhanced base module with `layers` and `environment_variables` support.
+- [2026-05-17] lambda_powertools — Built observable serverless pattern composing base Lambda with Powertools.
+- [2026-05-17] Built bedrock_guardrail, cloudtrail, lambda_powertools, and updated bedrock_agent, elasticache, lambda. PR #62.

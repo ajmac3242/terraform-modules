@@ -3,6 +3,28 @@ variable "cluster_id" {
   type        = string
 }
 
+variable "engine" {
+  description = "The name of the cache engine to be used for this cache cluster"
+  type        = string
+  default     = "redis"
+
+  validation {
+    condition     = contains(["redis", "valkey"], var.engine)
+    error_message = "The engine must be either 'redis' or 'valkey'."
+  }
+}
+
+variable "engine_version" {
+  description = "The version number of the cache engine to be used"
+  type        = string
+  default     = "7.0"
+
+  validation {
+    condition     = can(regex("^[0-9.]+$", var.engine_version))
+    error_message = "The engine_version must be a valid version number string."
+  }
+}
+
 variable "node_type" {
   description = "The instance class used for the cache nodes"
   type        = string
