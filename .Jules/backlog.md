@@ -1159,6 +1159,22 @@ Retain previously completed module entries below this line for historical tracki
 
 ---
 
+### aws/base_component/lambda: Support S3 File System mounting
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `done` (PR #63)
+**Module:** aws/base_component/lambda
+**Why:** AWS Provider v6.45.0 introduced support for mounting S3 buckets as file systems in Lambda functions, simplifying access to large datasets without local storage limits.
+
+#### Acceptance Criteria
+- [x] Update `aws_lambda_function` to support `file_system_config` with S3 ARNs
+- [x] Automatically handle necessary S3 IAM permissions for the execution role
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates S3 mounting and IAM configuration
+
+---
+
 ### aws/base_component/lambda: Opinionated Lambda function module
 
 **Priority:** HIGH

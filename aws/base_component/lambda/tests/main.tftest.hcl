@@ -51,3 +51,41 @@ run "valid_lambda_creation" {
     error_message = "Mandatory tags are missing or incorrect on Lambda function"
   }
 }
+
+run "lambda_with_s3_mount" {
+  command = plan
+
+  variables {
+    file_system_config = [
+      {
+        arn              = "arn:aws:s3:::my-test-bucket"
+        local_mount_path = "/mnt/s3"
+      }
+    ]
+  }
+
+  assert {
+    condition     = length(aws_lambda_function.this.file_system_config) == 1
+    error_message = "Lambda function should have 1 file system configuration"
+  }
+
+  assert {
+    condition     = aws_lambda_function.this.file_system_config[0].arn == "arn:aws:s3:::my-test-bucket"
+    error_message = "File system ARN does not match expected S3 bucket ARN"
+  }
+
+  assert {
+    condition     = aws_lambda_function.this.file_system_config[0].local_mount_path == "/mnt/s3"
+    error_message = "Local mount path does not match expected value"
+  }
+
+  assert {
+    condition     = length(aws_iam_policy.s3_mount) == 1
+    error_message = "S3 mount IAM policy should be created"
+  }
+
+  assert {
+    condition     = length(aws_iam_role_policy_attachment.s3_mount) == 1
+    error_message = "S3 mount IAM policy should be attached to the role"
+  }
+}

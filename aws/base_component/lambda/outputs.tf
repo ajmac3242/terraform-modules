@@ -35,7 +35,7 @@ output "layers" {
 
 output "environment_variables" {
   description = "A map of environment variables assigned to the Lambda function"
-  value       = aws_lambda_function.this.environment[0].variables
+  value       = length(aws_lambda_function.this.environment) > 0 ? aws_lambda_function.this.environment[0].variables : {}
 }
 
 output "tags" {

@@ -14,6 +14,39 @@ module "kms" {
 
 locals {
   kms_key_arn = var.kms_key_arn != null ? var.kms_key_arn : module.kms[0].key_arn
+  # Filter S3 ARNs from file_system_config for IAM policy creation
+  s3_mount_arns = [for f in var.file_system_config : f.arn if can(regex("^arn:aws:s3:::", f.arn))]
+}
+
+# IAM policy for S3 file system mounting
+resource "aws_iam_policy" "s3_mount" {
+  count       = length(local.s3_mount_arns) > 0 && var.existing_role_arn == null ? 1 : 0
+  name        = "${var.function_name}-s3-mount-policy"
+  description = "IAM policy for S3 file system mounting for ${var.function_name}"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject"
+        ]
+        Effect   = "Allow"
+        Resource = [for arn in local.s3_mount_arns : "${arn}/*"]
+      },
+      {
+        Action = [
+          "s3:ListBucket"
+        ]
+        Effect   = "Allow"
+        Resource = local.s3_mount_arns
+      }
+    ]
+  })
+
+  tags = var.tags
 }
 
 # Lambda execution role using the base IAM module
@@ -44,6 +77,13 @@ module "execution_role" {
   permissions_boundary_arn = var.permissions_boundary_arn
 
   tags = var.tags
+}
+
+# Attach S3 mount policy to the execution role
+resource "aws_iam_role_policy_attachment" "s3_mount" {
+  count      = length(local.s3_mount_arns) > 0 && var.existing_role_arn == null ? 1 : 0
+  role       = module.execution_role[0].role_name
+  policy_arn = aws_iam_policy.s3_mount[0].arn
 }
 
 # Main Lambda function resource
@@ -79,6 +119,14 @@ resource "aws_lambda_function" "this" {
   # Active tracing with X-Ray is enabled by default
   tracing_config {
     mode = "Active"
+  }
+
+  dynamic "file_system_config" {
+    for_each = var.file_system_config
+    content {
+      arn              = file_system_config.value.arn
+      local_mount_path = file_system_config.value.local_mount_path
+    }
   }
 
   dynamic "dead_letter_config" {

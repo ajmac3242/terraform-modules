@@ -102,6 +102,25 @@ variable "vpc_config" {
   default = null
 }
 
+variable "file_system_config" {
+  description = "Connection settings for an EFS or S3 file system. Supports mounting multiple S3 buckets or a single EFS access point."
+  type = list(object({
+    arn              = string
+    local_mount_path = string
+  }))
+  default = []
+
+  validation {
+    condition     = alltrue([for f in var.file_system_config : can(regex("^arn:aws:(elasticfilesystem|s3):[a-z0-9-]*:[0-9]{12}:.*$|^arn:aws:s3:::.*$", f.arn))])
+    error_message = "The file_system_config arn must be a valid AWS EFS Access Point ARN or S3 Bucket ARN."
+  }
+
+  validation {
+    condition     = alltrue([for f in var.file_system_config : can(regex("^/mnt/.*$", f.local_mount_path))])
+    error_message = "The local_mount_path must start with /mnt/."
+  }
+}
+
 variable "retention_in_days" {
   description = "Specifies the number of days you want to retain log events in the specified log group"
   type        = number
