@@ -43,8 +43,8 @@ run "validate_guardrail_creation" {
   }
 
   assert {
-    condition     = aws_bedrock_guardrail.this.tags["environment"] == "test"
-    error_message = "Mandatory environment tag is missing or incorrect"
+    condition     = aws_bedrock_guardrail.this.tags["environment"] == "test" && aws_bedrock_guardrail.this.tags["owner"] == "builder" && aws_bedrock_guardrail.this.tags["project"] == "infrastructure" && aws_bedrock_guardrail.this.tags["cost_center"] == "12345"
+    error_message = "Mandatory tags are missing or incorrect"
   }
 
   assert {
