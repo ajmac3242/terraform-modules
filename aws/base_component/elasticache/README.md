@@ -8,7 +8,7 @@ Opinionated ElastiCache module. Managed Redis with enforced CMK encryption, tran
 module "elasticache" {
   source = "./aws/base_component/elasticache"
 
-  name               = "my-redis"
+  cluster_id         = "my-redis"
   subnet_ids         = module.vpc.private_subnet_ids
   kms_key_arn        = module.kms.key_arn
   security_group_ids = [module.security_group.id]
@@ -30,18 +30,19 @@ module "elasticache" {
 ## Variables
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| `name` | Name of the ElastiCache cluster | `string` | n/a | yes |
+| `cluster_id` | Identifier for the ElastiCache cluster | `string` | n/a | yes |
+| `engine` | The name of the cache engine to be used (redis or valkey) | `string` | `redis` | no |
+| `engine_version` | The version number of the cache engine | `string` | `7.0` | no |
+| `node_type` | Instance class to use | `string` | `cache.t3.micro` | no |
+| `num_cache_nodes` | Initial number of cache nodes | `number` | `1` | no |
 | `subnet_ids` | List of subnet IDs for the ElastiCache subnet group | `list(string)` | n/a | yes |
-| `kms_key_arn` | ARN for the KMS key to use for encryption at rest | `string` | n/a | yes |
 | `security_group_ids` | List of security group IDs to associate with | `list(string)` | n/a | yes |
-| `node_type` | Instance class to use | `string` | `"cache.t3.medium"` | no |
-| `num_cache_nodes` | Number of cache nodes in the cluster | `number` | `1` | no |
+| `kms_key_arn` | ARN for the KMS key to use for encryption at rest | `string` | n/a | yes |
 | `tags` | Standard tags for all resources | `map(string)` | n/a | yes |
 
 ## Outputs
 | Name | Description |
 |------|-------------|
-| `cluster_arn` | The ARN of the ElastiCache cluster |
+| `cluster_arn` | The ARN of the ElastiCache replication group |
 | `primary_endpoint_address` | The address of the primary endpoint |
-| `member_clusters` | The list of member clusters |
 | `tags` | A map of tags assigned to the resource |

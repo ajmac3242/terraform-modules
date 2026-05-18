@@ -38,7 +38,12 @@ run "validate_cloudtrail_creation" {
   }
 
   assert {
-    condition     = aws_cloudtrail.this.tags["environment"] == "test"
-    error_message = "Mandatory environment tag is missing or incorrect"
+    condition     = aws_cloudtrail.this.enable_log_file_validation == true
+    error_message = "Log file validation should be enabled by default"
+  }
+
+  assert {
+    condition     = aws_cloudtrail.this.tags["environment"] == "test" && aws_cloudtrail.this.tags["owner"] == "builder" && aws_cloudtrail.this.tags["project"] == "infrastructure" && aws_cloudtrail.this.tags["cost_center"] == "12345"
+    error_message = "Mandatory tags are missing or incorrect"
   }
 }

@@ -116,9 +116,11 @@ _`- [YYYY-MM-DD] <topic> — <finding and rationale>`_
 - [2026-05-05] API Gateway Refactor — Moved raw `aws_apigatewayv2_api` resources from `apigw_lambda` workload module into a new `apigateway_v2` base module to promote reuse and centralize security/logging defaults.
 - [2026-05-05] Validation Standard — Enforced resource naming regex validation for SageMaker and numeric range validation for Direct Connect ASNs to improve module robustness.
 - [2026-05-11] IAM Composition Standard — Refactored `multicloud_hub` to replace inline `aws_iam_role_policy` with managed `aws_iam_policy` and attachment, maintaining repo-wide testing and security standards.
+- [2026-05-18] Composite Testing Standard — Workload modules must verify tag propagation by asserting against child module outputs (e.g., `module.lambda.tags`) to ensure end-to-end correctness.
 
 ## Review Log
 - [2026-05-17] Conducted repository-wide quality audit. Standardized `tags` output across 37 modules. Applied fixes where needed.
+- [2026-05-18] Reviewed daily module changes (PR #62 and #63). Hardened tests for CloudTrail, Bedrock Guardrail, and Lambda Powertools with mandatory tag assertions. Corrected ElastiCache and Lambda README documentation. Verified tag propagation in composite modules. Enforced repository hygiene.
 
 _Steward will append a one-line entry after each review session:_  
 _`- [YYYY-MM-DD] Reviewed daily PRs. Applied fixes where needed.`_

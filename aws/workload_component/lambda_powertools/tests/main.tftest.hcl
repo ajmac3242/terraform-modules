@@ -43,4 +43,9 @@ run "validate_lambda_powertools_creation" {
     condition     = module.lambda.environment_variables["LOG_LEVEL"] == "INFO"
     error_message = "LOG_LEVEL environment variable should be INFO by default"
   }
+
+  assert {
+    condition     = module.lambda.tags["environment"] == "test" && module.lambda.tags["owner"] == "builder" && module.lambda.tags["project"] == "infrastructure" && module.lambda.tags["cost_center"] == "12345"
+    error_message = "Mandatory tags are missing or incorrect"
+  }
 }
