@@ -76,39 +76,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ---
 
-### aws/base_component/elasticache: Support Valkey 9.0 engine
 
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/elasticache
-**Why:** Valkey 9.0 (announced May 2026) offers significant performance improvements and built-in search capabilities. Supporting this engine is critical for low-latency AI and analytics workloads.
-
-#### Acceptance Criteria
-- [x] Support `engine = "valkey"` and `engine_version = "9.0"` in `aws_elasticache_replication_group`
-- [x] Validate compatibility with existing CMK and VPC placement defaults
-- [x] Support for full-text and hybrid search capabilities (Standard ElastiCache features)
-- [x] Required `tags` enforced
-- [x] Native offline Terraform test validates Valkey configuration
-
----
-
-### aws/base_component/bedrock_agent: Support Guardrail association
-
-**Priority:** HIGH
-**Type:** Security
-**Status:** `backlog`
-**Module:** aws/base_component/bedrock_agent
-**Why:** Following the May 2026 safety updates, agents should be associated with Guardrails to ensure consistent safety posture during autonomous orchestration.
-
-#### Acceptance Criteria
-- [x] Support `guardrail_configuration` block in `aws_bedrockagent_agent`
-- [x] Support for specifying `guardrail_identifier` and `guardrail_version`
-- [x] Update documentation to highlight the safety-first agent pattern
-- [x] Required `tags` enforced
-- [x] Native offline Terraform test validates Guardrail association
-
----
 
 ## Module Backlog
 
@@ -198,40 +166,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Required `tags` enforced
 - [ ] Outputs: `endpoint_arn`, `recommendation_id`
 - [ ] Native offline Terraform test validates security settings and VPC placement
-
----
-
-### aws/base_component/elasticache: Support Valkey 9.0 engine
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `done` (PR #62)
-**Module:** aws/base_component/elasticache
-**Why:** Valkey 9.0 (announced May 2026) offers significant performance improvements and built-in search capabilities. Supporting this engine is critical for low-latency AI and analytics workloads.
-
-#### Acceptance Criteria
-- [ ] Support `engine = "valkey"` and `engine_version = "9.0"` in `aws_elasticache_replication_group`
-- [ ] Validate compatibility with existing CMK and VPC placement defaults
-- [ ] Support for full-text and hybrid search configurations (if applicable via provider)
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates Valkey configuration
-
----
-
-### aws/base_component/bedrock_agent: Support Guardrail association
-
-**Priority:** HIGH
-**Type:** Security
-**Status:** `done` (PR #62)
-**Module:** aws/base_component/bedrock_agent
-**Why:** Following the May 2026 safety updates, agents should be associated with Guardrails to ensure consistent safety posture during autonomous orchestration.
-
-#### Acceptance Criteria
-- [ ] Support `guardrail_configuration` block in `aws_bedrockagent_agent`
-- [ ] Support for specifying `guardrail_identifier` and `guardrail_version`
-- [ ] Update documentation to highlight the safety-first agent pattern
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates Guardrail association
 
 ---
 
@@ -327,6 +261,57 @@ _Empty — standardizing current backlog items._
 ***
 
 ## Existing Completed Module History
+### aws/base_component/elasticache: Support Valkey 9.0 engine
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `done` (PR #62)
+**Module:** aws/base_component/elasticache
+**Why:** Valkey 9.0 (announced May 2026) offers significant performance improvements and built-in search capabilities. Supporting this engine is critical for low-latency AI and analytics workloads.
+
+#### Acceptance Criteria
+- [x] Support `engine = "valkey"` and `engine_version = "9.0"` in `aws_elasticache_replication_group`
+- [x] Validate compatibility with existing CMK and VPC placement defaults
+- [x] Support for full-text and hybrid search capabilities (Standard ElastiCache features)
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates Valkey configuration
+
+---
+
+### aws/base_component/bedrock_agent: Support Guardrail association
+
+**Priority:** HIGH
+**Type:** Security
+**Status:** `done` (PR #62)
+**Module:** aws/base_component/bedrock_agent
+**Why:** Following the May 2026 safety updates, agents should be associated with Guardrails to ensure consistent safety posture during autonomous orchestration.
+
+#### Acceptance Criteria
+- [x] Support `guardrail_configuration` block in `aws_bedrockagent_agent`
+- [x] Support for specifying `guardrail_identifier` and `guardrail_version`
+- [x] Update documentation to highlight the safety-first agent pattern
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates Guardrail association
+
+---
+
+### aws/base_component/lambda: Support for mounting S3 buckets as file systems
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `done` (PR #63)
+**Module:** aws/base_component/lambda
+**Why:** AWS Provider 6.45.0 (May 13, 2026) introduced support for mounting S3 buckets as file systems with S3 Files.
+
+#### Acceptance Criteria
+- [x] Support for `s3_files` (or equivalent) in `aws_lambda_function`
+- [x] Support for configuring mount path and bucket ARN
+- [x] Ensure compatibility with existing VPC and CMK defaults
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates S3 mount configuration
+
+---
+
 
 ### aws/base_component/bedrock_agent_core: Bedrock AgentCore module
 

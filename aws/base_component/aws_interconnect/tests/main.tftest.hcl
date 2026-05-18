@@ -1,10 +1,10 @@
 variables {
-  name           = "test-interconnect"
-  cloud_provider = "OCI"
-  bandwidth      = "1Gbps"
-  location       = "EqDC2"
-  vlan           = 100
-  amazon_side_asn = "64512"
+  name             = "test-interconnect"
+  cloud_provider   = "OCI"
+  bandwidth        = "1Gbps"
+  location         = "EqDC2"
+  vlan             = 100
+  amazon_side_asn  = "64512"
   customer_bgp_asn = 65000
   tags = {
     environment = "test"

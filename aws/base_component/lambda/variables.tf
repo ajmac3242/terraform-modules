@@ -116,8 +116,8 @@ variable "file_system_config" {
   }
 
   validation {
-    condition     = alltrue([for f in var.file_system_config : can(regex("^arn:aws:(elasticfilesystem|s3|s3files):[a-z0-9-]*:[0-9]{12}:.*$|^arn:aws:s3:::.*$", f.arn))])
-    error_message = "The file_system_config arn must be a valid AWS EFS, S3, or S3 Files Access Point ARN."
+    condition     = alltrue([for f in var.file_system_config : can(regex("^arn:aws:(elasticfilesystem|s3files):[a-z0-9-]*:[0-9]{12}:.*$", f.arn))])
+    error_message = "The file_system_config arn must be a valid AWS EFS Access Point ARN or S3 Files Access Point ARN."
   }
 
   validation {

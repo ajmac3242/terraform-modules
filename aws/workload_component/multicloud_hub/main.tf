@@ -44,9 +44,9 @@ resource "aws_cloudwatch_log_group" "this" {
 }
 
 resource "aws_flow_log" "this" {
-  iam_role_arn    = module.tgw_log_role.role_arn
-  log_destination = aws_cloudwatch_log_group.this.arn
-  traffic_type    = "ALL"
+  iam_role_arn       = module.tgw_log_role.role_arn
+  log_destination    = aws_cloudwatch_log_group.this.arn
+  traffic_type       = "ALL"
   transit_gateway_id = aws_ec2_transit_gateway.this.id
 
   tags = var.tags
