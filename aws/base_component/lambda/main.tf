@@ -14,31 +14,23 @@ module "kms" {
 
 locals {
   kms_key_arn = var.kms_key_arn != null ? var.kms_key_arn : module.kms[0].key_arn
-  # Filter S3 ARNs from file_system_config for IAM policy creation
-  s3_mount_arns = [for f in var.file_system_config : f.arn if can(regex("^arn:aws:s3:::", f.arn))]
+  # Filter S3 Files ARNs from file_system_config for IAM policy creation
+  s3_mount_arns = [for f in var.file_system_config : f.arn if can(regex("^arn:aws:s3files:", f.arn))]
 }
 
-# IAM policy for S3 file system mounting
+# IAM policy for S3 Files system mounting
 resource "aws_iam_policy" "s3_mount" {
   count       = length(local.s3_mount_arns) > 0 && var.existing_role_arn == null ? 1 : 0
   name        = "${var.function_name}-s3-mount-policy"
-  description = "IAM policy for S3 file system mounting for ${var.function_name}"
+  description = "IAM policy for S3 Files system mounting for ${var.function_name}"
 
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
         Action = [
-          "s3:GetObject",
-          "s3:PutObject",
-          "s3:DeleteObject"
-        ]
-        Effect   = "Allow"
-        Resource = [for arn in local.s3_mount_arns : "${arn}/*"]
-      },
-      {
-        Action = [
-          "s3:ListBucket"
+          "s3files:ClientMount",
+          "s3files:ClientWrite"
         ]
         Effect   = "Allow"
         Resource = local.s3_mount_arns

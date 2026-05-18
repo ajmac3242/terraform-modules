@@ -58,7 +58,7 @@ run "lambda_with_s3_mount" {
   variables {
     file_system_config = [
       {
-        arn              = "arn:aws:s3:::my-test-bucket"
+        arn              = "arn:aws:s3files:us-east-1:123456789012:accesspoint/my-ap"
         local_mount_path = "/mnt/s3"
       }
     ]
@@ -70,8 +70,8 @@ run "lambda_with_s3_mount" {
   }
 
   assert {
-    condition     = aws_lambda_function.this.file_system_config[0].arn == "arn:aws:s3:::my-test-bucket"
-    error_message = "File system ARN does not match expected S3 bucket ARN"
+    condition     = aws_lambda_function.this.file_system_config[0].arn == "arn:aws:s3files:us-east-1:123456789012:accesspoint/my-ap"
+    error_message = "File system ARN does not match expected S3 Files access point ARN"
   }
 
   assert {

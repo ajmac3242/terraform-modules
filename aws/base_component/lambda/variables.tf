@@ -103,7 +103,7 @@ variable "vpc_config" {
 }
 
 variable "file_system_config" {
-  description = "Connection settings for an EFS or S3 file system. Supports mounting multiple S3 buckets or a single EFS access point."
+  description = "Connection settings for an EFS or S3 file system. Supports mounting a single S3 Files access point or EFS access point."
   type = list(object({
     arn              = string
     local_mount_path = string
@@ -111,8 +111,13 @@ variable "file_system_config" {
   default = []
 
   validation {
-    condition     = alltrue([for f in var.file_system_config : can(regex("^arn:aws:(elasticfilesystem|s3):[a-z0-9-]*:[0-9]{12}:.*$|^arn:aws:s3:::.*$", f.arn))])
-    error_message = "The file_system_config arn must be a valid AWS EFS Access Point ARN or S3 Bucket ARN."
+    condition     = length(var.file_system_config) <= 1
+    error_message = "Lambda function supports only one file_system_config block."
+  }
+
+  validation {
+    condition     = alltrue([for f in var.file_system_config : can(regex("^arn:aws:(elasticfilesystem|s3|s3files):[a-z0-9-]*:[0-9]{12}:.*$|^arn:aws:s3:::.*$", f.arn))])
+    error_message = "The file_system_config arn must be a valid AWS EFS, S3, or S3 Files Access Point ARN."
   }
 
   validation {

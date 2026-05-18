@@ -60,7 +60,7 @@ module "lambda_with_s3" {
 | `handler` | Lambda handler | `string` | n/a | yes |
 | `filename` | Path to the function deployment package | `string` | `null` | no |
 | `vpc_config` | VPC configuration for the function | `object` | `null` | no |
-| `file_system_config` | Connection settings for an EFS or S3 file system. Supports mounting multiple S3 buckets (AWS Provider 6.45.0+) or a single EFS access point. | `list(object)` | `[]` | no |
+| `file_system_config` | Connection settings for an EFS or S3 file system. Supports mounting a single S3 Files access point (AWS Provider 6.45.0+) or EFS access point. | `list(object)` | `[]` | no |
 | `kms_key_arn` | KMS key ARN for environment variable and log encryption | `string` | `null` | no |
 | `memory_size` | Amount of memory in MB your Lambda Function can use at runtime | `number` | `128` | no |
 | `timeout` | Amount of time your Lambda Function has to run in seconds | `number` | `3` | no |

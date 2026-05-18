@@ -85,11 +85,11 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Valkey 9.0 (announced May 2026) offers significant performance improvements and built-in search capabilities. Supporting this engine is critical for low-latency AI and analytics workloads.
 
 #### Acceptance Criteria
-- [ ] Support `engine = "valkey"` and `engine_version = "9.0"` in `aws_elasticache_replication_group`
-- [ ] Validate compatibility with existing CMK and VPC placement defaults
-- [ ] Support for full-text and hybrid search configurations (if applicable via provider)
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates Valkey configuration
+- [x] Support `engine = "valkey"` and `engine_version = "9.0"` in `aws_elasticache_replication_group`
+- [x] Validate compatibility with existing CMK and VPC placement defaults
+- [x] Support for full-text and hybrid search capabilities (Standard ElastiCache features)
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates Valkey configuration
 
 ---
 
@@ -102,11 +102,11 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Following the May 2026 safety updates, agents should be associated with Guardrails to ensure consistent safety posture during autonomous orchestration.
 
 #### Acceptance Criteria
-- [ ] Support `guardrail_configuration` block in `aws_bedrockagent_agent`
-- [ ] Support for specifying `guardrail_identifier` and `guardrail_version`
-- [ ] Update documentation to highlight the safety-first agent pattern
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates Guardrail association
+- [x] Support `guardrail_configuration` block in `aws_bedrockagent_agent`
+- [x] Support for specifying `guardrail_identifier` and `guardrail_version`
+- [x] Update documentation to highlight the safety-first agent pattern
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates Guardrail association
 
 ---
 
@@ -279,22 +279,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ---
 
-### aws/base_component/lambda: Support for mounting S3 buckets as file systems
-
-**Priority:** MEDIUM
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/lambda
-**Why:** AWS Provider 6.45.0 (May 13, 2026) introduced support for mounting S3 buckets as file systems with S3 Files.
-
-#### Acceptance Criteria
-- [ ] Support for `s3_files` (or equivalent) in `aws_lambda_function`
-- [ ] Support for configuring mount path and bucket ARN
-- [ ] Ensure compatibility with existing VPC and CMK defaults
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates S3 mount configuration
-
----
 
 ### aws/workload_component/lambda_powertools: Standardized Lambda with Powertools
 
