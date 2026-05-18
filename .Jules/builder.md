@@ -154,3 +154,5 @@ _`- [YYYY-MM-DD] Built <module path>. PR #<number>.`_
 - [2026-05-17] lambda — Enhanced base module with `layers` and `environment_variables` support.
 - [2026-05-17] lambda_powertools — Built observable serverless pattern composing base Lambda with Powertools.
 - [2026-05-17] Built bedrock_guardrail, cloudtrail, lambda_powertools, and updated bedrock_agent, elasticache, lambda. PR #62.
+
+- [2026-05-17] lambda — Enhanced base module with S3 file system mounting support and automatic IAM permission handling (AWS Provider 6.45.0+). PR #63.
