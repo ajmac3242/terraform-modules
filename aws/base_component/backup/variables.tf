@@ -31,11 +31,11 @@ variable "vault_lock_configuration" {
 variable "rules" {
   description = "A list of rules for the backup plan"
   type = list(object({
-    rule_name         = string
-    target_vault_name = optional(string)
-    schedule          = optional(string)
-    start_window      = optional(number)
-    completion_window = optional(number)
+    rule_name           = string
+    target_vault_name   = optional(string)
+    schedule            = optional(string)
+    start_window        = optional(number)
+    completion_window   = optional(number)
     recovery_point_tags = optional(map(string))
     lifecycle = optional(object({
       cold_storage_after = optional(number)

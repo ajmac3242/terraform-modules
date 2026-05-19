@@ -109,6 +109,7 @@ _`- [YYYY-MM-DD] <module> — <decision and rationale>`_
 - [2026-05-03] securityhub — Discovered that `aws_securityhub_finding_aggregator` does not export an `arn` attribute, only an `id`.
 - [2026-05-04] repo-wide — Standardized provider version to `">= 5.0, < 7.0"` across all 45+ modules to support AWS Provider 6.0 migration and its native `region` attribute.
 - [2026-05-04] s3 — Refactored to support `additional_policy_document` via `source_policy_documents` in `data.aws_iam_policy_document` to enable clean policy merging in workload modules.
+- [2026-05-18] lambda — Discovered `file_system_config` is limited to `max_items: 1` in AWS Provider 6.45.0. Updated module to enforce this and used specific `s3files:*` IAM actions for S3 mounting.
 
 ## Build Log
 
@@ -156,3 +157,4 @@ _`- [YYYY-MM-DD] Built <module path>. PR #<number>.`_
 - [2026-05-17] Built bedrock_guardrail, cloudtrail, lambda_powertools, and updated bedrock_agent, elasticache, lambda. PR #62.
 
 - [2026-05-17] lambda — Enhanced base module with S3 file system mounting support and automatic IAM permission handling (AWS Provider 6.45.0+). PR #63.
+- [2026-05-18] repo-wide — Reconciled backlog statuses for May 2026 features and hardened Lambda S3 Files implementation.
