@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-18
+> **Last reviewed:** 2026-05-19
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -115,6 +115,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 #### Acceptance Criteria
 - [ ] `aws_amazon_quick` resource implementation (pending provider support)
+- [ ] Support for cross-account Athena data sources (announced May 2026)
 - [ ] Support for desktop app preview integration
 - [ ] Support for "Generate Analysis" (natural language dashboard generation from prompts)
 - [ ] Support for visual asset generation (documents, presentations, infographics)
@@ -216,11 +217,57 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Review-Discovered Improvement Queue
 
-_Empty — standardizing current backlog items._
+### repo-wide: Security: Kernel Patching (Copy.fail)
+
+**Priority:** HIGH
+**Type:** Security
+**Status:** `backlog`
+**Module:** repo-wide
+**Why:** Critical security response for "Copy.fail" (DirtyFrag) kernel vulnerabilities. Patched AMIs and platform versions for Bottlerocket, ECS-optimized, EKS-optimized, and Fargate are scheduled for release starting May 19, 2026.
+
+#### Acceptance Criteria
+- [ ] Audit all compute modules (`ec2`, `asg`, `eks`, `ecs_fargate`) for hardcoded or default AMI/Platform versions.
+- [ ] Update default AMIs to patched versions.
+- [ ] Verify that new deployments use patched infrastructure.
+- [ ] Update documentation to recommend immediate rotation of existing compute instances.
+
+---
+
+### repo-wide: Audit May 2026 Service Lifecycle Updates
+
+**Priority:** LOW
+**Type:** Maintenance
+**Status:** `backlog`
+**Module:** repo-wide
+**Why:** Several AWS services entered maintenance or sunset on April 30, 2026 (App Runner, ARC Readiness Check, RDS Custom for Oracle). Need to audit the library to de-prioritize or archive related modules.
+
+#### Acceptance Criteria
+- [ ] Identify any modules or examples using App Runner or ARC Readiness Check.
+- [ ] Mark affected modules as `deprecated` or `maintenance-only` in READMEs.
+- [ ] Remove de-prioritized items from the active roadmap.
 
 ***
 
 ## Existing Completed Module History
+
+### aws/base_component/cloudtrail: Opinionated CloudTrail module
+
+**Priority:** HIGH
+**Type:** Security
+**Status:** `done` (PR #63)
+**Module:** aws/base_component/cloudtrail
+**Why:** Standardizes organizational audit logging with mandatory CMK encryption, multi-region support, and log file validation.
+
+#### Acceptance Criteria
+- [x] `aws_cloudtrail` resource implementation
+- [x] Multi-region and global service events enabled by default
+- [x] Mandatory CMK encryption for logs
+- [x] Mandatory log file validation enabled (`enable_log_file_validation = true`)
+- [x] CloudWatch Logs integration support
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates encryption and security settings
+
+---
 
 ### aws/base_component/bedrock_guardrail: Opinionated Bedrock Guardrail module
 
