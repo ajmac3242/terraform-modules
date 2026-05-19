@@ -54,6 +54,32 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Immediate Ready Queue
 
+### aws/base_component/bedrock_guardrail: Opinionated Bedrock Guardrail module
+
+**Priority:** HIGH
+**Type:** Security
+**Status:** `done` (PR #62)
+**Module:** aws/base_component/bedrock_guardrail
+**Why:** Bedrock Guardrails provide a critical safety layer for LLM applications, filtering harmful content, blocking topics, and masking PII. Standardizing this is essential for organizational GenAI adoption.
+
+#### Acceptance Criteria
+- [ ] `aws_bedrock_guardrail` resource implementation
+- [ ] Support for all six safety layers: Content Filters, Denied Topics, Word Filters, PII Filters, Contextual Grounding, and Prompt Attack Detection
+- [ ] Support for `aws_bedrock_guardrail_version` to enable immutable safety baselines
+- [ ] Mandatory CMK encryption for all data stores and logs
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates:
+  - [ ] Content filter strength configurations
+  - [ ] PII masking and sensitive word filters
+  - [ ] Contextual grounding thresholds
+  - [ ] Mandatory CMK and tagging compliance
+
+---
+
+
+
+## Module Backlog
+
 ### aws/base_component/bedrock_agent_core: Support Agentic Payment Features
 
 **Priority:** HIGH
@@ -252,28 +278,6 @@ _Empty — standardizing current backlog items._
 
 ---
 
-### aws/base_component/cloudtrail: Opinionated CloudTrail module
-
-**Priority:** MEDIUM
-**Type:** Security
-**Status:** `done` (PR #62)
-**Module:** aws/base_component/cloudtrail
-**Why:** Standardizes organizational governance, audit logging, and compliance monitoring. Ensures consistent audit posture across all accounts.
-
-#### Acceptance Criteria
-- [x] `aws_cloudtrail` resource implementation
-- [x] Mandatory CMK encryption for trail logs (`kms_key_id`)
-- [x] Multi-region trail enabled by default
-- [x] Global service events enabled by default
-- [x] Log file integrity validation enabled (`enable_log_file_validation = true`)
-- [x] CloudWatch Logs integration with mandatory CMK-encrypted Log Group
-- [x] Required `tags` enforced
-- [x] Native offline Terraform test validates:
-  - [x] CMK encryption for both S3 and CloudWatch Logs
-  - [x] Multi-region and global service event settings
-  - [x] Mandatory tagging compliance
-
----
 
 ### aws/workload_component/lambda_powertools: Standardized Lambda with Powertools
 
@@ -308,6 +312,65 @@ _Empty — standardizing current backlog items._
 - [x] Native offline Terraform test validates S3 mounting and IAM configuration
 
 ---
+
+## Review-Discovered Improvement Queue
+
+_Empty — standardizing current backlog items._
+
+***
+
+## Existing Completed Module History
+### aws/base_component/elasticache: Support Valkey 9.0 engine
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `done` (PR #62)
+**Module:** aws/base_component/elasticache
+**Why:** Valkey 9.0 (announced May 2026) offers significant performance improvements and built-in search capabilities. Supporting this engine is critical for low-latency AI and analytics workloads.
+
+#### Acceptance Criteria
+- [x] Support `engine = "valkey"` and `engine_version = "9.0"` in `aws_elasticache_replication_group`
+- [x] Validate compatibility with existing CMK and VPC placement defaults
+- [x] Support for full-text and hybrid search capabilities (Standard ElastiCache features)
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates Valkey configuration
+
+---
+
+### aws/base_component/bedrock_agent: Support Guardrail association
+
+**Priority:** HIGH
+**Type:** Security
+**Status:** `done` (PR #62)
+**Module:** aws/base_component/bedrock_agent
+**Why:** Following the May 2026 safety updates, agents should be associated with Guardrails to ensure consistent safety posture during autonomous orchestration.
+
+#### Acceptance Criteria
+- [x] Support `guardrail_configuration` block in `aws_bedrockagent_agent`
+- [x] Support for specifying `guardrail_identifier` and `guardrail_version`
+- [x] Update documentation to highlight the safety-first agent pattern
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates Guardrail association
+
+---
+
+### aws/base_component/lambda: Support for mounting S3 buckets as file systems
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `done` (PR #63)
+**Module:** aws/base_component/lambda
+**Why:** AWS Provider 6.45.0 (May 13, 2026) introduced support for mounting S3 buckets as file systems with S3 Files.
+
+#### Acceptance Criteria
+- [x] Support for `s3_files` (or equivalent) in `aws_lambda_function`
+- [x] Support for configuring mount path and bucket ARN
+- [x] Ensure compatibility with existing VPC and CMK defaults
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates S3 mount configuration
+
+---
+
 
 ### aws/base_component/bedrock_agent_core: Bedrock AgentCore module
 

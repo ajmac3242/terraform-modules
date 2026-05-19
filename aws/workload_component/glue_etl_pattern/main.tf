@@ -30,9 +30,9 @@ module "scripts_bucket" {
 
 # Upload ETL Script
 resource "aws_s3_object" "etl_script" {
-  bucket = module.scripts_bucket.bucket_id
-  key    = "scripts/etl_job.py"
-  source = var.etl_script_path
+  bucket     = module.scripts_bucket.bucket_id
+  key        = "scripts/etl_job.py"
+  source     = var.etl_script_path
   kms_key_id = var.kms_key_arn
 
   tags = var.tags
@@ -94,7 +94,7 @@ resource "aws_iam_policy" "glue_s3_kms" {
           "kms:Encrypt",
           "kms:GenerateDataKey"
         ]
-        Effect = "Allow"
+        Effect   = "Allow"
         Resource = [var.kms_key_arn]
       }
     ]
