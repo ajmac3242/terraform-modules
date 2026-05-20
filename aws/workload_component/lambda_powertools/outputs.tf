@@ -20,5 +20,5 @@ output "log_group_name" {
 
 output "tags" {
   description = "A map of tags assigned to the resource"
-  value       = var.tags
+  value       = module.lambda.tags
 }

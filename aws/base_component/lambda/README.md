@@ -37,7 +37,7 @@ module "lambda_with_s3" {
 
   file_system_config = [
     {
-      arn              = "arn:aws:s3:::my-bucket"
+      arn              = "arn:aws:s3files:us-east-1:123456789012:accesspoint/my-ap"
       local_mount_path = "/mnt/s3"
     }
   ]

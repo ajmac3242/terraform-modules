@@ -121,6 +121,7 @@ _`- [YYYY-MM-DD] <topic> — <finding and rationale>`_
 ## Review Log
 - [2026-05-17] Conducted repository-wide quality audit. Standardized `tags` output across 37 modules. Applied fixes where needed.
 - [2026-05-18] Reviewed daily module changes (PR #62 and #63). Hardened tests for CloudTrail, Bedrock Guardrail, and Lambda Powertools with mandatory tag assertions. Corrected ElastiCache and Lambda README documentation. Verified tag propagation in composite modules. Enforced repository hygiene.
+- [2026-05-19] Reviewed PR #62 and #63 (Session 2). Hardened `bedrock_agent` by making `kms_key_arn` mandatory. Standardized `lambda_powertools` outputs for tag propagation. Corrected `lambda` S3 mounting documentation. Enforced repository hygiene by removing stray lock files. Verified all changes via native `terraform test`.
 
 _Steward will append a one-line entry after each review session:_  
 _`- [YYYY-MM-DD] Reviewed daily PRs. Applied fixes where needed.`_
