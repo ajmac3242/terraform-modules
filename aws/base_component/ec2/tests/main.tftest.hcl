@@ -28,6 +28,12 @@ run "valid_ec2_creation" {
     error_message = "AMI does not match expected value"
   }
 
+  # Verify AMI propagation to ensure dynamic selection support
+  assert {
+    condition     = aws_instance.this.ami == var.ami
+    error_message = "AMI propagation failed"
+  }
+
   assert {
     condition     = aws_instance.this.root_block_device[0].encrypted == true
     error_message = "Root EBS should be encrypted"

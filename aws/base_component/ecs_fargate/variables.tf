@@ -25,6 +25,12 @@ variable "container_port" {
   default     = 80
 }
 
+variable "platform_version" {
+  description = "The platform version on which to run your service"
+  type        = string
+  default     = "LATEST"
+}
+
 variable "cpu" {
   description = "Number of cpu units used by the task"
   type        = number

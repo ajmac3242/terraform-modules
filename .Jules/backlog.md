@@ -54,6 +54,24 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Immediate Ready Queue
 
+### repo-wide: Security Response for "Copy.fail" and "Dirty Frag" Kernel Vulnerabilities
+
+**Priority:** CRITICAL
+**Type:** Security
+**Status:** `done` (PR #80)
+**Module:** repo-wide (Impacts: ec2, asg, eks, ecs_fargate)
+**Why:** Address critical Linux kernel vulnerabilities (CVE-2026-31431 "Copy.fail", CVE-2026-43284/43500 "Dirty Frag") disclosed in late April and May 2026. These allow local privilege escalation to root.
+
+#### Acceptance Criteria
+- [x] Audit `aws/base_component/ec2`, `aws/base_component/asg`, and `aws/base_component/eks` for AMI selection patterns
+- [x] Update module READMEs to mandate patched platform versions:
+  - [x] Amazon Linux 2023: AL2023.4.20260515.0 or later
+  - [x] Bottlerocket: v1.19.2 or later
+  - [x] EKS Optimized AMI: 20260515 or later
+  - [x] Fargate Platform: 1.4.0 or later (Patched infrastructure released May 15, 2026)
+- [x] Ensure modules support dynamic AMI selection (SSM parameters) to facilitate rapid patching
+- [x] Native offline Terraform test validates that AMI inputs are configurable and documented
+
 ---
 
 
@@ -198,18 +216,34 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Review-Discovered Improvement Queue
 
+### repo-wide: Security: Kernel Patching (Copy.fail)
+
+**Priority:** HIGH
+**Type:** Security
+**Status:** `done` (PR #80)
+**Module:** repo-wide
+**Why:** Critical security response for "Copy.fail" (DirtyFrag) kernel vulnerabilities. Patched AMIs and platform versions for Bottlerocket, ECS-optimized, EKS-optimized, and Fargate are scheduled for release starting May 19, 2026.
+
+#### Acceptance Criteria
+- [x] Audit all compute modules (`ec2`, `asg`, `eks`, `ecs_fargate`) for hardcoded or default AMI/Platform versions.
+- [x] Update default AMIs to patched versions.
+- [x] Verify that new deployments use patched infrastructure.
+- [x] Update documentation to recommend immediate rotation of existing compute instances.
+
+---
+
 ### repo-wide: Audit May 2026 Service Lifecycle Updates
 
 **Priority:** LOW
 **Type:** Maintenance
-**Status:** `backlog`
+**Status:** `done` (PR #80)
 **Module:** repo-wide
 **Why:** Several AWS services entered maintenance or sunset on April 30, 2026 (App Runner, ARC Readiness Check, RDS Custom for Oracle). Need to audit the library to de-prioritize or archive related modules.
 
 #### Acceptance Criteria
-- [ ] Identify any modules or examples using App Runner or ARC Readiness Check.
-- [ ] Mark affected modules as `deprecated` or `maintenance-only` in READMEs.
-- [ ] Remove de-prioritized items from the active roadmap.
+- [x] Identify any modules or examples using App Runner or ARC Readiness Check.
+- [x] Mark affected modules as `deprecated` or `maintenance-only` in READMEs. (N/A - no usage found)
+- [x] Remove de-prioritized items from the active roadmap.
 
 ***
 

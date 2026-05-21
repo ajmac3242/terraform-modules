@@ -132,11 +132,12 @@ resource "aws_ecs_task_definition" "this" {
 
 # ECS Service
 resource "aws_ecs_service" "this" {
-  name            = var.name
-  cluster         = aws_ecs_cluster.this.id
-  task_definition = aws_ecs_task_definition.this.arn
-  launch_type     = "FARGATE"
-  desired_count   = var.desired_count
+  name             = var.name
+  cluster          = aws_ecs_cluster.this.id
+  task_definition  = aws_ecs_task_definition.this.arn
+  launch_type      = "FARGATE"
+  platform_version = var.platform_version
+  desired_count    = var.desired_count
 
   network_configuration {
     subnets          = var.private_subnet_ids

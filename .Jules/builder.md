@@ -158,3 +158,4 @@ _`- [YYYY-MM-DD] Built <module path>. PR #<number>.`_
 
 - [2026-05-17] lambda — Enhanced base module with S3 file system mounting support and automatic IAM permission handling (AWS Provider 6.45.0+). PR #63.
 - [2026-05-18] repo-wide — Reconciled backlog statuses for May 2026 features and hardened Lambda S3 Files implementation.
+- [2026-05-22] Built aws/base_component/ecs_fargate (platform_version support) and conducted repo-wide security/lifecycle audit. PR #80.
