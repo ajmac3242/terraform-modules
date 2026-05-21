@@ -31,7 +31,13 @@ module "orchestration" {
 |------|-------------|------|---------|:--------:|
 | `name` | Name of the state machine and related resources | `string` | n/a | yes |
 | `definition` | JSON-encoded definition of the state machine | `string` | n/a | yes |
+| `type` | Determines whether a Standard or Express state machine is created (STANDARD or EXPRESS) | `string` | `"STANDARD"` | no |
+| `lambda_arns` | A list of Lambda function ARNs that the state machine is allowed to invoke | `list(string)` | `[]` | no |
 | `kms_key_arn` | KMS key ARN for encryption | `string` | n/a | yes |
+| `log_group_retention_in_days` | Specifies the number of days you want to retain log events in the log group | `number` | `30` | no |
+| `permissions_boundary_arn` | The ARN of the policy used to set the permissions boundary for the role | `string` | `null` | no |
+| `aws_account_id` | The AWS Account ID to support tests/mocking | `string` | `null` | no |
+| `skip_sfn_creation` | If true, skip creation of the state machine (useful for offline tests) | `bool` | `false` | no |
 | `tags` | Standard tags for all resources | `map(string)` | n/a | yes |
 
 ## Outputs
