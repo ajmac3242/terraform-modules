@@ -122,9 +122,11 @@ _`- [YYYY-MM-DD] <topic> — <finding and rationale>`_
 - [2026-05-17] Conducted repository-wide quality audit. Standardized `tags` output across 37 modules. Applied fixes where needed.
 - [2026-05-18] Reviewed daily module changes (PR #62 and #63). Hardened tests for CloudTrail, Bedrock Guardrail, and Lambda Powertools with mandatory tag assertions. Corrected ElastiCache and Lambda README documentation. Verified tag propagation in composite modules. Enforced repository hygiene.
 - [2026-05-19] Reviewed PR #62 and #63 (Session 2). Hardened `bedrock_agent` by making `kms_key_arn` mandatory. Standardized `lambda_powertools` outputs for tag propagation. Corrected `lambda` S3 mounting documentation. Enforced repository hygiene by removing stray lock files. Verified all changes via native `terraform test`.
+- [2026-05-20] Reviewed daily PR merge (Navigator roadmap sync). Hardened `step_functions_lambda` with missing outputs and comprehensive README variable documentation. Implemented repository-wide security response for "Copy.fail" and "Dirty Frag" kernel vulnerabilities by updating `ec2`, `asg`, and `eks` READMEs with mandatory patched platform versions. Verified `tags` output compliance and enforced environment hygiene.
 
 _Steward will append a one-line entry after each review session:_  
 _`- [YYYY-MM-DD] Reviewed daily PRs. Applied fixes where needed.`_
+- [2026-05-20] Reviewed daily PRs. Applied follow-up fixes for documentation, outputs, and security patching.
 
 - [2026-04-25] Journal initialized. Ready to review daily PRs and apply follow-up fixes.
 - [2026-04-26] Reviewed daily PRs (PR #9). Applied follow-up fixes for tagging, missing tests, mandatory CMK for EventBridge, and output completeness.

@@ -25,6 +25,10 @@ module "eks" {
 - **Encryption**: Mandatory CMK encryption for Kubernetes secrets.
 - **Network**: Cluster is placed in private VPC subnets. Public access is disabled by default.
 - **IAM**: Cluster role is created via the base IAM module with least-privilege permissions.
+- **Kernel Patching**: To address the "Copy.fail" (CVE-2026-31431) and "Dirty Frag" (CVE-2026-43284/43500) vulnerabilities, all node groups MUST use patched platform versions:
+  - EKS Optimized AMI: 20260515 or later
+  - Bottlerocket: v1.19.2 or later
+  - Dynamic AMI selection via SSM parameters is recommended to ensure rapid patching.
 
 ## Variables
 | Name | Description | Type | Default | Required |

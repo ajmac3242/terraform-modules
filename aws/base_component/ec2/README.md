@@ -27,6 +27,10 @@ module "ec2" {
 - **Encryption**: Root and additional block devices are encrypted using a Customer Managed Key (CMK).
 - **Monitoring**: Detailed monitoring is enabled to provide high-frequency visibility.
 - **IMDS**: Enforces IMDSv2 (tokens required) and restricts hop limit to 1.
+- **Kernel Patching**: To address the "Copy.fail" (CVE-2026-31431) and "Dirty Frag" (CVE-2026-43284/43500) vulnerabilities, all deployments MUST use patched platform versions:
+  - Amazon Linux 2023: AL2023.4.20260515.0 or later
+  - Bottlerocket: v1.19.2 or later
+  - Dynamic AMI selection via SSM parameters is recommended to ensure rapid patching.
 
 ## Variables
 | Name | Description | Type | Default | Required |

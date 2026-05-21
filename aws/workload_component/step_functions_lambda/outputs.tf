@@ -13,6 +13,11 @@ output "role_arn" {
   value       = module.role.role_arn
 }
 
+output "lambda_function_arns" {
+  description = "List of Lambda function ARNs associated with the pattern"
+  value       = var.lambda_arns
+}
+
 output "tags" {
   description = "A map of tags assigned to the resources"
   value       = var.tags
