@@ -35,6 +35,12 @@ run "valid_fargate_creation" {
     error_message = "Service should use FARGATE launch type"
   }
 
+  # Verify platform_version propagation to ensure dynamic selection support for security patching
+  assert {
+    condition     = aws_ecs_service.this.platform_version == var.platform_version
+    error_message = "Service platform_version does not match expected value"
+  }
+
   assert {
     condition     = aws_cloudwatch_log_group.this.kms_key_id == var.kms_key_arn
     error_message = "Log group KMS key does not match expected value"

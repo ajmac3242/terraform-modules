@@ -28,6 +28,12 @@ run "valid_asg_creation" {
     error_message = "ASG name does not match expected value"
   }
 
+  # Verify AMI propagation to ensure dynamic selection support
+  assert {
+    condition     = aws_launch_template.this.image_id == var.image_id
+    error_message = "Launch Template image_id does not match expected value"
+  }
+
   assert {
     condition     = tobool(aws_launch_template.this.block_device_mappings[0].ebs[0].encrypted) == true
     error_message = "EBS should be encrypted"
