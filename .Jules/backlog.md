@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-18
+> **Last reviewed:** 2026-05-19
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -54,25 +54,22 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Immediate Ready Queue
 
-### aws/base_component/bedrock_guardrail: Opinionated Bedrock Guardrail module
+### repo-wide: Security Response for "Copy.fail" and "Dirty Frag" Kernel Vulnerabilities
 
-**Priority:** HIGH
+**Priority:** CRITICAL
 **Type:** Security
-**Status:** `done` (PR #62)
-**Module:** aws/base_component/bedrock_guardrail
-**Why:** Bedrock Guardrails provide a critical safety layer for LLM applications, filtering harmful content, blocking topics, and masking PII. Standardizing this is essential for organizational GenAI adoption.
+**Status:** `backlog`
+**Module:** repo-wide (Impacts: ec2, asg, eks)
+**Why:** Address critical Linux kernel vulnerabilities (CVE-2026-31431 "Copy.fail", CVE-2026-43284/43500 "Dirty Frag") disclosed in late April and May 2026. These allow local privilege escalation to root.
 
 #### Acceptance Criteria
-- [ ] `aws_bedrock_guardrail` resource implementation
-- [ ] Support for all six safety layers: Content Filters, Denied Topics, Word Filters, PII Filters, Contextual Grounding, and Prompt Attack Detection
-- [ ] Support for `aws_bedrock_guardrail_version` to enable immutable safety baselines
-- [ ] Mandatory CMK encryption for all data stores and logs
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates:
-  - [ ] Content filter strength configurations
-  - [ ] PII masking and sensitive word filters
-  - [ ] Contextual grounding thresholds
-  - [ ] Mandatory CMK and tagging compliance
+- [ ] Audit `aws/base_component/ec2`, `aws/base_component/asg`, and `aws/base_component/eks` for AMI selection patterns
+- [ ] Update module READMEs to mandate patched platform versions:
+  - [ ] Amazon Linux 2023: AL2023.4.20260515.0 or later
+  - [ ] Bottlerocket: v1.19.2 or later
+  - [ ] EKS Optimized AMI: 20260515 or later
+- [ ] Ensure modules support dynamic AMI selection (SSM parameters) to facilitate rapid patching
+- [ ] Native offline Terraform test validates that AMI inputs are configurable and documented
 
 ---
 
@@ -100,8 +97,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ---
 
-## Module Backlog
-
 ### aws/base_component/amazon_quick: Opinionated Amazon Quick module
 
 **Priority:** HIGH
@@ -115,10 +110,12 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 #### Acceptance Criteria
 - [ ] `aws_amazon_quick` resource implementation (pending provider support)
+- [ ] Support for cross-account Athena data sources (announced May 2026)
 - [ ] Support for desktop app preview integration
 - [ ] Support for "Generate Analysis" (natural language dashboard generation from prompts)
 - [ ] Support for visual asset generation (documents, presentations, infographics)
 - [ ] Connectivity to local files, calendars, and communications
+- [ ] Support for cross-account Athena data source access and data perimeter integration
 - [ ] Support for standardized AI assistant configurations
 - [ ] Mandatory CMK encryption for all data stores and logs
 - [ ] Required `tags` enforced
@@ -216,11 +213,57 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Review-Discovered Improvement Queue
 
-_Empty — standardizing current backlog items._
+### repo-wide: Security: Kernel Patching (Copy.fail)
+
+**Priority:** HIGH
+**Type:** Security
+**Status:** `backlog`
+**Module:** repo-wide
+**Why:** Critical security response for "Copy.fail" (DirtyFrag) kernel vulnerabilities. Patched AMIs and platform versions for Bottlerocket, ECS-optimized, EKS-optimized, and Fargate are scheduled for release starting May 19, 2026.
+
+#### Acceptance Criteria
+- [ ] Audit all compute modules (`ec2`, `asg`, `eks`, `ecs_fargate`) for hardcoded or default AMI/Platform versions.
+- [ ] Update default AMIs to patched versions.
+- [ ] Verify that new deployments use patched infrastructure.
+- [ ] Update documentation to recommend immediate rotation of existing compute instances.
+
+---
+
+### repo-wide: Audit May 2026 Service Lifecycle Updates
+
+**Priority:** LOW
+**Type:** Maintenance
+**Status:** `backlog`
+**Module:** repo-wide
+**Why:** Several AWS services entered maintenance or sunset on April 30, 2026 (App Runner, ARC Readiness Check, RDS Custom for Oracle). Need to audit the library to de-prioritize or archive related modules.
+
+#### Acceptance Criteria
+- [ ] Identify any modules or examples using App Runner or ARC Readiness Check.
+- [ ] Mark affected modules as `deprecated` or `maintenance-only` in READMEs.
+- [ ] Remove de-prioritized items from the active roadmap.
 
 ***
 
 ## Existing Completed Module History
+
+### aws/base_component/cloudtrail: Opinionated CloudTrail module
+
+**Priority:** HIGH
+**Type:** Security
+**Status:** `done` (PR #63)
+**Module:** aws/base_component/cloudtrail
+**Why:** Standardizes organizational audit logging with mandatory CMK encryption, multi-region support, and log file validation.
+
+#### Acceptance Criteria
+- [x] `aws_cloudtrail` resource implementation
+- [x] Multi-region and global service events enabled by default
+- [x] Mandatory CMK encryption for logs
+- [x] Mandatory log file validation enabled (`enable_log_file_validation = true`)
+- [x] CloudWatch Logs integration support
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates encryption and security settings
+
+---
 
 ### aws/base_component/bedrock_guardrail: Opinionated Bedrock Guardrail module
 
@@ -312,65 +355,6 @@ _Empty — standardizing current backlog items._
 - [x] Native offline Terraform test validates S3 mounting and IAM configuration
 
 ---
-
-## Review-Discovered Improvement Queue
-
-_Empty — standardizing current backlog items._
-
-***
-
-## Existing Completed Module History
-### aws/base_component/elasticache: Support Valkey 9.0 engine
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `done` (PR #62)
-**Module:** aws/base_component/elasticache
-**Why:** Valkey 9.0 (announced May 2026) offers significant performance improvements and built-in search capabilities. Supporting this engine is critical for low-latency AI and analytics workloads.
-
-#### Acceptance Criteria
-- [x] Support `engine = "valkey"` and `engine_version = "9.0"` in `aws_elasticache_replication_group`
-- [x] Validate compatibility with existing CMK and VPC placement defaults
-- [x] Support for full-text and hybrid search capabilities (Standard ElastiCache features)
-- [x] Required `tags` enforced
-- [x] Native offline Terraform test validates Valkey configuration
-
----
-
-### aws/base_component/bedrock_agent: Support Guardrail association
-
-**Priority:** HIGH
-**Type:** Security
-**Status:** `done` (PR #62)
-**Module:** aws/base_component/bedrock_agent
-**Why:** Following the May 2026 safety updates, agents should be associated with Guardrails to ensure consistent safety posture during autonomous orchestration.
-
-#### Acceptance Criteria
-- [x] Support `guardrail_configuration` block in `aws_bedrockagent_agent`
-- [x] Support for specifying `guardrail_identifier` and `guardrail_version`
-- [x] Update documentation to highlight the safety-first agent pattern
-- [x] Required `tags` enforced
-- [x] Native offline Terraform test validates Guardrail association
-
----
-
-### aws/base_component/lambda: Support for mounting S3 buckets as file systems
-
-**Priority:** MEDIUM
-**Type:** Feature
-**Status:** `done` (PR #63)
-**Module:** aws/base_component/lambda
-**Why:** AWS Provider 6.45.0 (May 13, 2026) introduced support for mounting S3 buckets as file systems with S3 Files.
-
-#### Acceptance Criteria
-- [x] Support for `s3_files` (or equivalent) in `aws_lambda_function`
-- [x] Support for configuring mount path and bucket ARN
-- [x] Ensure compatibility with existing VPC and CMK defaults
-- [x] Required `tags` enforced
-- [x] Native offline Terraform test validates S3 mount configuration
-
----
-
 
 ### aws/base_component/bedrock_agent_core: Bedrock AgentCore module
 
