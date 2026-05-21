@@ -35,7 +35,7 @@ module "bedrock_agent" {
 | `foundation_model` | The foundation model used by the agent | `string` | n/a | yes |
 | `instruction` | Instructions for the agent | `string` | n/a | yes |
 | `agent_resource_role_arn` | The ARN of the IAM role with permissions to invoke the agent | `string` | n/a | yes |
-| `kms_key_arn` | KMS key ARN for encryption | `string` | `null` | no |
+| `kms_key_arn` | KMS key ARN for encryption | `string` | n/a | yes |
 | `guardrail_configuration` | Guardrail configuration for the agent | `object` | `null` | no |
 | `tags` | Standard tags for all resources | `map(string)` | n/a | yes |
 
