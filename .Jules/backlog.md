@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-19
+> **Last reviewed:** 2026-05-21
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -54,23 +54,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Immediate Ready Queue
 
-### repo-wide: Security Response for "Copy.fail" and "Dirty Frag" Kernel Vulnerabilities
-
-**Priority:** CRITICAL
-**Type:** Security
-**Status:** `backlog`
-**Module:** repo-wide (Impacts: ec2, asg, eks)
-**Why:** Address critical Linux kernel vulnerabilities (CVE-2026-31431 "Copy.fail", CVE-2026-43284/43500 "Dirty Frag") disclosed in late April and May 2026. These allow local privilege escalation to root.
-
-#### Acceptance Criteria
-- [ ] Audit `aws/base_component/ec2`, `aws/base_component/asg`, and `aws/base_component/eks` for AMI selection patterns
-- [ ] Update module READMEs to mandate patched platform versions:
-  - [ ] Amazon Linux 2023: AL2023.4.20260515.0 or later
-  - [ ] Bottlerocket: v1.19.2 or later
-  - [ ] EKS Optimized AMI: 20260515 or later
-- [ ] Ensure modules support dynamic AMI selection (SSM parameters) to facilitate rapid patching
-- [ ] Native offline Terraform test validates that AMI inputs are configurable and documented
-
 ---
 
 
@@ -86,7 +69,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** May 7, 2026 update introduced agentic payment features for Bedrock AgentCore, enabling agents to make purchases using the x402 protocol.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `payment_configuration` (or equivalent) in `aws_bedrockagentcore_gateway`. Support likely in AWS Provider >= v6.29.0/v6.46.0. Verified still blocked in v6.45.0.
+> **Blocker:** Pending AWS Provider support for `payment_configuration` (or equivalent) in `aws_bedrockagentcore_gateway`. Verified still blocked in AWS Provider v6.46.0.
 
 #### Acceptance Criteria
 - [ ] Implement `payment_configuration` block in `aws_bedrockagentcore_gateway`
@@ -106,7 +89,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Standardized infrastructure for Amazon Quick AI assistant integrations. Promoted from future ideas following the May 2026 GenAI roadmap updates.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_amazon_quick` (or equivalent) resource. Verified still blocked in AWS Provider v6.45.0. Implementation is deferred until provider support is added.
+> **Blocker:** Pending AWS Provider support for `aws_amazon_quick` (or equivalent) resource. Verified still blocked in AWS Provider v6.46.0. Implementation is deferred until provider support is added.
 
 #### Acceptance Criteria
 - [ ] `aws_amazon_quick` resource implementation (pending provider support)
@@ -155,7 +138,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Leverages new "Optimized Generative AI Inference Recommendations" feature (GA April 2026) to automatically identify optimized deployment configurations for generative AI models, including instance type and container parameters.
 
 > [!IMPORTANT]
-> **Blocker:** (As of 2026-05-18) The `aws_sagemaker_inference_recommendations_job` resource is not yet supported in the AWS Terraform provider (v6.45.0). Implementation is deferred until provider support is added.
+> **Blocker:** (As of 2026-05-21) The `aws_sagemaker_inference_recommendations_job` resource is not yet supported in the AWS Terraform provider (v6.46.0). Implementation is deferred until provider support is added.
 
 #### Acceptance Criteria
 - [ ] `aws_sagemaker_inference_recommendations_job` or equivalent for optimized deployment
@@ -177,11 +160,13 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** AWS DevOps Agent (GA May 2026) is an autonomous "frontier agent" for incident investigation and SRE tasks. Standardizing "Spaces" and MCP integrations is key for platform operations.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_devopsagent_space` (or equivalent) resource. Verified still blocked in AWS Provider v6.45.0.
+> **Blocker:** Pending AWS Provider support for `aws_devopsagent_space` (or equivalent) resource. Verified still blocked in AWS Provider v6.46.0.
 
 #### Acceptance Criteria
 - [ ] `aws_devopsagent_space` resource implementation (pending provider support)
-- [ ] Support for defining investigation scope (CloudWatch, GitHub, etc.)
+- [ ] Support for defining investigation scope (CloudWatch, GitHub, Azure, etc.)
+- [ ] Support for multicloud incident correlation (AWS and Azure)
+- [ ] Support for on-premises environment investigation via Model Context Protocol (MCP)
 - [ ] Support for MCP (Model Context Protocol) tool integration
 - [ ] Mandatory CMK encryption for all data at rest and logs
 - [ ] Required `tags` enforced
@@ -213,22 +198,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Review-Discovered Improvement Queue
 
-### repo-wide: Security: Kernel Patching (Copy.fail)
-
-**Priority:** HIGH
-**Type:** Security
-**Status:** `backlog`
-**Module:** repo-wide
-**Why:** Critical security response for "Copy.fail" (DirtyFrag) kernel vulnerabilities. Patched AMIs and platform versions for Bottlerocket, ECS-optimized, EKS-optimized, and Fargate are scheduled for release starting May 19, 2026.
-
-#### Acceptance Criteria
-- [ ] Audit all compute modules (`ec2`, `asg`, `eks`, `ecs_fargate`) for hardcoded or default AMI/Platform versions.
-- [ ] Update default AMIs to patched versions.
-- [ ] Verify that new deployments use patched infrastructure.
-- [ ] Update documentation to recommend immediate rotation of existing compute instances.
-
----
-
 ### repo-wide: Audit May 2026 Service Lifecycle Updates
 
 **Priority:** LOW
@@ -245,6 +214,41 @@ All modules in this repo MUST comply with these non-negotiable standards:
 ***
 
 ## Existing Completed Module History
+
+### repo-wide: Security Response for "Copy.fail" and "Dirty Frag" Kernel Vulnerabilities
+
+**Priority:** CRITICAL
+**Type:** Security
+**Status:** `done` (Verified 2026-05-20)
+**Module:** repo-wide (Impacts: ec2, asg, eks)
+**Why:** Address critical Linux kernel vulnerabilities (CVE-2026-31431 "Copy.fail", CVE-2026-43284/43500 "Dirty Frag") disclosed in late April and May 2026. These allow local privilege escalation to root.
+
+#### Acceptance Criteria
+- [x] Audit `aws/base_component/ec2`, `aws/base_component/asg`, and `aws/base_component/eks` for AMI selection patterns
+- [x] Update module READMEs to mandate patched platform versions:
+  - [x] Amazon Linux 2023: AL2023.4.20260515.0 or later
+  - [x] Bottlerocket: v1.19.2 or later
+  - [x] EKS Optimized AMI: 20260515 or later
+- [x] Ensure modules support dynamic AMI selection (SSM parameters) to facilitate rapid patching
+- [x] Native offline Terraform test validates that AMI inputs are configurable and documented
+
+---
+
+### repo-wide: Security: Kernel Patching (Copy.fail)
+
+**Priority:** HIGH
+**Type:** Security
+**Status:** `done` (Verified 2026-05-20)
+**Module:** repo-wide
+**Why:** Critical security response for "Copy.fail" (DirtyFrag) kernel vulnerabilities. Patched AMIs and platform versions for Bottlerocket, ECS-optimized, EKS-optimized, and Fargate are scheduled for release starting May 19, 2026.
+
+#### Acceptance Criteria
+- [x] Audit all compute modules (`ec2`, `asg`, `eks`, `ecs_fargate`) for hardcoded or default AMI/Platform versions.
+- [x] Update default AMIs to patched versions.
+- [x] Verify that new deployments use patched infrastructure.
+- [x] Update documentation to recommend immediate rotation of existing compute instances.
+
+---
 
 ### aws/base_component/cloudtrail: Opinionated CloudTrail module
 
