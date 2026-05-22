@@ -8,12 +8,10 @@ Opinionated ECS Fargate Service module. Common container compute pattern, enforc
 module "ecs_fargate" {
   source = "./aws/base_component/ecs_fargate"
 
-  cluster_name    = "my-cluster"
-  service_name    = "my-service"
-  container_image = "my-ecr-repo-url:latest"
-  vpc_id          = module.vpc.vpc_id
-  subnet_ids      = module.vpc.private_subnet_ids
-  kms_key_arn     = module.kms.key_arn
+  name               = "my-service"
+  container_image    = "my-ecr-repo-url:latest"
+  private_subnet_ids = module.vpc.private_subnet_ids
+  kms_key_arn        = module.kms.key_arn
 
   tags = {
     environment = "prod"
@@ -33,11 +31,9 @@ module "ecs_fargate" {
 ## Variables
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| `cluster_name` | Name of the ECS cluster | `string` | n/a | yes |
-| `service_name` | Name of the ECS service | `string` | n/a | yes |
+| `name` | Name for the ECS cluster and service | `string` | n/a | yes |
 | `container_image` | Image to use for the container | `string` | n/a | yes |
-| `vpc_id` | VPC ID where the service will be deployed | `string` | n/a | yes |
-| `subnet_ids` | List of subnet IDs for the service task placement | `list(string)` | n/a | yes |
+| `private_subnet_ids` | A list of private subnet IDs for the Fargate service | `list(string)` | n/a | yes |
 | `kms_key_arn` | KMS key ARN for log group encryption | `string` | n/a | yes |
 | `cpu` | Number of CPU units used by the task | `number` | `256` | no |
 | `memory` | Amount of memory (in MiB) used by the task | `number` | `512` | no |

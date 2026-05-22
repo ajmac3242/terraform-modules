@@ -74,6 +74,21 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ---
 
+### repo-wide: Enforce IMDSv2 across compute modules
+
+**Priority:** HIGH
+**Type:** Security
+**Status:** `done` (Verified 2026-05-22)
+**Module:** repo-wide (Impacts: ec2, asg)
+**Why:** Audit on 2026-05-22 identified that while READMEs claimed IMDSv2 enforcement, the underlying `metadata_options` blocks were missing from the `ec2` and `asg` base modules.
+
+#### Acceptance Criteria
+- [x] Add `metadata_options` with `http_tokens = "required"` to `aws_instance` in `ec2`
+- [x] Add `metadata_options` with `http_tokens = "required"` to `aws_launch_template` in `asg`
+- [x] Verify configuration via native `terraform test`
+
+---
+
 
 
 ## Module Backlog
@@ -1460,7 +1475,8 @@ Retain previously completed module entries below this line for historical tracki
 - [x] Log group with KMS encryption (reuse `kms_key_arn`)
 - [x] Task execution role and Task role via `aws/base_component/iam`
 - [x] Required `tags` enforced
-- [x] Outputs: `cluster_arn`, `service_arn`, `task_definition_arn`
+- [x] Outputs: `cluster_arn`, `service_arn`, `task_definition_arn`, `task_role_arn`, `execution_role_arn`
+- [x] README documentation matches `variables.tf` and `outputs.tf`
 - [x] Terraform test: Cluster and service created with Fargate capacity providers
 
 ---

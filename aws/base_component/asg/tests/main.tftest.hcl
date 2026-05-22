@@ -53,4 +53,14 @@ run "valid_asg_creation" {
     condition     = aws_launch_template.this.tags["environment"] == "test" && aws_launch_template.this.tags["owner"] == "test-owner" && aws_launch_template.this.tags["project"] == "test-project" && aws_launch_template.this.tags["cost_center"] == "test-cc"
     error_message = "Mandatory tags are missing or incorrect on Launch Template."
   }
+
+  assert {
+    condition     = aws_launch_template.this.metadata_options[0].http_tokens == "required"
+    error_message = "IMDSv2 (http_tokens) must be required"
+  }
+
+  assert {
+    condition     = aws_launch_template.this.metadata_options[0].http_put_response_hop_limit == 1
+    error_message = "IMDS hop limit must be 1"
+  }
 }
