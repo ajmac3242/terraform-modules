@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-21
+> **Last reviewed:** 2026-05-22
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -77,6 +77,42 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 
 ## Module Backlog
+
+### aws/base_component/aurora_postgresql: Opinionated Aurora PostgreSQL module with Vector Search
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/aurora_postgresql
+**Why:** Support for billion-scale vector queries using SQL (announced May 2026). Enables combining vector similarity results with relational filters, a key requirement for advanced RAG and commerce patterns.
+
+#### Acceptance Criteria
+- [ ] `aws_rds_cluster` with `engine = "aurora-postgresql"`
+- [ ] Support for S3 Vector Search integration (Aurora to S3)
+- [ ] Mandatory CMK encryption for storage and logs
+- [ ] Placed in VPC private subnets with dedicated DB subnet group
+- [ ] Point-in-time recovery (PITR) enabled by default
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates encryption and VPC placement
+
+---
+
+### aws/base_component/observability_admin: Opinionated Observability Admin module
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/observability_admin
+**Why:** Manage telemetry rules across the organization (introduced in AWS Provider v6.45.0). Standardizes telemetry collection and filtering for better observability posture.
+
+#### Acceptance Criteria
+- [ ] `aws_observabilityadmin_telemetry_rule` resource implementation
+- [ ] Support for defining telemetry collection and filtering rules
+- [ ] Mandatory CMK encryption where applicable
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates rule configuration
+
+---
 
 ### aws/base_component/bedrock_agent_core: Support Agentic Payment Features
 
