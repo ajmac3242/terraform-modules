@@ -128,6 +128,7 @@ _`- [YYYY-MM-DD] <topic> — <finding and rationale>`_
 
 _Steward will append a one-line entry after each review session:_  
 _`- [YYYY-MM-DD] Reviewed daily PRs. Applied fixes where needed.`_
+- [2026-05-22] Reviewed daily PRs. Applied follow-up fixes for documentation, outputs, and IMDSv2 hardening.
 - [2026-05-20] Reviewed daily PRs. Applied follow-up fixes for documentation, outputs, and security patching.
 
 - [2026-04-25] Journal initialized. Ready to review daily PRs and apply follow-up fixes.
@@ -150,4 +151,5 @@ _`- [YYYY-MM-DD] Reviewed daily PRs. Applied fixes where needed.`_
 - [2026-05-13] Reviewed PR #60 (final updates) and subsequent module changes. Hardened `bedrock_agent_core` documentation by explicitly noting the high provider version requirement (v6.27.0+). Hardened `multicloud_hub` by syncing README documentation with actual module outputs. Verified both modules via native `terraform test` and maintained environment hygiene.
 - [2026-05-14] Reviewed and hardened `vpc_lattice`, `glue`, and `glue_etl_pattern` modules. Strengthened `terraform test` suites for all three modules to enforce 100% tag coverage across all resources and deeper validation of security configurations (CMK encryption, VPC connection details). Verified all changes pass native `terraform test` and ensured environment hygiene by removing build artifacts.
 - [2026-05-16] Reviewed daily module changes and PRs. Hardened documentation for seven modules (base and workload) to ensure output completeness and usage clarity. Fixed CI configuration typo (renamed `gilab-ci.yml` to `.gitlab-ci.yml`). Verified all changes pass native `terraform test` and maintained environment hygiene by removing stray lock files.
+- [2026-05-22] Reviewed daily module changes (PR #80 follow-up). Hardened `ecs_fargate` documentation and outputs to match actual implementation. Hardened `ec2` and `asg` by enforcing IMDSv2 in `metadata_options`, addressing a systemic discovery during audit. Verified all changes via native `terraform test` and maintained environment hygiene.
 - [2026-05-17] Repository-wide Quality Audit — Conducted a comprehensive audit and addressed a systemic documentation/output deficiency. Appended the mandatory `tags` output and updated README 'Outputs' tables for 37 modules (30 base, 7 workload). Hardened output logic for `sqs`, `account_security`, and `alb` to ensure stability across conditional resource states. Verified all changes pass native `terraform test` and maintained environment hygiene by removing build artifacts.

@@ -48,4 +48,14 @@ run "valid_ec2_creation" {
     condition     = aws_instance.this.tags["environment"] == "test" && aws_instance.this.tags["owner"] == "test-owner" && aws_instance.this.tags["project"] == "test-project" && aws_instance.this.tags["cost_center"] == "test-cc"
     error_message = "Mandatory tags are missing or incorrect on EC2 instance."
   }
+
+  assert {
+    condition     = aws_instance.this.metadata_options[0].http_tokens == "required"
+    error_message = "IMDSv2 (http_tokens) must be required"
+  }
+
+  assert {
+    condition     = aws_instance.this.metadata_options[0].http_put_response_hop_limit == 1
+    error_message = "IMDS hop limit must be 1"
+  }
 }
