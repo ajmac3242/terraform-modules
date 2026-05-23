@@ -159,4 +159,6 @@ _`- [YYYY-MM-DD] Built <module path>. PR #<number>.`_
 - [2026-05-17] lambda — Enhanced base module with S3 file system mounting support and automatic IAM permission handling (AWS Provider 6.45.0+). PR #63.
 - [2026-05-18] repo-wide — Reconciled backlog statuses for May 2026 features and hardened Lambda S3 Files implementation.
 - [2026-05-22] Built aws/base_component/ecs_fargate (platform_version support) and conducted repo-wide security/lifecycle audit. PR #80.
-- [2026-05-22] Session concluded early. All current implementation-ready backlog items are blocked by missing AWS Provider resources (aws_amazon_quick, aws_devopsagent_space, payment_configuration in bedrockagent_core) or attributes. Anticipated high-priority items (Aurora PostgreSQL, Observability Admin) have not yet been added to the backlog file.
+- [2026-05-23] Built aws/base_component/aurora_postgresql and aws/base_component/observability_admin. PR #81.
+- [2026-05-23] aurora_postgresql — Implemented S3 integration for vector search import with mandatory CMK encryption and VPC placement.
+- [2026-05-23] observability_admin — Standardized telemetry rule management using the new aws_observabilityadmin_telemetry_rule resource.
