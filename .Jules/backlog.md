@@ -97,7 +97,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #81)
 **Module:** aws/base_component/aurora_postgresql
 **Why:** Support for billion-scale vector queries using SQL (announced May 2026). Enables combining vector similarity results with relational filters, a key requirement for advanced RAG and commerce patterns.
 
@@ -116,7 +116,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** MEDIUM
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #81)
 **Module:** aws/base_component/observability_admin
 **Why:** Manage telemetry rules across the organization (introduced in AWS Provider v6.45.0). Standardizes telemetry collection and filtering for better observability posture.
 
