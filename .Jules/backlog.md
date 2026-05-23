@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-22
+> **Last reviewed:** 2026-05-23
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -54,45 +54,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Immediate Ready Queue
 
-### repo-wide: Security Response for "Copy.fail" and "Dirty Frag" Kernel Vulnerabilities
-
-**Priority:** CRITICAL
-**Type:** Security
-**Status:** `done` (PR #80)
-**Module:** repo-wide (Impacts: ec2, asg, eks, ecs_fargate)
-**Why:** Address critical Linux kernel vulnerabilities (CVE-2026-31431 "Copy.fail", CVE-2026-43284/43500 "Dirty Frag") disclosed in late April and May 2026. These allow local privilege escalation to root.
-
-#### Acceptance Criteria
-- [x] Audit `aws/base_component/ec2`, `aws/base_component/asg`, and `aws/base_component/eks` for AMI selection patterns
-- [x] Update module READMEs to mandate patched platform versions:
-  - [x] Amazon Linux 2023: AL2023.4.20260515.0 or later
-  - [x] Bottlerocket: v1.19.2 or later
-  - [x] EKS Optimized AMI: 20260515 or later
-  - [x] Fargate Platform: 1.4.0 or later (Patched infrastructure released May 15, 2026)
-- [x] Ensure modules support dynamic AMI selection (SSM parameters) to facilitate rapid patching
-- [x] Native offline Terraform test validates that AMI inputs are configurable and documented
-
----
-
-### repo-wide: Enforce IMDSv2 across compute modules
-
-**Priority:** HIGH
-**Type:** Security
-**Status:** `done` (Verified 2026-05-22)
-**Module:** repo-wide (Impacts: ec2, asg)
-**Why:** Audit on 2026-05-22 identified that while READMEs claimed IMDSv2 enforcement, the underlying `metadata_options` blocks were missing from the `ec2` and `asg` base modules.
-
-#### Acceptance Criteria
-- [x] Add `metadata_options` with `http_tokens = "required"` to `aws_instance` in `ec2`
-- [x] Add `metadata_options` with `http_tokens = "required"` to `aws_launch_template` in `asg`
-- [x] Verify configuration via native `terraform test`
-
----
-
-
-
-## Module Backlog
-
 ### aws/base_component/aurora_postgresql: Opinionated Aurora PostgreSQL module with Vector Search
 
 **Priority:** HIGH
@@ -102,13 +63,15 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Support for billion-scale vector queries using SQL (announced May 2026). Enables combining vector similarity results with relational filters, a key requirement for advanced RAG and commerce patterns.
 
 #### Acceptance Criteria
-- [ ] `aws_rds_cluster` with `engine = "aurora-postgresql"`
-- [ ] Support for S3 Vector Search integration (Aurora to S3)
-- [ ] Mandatory CMK encryption for storage and logs
-- [ ] Placed in VPC private subnets with dedicated DB subnet group
-- [ ] Point-in-time recovery (PITR) enabled by default
+- [ ] `aws_rds_cluster` with `engine = "aurora-postgresql"` and `engine_version` >= 16.0
+- [ ] Configure `aws_rds_cluster_parameter_group` to enable `s3_import` and `vector_search` features
+- [ ] Implement `aws_rds_cluster_role_association` for S3 access (Vector Search)
+- [ ] Mandatory CMK encryption for storage (`kms_key_id`) and CloudWatch logs
+- [ ] Placed in VPC private subnets with dedicated `aws_db_subnet_group`
+- [ ] Point-in-time recovery (PITR) enabled with `backup_retention_period` >= 7
+- [ ] Storage type `aurora-iopt1` (I/O-Optimized) enabled by default for billion-scale performance
 - [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates encryption and VPC placement
+- [ ] Native offline Terraform test validates encryption, VPC placement, and role association
 
 ---
 
@@ -122,12 +85,17 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 #### Acceptance Criteria
 - [ ] `aws_observabilityadmin_telemetry_rule` resource implementation
-- [ ] Support for defining telemetry collection and filtering rules
-- [ ] Mandatory CMK encryption where applicable
+- [ ] Support for defining telemetry collection and filtering rules via `telemetry_configuration`
+- [ ] Support for organizational-level rules via `aws_observabilityadmin_telemetry_rule_for_organization` (added in v6.46.0)
+- [ ] Mandatory CMK encryption for any underlying log groups or data stores
 - [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates rule configuration
+- [ ] Native offline Terraform test validates rule configuration and organization-level association
 
 ---
+
+
+
+## Module Backlog
 
 ### aws/base_component/bedrock_agent_core: Support Agentic Payment Features
 
@@ -267,19 +235,22 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Review-Discovered Improvement Queue
 
-### repo-wide: Security: Kernel Patching (Copy.fail)
+***
+
+## Existing Completed Module History
+
+### repo-wide: Enforce IMDSv2 across compute modules
 
 **Priority:** HIGH
 **Type:** Security
-**Status:** `done` (PR #80)
-**Module:** repo-wide
-**Why:** Critical security response for "Copy.fail" (DirtyFrag) kernel vulnerabilities. Patched AMIs and platform versions for Bottlerocket, ECS-optimized, EKS-optimized, and Fargate are scheduled for release starting May 19, 2026.
+**Status:** `done` (Verified 2026-05-22)
+**Module:** repo-wide (Impacts: ec2, asg)
+**Why:** Audit on 2026-05-22 identified that while READMEs claimed IMDSv2 enforcement, the underlying `metadata_options` blocks were missing from the `ec2` and `asg` base modules.
 
 #### Acceptance Criteria
-- [x] Audit all compute modules (`ec2`, `asg`, `eks`, `ecs_fargate`) for hardcoded or default AMI/Platform versions.
-- [x] Update default AMIs to patched versions.
-- [x] Verify that new deployments use patched infrastructure.
-- [x] Update documentation to recommend immediate rotation of existing compute instances.
+- [x] Add `metadata_options` with `http_tokens = "required"` to `aws_instance` in `ec2`
+- [x] Add `metadata_options` with `http_tokens = "required"` to `aws_launch_template` in `asg`
+- [x] Verify configuration via native `terraform test`
 
 ---
 
@@ -296,9 +267,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [x] Mark affected modules as `deprecated` or `maintenance-only` in READMEs. (N/A - no usage found)
 - [x] Remove de-prioritized items from the active roadmap.
 
-***
-
-## Existing Completed Module History
+---
 
 ### repo-wide: Security Response for "Copy.fail" and "Dirty Frag" Kernel Vulnerabilities
 
