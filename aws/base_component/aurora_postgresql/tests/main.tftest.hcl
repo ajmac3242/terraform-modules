@@ -1,13 +1,13 @@
 variables {
-  cluster_identifier = "test-cluster"
-  instance_class     = "db.r6g.large"
-  instances_count    = 1
-  vpc_id             = "vpc-12345678"
-  vpc_cidr_block     = "10.0.0.0/16"
-  private_subnet_ids = ["subnet-11111111", "subnet-22222222"]
-  kms_key_arn        = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
-  master_username    = "testadmin"
-  master_password    = "testpassword"
+  cluster_identifier   = "test-cluster"
+  instance_class       = "db.r6g.large"
+  instances_count      = 1
+  vpc_id               = "vpc-12345678"
+  vpc_cidr_block       = "10.0.0.0/16"
+  private_subnet_ids   = ["subnet-11111111", "subnet-22222222"]
+  kms_key_arn          = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
+  master_username      = "testadmin"
+  master_password      = "testpassword"
   s3_import_bucket_arn = "arn:aws:s3:::test-bucket"
   tags = {
     environment = "test"
