@@ -128,6 +128,7 @@ _`- [YYYY-MM-DD] <topic> — <finding and rationale>`_
 
 _Steward will append a one-line entry after each review session:_  
 _`- [YYYY-MM-DD] Reviewed daily PRs. Applied fixes where needed.`_
+- [2026-05-23] Reviewed daily module changes (PR #89 merge). Hardened `eks` base module by adding missing `cluster_id` and `cluster_role_arn` outputs and strengthening CMK assertions in the native test suite. Verified `ec2`, `asg`, and `ecs_fargate` for continued compliance with IMDSv2 and platform patching standards.
 - [2026-05-22] Reviewed daily PRs. Applied follow-up fixes for documentation, outputs, and IMDSv2 hardening.
 - [2026-05-20] Reviewed daily PRs. Applied follow-up fixes for documentation, outputs, and security patching.
 
