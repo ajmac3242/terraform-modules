@@ -33,6 +33,11 @@ run "valid_eks_creation" {
   }
 
   assert {
+    condition     = aws_eks_cluster.this.encryption_config[0].provider[0].key_arn == var.kms_key_arn
+    error_message = "Encryption CMK ARN does not match expected value"
+  }
+
+  assert {
     condition     = aws_eks_cluster.this.tags["environment"] == "test" && aws_eks_cluster.this.tags["owner"] == "test-owner" && aws_eks_cluster.this.tags["project"] == "test-project" && aws_eks_cluster.this.tags["cost_center"] == "test-cc"
     error_message = "Mandatory tags are missing or incorrect on EKS cluster"
   }
