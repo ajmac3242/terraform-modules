@@ -6,6 +6,11 @@ variable "rule_name" {
 variable "telemetry_type" {
   description = "The type of telemetry to collect (e.g., Logs, Metrics, Traces)"
   type        = string
+
+  validation {
+    condition     = contains(["Logs", "Metrics", "Traces"], var.telemetry_type)
+    error_message = "The telemetry_type must be one of: Logs, Metrics, Traces."
+  }
 }
 
 variable "resource_type" {

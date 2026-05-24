@@ -33,6 +33,11 @@ variable "private_subnet_ids" {
 variable "kms_key_arn" {
   description = "ARN of the KMS CMK for storage encryption"
   type        = string
+
+  validation {
+    condition     = can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/.*$", var.kms_key_arn))
+    error_message = "The kms_key_arn must be a valid KMS key ARN."
+  }
 }
 
 variable "database_name" {
