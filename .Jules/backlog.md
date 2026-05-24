@@ -88,6 +88,9 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Module:** aws/base_component/bedrock_agent_core
 **Why:** May 2026 updates introduced browser and web search capabilities for agents, enabling them to navigate the web and use search engines to complete tasks.
 
+> [!IMPORTANT]
+> **Blocker:** Pending AWS Provider support for Browser and Web Search tool configuration in `aws_bedrockagentcore_gateway`. Verified blocked in AWS Provider v6.46.0.
+
 #### Acceptance Criteria
 - [ ] Support for browser tool configuration in the AgentCore gateway
 - [ ] Support for web search tool configuration (e.g., via MCP or native integration)
@@ -153,7 +156,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Strategic composition of Bedrock AgentCore and Amazon Quick to provide a standardized, secure environment for autonomous agent collaboration and analytics.
 
 > [!IMPORTANT]
-> **Blocker:** Pending implementation of prerequisite `aws/base_component/amazon_quick` module, which is currently blocked by provider support.
+> **Blocker:** Pending implementation of prerequisite `aws/base_component/amazon_quick` module, which is currently blocked by provider support. Additionally, Bedrock AgentCore tools are blocked in v6.46.0.
 
 #### Acceptance Criteria
 - [ ] Composes `aws/base_component/bedrock_agent_core` (Gateways)
@@ -176,7 +179,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Leverages new "Optimized Generative AI Inference Recommendations" feature (GA April 2026) to automatically identify optimized deployment configurations for generative AI models, including instance type and container parameters.
 
 > [!IMPORTANT]
-> **Blocker:** (As of 2026-05-21) The `aws_sagemaker_inference_recommendations_job` resource is not yet supported in the AWS Terraform provider (v6.46.0). Implementation is deferred until provider support is added.
+> **Blocker:** Pending AWS Provider support for `aws_sagemaker_inference_recommendations_job` resource. Verified still blocked in AWS Provider v6.46.0.
 
 #### Acceptance Criteria
 - [ ] `aws_sagemaker_inference_recommendations_job` or equivalent for optimized deployment
