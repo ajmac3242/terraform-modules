@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-23
+> **Last reviewed:** 2026-05-24
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -54,48 +54,49 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Immediate Ready Queue
 
-### aws/base_component/aurora_postgresql: Opinionated Aurora PostgreSQL module with Vector Search
+> [!NOTE]
+> All high-priority foundational items are currently in progress or completed. The queue is ready for next-priority intake.
 
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `done` (PR #81)
-**Module:** aws/base_component/aurora_postgresql
-**Why:** Support for billion-scale vector queries using SQL (announced May 2026). Enables combining vector similarity results with relational filters, a key requirement for advanced RAG and commerce patterns.
+## Module Backlog
 
-#### Acceptance Criteria
-- [ ] `aws_rds_cluster` with `engine = "aurora-postgresql"` and `engine_version` >= 16.0
-- [ ] Configure `aws_rds_cluster_parameter_group` to enable `s3_import` and `vector_search` features
-- [ ] Implement `aws_rds_cluster_role_association` for S3 access (Vector Search)
-- [ ] Mandatory CMK encryption for storage (`kms_key_id`) and CloudWatch logs
-- [ ] Placed in VPC private subnets with dedicated `aws_db_subnet_group`
-- [ ] Point-in-time recovery (PITR) enabled with `backup_retention_period` >= 7
-- [ ] Storage type `aurora-iopt1` (I/O-Optimized) enabled by default for billion-scale performance
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates encryption, VPC placement, and role association
-
----
-
-### aws/base_component/observability_admin: Opinionated Observability Admin module
+### aws/base_component/bedrock_agent_core: Support Online Evaluation
 
 **Priority:** MEDIUM
 **Type:** Feature
-**Status:** `done` (PR #81)
-**Module:** aws/base_component/observability_admin
-**Why:** Manage telemetry rules across the organization (introduced in AWS Provider v6.45.0). Standardizes telemetry collection and filtering for better observability posture.
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_agent_core
+**Why:** Online evaluation configurations continuously monitor agent performance by sampling live traffic from CloudWatch logs and applying evaluators.
+
+> [!IMPORTANT]
+> **Blocker:** Pending AWS Provider support for `aws_bedrockagentcore_online_evaluation_config` resource. Verified blocked in AWS Provider v6.46.0 (Added in unreleased v6.47.0).
 
 #### Acceptance Criteria
-- [ ] `aws_observabilityadmin_telemetry_rule` resource implementation
-- [ ] Support for defining telemetry collection and filtering rules via `telemetry_configuration`
-- [ ] Support for organizational-level rules via `aws_observabilityadmin_telemetry_rule_for_organization` (added in v6.46.0)
-- [ ] Mandatory CMK encryption for any underlying log groups or data stores
+- [ ] `aws_bedrockagentcore_online_evaluation_config` resource implementation
+- [ ] Support for sampling live traffic from CloudWatch logs
+- [ ] Support for applying built-in or custom evaluators
+- [ ] Mandatory CMK encryption for any stored evaluation results
 - [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates rule configuration and organization-level association
+- [ ] Native offline Terraform test validates configuration
 
 ---
 
+### aws/base_component/bedrock_agent_core: Support Browser and Web Search tools
 
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_agent_core
+**Why:** May 2026 updates introduced browser and web search capabilities for agents, enabling them to navigate the web and use search engines to complete tasks.
 
-## Module Backlog
+#### Acceptance Criteria
+- [ ] Support for browser tool configuration in the AgentCore gateway
+- [ ] Support for web search tool configuration (e.g., via MCP or native integration)
+- [ ] Support for session management and sandboxing of browser activities
+- [ ] Mandatory CMK encryption for session logs and history
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates tool configuration
+
+---
 
 ### aws/base_component/bedrock_agent_core: Support Agentic Payment Features
 
@@ -238,6 +239,45 @@ All modules in this repo MUST comply with these non-negotiable standards:
 ***
 
 ## Existing Completed Module History
+
+### aws/base_component/aurora_postgresql: Opinionated Aurora PostgreSQL module with Vector Search
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `done` (PR #81)
+**Module:** aws/base_component/aurora_postgresql
+**Why:** Support for billion-scale vector queries using SQL (announced May 2026). Enables combining vector similarity results with relational filters, a key requirement for advanced RAG and commerce patterns.
+
+#### Acceptance Criteria
+- [x] `aws_rds_cluster` with `engine = "aurora-postgresql"` and `engine_version` >= 16.0
+- [x] Configure `aws_rds_cluster_parameter_group` to enable `s3_import` and `vector_search` features
+- [x] Implement `aws_rds_cluster_role_association` for S3 access (Vector Search)
+- [x] Mandatory CMK encryption for storage (`kms_key_id`) and CloudWatch logs
+- [x] Placed in VPC private subnets with dedicated `aws_db_subnet_group`
+- [x] Point-in-time recovery (PITR) enabled with `backup_retention_period` >= 7
+- [x] Storage type `aurora-iopt1` (I/O-Optimized) enabled by default for billion-scale performance
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates encryption, VPC placement, and role association
+
+---
+
+### aws/base_component/observability_admin: Opinionated Observability Admin module
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `done` (PR #81)
+**Module:** aws/base_component/observability_admin
+**Why:** Manage telemetry rules across the organization (introduced in AWS Provider v6.45.0). Standardizes telemetry collection and filtering for better observability posture.
+
+#### Acceptance Criteria
+- [x] `aws_observabilityadmin_telemetry_rule` resource implementation
+- [x] Support for defining telemetry collection and filtering rules via `telemetry_configuration`
+- [x] Support for organizational-level rules via `aws_observabilityadmin_telemetry_rule_for_organization` (added in v6.46.0)
+- [x] Mandatory CMK encryption for any underlying log groups or data stores
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates rule configuration and organization-level association
+
+---
 
 ### repo-wide: Enforce IMDSv2 across compute modules
 
