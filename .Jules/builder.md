@@ -110,7 +110,7 @@ _`- [YYYY-MM-DD] <module> — <decision and rationale>`_
 - [2026-05-04] repo-wide — Standardized provider version to `">= 5.0, < 7.0"` across all 45+ modules to support AWS Provider 6.0 migration and its native `region` attribute.
 - [2026-05-04] s3 — Refactored to support `additional_policy_document` via `source_policy_documents` in `data.aws_iam_policy_document` to enable clean policy merging in workload modules.
 - [2026-05-18] lambda — Discovered `file_system_config` is limited to `max_items: 1` in AWS Provider 6.45.0. Updated module to enforce this and used specific `s3files:*` IAM actions for S3 mounting.
-- [2026-05-25] bedrock_agent_core — Verified that Browser and Web Search tools are not yet supported in AWS Provider v6.46.0, despite the service being GA. Always use `terraform providers schema -json` to verify support for new GenAI features before implementation.
+- [2026-05-26] bedrock_agent_core — Confirmed that 'browser_tool' and 'payment_configuration' are still missing from 'aws_bedrockagentcore_gateway' in AWS Provider v6.46.0. Discovered 'aws_bedrockagentcore_browser' as a new standalone resource, which may be the intended implementation path for browser capabilities.
 
 ## Build Log
 
@@ -164,3 +164,4 @@ _`- [YYYY-MM-DD] Built <module path>. PR #<number>.`_
 - [2026-05-23] aurora_postgresql — Implemented S3 integration for vector search import with mandatory CMK encryption and VPC placement.
 - [2026-05-23] observability_admin — Standardized telemetry rule management using the new aws_observabilityadmin_telemetry_rule resource.
 - [2026-05-25] Session concluded early. All current backlog items (Online Evaluation, Browser/Web Search, Agentic Payments, Amazon Quick, Optimized SageMaker Inference, DevOps Agent) are blocked by missing AWS Provider resources or attributes in v6.46.0. Backlog updated with blocker details.
+- [2026-05-26] Session concluded early. Confirmed continued blockers for all backlog items in AWS Provider v6.46.0. Verified missing resources: 'aws_bedrockagentcore_online_evaluation_config', 'aws_amazon_quick', 'aws_devopsagent_space', and 'aws_sagemaker_inference_recommendations_job'. Missing attributes: 'browser_tool' and 'payment_configuration' in 'aws_bedrockagentcore_gateway'. Found new standalone resource 'aws_bedrockagentcore_browser'.

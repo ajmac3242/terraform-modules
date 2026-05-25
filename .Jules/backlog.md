@@ -89,10 +89,10 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** May 2026 updates introduced browser and web search capabilities for agents, enabling them to navigate the web and use search engines to complete tasks.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for Browser and Web Search tool configuration in `aws_bedrockagentcore_gateway`. Verified blocked in AWS Provider v6.46.0.
+> **Blocker:** Pending AWS Provider support for Browser and Web Search tool configuration in `aws_bedrockagentcore_gateway`. Verified blocked in AWS Provider v6.46.0. Found new standalone resource `aws_bedrockagentcore_browser` in v6.46.0, which may replace or supplement gateway configuration.
 
 #### Acceptance Criteria
-- [ ] Support for browser tool configuration in the AgentCore gateway
+- [ ] Support for browser tool configuration (resource `aws_bedrockagentcore_browser` or gateway block)
 - [ ] Support for web search tool configuration (e.g., via MCP or native integration)
 - [ ] Support for session management and sandboxing of browser activities
 - [ ] Mandatory CMK encryption for session logs and history
