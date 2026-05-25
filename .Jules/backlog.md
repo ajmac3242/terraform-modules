@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-24
+> **Last reviewed:** 2026-05-25
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -54,8 +54,21 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Immediate Ready Queue
 
-> [!NOTE]
-> All high-priority foundational items are currently in progress or completed. The queue is ready for next-priority intake.
+### aws/base_component/secrets_manager: Support Datadog and Snowflake managed rotation
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/secrets_manager
+**Why:** May 22, 2026 update introduced managed rotation support for external services like Datadog and Snowflake. Standardizing this eliminates the need for custom Lambda rotation logic for these common SaaS platforms.
+
+#### Acceptance Criteria
+- [ ] Support for managed rotation configuration for Datadog
+- [ ] Support for managed rotation configuration for Snowflake
+- [ ] Automated rotation schedule configuration
+- [ ] Mandatory CMK encryption for the secret (enforced by base module)
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates rotation configuration
 
 ## Module Backlog
 
@@ -238,6 +251,37 @@ All modules in this repo MUST comply with these non-negotiable standards:
 ---
 
 ## Review-Discovered Improvement Queue
+
+### aws/base_component/transform: Opinionated AWS Transform module
+
+**Priority:** LOW
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/transform
+**Why:** AWS Transform (GA May 2026) provides migration assessment capabilities. Adding a module to standardize assessment scopes and reporting will help with large-scale cloud migrations.
+
+#### Acceptance Criteria
+- [ ] Support for migration assessment scope definition
+- [ ] Mandatory CMK encryption for assessment reports and data
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates configuration (pending provider support)
+
+---
+
+### aws/base_component/security_agent: Opinionated AWS Security Agent module
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/security_agent
+**Why:** AWS Security Agent (GA May 2026) generates verification scripts for penetration testing and security audits.
+
+#### Acceptance Criteria
+- [ ] Support for security verification script generation
+- [ ] Integration with IAM and CloudTrail for audit logging
+- [ ] Mandatory CMK encryption for generated scripts and results
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates configuration (pending provider support)
 
 ***
 
