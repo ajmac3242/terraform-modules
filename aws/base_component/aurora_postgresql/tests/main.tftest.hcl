@@ -1,14 +1,15 @@
 variables {
-  cluster_identifier   = "test-cluster"
-  instance_class       = "db.r6g.large"
-  instances_count      = 1
-  vpc_id               = "vpc-12345678"
-  vpc_cidr_block       = "10.0.0.0/16"
-  private_subnet_ids   = ["subnet-11111111", "subnet-22222222"]
-  kms_key_arn          = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
-  master_username      = "testadmin"
-  master_password      = "testpassword"
-  s3_import_bucket_arn = "arn:aws:s3:::test-bucket"
+  cluster_identifier     = "test-cluster"
+  instance_class         = "db.r6g.large"
+  instances_count        = 1
+  vpc_id                 = "vpc-12345678"
+  vpc_cidr_block         = "10.0.0.0/16"
+  private_subnet_ids     = ["subnet-11111111", "subnet-22222222"]
+  kms_key_arn            = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
+  master_username        = "testadmin"
+  master_password        = "testpassword"
+  s3_import_bucket_arn   = "arn:aws:s3:::test-bucket"
+  lambda_invocation_arns = ["arn:aws:lambda:us-east-1:123456789012:function:test-function"]
   tags = {
     environment = "test"
     owner       = "test-owner"
@@ -77,5 +78,25 @@ run "valid_aurora_creation" {
   assert {
     condition     = aws_rds_cluster.this.tags["environment"] == "test" && aws_rds_cluster.this.tags["owner"] == "test-owner" && aws_rds_cluster.this.tags["project"] == "test-project" && aws_rds_cluster.this.tags["cost_center"] == "test-cc"
     error_message = "Mandatory tags are missing or incorrect on cluster"
+  }
+
+  assert {
+    condition     = aws_rds_cluster.this.db_cluster_parameter_group_name == aws_rds_cluster_parameter_group.this.name
+    error_message = "Cluster should be associated with the custom parameter group"
+  }
+
+  assert {
+    condition     = aws_rds_cluster_parameter_group.this.family == var.db_cluster_parameter_group_family
+    error_message = "Parameter group family does not match"
+  }
+
+  assert {
+    condition     = anytrue([for p in aws_rds_cluster_parameter_group.this.parameter : p.name == "rds.allowed_extensions" && p.value == "pgvector,aws_lambda,aws_s3"])
+    error_message = "Allowed extensions parameter is missing or incorrect"
+  }
+
+  assert {
+    condition     = aws_rds_cluster_role_association.lambda[0].feature_name == "Lambda"
+    error_message = "Lambda feature role association is missing"
   }
 }

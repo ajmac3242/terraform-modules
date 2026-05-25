@@ -9,6 +9,12 @@ variable "engine_version" {
   default     = "16.1"
 }
 
+variable "db_cluster_parameter_group_family" {
+  description = "The family of the DB cluster parameter group"
+  type        = string
+  default     = "aurora-postgresql16"
+}
+
 variable "instance_class" {
   description = "The instance class for Aurora cluster instances"
   type        = string
@@ -61,6 +67,12 @@ variable "s3_import_bucket_arn" {
   description = "Optional ARN of the S3 bucket to allow Aurora to import data from"
   type        = string
   default     = null
+}
+
+variable "lambda_invocation_arns" {
+  description = "Optional list of Lambda function ARNs that Aurora is allowed to invoke"
+  type        = list(string)
+  default     = []
 }
 
 variable "vpc_cidr_block" {
