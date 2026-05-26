@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-24
+> **Last reviewed:** 2026-05-26
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -54,10 +54,59 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Immediate Ready Queue
 
-> [!NOTE]
-> All high-priority foundational items are currently in progress or completed. The queue is ready for next-priority intake.
+### aws/base_component/bedrock_agent_core: Opinionated Browser tool module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_agent_core
+**Why:** May 2026 updates introduced browser capabilities for agents. Audit confirmed `aws_bedrockagentcore_browser` is available in AWS Provider v6.46.0, unblocking this foundational capability for agentic navigation and data extraction.
+
+#### Acceptance Criteria
+- [ ] `aws_bedrockagentcore_browser` resource implementation
+- [ ] Support for session management and sandboxing of browser activities
+- [ ] Mandatory CMK encryption for session logs and history
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates browser configuration
+
+---
 
 ## Module Backlog
+
+### aws/base_component/extenddb: Opinionated ExtendDB (DynamoDB adapter) module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/extenddb
+**Why:** ExtendDB (announced May 2026) is an open-source DynamoDB-compatible adapter. Standardizing its deployment (e.g., on ECS or EKS) backed by Aurora PostgreSQL allows teams to use DynamoDB APIs in multicloud and edge environments where the managed service is unavailable.
+
+#### Acceptance Criteria
+- [ ] Standardized containerized deployment of ExtendDB (v0.1+)
+- [ ] Integration with `aws/base_component/aurora_postgresql` as the storage backend
+- [ ] Mandatory TLS enforcement for the adapter endpoint
+- [ ] Mandatory CMK encryption for the backing database and logs
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates the deployment architecture
+
+---
+
+### aws/base_component/transform: Opinionated AWS Transform module
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/transform
+**Why:** AWS Transform (May 2026) automates network modernization during migrations. Standardizing its configuration ensures consistent VPC segmenting, CIDR right-sizing, and security group auditing during organizational onboarding.
+
+#### Acceptance Criteria
+- [ ] Support for network modernization engine configuration
+- [ ] Support for VPC segmentation and CIDR resolution rules
+- [ ] Mandatory CMK encryption for uploaded network configuration files
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates transformation rules
+
+---
 
 ### aws/base_component/bedrock_agent_core: Support Online Evaluation
 
@@ -68,7 +117,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Online evaluation configurations continuously monitor agent performance by sampling live traffic from CloudWatch logs and applying evaluators.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_bedrockagentcore_online_evaluation_config` resource. Verified blocked in AWS Provider v6.46.0 (Added in unreleased v6.47.0).
+> **Blocker:** Pending AWS Provider support for `aws_bedrockagentcore_online_evaluation_config` resource. Verified still blocked in AWS Provider v6.46.0.
 
 #### Acceptance Criteria
 - [ ] `aws_bedrockagentcore_online_evaluation_config` resource implementation
@@ -80,24 +129,22 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ---
 
-### aws/base_component/bedrock_agent_core: Support Browser and Web Search tools
+### aws/base_component/bedrock_agent_core: Support Web Search tools
 
 **Priority:** HIGH
 **Type:** Feature
 **Status:** `backlog`
 **Module:** aws/base_component/bedrock_agent_core
-**Why:** May 2026 updates introduced browser and web search capabilities for agents, enabling them to navigate the web and use search engines to complete tasks.
+**Why:** May 2026 updates introduced web search capabilities for agents. While the Browser resource is available, native Web Search engine integration remains pending in the provider.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for Browser and Web Search tool configuration in `aws_bedrockagentcore_gateway`. Verified blocked in AWS Provider v6.46.0.
+> **Blocker:** Pending AWS Provider support for Web Search tool configuration (e.g., native Google/Bing integration) in `aws_bedrockagentcore_gateway`. Verified blocked in AWS Provider v6.46.0.
 
 #### Acceptance Criteria
-- [ ] Support for browser tool configuration in the AgentCore gateway
-- [ ] Support for web search tool configuration (e.g., via MCP or native integration)
-- [ ] Support for session management and sandboxing of browser activities
-- [ ] Mandatory CMK encryption for session logs and history
+- [ ] Support for web search tool configuration in the AgentCore gateway
+- [ ] Mandatory CMK encryption for search history and logs
 - [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates tool configuration
+- [ ] Native offline Terraform test validates search tool configuration
 
 ---
 
@@ -156,10 +203,10 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Strategic composition of Bedrock AgentCore and Amazon Quick to provide a standardized, secure environment for autonomous agent collaboration and analytics.
 
 > [!IMPORTANT]
-> **Blocker:** Pending implementation of prerequisite `aws/base_component/amazon_quick` module, which is currently blocked by provider support. Additionally, Bedrock AgentCore tools are blocked in v6.46.0.
+> **Blocker:** Pending implementation of prerequisite `aws/base_component/amazon_quick` module, which is currently blocked by provider support.
 
 #### Acceptance Criteria
-- [ ] Composes `aws/base_component/bedrock_agent_core` (Gateways)
+- [ ] Composes `aws/base_component/bedrock_agent_core` (Gateways and Browser)
 - [ ] Composes `aws/base_component/amazon_quick` (Assistant and Analytics)
 - [ ] Composes `aws/base_component/s3` for shared document storage
 - [ ] Mandatory CMK encryption for all shared data at rest
@@ -253,8 +300,8 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 #### Acceptance Criteria
 - [x] `aws_rds_cluster` with `engine = "aurora-postgresql"` and `engine_version` >= 16.0
-- [x] Configure `aws_rds_cluster_parameter_group` to enable `s3_import` and `vector_search` features
-- [x] Implement `aws_rds_cluster_role_association` for S3 access (Vector Search)
+- [x] Configure `aws_rds_cluster_parameter_group` to enable `pgvector,aws_lambda,aws_s3` extensions
+- [x] Implement `aws_rds_cluster_role_association` for S3 access (Vector Search) and Lambda invocation
 - [x] Mandatory CMK encryption for storage (`kms_key_id`) and CloudWatch logs
 - [x] Placed in VPC private subnets with dedicated `aws_db_subnet_group`
 - [x] Point-in-time recovery (PITR) enabled with `backup_retention_period` >= 7
