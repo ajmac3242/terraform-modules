@@ -132,6 +132,7 @@ _`- [YYYY-MM-DD] Reviewed daily PRs. Applied fixes where needed.`_
 - [2026-05-22] Reviewed daily PRs. Applied follow-up fixes for documentation, outputs, and IMDSv2 hardening.
 - [2026-05-20] Reviewed daily PRs. Applied follow-up fixes for documentation, outputs, and security patching.
 - [2026-05-24] Reviewed and hardened `aurora_postgresql` and `observability_admin` modules (PR #92). Hardening included adding regex validation for `kms_key_arn` in Aurora, adding `telemetry_type` validation in Observability Admin, and standardizing AWS provider constraints to `~> 5.0` and `~> 6.45` respectively. Expanded test assertions for Aurora to verify SG and subnet group details. Verified all changes pass native `terraform test` and maintained environment hygiene.
+- [2026-05-26] Reviewed daily module changes. Identified and fixed a regression in `aurora_postgresql` where parameter group and Lambda integration resources were missing. Hardened `aurora_postgresql` with mandatory PITR (7 days) and I/O-Optimized storage (`aurora-iopt1`). Enhanced `observability_admin` to support organization-level telemetry rules, bumping provider to `~> 6.46`. Verified both modules via native `terraform test` and enforced repository-wide hygiene.
 
 - [2026-04-25] Journal initialized. Ready to review daily PRs and apply follow-up fixes.
 - [2026-04-26] Reviewed daily PRs (PR #9). Applied follow-up fixes for tagging, missing tests, mandatory CMK for EventBridge, and output completeness.

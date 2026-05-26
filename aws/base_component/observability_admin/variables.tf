@@ -1,6 +1,13 @@
 variable "rule_name" {
-  description = "The name of the telemetry rule"
+  description = "The name of the telemetry rule (required if enable_organization_rule is false)"
   type        = string
+  default     = null
+}
+
+variable "enable_organization_rule" {
+  description = "Whether to create the telemetry rule for the entire organization"
+  type        = bool
+  default     = false
 }
 
 variable "telemetry_type" {
