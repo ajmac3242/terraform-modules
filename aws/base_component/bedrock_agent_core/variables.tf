@@ -69,6 +69,93 @@ variable "protocol_configuration" {
   default = null
 }
 
+variable "create_browser" {
+  description = "Whether to create a Bedrock AgentCore Browser tool."
+  type        = bool
+  default     = false
+}
+
+variable "browser_name" {
+  description = "The name of the browser tool."
+  type        = string
+  default     = null
+}
+
+variable "browser_description" {
+  description = "Description of the browser tool."
+  type        = string
+  default     = null
+}
+
+variable "browser_execution_role_arn" {
+  description = "The ARN of the IAM role that the browser tool uses."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.browser_execution_role_arn == null || can(regex("^arn:aws:iam::[0-9]{12}:role/.*$", var.browser_execution_role_arn))
+    error_message = "browser_execution_role_arn must be a valid IAM role ARN."
+  }
+}
+
+variable "browser_vpc_config" {
+  description = "VPC configuration for the browser tool."
+  type = object({
+    network_mode = string
+    vpc_config = optional(object({
+      security_groups = set(string)
+      subnets         = set(string)
+    }))
+  })
+  default = null
+}
+
+variable "browser_recording_config" {
+  description = "Recording configuration for the browser tool."
+  type = object({
+    enabled = optional(bool)
+    s3_location = optional(object({
+      bucket = string
+      prefix = string
+    }))
+  })
+  default = null
+}
+
+variable "targets" {
+  description = "A map of gateway targets to create."
+  type = map(object({
+    name        = string
+    description = optional(string)
+    credential_provider_configuration = optional(object({
+      api_key = optional(object({
+        provider_arn              = string
+        credential_location       = optional(string)
+        credential_parameter_name = optional(string)
+        credential_prefix         = optional(string)
+      }))
+      gateway_iam_role = optional(bool, false)
+      oauth = optional(object({
+        provider_arn       = string
+        grant_type         = string
+        custom_parameters  = optional(map(string))
+        default_return_url = optional(string)
+        scopes             = optional(list(string))
+      }))
+    }))
+    target_configuration = optional(object({
+      mcp = optional(object({
+        lambda = optional(object({
+          lambda_arn = string
+        }))
+        mcp_server = optional(object({
+          endpoint = string
+        }))
+      }))
+    }))
+  }))
+  default = {}
+}
+
 variable "tags" {
   description = "A map of tags to assign to the resources. Required keys: environment, owner, project, cost_center."
   type        = map(string)

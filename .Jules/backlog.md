@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-24
+> **Last reviewed:** 2026-05-28
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -54,8 +54,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Immediate Ready Queue
 
-> [!NOTE]
-> All high-priority foundational items are currently in progress or completed. The queue is ready for next-priority intake.
+- [ ] `aws/base_component/bedrock_agent_core`: Support Browser tool (HIGH)
 
 ## Module Backlog
 
@@ -80,24 +79,21 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ---
 
-### aws/base_component/bedrock_agent_core: Support Browser and Web Search tools
+### aws/base_component/bedrock_agent_core: Support Browser tool
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #95)
 **Module:** aws/base_component/bedrock_agent_core
-**Why:** May 2026 updates introduced browser and web search capabilities for agents, enabling them to navigate the web and use search engines to complete tasks.
-
-> [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for Browser and Web Search tool configuration in `aws_bedrockagentcore_gateway`. Verified blocked in AWS Provider v6.46.0.
+**Why:** May 2026 updates introduced browser capabilities for agents, enabling them to navigate the web. Support for `aws_bedrockagentcore_browser` confirmed in AWS Provider v6.46.0.
 
 #### Acceptance Criteria
-- [ ] Support for browser tool configuration in the AgentCore gateway
-- [ ] Support for web search tool configuration (e.g., via MCP or native integration)
-- [ ] Support for session management and sandboxing of browser activities
-- [ ] Mandatory CMK encryption for session logs and history
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates tool configuration
+- [x] Support for browser tool configuration in the AgentCore gateway
+- [x] Support for web search tool configuration (via MCP Gateway Target)
+- [x] Support for session management and sandboxing of browser activities (VPC config)
+- [x] Mandatory CMK encryption for session logs and history (S3 recording)
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates tool configuration
 
 ---
 

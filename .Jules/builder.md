@@ -161,6 +161,8 @@ _`- [YYYY-MM-DD] Built <module path>. PR #<number>.`_
 - [2026-05-18] repo-wide — Reconciled backlog statuses for May 2026 features and hardened Lambda S3 Files implementation.
 - [2026-05-22] Built aws/base_component/ecs_fargate (platform_version support) and conducted repo-wide security/lifecycle audit. PR #80.
 - [2026-05-23] Built aws/base_component/aurora_postgresql and aws/base_component/observability_admin. PR #81.
+- [2026-05-28] Built aws/base_component/bedrock_agent_core (Browser support). PR #95.
 - [2026-05-23] aurora_postgresql — Implemented S3 integration for vector search import with mandatory CMK encryption and VPC placement.
 - [2026-05-23] observability_admin — Standardized telemetry rule management using the new aws_observabilityadmin_telemetry_rule resource.
 - [2026-05-25] Session concluded early. All current backlog items (Online Evaluation, Browser/Web Search, Agentic Payments, Amazon Quick, Optimized SageMaker Inference, DevOps Agent) are blocked by missing AWS Provider resources or attributes in v6.46.0. Backlog updated with blocker details.
+- [2026-05-28] Bedrock AgentCore — Unblocked and implemented Browser tool support and Gateway Targets. Enforced CMK encryption for browser recordings and VPC sandboxing for session isolation. Updated provider constraint to `~> 6.46`.
