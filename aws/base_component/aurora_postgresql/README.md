@@ -1,7 +1,7 @@
 # aws/base_component/aurora_postgresql
 
 ## Purpose
-Opinionated Aurora PostgreSQL module with Vector Search and S3 integration. This module standardizes the deployment of Aurora PostgreSQL clusters with mandatory CMK encryption, VPC placement, and optional S3 integration for data import.
+Opinionated Aurora PostgreSQL module with Vector Search, S3 integration, and Lambda invocation support. This module standardizes the deployment of Aurora PostgreSQL clusters with mandatory CMK encryption, VPC placement, and integration with AWS services for GenAI workflows.
 
 ## Usage
 ```hcl
@@ -18,7 +18,8 @@ module "aurora_postgresql" {
   master_username    = "dbadmin"
   master_password    = "SecurePassword123!" # Use Secrets Manager in production
 
-  s3_import_bucket_arn = "arn:aws:s3:::my-import-bucket"
+  s3_import_bucket_arn   = "arn:aws:s3:::my-import-bucket"
+  lambda_invocation_arns = ["arn:aws:lambda:us-east-1:123456789012:function:my-function"]
 
   tags = {
     environment = "prod"
@@ -34,13 +35,16 @@ module "aurora_postgresql" {
 - **VPC Placement**: Cluster and instances are placed in private subnets.
 - **Security Group**: Ingress is restricted to the VPC CIDR on port 5432 by default.
 - **IAM Authentication**: IAM database authentication is enabled by default.
-- **S3 Integration**: Least-privilege IAM role created for S3 import if a bucket ARN is provided.
+- **Service Integration**: Least-privilege IAM roles created for S3 import and Lambda invocation if ARNs are provided.
+- **Backup Retention**: Configurable backup retention period (default 7 days).
+- **I/O Optimization**: Support for `aurora-iopt1` storage type for high-performance vector search.
 
 ## Variables
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | `cluster_identifier` | The cluster identifier | `string` | n/a | yes |
 | `engine_version` | The engine version for Aurora PostgreSQL | `string` | `"16.1"` | no |
+| `db_cluster_parameter_group_family` | The family of the DB cluster parameter group | `string` | `"aurora-postgresql16"` | no |
 | `instance_class` | The instance class for Aurora cluster instances | `string` | n/a | yes |
 | `instances_count` | Number of Aurora instances | `number` | `2` | no |
 | `vpc_id` | VPC ID where the cluster will be deployed | `string` | n/a | yes |
@@ -51,6 +55,9 @@ module "aurora_postgresql" {
 | `master_username` | Username for the master DB user | `string` | n/a | yes |
 | `master_password` | Password for the master DB user | `string` | n/a | yes |
 | `s3_import_bucket_arn` | Optional ARN of the S3 bucket to allow Aurora to import data from | `string` | `null` | no |
+| `lambda_invocation_arns` | Optional list of Lambda function ARNs that Aurora is allowed to invoke | `list(string)` | `[]` | no |
+| `backup_retention_period` | The days to retain backups for | `number` | `7` | no |
+| `storage_type` | The storage type for the DB cluster. Use 'aurora-iopt1' for I/O-Optimized. | `string` | `"aurora-iopt1"` | no |
 | `tags` | Standard tags for all resources | `map(string)` | n/a | yes |
 
 ## Outputs
@@ -61,4 +68,6 @@ module "aurora_postgresql" {
 | `cluster_endpoint` | The cluster endpoint |
 | `cluster_reader_endpoint` | The cluster reader endpoint |
 | `security_group_id` | The ID of the security group created for the cluster |
+| `rds_s3_role_arn` | The ARN of the IAM role for S3 integration |
+| `rds_lambda_role_arn` | The ARN of the IAM role for Lambda integration |
 | `tags` | A map of tags assigned to the resource |

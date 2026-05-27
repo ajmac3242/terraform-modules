@@ -23,22 +23,45 @@ run "valid_telemetry_rule_creation" {
   command = plan
 
   assert {
-    condition     = aws_observabilityadmin_telemetry_rule.this.rule_name == var.rule_name
+    condition     = aws_observabilityadmin_telemetry_rule.this[0].rule_name == var.rule_name
     error_message = "Rule name does not match expected value"
   }
 
   assert {
-    condition     = aws_observabilityadmin_telemetry_rule.this.rule[0].telemetry_type == var.telemetry_type
+    condition     = aws_observabilityadmin_telemetry_rule.this[0].rule[0].telemetry_type == var.telemetry_type
     error_message = "Telemetry type does not match"
   }
 
   assert {
-    condition     = aws_observabilityadmin_telemetry_rule.this.rule[0].resource_type == var.resource_type
+    condition     = aws_observabilityadmin_telemetry_rule.this[0].rule[0].resource_type == var.resource_type
     error_message = "Resource type does not match"
   }
 
   assert {
-    condition     = aws_observabilityadmin_telemetry_rule.this.tags["environment"] == "test" && aws_observabilityadmin_telemetry_rule.this.tags["owner"] == "test-owner" && aws_observabilityadmin_telemetry_rule.this.tags["project"] == "test-project" && aws_observabilityadmin_telemetry_rule.this.tags["cost_center"] == "test-cc"
+    condition     = aws_observabilityadmin_telemetry_rule.this[0].tags["environment"] == "test" && aws_observabilityadmin_telemetry_rule.this[0].tags["owner"] == "test-owner" && aws_observabilityadmin_telemetry_rule.this[0].tags["project"] == "test-project" && aws_observabilityadmin_telemetry_rule.this[0].tags["cost_center"] == "test-cc"
     error_message = "Mandatory tags are missing or incorrect"
+  }
+}
+
+run "valid_org_telemetry_rule_creation" {
+  command = plan
+
+  variables {
+    is_organization_rule = true
+  }
+
+  assert {
+    condition     = length(aws_observabilityadmin_telemetry_rule.this) == 0
+    error_message = "Account-level rule should not be created"
+  }
+
+  assert {
+    condition     = aws_observabilityadmin_telemetry_rule_for_organization.this[0].rule[0].telemetry_type == var.telemetry_type
+    error_message = "Telemetry type does not match for organizational rule"
+  }
+
+  assert {
+    condition     = aws_observabilityadmin_telemetry_rule_for_organization.this[0].rule[0].resource_type == var.resource_type
+    error_message = "Resource type does not match for organizational rule"
   }
 }

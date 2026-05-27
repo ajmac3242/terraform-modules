@@ -19,6 +19,12 @@ variable "resource_type" {
   default     = null
 }
 
+variable "is_organization_rule" {
+  description = "Whether to create the rule at the organizational level"
+  type        = bool
+  default     = false
+}
+
 variable "tags" {
   description = "A map of tags to assign to the resources"
   type        = map(string)

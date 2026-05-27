@@ -1,14 +1,15 @@
 variables {
-  cluster_identifier   = "test-cluster"
-  instance_class       = "db.r6g.large"
-  instances_count      = 1
-  vpc_id               = "vpc-12345678"
-  vpc_cidr_block       = "10.0.0.0/16"
-  private_subnet_ids   = ["subnet-11111111", "subnet-22222222"]
-  kms_key_arn          = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
-  master_username      = "testadmin"
-  master_password      = "testpassword"
-  s3_import_bucket_arn = "arn:aws:s3:::test-bucket"
+  cluster_identifier     = "test-cluster"
+  instance_class         = "db.r6g.large"
+  instances_count        = 1
+  vpc_id                 = "vpc-12345678"
+  vpc_cidr_block         = "10.0.0.0/16"
+  private_subnet_ids     = ["subnet-11111111", "subnet-22222222"]
+  kms_key_arn            = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
+  master_username        = "testadmin"
+  master_password        = "testpassword"
+  s3_import_bucket_arn   = "arn:aws:s3:::test-bucket"
+  lambda_invocation_arns = ["arn:aws:lambda:us-east-1:123456789012:function:test-function"]
   tags = {
     environment = "test"
     owner       = "test-owner"
@@ -45,6 +46,26 @@ run "valid_aurora_creation" {
   }
 
   assert {
+    condition     = aws_rds_cluster.this.backup_retention_period == 7
+    error_message = "Backup retention period should be 7 days"
+  }
+
+  assert {
+    condition     = aws_rds_cluster.this.storage_type == "aurora-iopt1"
+    error_message = "Storage type should be aurora-iopt1 (I/O-Optimized)"
+  }
+
+  assert {
+    condition     = aws_rds_cluster.this.db_cluster_parameter_group_name == aws_rds_cluster_parameter_group.this.name
+    error_message = "Cluster should be associated with the custom parameter group"
+  }
+
+  assert {
+    condition     = anytrue([for p in aws_rds_cluster_parameter_group.this.parameter : p.name == "rds.allowed_extensions" && p.value == "pgvector,aws_lambda,aws_s3"])
+    error_message = "Parameter rds.allowed_extensions should be correctly configured"
+  }
+
+  assert {
     condition     = aws_rds_cluster_instance.this[0].instance_class == var.instance_class
     error_message = "Instance class does not match"
   }
@@ -52,6 +73,11 @@ run "valid_aurora_creation" {
   assert {
     condition     = aws_rds_cluster_role_association.s3_import[0].feature_name == "s3Import"
     error_message = "Feature name should be s3Import"
+  }
+
+  assert {
+    condition     = aws_rds_cluster_role_association.lambda[0].feature_name == "Lambda"
+    error_message = "Feature name should be Lambda"
   }
 
   assert {
