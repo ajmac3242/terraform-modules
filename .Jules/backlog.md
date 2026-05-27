@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-24
+> **Last reviewed:** 2026-05-28
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -54,10 +54,76 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Immediate Ready Queue
 
-> [!NOTE]
-> All high-priority foundational items are currently in progress or completed. The queue is ready for next-priority intake.
+### aws/base_component/bedrock_agent_core: Support Browser tool
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_agent_core
+**Why:** May 2026 updates introduced browser capabilities for agents. `aws_bedrockagentcore_browser` is supported in AWS Provider v6.46.0.
+
+#### Acceptance Criteria
+- [ ] Support for browser tool configuration in the AgentCore gateway
+- [ ] Support for session management and sandboxing of browser activities
+- [ ] Mandatory CMK encryption for session logs and history
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates tool configuration
 
 ## Module Backlog
+
+### aws/base_component/extenddb: Opinionated ExtendDB module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/extenddb
+**Why:** ExtendDB (announced May 20, 2026) is an open-source DynamoDB-compatible adapter that enables using the DynamoDB API with pluggable storage backends (like PostgreSQL).
+
+#### Acceptance Criteria
+- [ ] Implement support for ExtendDB adapter configuration
+- [ ] Support for PostgreSQL as the storage backend
+- [ ] Support for DynamoDB API compatibility (Control plane, Data plane, Streams)
+- [ ] Mandatory CMK encryption for storage and logs
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates configuration
+
+---
+
+### aws/base_component/secrets_manager: Managed Rotation for Datadog and Snowflake
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/secrets_manager
+**Why:** May 2026 updates introduced native managed rotation support for Datadog API keys and Snowflake credentials, reducing the need for custom rotation Lambdas.
+
+#### Acceptance Criteria
+- [ ] Implement `aws_secretsmanager_secret_rotation` with managed rotation for Datadog
+- [ ] Implement `aws_secretsmanager_secret_rotation` with managed rotation for Snowflake
+- [ ] Support for specifying rotation schedule and window
+- [ ] Mandatory CMK encryption for secrets
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates rotation configuration
+
+---
+
+### aws/base_component/aws_transform: Opinionated AWS Transform module
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/aws_transform
+**Why:** AWS Transform (May 2026 update) provides a managed service for data transformation and schema mapping, simplifying the bridge between disparate data sources.
+
+#### Acceptance Criteria
+- [ ] `aws_transform_project` (or equivalent) resource implementation
+- [ ] Support for defining transformation logic and schema mappings
+- [ ] Integration with Glue Data Catalog for schema discovery
+- [ ] Mandatory CMK encryption for transformation definitions and logs
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates transformation configuration
+
+---
 
 ### aws/base_component/bedrock_agent_core: Support Online Evaluation
 
@@ -80,26 +146,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ---
 
-### aws/base_component/bedrock_agent_core: Support Browser and Web Search tools
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/bedrock_agent_core
-**Why:** May 2026 updates introduced browser and web search capabilities for agents, enabling them to navigate the web and use search engines to complete tasks.
-
-> [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for Browser and Web Search tool configuration in `aws_bedrockagentcore_gateway`. Verified blocked in AWS Provider v6.46.0.
-
-#### Acceptance Criteria
-- [ ] Support for browser tool configuration in the AgentCore gateway
-- [ ] Support for web search tool configuration (e.g., via MCP or native integration)
-- [ ] Support for session management and sandboxing of browser activities
-- [ ] Mandatory CMK encryption for session logs and history
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates tool configuration
-
----
 
 ### aws/base_component/bedrock_agent_core: Support Agentic Payment Features
 
