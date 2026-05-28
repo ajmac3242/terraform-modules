@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-24
+> **Last reviewed:** 2026-05-29
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -54,8 +54,23 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Immediate Ready Queue
 
-> [!NOTE]
-> All high-priority foundational items are currently in progress or completed. The queue is ready for next-priority intake.
+### aws/base_component/bedrock_agent_core: Support Browser and Web Search tools
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_agent_core
+**Why:** May 2026 updates introduced browser and web search capabilities for agents, enabling them to navigate the web and use search engines to complete tasks. Unblocked in AWS Provider v6.46.0 via `aws_bedrockagentcore_browser`.
+
+#### Acceptance Criteria
+- [ ] Support for browser tool configuration in the AgentCore gateway using `aws_bedrockagentcore_browser`
+- [ ] Support for web search tool configuration (e.g., via MCP or native integration)
+- [ ] Support for session management and sandboxing of browser activities
+- [ ] Mandatory CMK encryption for session logs and history
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates tool configuration
+
+---
 
 ## Module Backlog
 
@@ -77,27 +92,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Mandatory CMK encryption for any stored evaluation results
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates configuration
-
----
-
-### aws/base_component/bedrock_agent_core: Support Browser and Web Search tools
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/bedrock_agent_core
-**Why:** May 2026 updates introduced browser and web search capabilities for agents, enabling them to navigate the web and use search engines to complete tasks.
-
-> [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for Browser and Web Search tool configuration in `aws_bedrockagentcore_gateway`. Verified blocked in AWS Provider v6.46.0.
-
-#### Acceptance Criteria
-- [ ] Support for browser tool configuration in the AgentCore gateway
-- [ ] Support for web search tool configuration (e.g., via MCP or native integration)
-- [ ] Support for session management and sandboxing of browser activities
-- [ ] Mandatory CMK encryption for session logs and history
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates tool configuration
 
 ---
 
@@ -189,6 +183,42 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Required `tags` enforced
 - [ ] Outputs: `endpoint_arn`, `recommendation_id`
 - [ ] Native offline Terraform test validates security settings and VPC placement
+
+---
+
+### aws/base_component/extend_db: Opinionated ExtendDB module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/extend_db
+**Why:** AWS announced ExtendDB (May 20, 2026), an open-source DynamoDB-compatible adapter with pluggable storage backends (PostgreSQL reference). Enables the DynamoDB programming model on-premises, at the edge, and for local development.
+
+#### Acceptance Criteria
+- [ ] Standardized deployment of ExtendDB adapter (e.g., via container or EC2)
+- [ ] Support for PostgreSQL storage backend configuration
+- [ ] Mandatory CMK encryption for the underlying storage and logs
+- [ ] Least-privilege IAM roles for the adapter
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates configuration and security settings
+
+---
+
+### aws/base_component/aws_transform: Opinionated AWS Transform module
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/aws_transform
+**Why:** AWS Transform (1-year anniversary May 2026) now includes agentic modernization for code and networks. It optimizes VPC constructs, resolves conflicts, and standardizes naming during migrations.
+
+#### Acceptance Criteria
+- [ ] `aws_transform_modernization_job` resource implementation (pending provider support)
+- [ ] Support for code modernization (language upgrades, framework migration)
+- [ ] Support for network modernization (VPC segmentation, conflict resolution)
+- [ ] Mandatory CMK encryption for all uploaded assets and transformation logs
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates modernization configuration
 
 ---
 

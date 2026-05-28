@@ -53,6 +53,8 @@ Navigator should actively consider and maintain backlog readiness for modules su
 - `aws/base_component/ecr`
 - `aws/base_component/alb`
 - `aws/base_component/cloudwatch_alarm`
+- `aws/base_component/extend_db`
+- `aws/base_component/aws_transform`
 - `aws/workload_component/eventbridge_lambda`
 - `aws/workload_component/s3_lambda_trigger`
 - `aws/workload_component/step_functions_lambda`
@@ -119,6 +121,7 @@ _`- [YYYY-MM-DD] <topic> — <decision and rationale>`_
 
 ## Session Log
 
+- [2026-05-29] Navigator session. Synchronized backlog for May 29, 2026. Promoted Bedrock AgentCore Browser tool to the Immediate Ready Queue after confirming `aws_bedrockagentcore_browser` in AWS Provider v6.46.0. Conducted intake for ExtendDB (HIGH) and AWS Transform (MEDIUM) following May 2026 service updates. Confirmed continued provider blockers for Amazon Quick, DevOps Agent, and Online Evaluation via schema audit of v6.46.0. Verified repository health via `terraform test` in `aws/base_component/iam`.
 - [2026-05-24] Navigator session. Synchronized backlog with the repository state by moving completed `aurora_postgresql` and `observability_admin` modules to history. Conducted roadmap expansion for Agentic AI: added Bedrock AgentCore Online Evaluation and Browser/Web Search tools to the backlog. Online Evaluation remains blocked by AWS Provider v6.47.0 (unreleased). Verified repository health via `terraform test` in `aws/base_component/iam`.
 - [2026-05-23] Navigator session. Conducted audit of unreleased AWS Provider v6.47.0 schema. Confirmed continued blockers for Amazon Quick and DevOps Agent. Promoted Aurora PostgreSQL (billion-scale SQL) and Observability Admin to the Ready Queue with refined acceptance criteria. Synchronized backlog by moving completed May 2026 security responses to history. Verified repository health via `terraform test` in `aws/base_component/iam`.
 - [2026-05-22] Navigator session. Conducted audit of AWS Provider v6.46.0 and May 2026 service updates. Prioritized Aurora PostgreSQL with S3 Vector Search (billion-scale SQL queries) to support advanced GenAI and RAG patterns. Introduced the Observability Admin module following the GA of `aws_observabilityadmin_telemetry_rule`. Confirmed that Amazon Quick, Bedrock payments, and DevOps Agent remain blocked by provider support. Verified repository health via `terraform test` in `aws/base_component/iam`.
