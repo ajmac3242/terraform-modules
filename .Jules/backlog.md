@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-24
+> **Last reviewed:** 2026-05-29
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -54,21 +54,13 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Immediate Ready Queue
 
-> [!NOTE]
-> All high-priority foundational items are currently in progress or completed. The queue is ready for next-priority intake.
-
-## Module Backlog
-
 ### aws/base_component/bedrock_agent_core: Support Online Evaluation
 
 **Priority:** MEDIUM
 **Type:** Feature
 **Status:** `backlog`
 **Module:** aws/base_component/bedrock_agent_core
-**Why:** Online evaluation configurations continuously monitor agent performance by sampling live traffic from CloudWatch logs and applying evaluators.
-
-> [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_bedrockagentcore_online_evaluation_config` resource. Verified blocked in AWS Provider v6.46.0 (Added in unreleased v6.47.0).
+**Why:** Online evaluation configurations continuously monitor agent performance by sampling live traffic from CloudWatch logs and applying evaluators. Unblocked in AWS Provider v6.47.0.
 
 #### Acceptance Criteria
 - [ ] `aws_bedrockagentcore_online_evaluation_config` resource implementation
@@ -78,7 +70,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates configuration
 
----
+## Module Backlog
 
 ### aws/base_component/bedrock_agent_core: Support Browser and Web Search tools
 
@@ -86,18 +78,33 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Type:** Feature
 **Status:** `backlog`
 **Module:** aws/base_component/bedrock_agent_core
-**Why:** May 2026 updates introduced browser and web search capabilities for agents, enabling them to navigate the web and use search engines to complete tasks.
-
-> [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for Browser and Web Search tool configuration in `aws_bedrockagentcore_gateway`. Verified blocked in AWS Provider v6.46.0.
+**Why:** May 2026 updates introduced browser and web search capabilities for agents. While `aws_bedrockagentcore_browser` is now available, orchestration requires `aws_bedrockagentcore_gateway_target` for tool integration.
 
 #### Acceptance Criteria
-- [ ] Support for browser tool configuration in the AgentCore gateway
-- [ ] Support for web search tool configuration (e.g., via MCP or native integration)
+- [ ] Implement `aws_bedrockagentcore_browser` with mandatory VPC sandboxing
+- [ ] Support for web search tool integration via `aws_bedrockagentcore_gateway_target`
 - [ ] Support for session management and sandboxing of browser activities
 - [ ] Mandatory CMK encryption for session logs and history
 - [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates tool configuration
+- [ ] Native offline Terraform test validates tool orchestration
+
+---
+
+### aws/base_component/bedrock_agent_runtime: Opinionated Bedrock Agent Runtime module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_agent_runtime
+**Why:** May 2026 updates introduced enhanced runtime features, including mounting session storage (S3/EFS) and runtime endpoint management.
+
+#### Acceptance Criteria
+- [ ] `aws_bedrockagentcore_agent_runtime` and `aws_bedrockagentcore_agent_runtime_endpoint` implementation
+- [ ] Support for `filesystem_configuration` for mounting S3 Files or EFS access points
+- [ ] Standardized runtime endpoint configuration for low-latency agentic interactions
+- [ ] Mandatory CMK encryption for mounted session storage
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates runtime and filesystem configuration
 
 ---
 
