@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-24
+> **Last reviewed:** 2026-05-30
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -54,21 +54,13 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Immediate Ready Queue
 
-> [!NOTE]
-> All high-priority foundational items are currently in progress or completed. The queue is ready for next-priority intake.
-
-## Module Backlog
-
 ### aws/base_component/bedrock_agent_core: Support Online Evaluation
 
 **Priority:** MEDIUM
 **Type:** Feature
 **Status:** `backlog`
 **Module:** aws/base_component/bedrock_agent_core
-**Why:** Online evaluation configurations continuously monitor agent performance by sampling live traffic from CloudWatch logs and applying evaluators.
-
-> [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_bedrockagentcore_online_evaluation_config` resource. Verified blocked in AWS Provider v6.46.0 (Added in unreleased v6.47.0).
+**Why:** Online evaluation configurations continuously monitor agent performance by sampling live traffic from CloudWatch logs and applying evaluators. Unblocked in AWS Provider v6.47.0.
 
 #### Acceptance Criteria
 - [ ] `aws_bedrockagentcore_online_evaluation_config` resource implementation
@@ -86,10 +78,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Type:** Feature
 **Status:** `backlog`
 **Module:** aws/base_component/bedrock_agent_core
-**Why:** May 2026 updates introduced browser and web search capabilities for agents, enabling them to navigate the web and use search engines to complete tasks.
-
-> [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for Browser and Web Search tool configuration in `aws_bedrockagentcore_gateway`. Verified blocked in AWS Provider v6.46.0.
+**Why:** May 2026 updates introduced browser and web search capabilities for agents, enabling them to navigate the web and use search engines to complete tasks. Unblocked in AWS Provider v6.47.0.
 
 #### Acceptance Criteria
 - [ ] Support for browser tool configuration in the AgentCore gateway
@@ -98,6 +87,8 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Mandatory CMK encryption for session logs and history
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates tool configuration
+
+## Module Backlog
 
 ---
 
@@ -201,7 +192,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** AWS DevOps Agent (GA May 2026) is an autonomous "frontier agent" for incident investigation and SRE tasks. Standardizing "Spaces" and MCP integrations is key for platform operations.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_devopsagent_space` (or equivalent) resource. Verified still blocked in AWS Provider v6.46.0.
+> **Blocker:** Pending AWS Provider support for `aws_devopsagent_space` (or equivalent) resource. Verified still blocked in AWS Provider v6.47.0.
 
 #### Acceptance Criteria
 - [ ] `aws_devopsagent_space` resource implementation (pending provider support)
@@ -212,6 +203,60 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Mandatory CMK encryption for all data at rest and logs
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates space configuration and security
+
+---
+
+### aws/base_component/bedrock_agent_runtime: Bedrock Agentic Runtime module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_agent_runtime
+**Why:** May 2026 updates introduced the Bedrock Agentic Runtime to support agentic filesystem mounting (S3/EFS) and advanced endpoint management.
+
+#### Acceptance Criteria
+- [ ] Implement `aws_bedrockagent_runtime` resource
+- [ ] Support for mounting S3 buckets and EFS file systems for agent persistence
+- [ ] Support for advanced endpoint configuration and management
+- [ ] Mandatory CMK encryption for all persistent data and session history
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates runtime configuration
+
+---
+
+### aws/base_component/extenddb: Opinionated AWS ExtendDB module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/extenddb
+**Why:** ExtendDB (GA May 20, 2026) allows seamless expansion of relational databases into S3 for cost-effective cold storage while maintaining queryability.
+
+#### Acceptance Criteria
+- [ ] `aws_extenddb_archive_rule` resource implementation
+- [ ] Support for defining archival policies based on age or row-level metadata
+- [ ] Mandatory CMK encryption for archived data in S3
+- [ ] Support for transparent query redirection to S3 archives
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates archival configuration
+
+---
+
+### aws/base_component/aws_transform: Opinionated AWS Transform module
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/aws_transform
+**Why:** AWS Transform (GA May 20, 2026) provides a high-performance, serverless data transformation engine for streaming and batch workloads.
+
+#### Acceptance Criteria
+- [ ] `aws_transform_project` resource implementation
+- [ ] Support for defining transformation logic using SQL or Python
+- [ ] Support for streaming (Kinesis/MSK) and batch (S3) sources
+- [ ] Mandatory CMK encryption for intermediate state and logs
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates transformation configuration
 
 ---
 
@@ -1625,6 +1670,10 @@ Retain previously completed module entries below this line for historical tracki
 - [x] Enforced 30-day recovery window
 - [x] Required tags enforced
 - [x] Terraform test provided
+
+#### Roadmap
+- [ ] Add managed rotation for Datadog API keys
+- [ ] Add managed rotation for Snowflake credentials
 
 ---
 
