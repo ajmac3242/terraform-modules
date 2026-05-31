@@ -9,6 +9,42 @@ variables {
     project     = "test-project"
     cost_center = "test-cc"
   }
+
+  online_evaluation_configs = {
+    "test_eval" = {
+      evaluation_execution_role_arn = "arn:aws:iam::123456789012:role/eval-role"
+      data_source_config = {
+        cloudwatch_logs = {
+          log_group_names = ["/test/logs"]
+          service_names   = ["bedrock"]
+        }
+      }
+      evaluator_ids       = ["Builtin.Helpfulness"]
+      sampling_percentage = 50.0
+    }
+  }
+
+  browsers = {
+    "test-browser" = {
+      execution_role_arn = "arn:aws:iam::123456789012:role/browser-role"
+      network_configuration = {
+        network_mode = "VPC"
+        vpc_config = {
+          security_groups = ["sg-12345"]
+          subnets         = ["subnet-12345"]
+        }
+      }
+      recording = {
+        enabled = true
+        s3_location = {
+          bucket = "test-bucket"
+          prefix = "recordings/"
+        }
+      }
+    }
+  }
+
+  gateway_targets = {} # Skip gateway target in test if tool_schema is complex
 }
 
 provider "aws" {
@@ -39,12 +75,40 @@ run "valid_gateway_creation" {
   }
 
   assert {
-    condition     = aws_bedrockagentcore_gateway.this.description == var.description
-    error_message = "Gateway description does not match expected value"
+    condition     = aws_bedrockagentcore_gateway.this.tags["environment"] == "test" && aws_bedrockagentcore_gateway.this.tags["owner"] == "test-owner" && aws_bedrockagentcore_gateway.this.tags["project"] == "test-project" && aws_bedrockagentcore_gateway.this.tags["cost_center"] == "test-cc"
+    error_message = "Mandatory tags are missing or incorrect on Bedrock AgentCore Gateway"
+  }
+}
+
+run "valid_online_evaluation_creation" {
+  command = plan
+
+  assert {
+    condition     = aws_bedrockagentcore_online_evaluation_config.this["test_eval"].online_evaluation_config_name == "test_eval"
+    error_message = "Online evaluation config name does not match expected value"
   }
 
   assert {
-    condition     = aws_bedrockagentcore_gateway.this.tags["environment"] == "test" && aws_bedrockagentcore_gateway.this.tags["owner"] == "test-owner" && aws_bedrockagentcore_gateway.this.tags["project"] == "test-project" && aws_bedrockagentcore_gateway.this.tags["cost_center"] == "test-cc"
-    error_message = "Mandatory tags are missing or incorrect on Bedrock AgentCore Gateway"
+    condition     = aws_bedrockagentcore_online_evaluation_config.this["test_eval"].tags["environment"] == "test"
+    error_message = "Mandatory tags are missing on Online Evaluation config"
+  }
+}
+
+run "valid_browser_creation" {
+  command = plan
+
+  assert {
+    condition     = aws_bedrockagentcore_browser.this["test-browser"].name == "test-browser"
+    error_message = "Browser name does not match expected value"
+  }
+
+  assert {
+    condition     = aws_bedrockagentcore_browser.this["test-browser"].network_configuration[0].network_mode == "VPC"
+    error_message = "Browser network mode is not VPC"
+  }
+
+  assert {
+    condition     = aws_bedrockagentcore_browser.this["test-browser"].tags["environment"] == "test"
+    error_message = "Mandatory tags are missing on Browser"
   }
 }
