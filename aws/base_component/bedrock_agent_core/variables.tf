@@ -81,7 +81,7 @@ variable "online_evaluation_configs" {
         service_names   = list(string)
       })
     })
-    evaluator_ids = list(string)
+    evaluator_ids       = list(string)
     sampling_percentage = optional(number)
   }))
   default = {}
