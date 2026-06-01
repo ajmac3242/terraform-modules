@@ -80,7 +80,10 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Type:** Feature
 **Status:** `backlog`
 **Module:** aws/base_component/bedrock_agent_core
-**Why:** Online evaluation configurations continuously monitor agent performance by sampling live traffic from CloudWatch logs and applying evaluators. Unblocked in AWS Provider v6.47.0.
+**Why:** Online evaluation configurations continuously monitor agent performance by sampling live traffic from CloudWatch logs and applying evaluators.
+
+> [!IMPORTANT]
+> **Blocker:** Pending AWS Provider support for `aws_bedrockagentcore_online_evaluation_config` resource. Verified still missing in AWS Provider v6.46.0 schema audit (2026-05-26). Added in unreleased v6.47.0.
 
 #### Acceptance Criteria
 - [ ] `aws_bedrockagentcore_online_evaluation_config` resource implementation
@@ -98,7 +101,10 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Type:** Feature
 **Status:** `backlog`
 **Module:** aws/base_component/bedrock_agent_core
-**Why:** May 2026 updates introduced browser and web search capabilities for agents, enabling them to navigate the web and use search engines to complete tasks. Unblocked in AWS Provider v6.47.0.
+**Why:** May 2026 updates introduced browser and web search capabilities for agents, enabling them to navigate the web and use search engines to complete tasks.
+
+> [!IMPORTANT]
+> **Blocker:** Pending AWS Provider support for Browser and Web Search tool configuration in `aws_bedrockagentcore_gateway`. Verified blocked in AWS Provider v6.46.0 schema audit (2026-05-26). Standalone `aws_bedrockagentcore_browser` exists but gateway attributes and web search resources are missing.
 
 #### Acceptance Criteria
 - [ ] Support for browser tool configuration (`aws_bedrockagentcore_browser`)
