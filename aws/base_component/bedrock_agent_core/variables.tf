@@ -69,6 +69,71 @@ variable "protocol_configuration" {
   default = null
 }
 
+variable "online_evaluation_configs" {
+  description = "A map of Online Evaluation configurations to create."
+  type = map(object({
+    description                   = optional(string)
+    evaluation_execution_role_arn = string
+    enable_on_create              = optional(bool, true)
+    data_source_config = object({
+      cloudwatch_logs = object({
+        log_group_names = list(string)
+        service_names   = list(string)
+      })
+    })
+    evaluator_ids       = list(string)
+    sampling_percentage = optional(number)
+  }))
+  default = {}
+
+  validation {
+    condition = alltrue([
+      for k, v in var.online_evaluation_configs : (
+        v.sampling_percentage == null || (v.sampling_percentage >= 0 && v.sampling_percentage <= 100)
+      )
+    ])
+    error_message = "sampling_percentage must be between 0 and 100."
+  }
+}
+
+variable "browsers" {
+  description = "A map of Bedrock AgentCore Browsers to create."
+  type = map(object({
+    description        = optional(string)
+    execution_role_arn = string
+    network_configuration = object({
+      network_mode = string
+      vpc_config = object({
+        security_groups = list(string)
+        subnets         = list(string)
+      })
+    })
+    recording = optional(object({
+      enabled = bool
+      s3_location = object({
+        bucket = string
+        prefix = optional(string)
+      })
+    }))
+  }))
+  default = {}
+}
+
+variable "gateway_targets" {
+  description = "A map of Gateway Targets to create for tool orchestration."
+  type = map(object({
+    description = optional(string)
+    target_configuration = object({
+      mcp = object({
+        lambda = optional(object({
+          lambda_arn = string
+        }))
+      })
+    })
+  }))
+  default = {}
+}
+
 variable "tags" {
   description = "A map of tags to assign to the resources. Required keys: environment, owner, project, cost_center."
   type        = map(string)
