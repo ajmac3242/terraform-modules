@@ -29,8 +29,9 @@ module "observability_admin" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | `rule_name` | The name of the telemetry rule | `string` | n/a | yes |
-| `telemetry_type` | The type of telemetry to collect (e.g., Logs, Metrics, Traces) | `string` | n/a | yes |
+| telemetry_type | The type of telemetry to collect (Logs, Metrics, Traces) | `string` | n/a | yes |
 | `resource_type` | The type of resource to apply the rule to (e.g., AWS::Lambda::Function) | `string` | `null` | no |
+| is_organization_rule | Whether to create the rule at the organizational level | `bool` | `false` | no |
 | `tags` | Standard tags for all resources | `map(string)` | n/a | yes |
 
 ## Outputs
