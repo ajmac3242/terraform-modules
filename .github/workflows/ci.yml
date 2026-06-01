@@ -1,46 +1,77 @@
 name: CI
 
 on:
-  pull_request:
-    branches:
-      - main
-    paths:
-      - 'aws/**'
-      - '.github/workflows/ci.yml'
-      - '.terraform-docs.yml'
-      - '.tflint.hcl'
   push:
-    branches:
-      - main
-    paths:
-      - 'aws/**'
-      - '.github/workflows/ci.yml'
-      - '.terraform-docs.yml'
-      - '.tflint.hcl'
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+    types: [ opened, synchronize, reopened ]
+  workflow_dispatch:
 
 concurrency:
-  group: ci-${{ github.workflow }}-${{ github.ref }}
+  group: ci-${{ github.ref }}
   cancel-in-progress: true
-
-permissions:
-  contents: write
-  pull-requests: write
 
 env:
   TF_IN_AUTOMATION: "true"
   TF_INPUT: "false"
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
-jobs:
-  fmt:
-    name: Terraform Fmt
-    runs-on: ubuntu-latest
+defaults:
+  run:
+    shell: bash
 
+permissions:
+  contents: write
+  pull-requests: write
+  actions: read
+
+# ---------------------------------------------------------------
+# Module directories — update this list as modules are added
+# ---------------------------------------------------------------
+# To add a new module, append to this list and the matrix jobs
+# will automatically pick it up.
+
+jobs:
+  # ---------------------------------------------------------------
+  # Path Filtering: Determines what changed
+  # ---------------------------------------------------------------
+  filter:
+    name: Filter Changes
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      terraform: ${{ steps.filter.outputs.terraform }}
     steps:
-      - name: Checkout
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Filter paths
+        uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          filters: |
+            terraform:
+              - 'aws/**'
+              - '.tflint.hcl'
+              - '.terraform-docs.yml'
+              - '.github/workflows/ci.yml'
+
+  # ---------------------------------------------------------------
+  # Terraform Auto-Fix (best-effort: fmt + commit, never blocks pipeline)
+  # ---------------------------------------------------------------
+  terraform-auto-fix:
+    name: Terraform Auto-Fix
+    needs: filter
+    if: always() && needs.filter.outputs.terraform == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout code
         uses: actions/checkout@v5
         with:
           ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          fetch-depth: 0
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -48,32 +79,36 @@ jobs:
           terraform_wrapper: false
 
       - name: Format Terraform
-        run: terraform fmt -recursive
+        run: terraform fmt -recursive || true
 
       - name: Commit formatting changes
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: ${{ github.event.pull_request.head.ref || github.ref_name }}
-          commit_message: "style(terraform): auto-format Terraform"
+          commit_message: "style(terraform): auto-format Terraform [skip ci]"
+          file_pattern: "aws/**/*.tf"
 
+  # ---------------------------------------------------------------
+  # Terraform Validate (matrix over all modules, parallel with lint)
+  # ---------------------------------------------------------------
   validate:
     name: Terraform Validate
+    needs: [filter, terraform-auto-fix]
+    if: always() && needs.filter.outputs.terraform == 'true' && (needs.terraform-auto-fix.result == 'success' || needs.terraform-auto-fix.result == 'skipped')
     runs-on: ubuntu-latest
-    needs: fmt
+    timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
         working-directory:
           - aws/base_component/lambda
           - aws/workload_component/apigw_lambda
-
     defaults:
       run:
         shell: bash
         working-directory: ${{ matrix.working-directory }}
-
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v5
 
       - name: Setup Terraform
@@ -82,29 +117,38 @@ jobs:
           terraform_wrapper: false
 
       - name: Terraform Init
-        run: terraform init -backend=false -input=false
+        run: |
+          echo "::group::Terraform Init"
+          terraform init -backend=false -input=false
+          echo "::endgroup::"
 
       - name: Terraform Validate
-        run: terraform validate -no-color
+        run: |
+          echo "::group::Terraform Validate"
+          terraform validate -no-color
+          echo "::endgroup::"
 
+  # ---------------------------------------------------------------
+  # Terraform Lint (matrix over all modules, parallel with validate)
+  # ---------------------------------------------------------------
   lint:
     name: Terraform Lint
+    needs: [filter, terraform-auto-fix]
+    if: always() && needs.filter.outputs.terraform == 'true' && (needs.terraform-auto-fix.result == 'success' || needs.terraform-auto-fix.result == 'skipped')
     runs-on: ubuntu-latest
-    needs: validate
+    timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
         working-directory:
           - aws/base_component/lambda
           - aws/workload_component/apigw_lambda
-
     defaults:
       run:
         shell: bash
         working-directory: ${{ matrix.working-directory }}
-
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v5
 
       - name: Setup Terraform
@@ -122,27 +166,41 @@ jobs:
         uses: terraform-linters/setup-tflint@v4
 
       - name: Init TFLint
-        run: tflint --init
+        run: |
+          echo "::group::TFLint Init"
+          tflint --init
+          echo "::endgroup::"
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Run TFLint
-        run: tflint -f compact
+        run: |
+          echo "::group::TFLint Run"
+          tflint -f compact
+          echo "::endgroup::"
 
+  # ---------------------------------------------------------------
+  # Terraform Docs (PR only, runs after validate + lint both pass)
+  # ---------------------------------------------------------------
   docs:
     name: Terraform Docs
+    needs: [filter, validate, lint]
+    if: >
+      always() &&
+      github.event_name == 'pull_request' &&
+      needs.filter.outputs.terraform == 'true' &&
+      (needs.validate.result == 'success' || needs.validate.result == 'skipped') &&
+      (needs.lint.result == 'success' || needs.lint.result == 'skipped')
     runs-on: ubuntu-latest
-    needs: lint
-    if: github.event_name == 'pull_request'
+    timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
         working-directory:
           - aws/base_component/lambda
           - aws/workload_component/apigw_lambda
-
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v5
         with:
           ref: ${{ github.event.pull_request.head.ref }}
@@ -154,3 +212,81 @@ jobs:
           output-file: README.md
           output-method: inject
           git-push: "true"
+
+  # ---------------------------------------------------------------
+  # Decision Gate
+  # ---------------------------------------------------------------
+  decision-gate:
+    name: Decision Gate
+    runs-on: ubuntu-latest
+    if: always()
+    needs: [filter, terraform-auto-fix, validate, lint, docs]
+    outputs:
+      can_merge: ${{ steps.decide.outputs.can_merge }}
+    steps:
+      - name: Write CI Summary
+        run: |
+          echo "### CI Run Summary 🚀" >> $GITHUB_STEP_SUMMARY
+          echo "| Component | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "| :--- | :--- |" >> $GITHUB_STEP_SUMMARY
+          echo "| Terraform Auto-Fix | ${{ needs.terraform-auto-fix.result == 'success' && '✅ Success' || needs.terraform-auto-fix.result == 'skipped' && 'ℹ️ Skipped' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Validate | ${{ needs.filter.outputs.terraform == 'true' && (needs.validate.result == 'success' && '✅ Success' || needs.validate.result == 'skipped' && 'ℹ️ Skipped' || '❌ Failed') || 'ℹ️ Unchanged' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Lint | ${{ needs.filter.outputs.terraform == 'true' && (needs.lint.result == 'success' && '✅ Success' || needs.lint.result == 'skipped' && 'ℹ️ Skipped' || '❌ Failed') || 'ℹ️ Unchanged' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Docs | ${{ needs.docs.result == 'success' && '✅ Success' || needs.docs.result == 'skipped' && 'ℹ️ Skipped' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+
+      - name: Evaluate workflow outcomes
+        id: decide
+        env:
+          AUTOFIX_RESULT: ${{ needs.terraform-auto-fix.result }}
+          VALIDATE_RESULT: ${{ needs.validate.result }}
+          LINT_RESULT: ${{ needs.lint.result }}
+          DOCS_RESULT: ${{ needs.docs.result }}
+          TERRAFORM_CHANGED: ${{ needs.filter.outputs.terraform || 'false' }}
+        run: |
+          set -euo pipefail
+
+          echo "=== Decision Gate Debug ==="
+          echo "TERRAFORM_CHANGED='$TERRAFORM_CHANGED'"
+          echo "AUTOFIX_RESULT='$AUTOFIX_RESULT'"
+          echo "VALIDATE_RESULT='$VALIDATE_RESULT'"
+          echo "LINT_RESULT='$LINT_RESULT'"
+          echo "DOCS_RESULT='$DOCS_RESULT'"
+
+          can_merge=false
+
+          if { [ "$AUTOFIX_RESULT"  = "success" ] || [ "$AUTOFIX_RESULT"  = "skipped" ]; } && \
+             { [ "$VALIDATE_RESULT" = "success" ] || [ "$VALIDATE_RESULT" = "skipped" ]; } && \
+             { [ "$LINT_RESULT"     = "success" ] || [ "$LINT_RESULT"     = "skipped" ]; } && \
+             { [ "$DOCS_RESULT"     = "success" ] || [ "$DOCS_RESULT"     = "skipped" ]; }; then
+            can_merge=true
+          fi
+
+          echo "can_merge=$can_merge" >> "$GITHUB_OUTPUT"
+          echo "==========================="
+          echo "can_merge=$can_merge"
+
+  # ---------------------------------------------------------------
+  # Auto-Merge PR
+  # ---------------------------------------------------------------
+  auto-merge:
+    name: Auto-Merge PR
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [decision-gate]
+    if: >
+      always() &&
+      github.event_name == 'pull_request' &&
+      needs.decision-gate.result == 'success' &&
+      needs.decision-gate.outputs.can_merge == 'true'
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Merge PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr merge "${{ github.event.pull_request.number }}" \
+            --repo "${{ github.repository }}" \
+            --squash \
+            --delete-branch
