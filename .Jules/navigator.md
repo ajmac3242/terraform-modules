@@ -53,6 +53,8 @@ Navigator should actively consider and maintain backlog readiness for modules su
 - `aws/base_component/ecr`
 - `aws/base_component/alb`
 - `aws/base_component/cloudwatch_alarm`
+- `aws/base_component/extend_db`
+- `aws/base_component/aws_transform`
 - `aws/workload_component/eventbridge_lambda`
 - `aws/workload_component/s3_lambda_trigger`
 - `aws/workload_component/step_functions_lambda`
@@ -119,6 +121,7 @@ _`- [YYYY-MM-DD] <topic> — <decision and rationale>`_
 
 ## Session Log
 
+- [2026-05-29] Navigator session. Synchronized backlog for May 29, 2026. Promoted Bedrock AgentCore Browser tool to the Immediate Ready Queue after confirming `aws_bedrockagentcore_browser` in AWS Provider v6.46.0. Conducted intake for ExtendDB (HIGH) and AWS Transform (MEDIUM) following May 2026 service updates. Confirmed continued provider blockers for Amazon Quick, DevOps Agent, and Online Evaluation via schema audit of v6.46.0. Verified repository health via `terraform test` in `aws/base_component/iam`.
 - [2026-05-29] Navigator session. Conducted audit of AWS Provider v6.47.0. Promoted Bedrock AgentCore Online Evaluation to the Immediate Ready Queue after confirming provider support. Refined criteria for Browser and Web Search tools to leverage `aws_bedrockagentcore_gateway_target` for orchestration. Introduced `aws/base_component/bedrock_agent_runtime` to the roadmap to support new session mounting and runtime endpoint features. Verified repository health via `terraform test` in `aws/base_component/iam`.
 - [2026-05-30] Navigator session. Synchronized `.Jules/backlog.md` with latest service and provider updates. Promoted Bedrock AgentCore 'Online Evaluation' and 'Browser' tools to the Immediate Ready Queue after confirming support in AWS Provider v6.47.0. Introduced new base modules to the roadmap: `bedrock_agent_runtime` (filesystem mounting/endpoints), `extenddb` (cold storage archival), and `aws_transform` (serverless data transformation). Added managed rotation for Datadog and Snowflake to the Secrets Manager roadmap. Verified repository health via `terraform test` in `aws/base_component/iam`.
 - [2026-05-31] Navigator session. Updated backlog and journal following audit of AWS Provider v6.47.0. Promoted Bedrock AgentCore 'Online Evaluation' and 'Browser' tools to the Immediate Ready Queue after confirming provider support. Performed intake for new base modules: `bedrock_agent_runtime` (HIGH), `extenddb` (HIGH), and `aws_transform` (MEDIUM) following May 2026 service updates. Confirmed that Amazon Quick, DevOps Agent, and Bedrock Agentic Payments remain blocked by the provider. Verified repository health via native `terraform test` in `aws/base_component/iam`.
