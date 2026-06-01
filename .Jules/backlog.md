@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-05-24
+> **Last reviewed:** 2026-06-02
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -54,8 +54,8 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Immediate Ready Queue
 
-> [!NOTE]
-> All high-priority foundational items are currently in progress or completed. The queue is ready for next-priority intake.
+- [ ] `aws/base_component/bedrock_agent_core`: Support Online Evaluation (Unblocked by AWS Provider v6.47.0)
+- [ ] `aws/base_component/bedrock_agent_core`: Support Browser and Web Search tools (Unblocked by AWS Provider v6.47.0)
 
 ## Module Backlog
 
@@ -66,9 +66,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Status:** `backlog`
 **Module:** aws/base_component/bedrock_agent_core
 **Why:** Online evaluation configurations continuously monitor agent performance by sampling live traffic from CloudWatch logs and applying evaluators.
-
-> [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_bedrockagentcore_online_evaluation_config` resource. Verified blocked in AWS Provider v6.46.0 (Added in unreleased v6.47.0).
 
 #### Acceptance Criteria
 - [ ] `aws_bedrockagentcore_online_evaluation_config` resource implementation
@@ -87,9 +84,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Status:** `backlog`
 **Module:** aws/base_component/bedrock_agent_core
 **Why:** May 2026 updates introduced browser and web search capabilities for agents, enabling them to navigate the web and use search engines to complete tasks.
-
-> [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for Browser and Web Search tool configuration in `aws_bedrockagentcore_gateway`. Verified blocked in AWS Provider v6.46.0.
 
 #### Acceptance Criteria
 - [ ] Support for browser tool configuration in the AgentCore gateway
@@ -118,6 +112,57 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Mandatory CMK encryption for transaction logs/data
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates payment configuration
+
+---
+
+### aws/base_component/bedrock_agent_runtime: Opinionated Bedrock Agent Runtime module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_agent_runtime
+**Why:** Strategic base module for managing agent execution endpoints, session management, and filesystem mounting (S3/EFS).
+
+#### Acceptance Criteria
+- [ ] Support for agent invocation and session state management
+- [ ] Support for mounting S3 or EFS filesystems (announced Q2 2026)
+- [ ] Mandatory CMK encryption for all session data
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates runtime configuration
+
+---
+
+### aws/base_component/extenddb: Opinionated ExtendDB module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/extenddb
+**Why:** AWS ExtendDB (GA May 2026) provides a managed solution for extending local databases to the cloud with minimal latency.
+
+#### Acceptance Criteria
+- [ ] `aws_extenddb_cluster` resource implementation
+- [ ] Support for VPC peering/Interconnect integration
+- [ ] Mandatory CMK encryption for data at rest
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates cluster configuration
+
+---
+
+### aws/base_component/aws_transform: Opinionated AWS Transform module
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/aws_transform
+**Why:** AWS Transform (GA May 2026) automates data schema mapping and transformation for heterogeneous data migrations.
+
+#### Acceptance Criteria
+- [ ] `aws_transform_job` resource implementation
+- [ ] Support for source and target schema mapping
+- [ ] Mandatory CMK encryption for transformation logs
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates job configuration
 
 ---
 
@@ -238,6 +283,36 @@ All modules in this repo MUST comply with these non-negotiable standards:
 ---
 
 ## Review-Discovered Improvement Queue
+
+### aws/base_component/aurora_postgresql: Restore Vector Search and Hardening
+
+**Priority:** HIGH
+**Type:** Refactor
+**Status:** `backlog`
+**Module:** aws/base_component/aurora_postgresql
+**Why:** Address regressions in PR #81 where parameter group configurations for `pgvector`, `aws_lambda`, and `aws_s3` were missing, and storage/backup defaults were not enforced.
+
+#### Acceptance Criteria
+- [ ] Restore `aws_rds_cluster_parameter_group` with `rds.allowed_extensions = "pgvector,aws_lambda,aws_s3"`
+- [ ] Enforce `storage_type = "aurora-iopt1"` and `backup_retention_period = 7` as organizational defaults
+- [ ] Re-implement `rds_lambda_role` and `aws_rds_cluster_role_association` for Lambda integration
+- [ ] Native offline Terraform test validates parameter group and IAM association
+
+---
+
+### aws/base_component/observability_admin: Support Organization-level rules
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/observability_admin
+**Why:** Expand the module to support organizational telemetry rules following the GA of `aws_observabilityadmin_telemetry_rule_for_organization` in AWS Provider v6.46.0.
+
+#### Acceptance Criteria
+- [ ] Support `aws_observabilityadmin_telemetry_rule_for_organization` resource
+- [ ] Add `is_organization_rule` toggle to the module
+- [ ] Update outputs to handle both local and organizational rule IDs using `try()`
+- [ ] Native offline Terraform test validates organizational rule configuration
 
 ***
 
@@ -1625,6 +1700,10 @@ Retain previously completed module entries below this line for historical tracki
 - [x] Enforced 30-day recovery window
 - [x] Required tags enforced
 - [x] Terraform test provided
+
+#### Future Roadmap
+- [ ] Support managed rotation for Datadog API keys
+- [ ] Support managed rotation for Snowflake credentials
 
 ---
 

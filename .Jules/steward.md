@@ -132,6 +132,7 @@ _`- [YYYY-MM-DD] Reviewed daily PRs. Applied fixes where needed.`_
 - [2026-05-22] Reviewed daily PRs. Applied follow-up fixes for documentation, outputs, and IMDSv2 hardening.
 - [2026-05-20] Reviewed daily PRs. Applied follow-up fixes for documentation, outputs, and security patching.
 - [2026-05-24] Reviewed and hardened `aurora_postgresql` and `observability_admin` modules (PR #92). Hardening included adding regex validation for `kms_key_arn` in Aurora, adding `telemetry_type` validation in Observability Admin, and standardizing AWS provider constraints to `~> 5.0` and `~> 6.45` respectively. Expanded test assertions for Aurora to verify SG and subnet group details. Verified all changes pass native `terraform test` and maintained environment hygiene.
+- [2026-06-01] Resolved major regressions in `aurora_postgresql`, `observability_admin`, and `bedrock_agent_core`. Restored hardening for Aurora (parameter group, Lambda integration) and Observability (organizational rules). Expanded Bedrock AgentCore with Online Evaluation, Browser tool, and Gateway Target support. Verified all changes with native `terraform test` and standardized documentation.
 
 - [2026-04-25] Journal initialized. Ready to review daily PRs and apply follow-up fixes.
 - [2026-04-26] Reviewed daily PRs (PR #9). Applied follow-up fixes for tagging, missing tests, mandatory CMK for EventBridge, and output completeness.

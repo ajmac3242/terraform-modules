@@ -28,6 +28,11 @@ output "rds_s3_role_arn" {
   value       = length(module.rds_s3_role) > 0 ? module.rds_s3_role[0].role_arn : null
 }
 
+output "rds_lambda_role_arn" {
+  description = "The ARN of the IAM role for Lambda integration"
+  value       = length(module.rds_lambda_role) > 0 ? module.rds_lambda_role[0].role_arn : null
+}
+
 output "tags" {
   description = "A map of tags assigned to the resource"
   value       = aws_rds_cluster.this.tags_all

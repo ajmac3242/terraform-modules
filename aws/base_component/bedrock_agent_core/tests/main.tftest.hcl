@@ -65,6 +65,11 @@ run "valid_gateway_creation" {
   }
 
   assert {
+    condition     = aws_bedrockagentcore_gateway.this.description == var.description
+    error_message = "Gateway description does not match expected value"
+  }
+
+  assert {
     condition     = aws_bedrockagentcore_gateway.this.role_arn == var.role_arn
     error_message = "Gateway role ARN does not match expected value"
   }
