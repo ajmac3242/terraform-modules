@@ -9,6 +9,12 @@ variable "engine_version" {
   default     = "16.1"
 }
 
+variable "db_cluster_parameter_group_family" {
+  description = "The family of the DB cluster parameter group"
+  type        = string
+  default     = "aurora-postgresql16"
+}
+
 variable "instance_class" {
   description = "The instance class for Aurora cluster instances"
   type        = string
@@ -61,6 +67,30 @@ variable "s3_import_bucket_arn" {
   description = "Optional ARN of the S3 bucket to allow Aurora to import data from"
   type        = string
   default     = null
+}
+
+variable "lambda_invocation_arns" {
+  description = "Optional list of Lambda function ARNs that Aurora is allowed to invoke"
+  type        = list(string)
+  default     = []
+}
+
+variable "backup_retention_period" {
+  description = "The days to retain backups for"
+  type        = number
+  default     = 7
+}
+
+variable "storage_type" {
+  description = "The storage type for the DB cluster. Use 'aurora-iopt1' for I/O-Optimized."
+  type        = string
+  default     = "aurora-iopt1"
+}
+
+variable "allowed_extensions" {
+  description = "Comma-separated list of allowed extensions for the DB cluster."
+  type        = string
+  default     = "pgvector,aws_lambda,aws_s3"
 }
 
 variable "vpc_cidr_block" {
