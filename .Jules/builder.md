@@ -165,4 +165,7 @@ _`- [YYYY-MM-DD] Built <module path>. PR #<number>.`_
 - [2026-05-23] aurora_postgresql — Implemented S3 integration for vector search import with mandatory CMK encryption and VPC placement.
 - [2026-05-23] observability_admin — Standardized telemetry rule management using the new aws_observabilityadmin_telemetry_rule resource.
 - [2026-05-25] Session concluded early. All current backlog items (Online Evaluation, Browser/Web Search, Agentic Payments, Amazon Quick, Optimized SageMaker Inference, DevOps Agent) are blocked by missing AWS Provider resources or attributes in v6.46.0. Backlog updated with blocker details.
+- [2026-06-02] bedrock_agent_core — Discovered that `aws_bedrockagentcore_browser` and `aws_bedrockagentcore_online_evaluation_config` do not support a top-level `kms_key_arn` attribute in AWS Provider v6.47.0. Hardening deferred to storage layer.
+- [2026-06-02] aurora_postgresql — Verified restoration of vector search and Lambda integration.
+- [2026-06-02] observability_admin — Verified support for organizational telemetry rules.
 - [2026-05-26] Session concluded early. All backlog items remain blocked by AWS Provider v6.46.0 gaps. Verified standalone `aws_bedrockagentcore_browser` existence but confirmed missing gateway integration.
