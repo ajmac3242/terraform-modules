@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-06-02
+> **Last reviewed:** 2026-06-03
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -54,43 +54,9 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Immediate Ready Queue
 
-### aws/base_component/bedrock_agent_runtime: Opinionated Bedrock Agent Runtime module
+_The Ready Queue is currently empty. All high-priority items are awaiting unblocking by the AWS Provider._
 
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/bedrock_agent_runtime
-**Why:** May 2026 updates introduced enhanced runtime features, including mounting session storage (S3/EFS) and runtime endpoint management.
-
-#### Acceptance Criteria
-- [ ] `aws_bedrockagentcore_agent_runtime` and `aws_bedrockagentcore_agent_runtime_endpoint` implementation
-- [ ] Support for `filesystem_configuration` for mounting S3 Files or EFS access points
-- [ ] Standardized runtime endpoint configuration for low-latency agentic interactions
-- [ ] Mandatory CMK encryption for mounted session storage
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates runtime and filesystem configuration
-
----
-
-### aws/base_component/bedrock_agent_runtime: Opinionated Bedrock Agent Runtime module
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/bedrock_agent_runtime
-**Why:** May 2026 updates introduced enhanced runtime features, including mounting session storage (S3/EFS) and runtime endpoint management.
-
-#### Acceptance Criteria
-- [ ] `aws_bedrockagentcore_agent_runtime` and `aws_bedrockagentcore_agent_runtime_endpoint` implementation
-- [ ] Support for `filesystem_configuration` for mounting S3 Files or EFS access points
-- [ ] Standardized runtime endpoint configuration for low-latency agentic interactions
-- [ ] Mandatory CMK encryption for mounted session storage
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates runtime and filesystem configuration
-
-## Module Backlog
-
----
+***
 
 ## Module Backlog
 
@@ -100,16 +66,19 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Type:** Feature
 **Status:** `backlog`
 **Module:** aws/base_component/bedrock_agent_runtime
-**Why:** Following the GA of Bedrock Agentic AI features, a dedicated runtime module is needed to manage agent invocation, session state, and filesystem mounting (S3/EFS) for agentic execution.
+**Why:** Following the GA of Bedrock Agentic AI features (May 2026), a dedicated runtime module is needed to manage agent invocation, session state, filesystem mounting (S3/EFS) for agentic execution, and low-latency runtime endpoints.
+
+> [!IMPORTANT]
+> **Blocker:** Pending AWS Provider support for `aws_bedrockagentcore_agent_runtime` (or equivalent) resource. Verified still blocked in AWS Provider v6.47.0.
 
 #### Acceptance Criteria
-- [ ] `aws_bedrockagentcore_agent_runtime` resource implementation
-- [ ] Support for runtime endpoints and VPC connectivity
-- [ ] Support for mounting S3 and EFS filesystems for agents
-- [ ] Mandatory CMK encryption for all data in transit and persistent session state
+- [ ] `aws_bedrockagentcore_agent_runtime` and `aws_bedrockagentcore_agent_runtime_endpoint` implementation
+- [ ] Support for `filesystem_configuration` for mounting S3 Files or EFS access points
+- [ ] Standardized runtime endpoint configuration for low-latency agentic interactions
+- [ ] Mandatory CMK encryption for mounted session storage and persistent session state
 - [ ] Least-privilege IAM roles for agent invocation and filesystem access
 - [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates runtime configuration and security
+- [ ] Native offline Terraform test validates runtime and filesystem configuration
 
 ---
 
@@ -119,16 +88,17 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Type:** Feature
 **Status:** `backlog`
 **Module:** aws/base_component/extenddb
-**Why:** AWS ExtendDB (announced May 20, 2026) allows extending existing relational databases with scalable AI-powered capabilities. Standardizing this is critical for modernizing legacy data stores.
+**Why:** AWS ExtendDB (announced May 20, 2026) allows extending existing relational databases with scalable AI-powered capabilities or providing a managed DynamoDB-compatible adapter with pluggable storage.
 
 > [!IMPORTANT]
 > **Blocker:** Pending AWS Provider support for `aws_extenddb_cluster` (or equivalent) resource. Verified still blocked in AWS Provider v6.47.0.
 
 #### Acceptance Criteria
-- [ ] `aws_extenddb_cluster` (or equivalent) resource implementation (Pending provider support)
-- [ ] Support for extending RDS and Aurora clusters
-- [ ] Mandatory CMK encryption for all data at rest
-- [ ] Placed in VPC private subnets
+- [ ] `aws_extenddb_cluster` (or equivalent) resource implementation
+- [ ] Support for extending RDS/Aurora clusters or deploying as a standalone adapter (e.g., via container/EC2)
+- [ ] Support for archival policies based on age or row-level metadata
+- [ ] Mandatory CMK encryption for all data at rest and archived data in S3
+- [ ] Placed in VPC private subnets with least-privilege IAM roles
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates security and extension configuration
 
@@ -140,15 +110,16 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Type:** Feature
 **Status:** `backlog`
 **Module:** aws/base_component/aws_transform
-**Why:** AWS Transform (announced May 20, 2026) provides managed data transformation and migration capabilities. Standardizing this simplifies large-scale data moves and schema conversions.
+**Why:** AWS Transform (GA May 20, 2026) provides managed data transformation, migration, and agentic modernization for code and networks.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_transform_job` (or equivalent) resource. Verified still blocked in AWS Provider v6.47.0.
+> **Blocker:** Pending AWS Provider support for `aws_transform_job` / `aws_transform_project` (or equivalent) resource. Verified still blocked in AWS Provider v6.47.0.
 
 #### Acceptance Criteria
-- [ ] `aws_transform_job` (or equivalent) resource implementation (Pending provider support)
-- [ ] Support for source and target data store configurations
-- [ ] Mandatory CMK encryption for data in transit and job logs
+- [ ] `aws_transform_job` / `aws_transform_project` / `aws_transform_modernization_job` resource implementation
+- [ ] Support for source and target data store configurations (S3, Kinesis, MSK)
+- [ ] Support for transformation logic using SQL, Python, or automated modernization (code/network)
+- [ ] Mandatory CMK encryption for data in transit, intermediate state, and job logs
 - [ ] Least-privilege IAM roles for data access
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates job configuration
@@ -175,77 +146,23 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ---
 
-### aws/base_component/bedrock_agent_runtime: Opinionated Bedrock Agent Runtime module
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/bedrock_agent_runtime
-**Why:** Strategic base module for managing agent execution endpoints, session management, and filesystem mounting (S3/EFS).
-
-#### Acceptance Criteria
-- [ ] Support for agent invocation and session state management
-- [ ] Support for mounting S3 or EFS filesystems (announced Q2 2026)
-- [ ] Mandatory CMK encryption for all session data
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates runtime configuration
-
----
-
-### aws/base_component/extenddb: Opinionated ExtendDB module
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/extenddb
-**Why:** AWS ExtendDB (GA May 2026) provides a managed solution for extending local databases to the cloud with minimal latency.
-
-#### Acceptance Criteria
-- [ ] `aws_extenddb_cluster` resource implementation
-- [ ] Support for VPC peering/Interconnect integration
-- [ ] Mandatory CMK encryption for data at rest
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates cluster configuration
-
----
-
-### aws/base_component/aws_transform: Opinionated AWS Transform module
-
-**Priority:** MEDIUM
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/aws_transform
-**Why:** AWS Transform (GA May 2026) automates data schema mapping and transformation for heterogeneous data migrations.
-
-#### Acceptance Criteria
-- [ ] `aws_transform_job` resource implementation
-- [ ] Support for source and target schema mapping
-- [ ] Mandatory CMK encryption for transformation logs
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates job configuration
-
----
-
 ### aws/base_component/amazon_quick: Opinionated Amazon Quick module
 
 **Priority:** HIGH
 **Type:** Feature
 **Status:** `backlog`
 **Module:** aws/base_component/amazon_quick
-**Why:** Standardized infrastructure for Amazon Quick AI assistant integrations. Promoted from future ideas following the May 2026 GenAI roadmap updates.
+**Why:** Standardized infrastructure for Amazon Quick AI assistant integrations. Includes cross-account Athena data sources, desktop app preview, and "Generate Analysis" capabilities.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_amazon_quick` (or equivalent) resource. Verified still blocked in AWS Provider v6.47.0. Implementation is deferred until provider support is added.
+> **Blocker:** Pending AWS Provider support for `aws_amazon_quick` (or equivalent) resource. Verified still blocked in AWS Provider v6.47.0.
 
 #### Acceptance Criteria
-- [ ] `aws_amazon_quick` resource implementation (pending provider support)
-- [ ] Support for cross-account Athena data sources (announced May 2026)
-- [ ] Support for desktop app preview integration
-- [ ] Support for "Generate Analysis" (natural language dashboard generation from prompts)
-- [ ] Support for visual asset generation (documents, presentations, infographics)
+- [ ] `aws_amazon_quick` resource implementation
+- [ ] Support for cross-account Athena data sources and data perimeter integration
+- [ ] Support for desktop app preview integration and visual asset generation
+- [ ] Support for "Generate Analysis" (natural language dashboard generation)
 - [ ] Connectivity to local files, calendars, and communications
-- [ ] Support for cross-account Athena data source access and data perimeter integration
-- [ ] Support for standardized AI assistant configurations
 - [ ] Mandatory CMK encryption for all data stores and logs
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates security and configuration
@@ -261,7 +178,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Strategic composition of Bedrock AgentCore and Amazon Quick to provide a standardized, secure environment for autonomous agent collaboration and analytics.
 
 > [!IMPORTANT]
-> **Blocker:** Pending implementation of prerequisite `aws/base_component/amazon_quick` module, which is currently blocked by provider support.
+> **Blocker:** Pending implementation of prerequisite `aws/base_component/amazon_quick` module.
 
 #### Acceptance Criteria
 - [ ] Composes `aws/base_component/bedrock_agent_core` (Gateways)
@@ -281,7 +198,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Type:** Feature
 **Status:** `backlog`
 **Module:** aws/base_component/sagemaker_inference
-**Why:** Leverages new "Optimized Generative AI Inference Recommendations" feature (GA April 2026) to automatically identify optimized deployment configurations for generative AI models, including instance type and container parameters.
+**Why:** Leverages new "Optimized Generative AI Inference Recommendations" feature (GA April 2026) to automatically identify optimized deployment configurations for generative AI models.
 
 > [!IMPORTANT]
 > **Blocker:** Pending AWS Provider support for `aws_sagemaker_inference_recommendations_job` resource. Verified still blocked in AWS Provider v6.47.0.
@@ -297,42 +214,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ---
 
-### aws/base_component/extend_db: Opinionated ExtendDB module
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/extend_db
-**Why:** AWS announced ExtendDB (May 20, 2026), an open-source DynamoDB-compatible adapter with pluggable storage backends (PostgreSQL reference). Enables the DynamoDB programming model on-premises, at the edge, and for local development.
-
-#### Acceptance Criteria
-- [ ] Standardized deployment of ExtendDB adapter (e.g., via container or EC2)
-- [ ] Support for PostgreSQL storage backend configuration
-- [ ] Mandatory CMK encryption for the underlying storage and logs
-- [ ] Least-privilege IAM roles for the adapter
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates configuration and security settings
-
----
-
-### aws/base_component/aws_transform: Opinionated AWS Transform module
-
-**Priority:** MEDIUM
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/aws_transform
-**Why:** AWS Transform (1-year anniversary May 2026) now includes agentic modernization for code and networks. It optimizes VPC constructs, resolves conflicts, and standardizes naming during migrations.
-
-#### Acceptance Criteria
-- [ ] `aws_transform_modernization_job` resource implementation (pending provider support)
-- [ ] Support for code modernization (language upgrades, framework migration)
-- [ ] Support for network modernization (VPC segmentation, conflict resolution)
-- [ ] Mandatory CMK encryption for all uploaded assets and transformation logs
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates modernization configuration
-
----
-
 ### aws/base_component/devops_agent: Opinionated AWS DevOps Agent module
 
 **Priority:** HIGH
@@ -345,68 +226,13 @@ All modules in this repo MUST comply with these non-negotiable standards:
 > **Blocker:** Pending AWS Provider support for `aws_devopsagent_space` (or equivalent) resource. Verified still blocked in AWS Provider v6.47.0.
 
 #### Acceptance Criteria
-- [ ] `aws_devopsagent_space` resource implementation (pending provider support)
+- [ ] `aws_devopsagent_space` resource implementation
 - [ ] Support for defining investigation scope (CloudWatch, GitHub, Azure, etc.)
-- [ ] Support for multicloud incident correlation (AWS and Azure)
-- [ ] Support for on-premises environment investigation via Model Context Protocol (MCP)
+- [ ] Support for multicloud incident correlation (AWS and Azure) and on-premises investigation via MCP
 - [ ] Support for MCP (Model Context Protocol) tool integration
 - [ ] Mandatory CMK encryption for all data at rest and logs
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates space configuration and security
-
----
-
-### aws/base_component/bedrock_agent_runtime: Bedrock Agentic Runtime module
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/bedrock_agent_runtime
-**Why:** May 2026 updates introduced the Bedrock Agentic Runtime to support agentic filesystem mounting (S3/EFS) and advanced endpoint management.
-
-#### Acceptance Criteria
-- [ ] Implement `aws_bedrockagent_runtime` resource
-- [ ] Support for mounting S3 buckets and EFS file systems for agent persistence
-- [ ] Support for advanced endpoint configuration and management
-- [ ] Mandatory CMK encryption for all persistent data and session history
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates runtime configuration
-
----
-
-### aws/base_component/extenddb: Opinionated AWS ExtendDB module
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/extenddb
-**Why:** ExtendDB (GA May 20, 2026) allows seamless expansion of relational databases into S3 for cost-effective cold storage while maintaining queryability.
-
-#### Acceptance Criteria
-- [ ] `aws_extenddb_archive_rule` resource implementation
-- [ ] Support for defining archival policies based on age or row-level metadata
-- [ ] Mandatory CMK encryption for archived data in S3
-- [ ] Support for transparent query redirection to S3 archives
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates archival configuration
-
----
-
-### aws/base_component/aws_transform: Opinionated AWS Transform module
-
-**Priority:** MEDIUM
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/aws_transform
-**Why:** AWS Transform (GA May 20, 2026) provides a high-performance, serverless data transformation engine for streaming and batch workloads.
-
-#### Acceptance Criteria
-- [ ] `aws_transform_project` resource implementation
-- [ ] Support for defining transformation logic using SQL or Python
-- [ ] Support for streaming (Kinesis/MSK) and batch (S3) sources
-- [ ] Mandatory CMK encryption for intermediate state and logs
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates transformation configuration
 
 ---
 
