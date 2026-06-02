@@ -69,7 +69,7 @@ _The Ready Queue is currently empty. All high-priority items are awaiting unbloc
 **Why:** Following the GA of Bedrock Agentic AI features (May 2026), a dedicated runtime module is needed to manage agent invocation, session state, filesystem mounting (S3/EFS) for agentic execution, and low-latency runtime endpoints.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_bedrockagentcore_agent_runtime` (or equivalent) resource. Verified still blocked in AWS Provider v6.47.0.
+> **Blocker:** Pending AWS Provider support for `aws_bedrockagentcore_agent_runtime` (or equivalent) resource. Verified still blocked in AWS Provider v6.47.0. (Verified by Builder 2026-06-03)
 
 #### Acceptance Criteria
 - [ ] `aws_bedrockagentcore_agent_runtime` and `aws_bedrockagentcore_agent_runtime_endpoint` implementation
@@ -91,7 +91,7 @@ _The Ready Queue is currently empty. All high-priority items are awaiting unbloc
 **Why:** AWS ExtendDB (announced May 20, 2026) allows extending existing relational databases with scalable AI-powered capabilities or providing a managed DynamoDB-compatible adapter with pluggable storage.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_extenddb_cluster` (or equivalent) resource. Verified still blocked in AWS Provider v6.47.0.
+> **Blocker:** Pending AWS Provider support for `aws_extenddb_cluster` (or equivalent) resource. Verified still blocked in AWS Provider v6.47.0. (Verified by Builder 2026-06-03)
 
 #### Acceptance Criteria
 - [ ] `aws_extenddb_cluster` (or equivalent) resource implementation
@@ -113,7 +113,7 @@ _The Ready Queue is currently empty. All high-priority items are awaiting unbloc
 **Why:** AWS Transform (GA May 20, 2026) provides managed data transformation, migration, and agentic modernization for code and networks.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_transform_job` / `aws_transform_project` (or equivalent) resource. Verified still blocked in AWS Provider v6.47.0.
+> **Blocker:** Pending AWS Provider support for `aws_transform_job` / `aws_transform_project` (or equivalent) resource. Verified still blocked in AWS Provider v6.47.0. (Verified by Builder 2026-06-03)
 
 #### Acceptance Criteria
 - [ ] `aws_transform_job` / `aws_transform_project` / `aws_transform_modernization_job` resource implementation
@@ -135,7 +135,7 @@ _The Ready Queue is currently empty. All high-priority items are awaiting unbloc
 **Why:** May 7, 2026 update introduced agentic payment features for Bedrock AgentCore, enabling agents to make purchases using the x402 protocol.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `payment_configuration` (or equivalent) in `aws_bedrockagentcore_gateway`. Verified still blocked in AWS Provider v6.47.0.
+> **Blocker:** Pending AWS Provider support for `payment_configuration` (or equivalent) in `aws_bedrockagentcore_gateway`. Verified still blocked in AWS Provider v6.47.0. (Verified by Builder 2026-06-03)
 
 #### Acceptance Criteria
 - [ ] Implement `payment_configuration` block in `aws_bedrockagentcore_gateway`
@@ -155,7 +155,7 @@ _The Ready Queue is currently empty. All high-priority items are awaiting unbloc
 **Why:** Standardized infrastructure for Amazon Quick AI assistant integrations. Includes cross-account Athena data sources, desktop app preview, and "Generate Analysis" capabilities.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_amazon_quick` (or equivalent) resource. Verified still blocked in AWS Provider v6.47.0.
+> **Blocker:** Pending AWS Provider support for `aws_amazon_quick` (or equivalent) resource. Verified still blocked in AWS Provider v6.47.0. (Verified by Builder 2026-06-03)
 
 #### Acceptance Criteria
 - [ ] `aws_amazon_quick` resource implementation
@@ -201,7 +201,7 @@ _The Ready Queue is currently empty. All high-priority items are awaiting unbloc
 **Why:** Leverages new "Optimized Generative AI Inference Recommendations" feature (GA April 2026) to automatically identify optimized deployment configurations for generative AI models.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_sagemaker_inference_recommendations_job` resource. Verified still blocked in AWS Provider v6.47.0.
+> **Blocker:** Pending AWS Provider support for `aws_sagemaker_inference_recommendations_job` resource. Verified still blocked in AWS Provider v6.47.0. (Verified by Builder 2026-06-03)
 
 #### Acceptance Criteria
 - [ ] `aws_sagemaker_inference_recommendations_job` or equivalent for optimized deployment
@@ -223,7 +223,7 @@ _The Ready Queue is currently empty. All high-priority items are awaiting unbloc
 **Why:** AWS DevOps Agent (GA May 2026) is an autonomous "frontier agent" for incident investigation and SRE tasks. Standardizing "Spaces" and MCP integrations is key for platform operations.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_devopsagent_space` (or equivalent) resource. Verified still blocked in AWS Provider v6.47.0.
+> **Blocker:** Pending AWS Provider support for `aws_devopsagent_space` (or equivalent) resource. Verified still blocked in AWS Provider v6.47.0. (Verified by Builder 2026-06-03)
 
 #### Acceptance Criteria
 - [ ] `aws_devopsagent_space` resource implementation
