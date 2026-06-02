@@ -40,7 +40,6 @@ resource "aws_bedrockagentcore_online_evaluation_config" "this" {
 
   online_evaluation_config_name = each.key
   description                   = each.value.description
-  kms_key_arn                   = var.kms_key_arn
   evaluation_execution_role_arn = each.value.evaluation_execution_role_arn
   enable_on_create              = each.value.enable_on_create
 
@@ -75,7 +74,6 @@ resource "aws_bedrockagentcore_browser" "this" {
 
   name               = each.key
   description        = each.value.description
-  kms_key_arn        = var.kms_key_arn
   execution_role_arn = each.value.execution_role_arn
 
   network_configuration {

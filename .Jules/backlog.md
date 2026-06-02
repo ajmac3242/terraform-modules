@@ -54,65 +54,21 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Immediate Ready Queue
 
-### aws/base_component/bedrock_agent_core: Support Browser and Web Search tools
+### aws/base_component/bedrock_agent_runtime: Opinionated Bedrock Agent Runtime module
 
 **Priority:** HIGH
 **Type:** Feature
 **Status:** `backlog`
-**Module:** aws/base_component/bedrock_agent_core
-**Why:** May 2026 updates introduced browser and web search capabilities for agents, enabling them to navigate the web and use search engines to complete tasks. Unblocked in AWS Provider v6.46.0 via `aws_bedrockagentcore_browser`.
+**Module:** aws/base_component/bedrock_agent_runtime
+**Why:** May 2026 updates introduced enhanced runtime features, including mounting session storage (S3/EFS) and runtime endpoint management.
 
 #### Acceptance Criteria
-- [ ] Support for browser tool configuration in the AgentCore gateway using `aws_bedrockagentcore_browser`
-- [ ] Support for web search tool configuration (e.g., via MCP or native integration)
-- [ ] Support for session management and sandboxing of browser activities
-- [ ] Mandatory CMK encryption for session logs and history
+- [ ] `aws_bedrockagentcore_agent_runtime` and `aws_bedrockagentcore_agent_runtime_endpoint` implementation
+- [ ] Support for `filesystem_configuration` for mounting S3 Files or EFS access points
+- [ ] Standardized runtime endpoint configuration for low-latency agentic interactions
+- [ ] Mandatory CMK encryption for mounted session storage
 - [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates tool configuration
-- [ ] `aws/base_component/bedrock_agent_core`: Support Online Evaluation (Unblocked by AWS Provider v6.47.0)
-- [ ] `aws/base_component/bedrock_agent_core`: Support Browser and Web Search tools (Unblocked by AWS Provider v6.47.0)
-
-## Module Backlog
-
-### aws/base_component/bedrock_agent_core: Support Online Evaluation
-
-**Priority:** MEDIUM
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/bedrock_agent_core
-**Why:** Online evaluation configurations continuously monitor agent performance by sampling live traffic from CloudWatch logs and applying evaluators.
-
-> [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_bedrockagentcore_online_evaluation_config` resource. Verified still missing in AWS Provider v6.46.0 schema audit (2026-05-26). Added in unreleased v6.47.0.
-
-#### Acceptance Criteria
-- [ ] `aws_bedrockagentcore_online_evaluation_config` resource implementation
-- [ ] Support for sampling live traffic from CloudWatch logs
-- [ ] Support for applying built-in or custom evaluators
-- [ ] Mandatory CMK encryption for any stored evaluation results
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates configuration
-
-## Module Backlog
-
-### aws/base_component/bedrock_agent_core: Support Browser and Web Search tools
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/bedrock_agent_core
-**Why:** May 2026 updates introduced browser and web search capabilities for agents, enabling them to navigate the web and use search engines to complete tasks.
-
-> [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for Browser and Web Search tool configuration in `aws_bedrockagentcore_gateway`. Verified blocked in AWS Provider v6.46.0 schema audit (2026-05-26). Standalone `aws_bedrockagentcore_browser` exists but gateway attributes and web search resources are missing.
-
-#### Acceptance Criteria
-- [ ] Support for browser tool configuration (`aws_bedrockagentcore_browser`)
-- [ ] Support for web search tool configuration via `aws_bedrockagentcore_gateway_target` and MCP
-- [ ] Support for session management and sandboxing of browser activities
-- [ ] Mandatory CMK encryption for session logs and history
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates tool orchestration
+- [ ] Native offline Terraform test validates runtime and filesystem configuration
 
 ---
 
@@ -478,19 +434,41 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Review-Discovered Improvement Queue
 
+***
+
+## Existing Completed Module History
+
+### aws/base_component/bedrock_agent_core: Expanded support for Online Evaluation, Browsers, and Targets
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `done` (Verified 2026-06-03)
+**Module:** aws/base_component/bedrock_agent_core
+**Why:** Expanded the base module to support continuous performance monitoring (Online Evaluation), browser-based task execution, and gateway target orchestration for tool management.
+
+#### Acceptance Criteria
+- [x] Support for `aws_bedrockagentcore_online_evaluation_config`
+- [x] Support for `aws_bedrockagentcore_browser` (sandboxed VPC execution)
+- [x] Support for `aws_bedrockagentcore_gateway_target`
+- [x] Mandatory CMK encryption for Gateway and Recordings
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates all new resources
+
+---
+
 ### aws/base_component/aurora_postgresql: Restore Vector Search and Hardening
 
 **Priority:** HIGH
 **Type:** Refactor
-**Status:** `backlog`
+**Status:** `done` (Verified 2026-06-03)
 **Module:** aws/base_component/aurora_postgresql
-**Why:** Address regressions in PR #81 where parameter group configurations for `pgvector`, `aws_lambda`, and `aws_s3` were missing, and storage/backup defaults were not enforced.
+**Why:** Restored parameter group configurations for `pgvector`, `aws_lambda`, and `aws_s3`, and enforced storage/backup defaults.
 
 #### Acceptance Criteria
-- [ ] Restore `aws_rds_cluster_parameter_group` with `rds.allowed_extensions = "pgvector,aws_lambda,aws_s3"`
-- [ ] Enforce `storage_type = "aurora-iopt1"` and `backup_retention_period = 7` as organizational defaults
-- [ ] Re-implement `rds_lambda_role` and `aws_rds_cluster_role_association` for Lambda integration
-- [ ] Native offline Terraform test validates parameter group and IAM association
+- [x] Restore `aws_rds_cluster_parameter_group` with `rds.allowed_extensions = "pgvector,aws_lambda,aws_s3"`
+- [x] Enforce `storage_type = "aurora-iopt1"` and `backup_retention_period = 7` as organizational defaults
+- [x] Re-implement `rds_lambda_role` and `aws_rds_cluster_role_association` for Lambda integration
+- [x] Native offline Terraform test validates parameter group and IAM association
 
 ---
 
@@ -498,19 +476,17 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** MEDIUM
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (Verified 2026-06-03)
 **Module:** aws/base_component/observability_admin
-**Why:** Expand the module to support organizational telemetry rules following the GA of `aws_observabilityadmin_telemetry_rule_for_organization` in AWS Provider v6.46.0.
+**Why:** Expanded the module to support organizational telemetry rules using `aws_observabilityadmin_telemetry_rule_for_organization`.
 
 #### Acceptance Criteria
-- [ ] Support `aws_observabilityadmin_telemetry_rule_for_organization` resource
-- [ ] Add `is_organization_rule` toggle to the module
-- [ ] Update outputs to handle both local and organizational rule IDs using `try()`
-- [ ] Native offline Terraform test validates organizational rule configuration
+- [x] Support `aws_observabilityadmin_telemetry_rule_for_organization` resource
+- [x] Add `is_organization_rule` toggle to the module
+- [x] Update outputs to handle both local and organizational rule IDs using `try()`
+- [x] Native offline Terraform test validates organizational rule configuration
 
-***
-
-## Existing Completed Module History
+---
 
 ### aws/base_component/aurora_postgresql: Opinionated Aurora PostgreSQL module with Vector Search
 
