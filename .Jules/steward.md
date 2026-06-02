@@ -117,6 +117,7 @@ _`- [YYYY-MM-DD] <topic> — <finding and rationale>`_
 - [2026-05-05] Validation Standard — Enforced resource naming regex validation for SageMaker and numeric range validation for Direct Connect ASNs to improve module robustness.
 - [2026-05-11] IAM Composition Standard — Refactored `multicloud_hub` to replace inline `aws_iam_role_policy` with managed `aws_iam_policy` and attachment, maintaining repo-wide testing and security standards.
 - [2026-05-18] Composite Testing Standard — Workload modules must verify tag propagation by asserting against child module outputs (e.g., `module.lambda.tags`) to ensure end-to-end correctness.
+- [2026-06-03] Bedrock AgentCore Schema Nuance — Confirmed that `aws_bedrockagentcore_online_evaluation_config` and `aws_bedrockagentcore_browser` do not support `kms_key_arn` at the resource level in AWS Provider v6.47.0. Encryption must be handled at the underlying storage layer (S3/CloudWatch).
 
 ## Review Log
 - [2026-05-17] Conducted repository-wide quality audit. Standardized `tags` output across 37 modules. Applied fixes where needed.
@@ -133,6 +134,7 @@ _`- [YYYY-MM-DD] Reviewed daily PRs. Applied fixes where needed.`_
 - [2026-05-20] Reviewed daily PRs. Applied follow-up fixes for documentation, outputs, and security patching.
 - [2026-05-24] Reviewed and hardened `aurora_postgresql` and `observability_admin` modules (PR #92). Hardening included adding regex validation for `kms_key_arn` in Aurora, adding `telemetry_type` validation in Observability Admin, and standardizing AWS provider constraints to `~> 5.0` and `~> 6.45` respectively. Expanded test assertions for Aurora to verify SG and subnet group details. Verified all changes pass native `terraform test` and maintained environment hygiene.
 - [2026-06-01] Resolved major regressions in `aurora_postgresql`, `observability_admin`, and `bedrock_agent_core`. Restored hardening for Aurora (parameter group, Lambda integration) and Observability (organizational rules). Expanded Bedrock AgentCore with Online Evaluation, Browser tool, and Gateway Target support. Verified all changes with native `terraform test` and standardized documentation.
+- [2026-06-03] Verified daily PRs and module updates. Hardened `bedrock_agent_core` by resolving schema errors where `kms_key_arn` was incorrectly applied to Online Evaluation and Browser resources. Confirmed `aurora_postgresql` and `observability_admin` hardening is intact. Verified all 3 modules with native `terraform test`.
 
 - [2026-04-25] Journal initialized. Ready to review daily PRs and apply follow-up fixes.
 - [2026-04-26] Reviewed daily PRs (PR #9). Applied follow-up fixes for tagging, missing tests, mandatory CMK for EventBridge, and output completeness.
