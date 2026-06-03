@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-06-03
+> **Last reviewed:** 2026-06-04
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -54,31 +54,61 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Immediate Ready Queue
 
-_The Ready Queue is currently empty. All high-priority items are awaiting unblocking by the AWS Provider._
-
-***
-
-## Module Backlog
-
 ### aws/base_component/bedrock_agent_runtime: Opinionated Bedrock Agent Runtime module
 
 **Priority:** HIGH
 **Type:** Feature
 **Status:** `backlog`
 **Module:** aws/base_component/bedrock_agent_runtime
-**Why:** Following the GA of Bedrock Agentic AI features (May 2026), a dedicated runtime module is needed to manage agent invocation, session state, filesystem mounting (S3/EFS) for agentic execution, and low-latency runtime endpoints.
-
-> [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_bedrockagentcore_agent_runtime` (or equivalent) resource. Verified still blocked in AWS Provider v6.47.0. (Verified by Builder 2026-06-03)
+**Why:** Following the GA of Bedrock Agentic AI features (May 2026), a dedicated runtime module is needed to manage agent invocation, session state, filesystem mounting (S3/EFS) for agentic execution, and low-latency runtime endpoints. Confirmed unblocked in AWS Provider v6.47.0.
 
 #### Acceptance Criteria
 - [ ] `aws_bedrockagentcore_agent_runtime` and `aws_bedrockagentcore_agent_runtime_endpoint` implementation
+- [ ] Support for `protocol_configuration` (HTTP, MCP, A2A) and `server_protocol`
+- [ ] Support for `network_mode_config` (security groups and subnets)
 - [ ] Support for `filesystem_configuration` for mounting S3 Files or EFS access points
 - [ ] Standardized runtime endpoint configuration for low-latency agentic interactions
 - [ ] Mandatory CMK encryption for mounted session storage and persistent session state
 - [ ] Least-privilege IAM roles for agent invocation and filesystem access
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates runtime and filesystem configuration
+
+***
+
+## Module Backlog
+
+### aws/base_component/bedrock_agent_memory: Opinionated Bedrock Agent Memory module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_agent_memory
+**Why:** Bedrock Agent Memory (confirmed in AWS Provider v6.47.0) provides persistent, long-term session storage for agents, enabling them to retain context across multiple interactions and sessions.
+
+#### Acceptance Criteria
+- [ ] `aws_bedrockagentcore_memory` and `aws_bedrockagentcore_memory_strategy` implementation
+- [ ] Support for session-pinned and persistent memory strategies
+- [ ] Mandatory CMK encryption for all stored memory data
+- [ ] Support for data retention and archival policies
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates memory configuration and security
+
+---
+
+### aws/base_component/bedrock_agent_policy_engine: Opinionated Bedrock Agent Policy Engine module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_agent_policy_engine
+**Why:** Bedrock Agent Policy Engine (confirmed in AWS Provider v6.47.0) enables fine-grained, policy-based authorization for agent actions, improving security and governance for autonomous workloads.
+
+#### Acceptance Criteria
+- [ ] `aws_bedrockagentcore_policy_engine` and `aws_bedrockagentcore_resource_policy` implementation
+- [ ] Support for defining granular action-level permissions for agents
+- [ ] Mandatory CMK encryption for policy definitions and logs
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates policy configuration and enforcement
 
 ---
 
