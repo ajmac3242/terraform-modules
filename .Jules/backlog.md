@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-06-04
+> **Last reviewed:** 2026-06-04 (Session 2)
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -60,22 +60,23 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Type:** Feature
 **Status:** `backlog`
 **Module:** aws/base_component/bedrock_agent_runtime
-**Why:** Following the GA of Bedrock Agentic AI features (May 2026), a dedicated runtime module is needed to manage agent invocation, session state, filesystem mounting (S3/EFS) for agentic execution, and low-latency runtime endpoints. Confirmed unblocked in AWS Provider v6.47.0.
+**Why:** Following the GA of Bedrock Agentic AI features (May 2026), a dedicated runtime module is needed to manage agent invocation, session state, filesystem mounting (S3/EFS) for agentic execution, and low-latency runtime endpoints. Confirmed unblocked in AWS Provider v6.48.0.
 
 #### Acceptance Criteria
 - [ ] `aws_bedrockagentcore_agent_runtime` and `aws_bedrockagentcore_agent_runtime_endpoint` implementation
-- [ ] Support for `protocol_configuration` (HTTP, MCP, A2A) and `server_protocol`
-- [ ] Support for `network_mode_config` (security groups and subnets)
-- [ ] Support for `filesystem_configuration` for mounting S3 Files or EFS access points
+- [ ] Support for `protocol_configuration` and `server_protocol`
+- [ ] Support for `authorizer_configuration` (Custom JWT Authorizer)
+- [ ] Support for `network_configuration` with `network_mode_config` (VPC sandboxing)
+- [ ] Support for `filesystem_configuration` (EFS, S3 Files, and Session Storage)
+- [ ] Support for `request_header_configuration` (allowlists)
+- [ ] Support for `environment_variables` and `lifecycle_configuration`
 - [ ] Standardized runtime endpoint configuration for low-latency agentic interactions
 - [ ] Mandatory CMK encryption for mounted session storage and persistent session state
 - [ ] Least-privilege IAM roles for agent invocation and filesystem access
 - [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates runtime and filesystem configuration
+- [ ] Native offline Terraform test validates runtime, filesystem, and authorizer configuration
 
-***
-
-## Module Backlog
+---
 
 ### aws/base_component/bedrock_agent_memory: Opinionated Bedrock Agent Memory module
 
@@ -83,13 +84,13 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Type:** Feature
 **Status:** `backlog`
 **Module:** aws/base_component/bedrock_agent_memory
-**Why:** Bedrock Agent Memory (confirmed in AWS Provider v6.47.0) provides persistent, long-term session storage for agents, enabling them to retain context across multiple interactions and sessions.
+**Why:** Bedrock Agent Memory (confirmed in AWS Provider v6.48.0) provides persistent, long-term session storage for agents, enabling them to retain context across multiple interactions and sessions.
 
 #### Acceptance Criteria
 - [ ] `aws_bedrockagentcore_memory` and `aws_bedrockagentcore_memory_strategy` implementation
 - [ ] Support for session-pinned and persistent memory strategies
-- [ ] Mandatory CMK encryption for all stored memory data
-- [ ] Support for data retention and archival policies
+- [ ] Mandatory CMK encryption for all stored memory data (`encryption_key_arn`)
+- [ ] Support for data retention and archival policies (`event_expiry_duration`)
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates memory configuration and security
 
@@ -101,14 +102,52 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Type:** Feature
 **Status:** `backlog`
 **Module:** aws/base_component/bedrock_agent_policy_engine
-**Why:** Bedrock Agent Policy Engine (confirmed in AWS Provider v6.47.0) enables fine-grained, policy-based authorization for agent actions, improving security and governance for autonomous workloads.
+**Why:** Bedrock Agent Policy Engine (confirmed in AWS Provider v6.48.0) enables fine-grained, policy-based authorization for agent actions, improving security and governance for autonomous workloads.
 
 #### Acceptance Criteria
 - [ ] `aws_bedrockagentcore_policy_engine` and `aws_bedrockagentcore_resource_policy` implementation
 - [ ] Support for defining granular action-level permissions for agents
-- [ ] Mandatory CMK encryption for policy definitions and logs
+- [ ] Mandatory CMK encryption for policy definitions (`encryption_key_arn`)
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates policy configuration and enforcement
+
+***
+
+## Module Backlog
+
+### aws/base_component/bedrock_agent_token_vault: Opinionated Bedrock Agent Token Vault module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_agent_token_vault
+**Why:** Bedrock Agent Token Vault (confirmed in AWS Provider v6.48.0) manages sensitive credentials (API keys, OAuth2) for agents using a secure, hardware-backed vault.
+
+#### Acceptance Criteria
+- [ ] `aws_bedrockagentcore_token_vault_cmk` implementation
+- [ ] `aws_bedrockagentcore_api_key_credential_provider` and `aws_bedrockagentcore_oauth2_credential_provider` support
+- [ ] Mandatory CMK encryption for vault keys and secrets
+- [ ] Integration with Secrets Manager for backend credential storage
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates vault and credential provider configuration
+
+---
+
+### aws/base_component/bedrock_agent_harness: Opinionated Bedrock Agent Harness module
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_agent_harness
+**Why:** Bedrock Agent Harness (confirmed in AWS Provider v6.48.0) provides a standardized testing environment for agents, enabling automated evaluation and debugging.
+
+#### Acceptance Criteria
+- [ ] `aws_bedrockagentcore_harness` implementation
+- [ ] Support for defining testing environment, variables, and allowed tools
+- [ ] Support for iteration limits and timeouts
+- [ ] Mandatory CMK encryption for test logs and state
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates harness configuration
 
 ---
 
@@ -121,7 +160,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** AWS ExtendDB (announced May 20, 2026) allows extending existing relational databases with scalable AI-powered capabilities or providing a managed DynamoDB-compatible adapter with pluggable storage.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_extenddb_cluster` (or equivalent) resource. Verified still blocked in AWS Provider v6.47.0. (Verified by Builder 2026-06-03)
+> **Blocker:** Pending AWS Provider support for `aws_extenddb_cluster` (or equivalent) resource. Verified still blocked in AWS Provider v6.48.0. (Verified by Navigator 2026-06-04)
 
 #### Acceptance Criteria
 - [ ] `aws_extenddb_cluster` (or equivalent) resource implementation
@@ -143,7 +182,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** AWS Transform (GA May 20, 2026) provides managed data transformation, migration, and agentic modernization for code and networks.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_transform_job` / `aws_transform_project` (or equivalent) resource. Verified still blocked in AWS Provider v6.47.0. (Verified by Builder 2026-06-03)
+> **Blocker:** Pending AWS Provider support for `aws_transform_job` / `aws_transform_project` (or equivalent) resource. Verified still blocked in AWS Provider v6.48.0. (Verified by Navigator 2026-06-04)
 
 #### Acceptance Criteria
 - [ ] `aws_transform_job` / `aws_transform_project` / `aws_transform_modernization_job` resource implementation
@@ -165,7 +204,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** May 7, 2026 update introduced agentic payment features for Bedrock AgentCore, enabling agents to make purchases using the x402 protocol.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `payment_configuration` (or equivalent) in `aws_bedrockagentcore_gateway`. Verified still blocked in AWS Provider v6.47.0. (Verified by Builder 2026-06-03)
+> **Blocker:** Pending AWS Provider support for `payment_configuration` (or equivalent) in `aws_bedrockagentcore_gateway`. Verified still blocked in AWS Provider v6.48.0. (Verified by Navigator 2026-06-04)
 
 #### Acceptance Criteria
 - [ ] Implement `payment_configuration` block in `aws_bedrockagentcore_gateway`
@@ -185,7 +224,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Standardized infrastructure for Amazon Quick AI assistant integrations. Includes cross-account Athena data sources, desktop app preview, and "Generate Analysis" capabilities.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_amazon_quick` (or equivalent) resource. Verified still blocked in AWS Provider v6.47.0. (Verified by Builder 2026-06-03)
+> **Blocker:** Pending AWS Provider support for `aws_amazon_quick` (or equivalent) resource. Verified still blocked in AWS Provider v6.48.0. (Verified by Navigator 2026-06-04)
 
 #### Acceptance Criteria
 - [ ] `aws_amazon_quick` resource implementation
@@ -231,7 +270,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Leverages new "Optimized Generative AI Inference Recommendations" feature (GA April 2026) to automatically identify optimized deployment configurations for generative AI models.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_sagemaker_inference_recommendations_job` resource. Verified still blocked in AWS Provider v6.47.0. (Verified by Builder 2026-06-03)
+> **Blocker:** Pending AWS Provider support for `aws_sagemaker_inference_recommendations_job` resource. Verified still blocked in AWS Provider v6.48.0. (Verified by Navigator 2026-06-04)
 
 #### Acceptance Criteria
 - [ ] `aws_sagemaker_inference_recommendations_job` or equivalent for optimized deployment
@@ -253,7 +292,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** AWS DevOps Agent (GA May 2026) is an autonomous "frontier agent" for incident investigation and SRE tasks. Standardizing "Spaces" and MCP integrations is key for platform operations.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_devopsagent_space` (or equivalent) resource. Verified still blocked in AWS Provider v6.47.0. (Verified by Builder 2026-06-03)
+> **Blocker:** Pending AWS Provider support for `aws_devopsagent_space` (or equivalent) resource. Verified still blocked in AWS Provider v6.48.0. (Verified by Navigator 2026-06-04)
 
 #### Acceptance Criteria
 - [ ] `aws_devopsagent_space` resource implementation
