@@ -35,3 +35,9 @@ variable "etl_script_path" {
   description = "Local path to the ETL script to upload to S3"
   type        = string
 }
+
+variable "aws_account_id" {
+  description = "The AWS account ID"
+  type        = string
+  default     = null
+}

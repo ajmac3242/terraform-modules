@@ -57,3 +57,9 @@ variable "tags" {
     error_message = "The tags map must contain the following keys: environment, owner, project, cost_center."
   }
 }
+
+variable "aws_account_id" {
+  description = "The AWS account ID"
+  type        = string
+  default     = null
+}

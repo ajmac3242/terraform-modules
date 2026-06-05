@@ -226,3 +226,9 @@ variable "operations_contact_title" {
   type        = string
   default     = "Operations Team"
 }
+
+variable "aws_account_id" {
+  description = "The AWS account ID"
+  type        = string
+  default     = null
+}
