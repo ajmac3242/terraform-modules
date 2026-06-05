@@ -46,7 +46,6 @@ variable "tags" {
 }
 
 
-
 variable "skip_sfn_creation" {
   description = "Toggle to skip state machine creation (useful for tests failing on SFN validation)"
   type        = bool
