@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-06-04 (Session 2)
+> **Last reviewed:** 2026-06-05
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -115,6 +115,70 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Module Backlog
 
+### aws/base_component/bedrock_agent_core: Support Gateway MCP Enhancements
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_agent_core
+**Why:** Expanding the Bedrock AgentCore module to support advanced MCP gateway controls for streaming and session management. Confirmed in AWS Provider v6.49.0.
+
+#### Acceptance Criteria
+- [ ] Implement `protocol_configuration.mcp.session_configuration` for fine-grained session control
+- [ ] Implement `protocol_configuration.mcp.streaming_configuration` for real-time streaming tool support
+- [ ] Mandatory CMK encryption for session state and logs
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates gateway enhancements
+
+---
+
+### aws/base_component/opensearch_serverless: Support Generation attribute
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/opensearch_serverless
+**Why:** AWS Provider v6.49.0 added the `generation` attribute to `aws_opensearchserverless_collection_group`, enabling better tracking of collection group iterations.
+
+#### Acceptance Criteria
+- [ ] Support `generation` attribute in `aws_opensearchserverless_collection_group`
+- [ ] Update data source to expose `generation`
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates attribute propagation
+
+---
+
+### aws/base_component/cloudfront: Support Cache Tagging
+
+**Priority:** MEDIUM
+**Type:** Maintenance
+**Status:** `backlog`
+**Module:** aws/base_component/cloudfront
+**Why:** AWS Provider v6.46.0 introduced `cache_tag_config` to `aws_cloudfront_distribution`, enabling more granular cache invalidation patterns via tags.
+
+#### Acceptance Criteria
+- [ ] Implement `cache_tag_config` block in `aws_cloudfront_distribution`
+- [ ] Support for enabling/disabling cache tagging via variables
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates configuration
+
+---
+
+### aws/base_component/bedrock_agent: Support Expanded Session TTL
+
+**Priority:** LOW
+**Type:** Maintenance
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_agent
+**Why:** AWS Provider v6.46.0 increased the maximum value for `idle_session_ttl_in_seconds` from 3600 to 5400.
+
+#### Acceptance Criteria
+- [ ] Update `variable "idle_session_ttl_in_seconds"` validation to allow values up to 5400
+- [ ] Update documentation to reflect the new maximum TTL
+- [ ] Native offline Terraform test validates the new upper bound
+
+---
+
 ### aws/base_component/bedrock_agent_token_vault: Opinionated Bedrock Agent Token Vault module
 
 **Priority:** HIGH
@@ -160,7 +224,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** AWS ExtendDB (announced May 20, 2026) allows extending existing relational databases with scalable AI-powered capabilities or providing a managed DynamoDB-compatible adapter with pluggable storage.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_extenddb_cluster` (or equivalent) resource. Verified still blocked in AWS Provider v6.48.0. (Verified by Navigator 2026-06-04)
+> **Blocker:** Pending AWS Provider support for `aws_extenddb_cluster` (or equivalent) resource. Verified still blocked in AWS Provider v6.49.0. (Verified by Navigator 2026-06-05)
 
 #### Acceptance Criteria
 - [ ] `aws_extenddb_cluster` (or equivalent) resource implementation
@@ -182,7 +246,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** AWS Transform (GA May 20, 2026) provides managed data transformation, migration, and agentic modernization for code and networks.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_transform_job` / `aws_transform_project` (or equivalent) resource. Verified still blocked in AWS Provider v6.48.0. (Verified by Navigator 2026-06-04)
+> **Blocker:** Pending AWS Provider support for `aws_transform_job` / `aws_transform_project` (or equivalent) resource. Verified still blocked in AWS Provider v6.49.0. (Verified by Navigator 2026-06-05)
 
 #### Acceptance Criteria
 - [ ] `aws_transform_job` / `aws_transform_project` / `aws_transform_modernization_job` resource implementation
@@ -204,7 +268,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** May 7, 2026 update introduced agentic payment features for Bedrock AgentCore, enabling agents to make purchases using the x402 protocol.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `payment_configuration` (or equivalent) in `aws_bedrockagentcore_gateway`. Verified still blocked in AWS Provider v6.48.0. (Verified by Navigator 2026-06-04)
+> **Blocker:** Pending AWS Provider support for `payment_configuration` (or equivalent) in `aws_bedrockagentcore_gateway`. Verified still blocked in AWS Provider v6.49.0. (Verified by Navigator 2026-06-05)
 
 #### Acceptance Criteria
 - [ ] Implement `payment_configuration` block in `aws_bedrockagentcore_gateway`
@@ -224,7 +288,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Standardized infrastructure for Amazon Quick AI assistant integrations. Includes cross-account Athena data sources, desktop app preview, and "Generate Analysis" capabilities.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_amazon_quick` (or equivalent) resource. Verified still blocked in AWS Provider v6.48.0. (Verified by Navigator 2026-06-04)
+> **Blocker:** Pending AWS Provider support for `aws_amazon_quick` (or equivalent) resource. Verified still blocked in AWS Provider v6.49.0. (Verified by Navigator 2026-06-05)
 
 #### Acceptance Criteria
 - [ ] `aws_amazon_quick` resource implementation
@@ -270,7 +334,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Leverages new "Optimized Generative AI Inference Recommendations" feature (GA April 2026) to automatically identify optimized deployment configurations for generative AI models.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_sagemaker_inference_recommendations_job` resource. Verified still blocked in AWS Provider v6.48.0. (Verified by Navigator 2026-06-04)
+> **Blocker:** Pending AWS Provider support for `aws_sagemaker_inference_recommendations_job` resource. Verified still blocked in AWS Provider v6.49.0. (Verified by Navigator 2026-06-05)
 
 #### Acceptance Criteria
 - [ ] `aws_sagemaker_inference_recommendations_job` or equivalent for optimized deployment
@@ -292,7 +356,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** AWS DevOps Agent (GA May 2026) is an autonomous "frontier agent" for incident investigation and SRE tasks. Standardizing "Spaces" and MCP integrations is key for platform operations.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_devopsagent_space` (or equivalent) resource. Verified still blocked in AWS Provider v6.48.0. (Verified by Navigator 2026-06-04)
+> **Blocker:** Pending AWS Provider support for `aws_devopsagent_space` (or equivalent) resource. Verified still blocked in AWS Provider v6.49.0. (Verified by Navigator 2026-06-05)
 
 #### Acceptance Criteria
 - [ ] `aws_devopsagent_space` resource implementation
