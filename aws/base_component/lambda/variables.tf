@@ -87,11 +87,7 @@ variable "dead_letter_config_target_arn" {
   }
 }
 
-variable "aws_account_id" {
-  description = "The AWS Account ID to support tests/mocking"
-  type        = string
-  default     = null
-}
+
 
 variable "vpc_config" {
   description = "Provide this to allow your function to access your VPC"

@@ -49,11 +49,7 @@ variable "lifecycle_rules" {
   default     = []
 }
 
-variable "aws_account_id" {
-  description = "The AWS Account ID to support tests/mocking"
-  type        = string
-  default     = null
-}
+
 
 variable "tags" {
   description = "A map of tags to assign to the resources"
