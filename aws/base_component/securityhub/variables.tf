@@ -38,11 +38,6 @@ variable "enable_finding_aggregator" {
   default     = false
 }
 
-variable "finding_aggregation_region" {
-  description = "The region to aggregate findings in. (Optional, defaults to current region if aggregator is enabled)"
-  type        = string
-  default     = null
-}
 
 variable "tags" {
   description = "A map of tags to assign to the resources"
@@ -52,4 +47,10 @@ variable "tags" {
     condition     = contains(keys(var.tags), "environment") && contains(keys(var.tags), "owner") && contains(keys(var.tags), "project") && contains(keys(var.tags), "cost_center")
     error_message = "The tags map must contain the following keys: environment, owner, project, cost_center."
   }
+}
+
+variable "finding_aggregation_region" {
+  description = "The region to aggregate findings in. (Optional, defaults to current region if aggregator is enabled)"
+  type        = string
+  default     = null
 }

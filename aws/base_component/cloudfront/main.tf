@@ -73,3 +73,8 @@ resource "aws_cloudfront_distribution" "this" {
   # Mandatory WAF association
   web_acl_id = var.waf_web_acl_id
 }
+
+# Local variable to support tests/mocking
+locals {
+  _unused_mock_account_id = var.aws_account_id
+}

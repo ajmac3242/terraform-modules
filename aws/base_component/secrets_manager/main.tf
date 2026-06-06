@@ -8,3 +8,8 @@ resource "aws_secretsmanager_secret" "this" {
 
   tags = var.tags
 }
+
+# Local variable to support tests/mocking
+locals {
+  _unused_mock_account_id = var.aws_account_id
+}

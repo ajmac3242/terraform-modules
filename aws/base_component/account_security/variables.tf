@@ -11,11 +11,6 @@ variable "tags" {
   }
 }
 
-variable "aws_account_id" {
-  description = "The AWS Account ID to support tests/mocking"
-  type        = string
-  default     = null
-}
 
 # -----------------------------------------------------------------------------
 # S3 Account-level Public Access Block
@@ -229,4 +224,10 @@ variable "operations_contact_title" {
   description = "Title or role of the alternate operations contact"
   type        = string
   default     = "Operations Team"
+}
+
+variable "aws_account_id" {
+  description = "The AWS Account ID to support tests/mocking"
+  type        = string
+  default     = null
 }
