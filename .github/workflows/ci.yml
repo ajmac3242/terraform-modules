@@ -96,13 +96,69 @@ jobs:
     needs: [filter, terraform-auto-fix]
     if: always() && needs.filter.outputs.terraform == 'true' && (needs.terraform-auto-fix.result == 'success' || needs.terraform-auto-fix.result == 'skipped')
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
         working-directory:
+          - aws/base_component/account_security
+          - aws/base_component/acm
+          - aws/base_component/alb
+          - aws/base_component/apigateway_v2
+          - aws/base_component/asg
+          - aws/base_component/athena
+          - aws/base_component/aurora_postgresql
+          - aws/base_component/aws_interconnect
+          - aws/base_component/backup
+          - aws/base_component/bedrock_agent
+          - aws/base_component/bedrock_agent_core
+          - aws/base_component/bedrock_guardrail
+          - aws/base_component/bedrock_knowledge_base
+          - aws/base_component/cloudfront
+          - aws/base_component/cloudtrail
+          - aws/base_component/cloudwatch_alarm
+          - aws/base_component/cognito
+          - aws/base_component/dynamodb
+          - aws/base_component/ec2
+          - aws/base_component/ecr
+          - aws/base_component/ecs_fargate
+          - aws/base_component/efs
+          - aws/base_component/eks
+          - aws/base_component/elasticache
+          - aws/base_component/eventbridge
+          - aws/base_component/eventbridge_pipes
+          - aws/base_component/glue
+          - aws/base_component/iam
+          - aws/base_component/kms
           - aws/base_component/lambda
+          - aws/base_component/observability_admin
+          - aws/base_component/opensearch_serverless
+          - aws/base_component/rds
+          - aws/base_component/route53
+          - aws/base_component/s3
+          - aws/base_component/sagemaker_inference
+          - aws/base_component/secrets_manager
+          - aws/base_component/security_group
+          - aws/base_component/securityhub
+          - aws/base_component/sns
+          - aws/base_component/sqs
+          - aws/base_component/ssm
+          - aws/base_component/step_functions
+          - aws/base_component/subnet
+          - aws/base_component/vpc
+          - aws/base_component/vpc_endpoints
+          - aws/base_component/vpc_lattice
+          - aws/base_component/wafv2
+          - aws/workload_component/alb_ecs_fargate
           - aws/workload_component/apigw_lambda
+          - aws/workload_component/centralized_logging
+          - aws/workload_component/eventbridge_lambda
+          - aws/workload_component/glue_etl_pattern
+          - aws/workload_component/lambda_powertools
+          - aws/workload_component/multicloud_hub
+          - aws/workload_component/s3_lambda_trigger
+          - aws/workload_component/static_website
+          - aws/workload_component/step_functions_lambda
     defaults:
       run:
         shell: bash
@@ -136,13 +192,69 @@ jobs:
     needs: [filter, terraform-auto-fix]
     if: always() && needs.filter.outputs.terraform == 'true' && (needs.terraform-auto-fix.result == 'success' || needs.terraform-auto-fix.result == 'skipped')
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
         working-directory:
+          - aws/base_component/account_security
+          - aws/base_component/acm
+          - aws/base_component/alb
+          - aws/base_component/apigateway_v2
+          - aws/base_component/asg
+          - aws/base_component/athena
+          - aws/base_component/aurora_postgresql
+          - aws/base_component/aws_interconnect
+          - aws/base_component/backup
+          - aws/base_component/bedrock_agent
+          - aws/base_component/bedrock_agent_core
+          - aws/base_component/bedrock_guardrail
+          - aws/base_component/bedrock_knowledge_base
+          - aws/base_component/cloudfront
+          - aws/base_component/cloudtrail
+          - aws/base_component/cloudwatch_alarm
+          - aws/base_component/cognito
+          - aws/base_component/dynamodb
+          - aws/base_component/ec2
+          - aws/base_component/ecr
+          - aws/base_component/ecs_fargate
+          - aws/base_component/efs
+          - aws/base_component/eks
+          - aws/base_component/elasticache
+          - aws/base_component/eventbridge
+          - aws/base_component/eventbridge_pipes
+          - aws/base_component/glue
+          - aws/base_component/iam
+          - aws/base_component/kms
           - aws/base_component/lambda
+          - aws/base_component/observability_admin
+          - aws/base_component/opensearch_serverless
+          - aws/base_component/rds
+          - aws/base_component/route53
+          - aws/base_component/s3
+          - aws/base_component/sagemaker_inference
+          - aws/base_component/secrets_manager
+          - aws/base_component/security_group
+          - aws/base_component/securityhub
+          - aws/base_component/sns
+          - aws/base_component/sqs
+          - aws/base_component/ssm
+          - aws/base_component/step_functions
+          - aws/base_component/subnet
+          - aws/base_component/vpc
+          - aws/base_component/vpc_endpoints
+          - aws/base_component/vpc_lattice
+          - aws/base_component/wafv2
+          - aws/workload_component/alb_ecs_fargate
           - aws/workload_component/apigw_lambda
+          - aws/workload_component/centralized_logging
+          - aws/workload_component/eventbridge_lambda
+          - aws/workload_component/glue_etl_pattern
+          - aws/workload_component/lambda_powertools
+          - aws/workload_component/multicloud_hub
+          - aws/workload_component/s3_lambda_trigger
+          - aws/workload_component/static_website
+          - aws/workload_component/step_functions_lambda
     defaults:
       run:
         shell: bash
@@ -192,13 +304,69 @@ jobs:
       (needs.validate.result == 'success' || needs.validate.result == 'skipped') &&
       (needs.lint.result == 'success' || needs.lint.result == 'skipped')
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
         working-directory:
+          - aws/base_component/account_security
+          - aws/base_component/acm
+          - aws/base_component/alb
+          - aws/base_component/apigateway_v2
+          - aws/base_component/asg
+          - aws/base_component/athena
+          - aws/base_component/aurora_postgresql
+          - aws/base_component/aws_interconnect
+          - aws/base_component/backup
+          - aws/base_component/bedrock_agent
+          - aws/base_component/bedrock_agent_core
+          - aws/base_component/bedrock_guardrail
+          - aws/base_component/bedrock_knowledge_base
+          - aws/base_component/cloudfront
+          - aws/base_component/cloudtrail
+          - aws/base_component/cloudwatch_alarm
+          - aws/base_component/cognito
+          - aws/base_component/dynamodb
+          - aws/base_component/ec2
+          - aws/base_component/ecr
+          - aws/base_component/ecs_fargate
+          - aws/base_component/efs
+          - aws/base_component/eks
+          - aws/base_component/elasticache
+          - aws/base_component/eventbridge
+          - aws/base_component/eventbridge_pipes
+          - aws/base_component/glue
+          - aws/base_component/iam
+          - aws/base_component/kms
           - aws/base_component/lambda
+          - aws/base_component/observability_admin
+          - aws/base_component/opensearch_serverless
+          - aws/base_component/rds
+          - aws/base_component/route53
+          - aws/base_component/s3
+          - aws/base_component/sagemaker_inference
+          - aws/base_component/secrets_manager
+          - aws/base_component/security_group
+          - aws/base_component/securityhub
+          - aws/base_component/sns
+          - aws/base_component/sqs
+          - aws/base_component/ssm
+          - aws/base_component/step_functions
+          - aws/base_component/subnet
+          - aws/base_component/vpc
+          - aws/base_component/vpc_endpoints
+          - aws/base_component/vpc_lattice
+          - aws/base_component/wafv2
+          - aws/workload_component/alb_ecs_fargate
           - aws/workload_component/apigw_lambda
+          - aws/workload_component/centralized_logging
+          - aws/workload_component/eventbridge_lambda
+          - aws/workload_component/glue_etl_pattern
+          - aws/workload_component/lambda_powertools
+          - aws/workload_component/multicloud_hub
+          - aws/workload_component/s3_lambda_trigger
+          - aws/workload_component/static_website
+          - aws/workload_component/step_functions_lambda
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
