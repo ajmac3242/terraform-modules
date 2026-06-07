@@ -50,7 +50,8 @@ variable "kms_key_arn" {
   validation {
     condition     = var.kms_key_arn == null || can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/[a-z0-9-]+$", var.kms_key_arn))
     error_message = "The kms_key_arn must be a valid AWS KMS key ARN."
-  }}
+  }
+}
 
 variable "vpc_config" {
   description = "VPC configuration for the Lambda function"

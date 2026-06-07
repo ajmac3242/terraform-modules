@@ -1,5 +1,4 @@
 # Data sources to get current AWS region and account ID
-data "aws_region" "current" {}
 data "aws_caller_identity" "current" {
   count = var.aws_account_id == null ? 1 : 0
 }
