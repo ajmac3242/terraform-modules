@@ -7,16 +7,16 @@ locals {
 }
 # ALB using base module (conditionally created)
 module "alb" {
-  count  = var.use_existing_alb ? 0 : 1
-  source = "../../base_component/alb"
-  name            = var.name
-  security_groups = var.alb_security_group_ids
-  subnets         = var.public_subnet_ids
+  count                 = var.use_existing_alb ? 0 : 1
+  source                = "../../base_component/alb"
+  name                  = var.name
+  security_groups       = var.alb_security_group_ids
+  subnets               = var.public_subnet_ids
   enable_https_listener = var.enable_https
   certificate_arn       = var.certificate_arn
   enable_http_redirect  = var.enable_https
-  access_logs_bucket = var.access_logs_bucket
-  tags = var.tags
+  access_logs_bucket    = var.access_logs_bucket
+  tags                  = var.tags
 }
 # Target Group for ECS Service
 resource "aws_lb_target_group" "this" {
@@ -54,7 +54,7 @@ resource "aws_lb_listener_rule" "this" {
 }
 # ECS Fargate Service using base module
 module "ecs_fargate" {
-  source = "../../base_component/ecs_fargate"
+  source             = "../../base_component/ecs_fargate"
   name               = var.name
   private_subnet_ids = var.private_subnet_ids
   security_group_ids = var.ecs_service_security_group_ids
@@ -71,5 +71,5 @@ module "ecs_fargate" {
   kms_key_arn              = var.kms_key_arn
   permissions_boundary_arn = var.permissions_boundary_arn
   aws_account_id           = local.account_id
-  tags = var.tags
+  tags                     = var.tags
 }
