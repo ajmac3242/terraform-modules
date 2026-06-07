@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-06-06
+> **Last reviewed:** 2026-06-07
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -53,6 +53,96 @@ All modules in this repo MUST comply with these non-negotiable standards:
 ***
 
 ## Immediate Ready Queue
+
+### aws/base_component/aurora_mysql: Opinionated Aurora MySQL module with Kiro Powers integration
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/aurora_mysql
+**Why:** Support for Kiro Powers (MCP) integration (announced May 2026) to enable AI-assisted database operations and schema management. Bundles best practices for Aurora MySQL Serverless v2, automated scaling, and secure IAM integration for AI-DLC workflows.
+
+#### Acceptance Criteria
+- [ ] `aws_rds_cluster` with `engine = "aurora-mysql"` and `engine_version` >= 8.0.mysql_aurora.3.x
+- [ ] Support for Aurora Serverless v2 (`serverlessv2_scaling_configuration`)
+- [ ] Configure `aws_rds_cluster_parameter_group` with opinionated performance and security defaults
+- [ ] Implementation of IAM roles and associations for Kiro MCP integration (Control plane and Data plane)
+- [ ] Mandatory CMK encryption for storage and CloudWatch logs
+- [ ] Placed in VPC private subnets with dedicated `aws_db_subnet_group`
+- [ ] Point-in-time recovery (PITR) enabled (7 days minimum)
+- [ ] Storage type `aurora-iopt1` (I/O-Optimized) enabled by default
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates encryption, scaling configuration, and IAM associations
+
+---
+
+### aws/base_component/bedrock_agent_core: Support Gateway MCP Enhancements
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_agent_core
+**Why:** Expanding the Bedrock AgentCore module to support advanced MCP gateway controls for streaming and session management. Confirmed in AWS Provider v6.49.0.
+
+#### Acceptance Criteria
+- [ ] Implement `protocol_configuration.mcp.session_configuration` for fine-grained session control
+- [ ] Implement `protocol_configuration.mcp.streaming_configuration` for real-time streaming tool support
+- [ ] Mandatory CMK encryption for session state and logs
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates gateway enhancements
+
+---
+
+### aws/base_component/bedrock_agent_core: Support Enhanced Gateway Target Configuration
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_agent_core
+**Why:** AWS Provider v6.48.0 added support for `credential_provider_configuration.jwt_passthrough`, `credential_provider_configuration.caller_iam_credentials`, SigV4 signing for MCP servers, and direct HTTP targets.
+
+#### Acceptance Criteria
+- [ ] Support `credential_provider_configuration.jwt_passthrough` and `caller_iam_credentials`
+- [ ] Support SigV4 signing for mcp_server targets via `gateway_iam_role.service` and `region`
+- [ ] Support `target_configuration.http` for routing to non-MCP HTTP targets
+- [ ] Required `tags` enforced (where supported)
+- [ ] Native offline Terraform test validates target enhancements
+
+---
+
+### aws/base_component/observability_admin: Support Expanded Rule Schema
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/observability_admin
+**Why:** AWS Provider v6.48.0 expanded the telemetry rule schema to support destination configurations for CloudTrail, ELB, Log Delivery, MSK, VPC Flow Logs, and WAF.
+
+#### Acceptance Criteria
+- [ ] Implement `destination_configuration` block with all sub-parameters
+- [ ] Support for `selection_criteria`, `telemetry_source_types`, and `scope`
+- [ ] Update organizational rule support to match the expanded schema
+- [ ] Mandatory CMK encryption for any underlying log destinations
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates expanded rule configuration
+
+---
+
+### aws/base_component/opensearch_serverless: Support Generation attribute
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/opensearch_serverless
+**Why:** AWS Provider v6.49.0 added the `generation` attribute to `aws_opensearchserverless_collection_group`, enabling better tracking of collection group iterations.
+
+#### Acceptance Criteria
+- [ ] Support `generation` attribute in `aws_opensearchserverless_collection_group`
+- [ ] Update data source to expose `generation`
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates attribute propagation
+
+---
 
 ### aws/base_component/bedrock_agent_runtime: Opinionated Bedrock Agent Runtime module
 
@@ -146,58 +236,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Module Backlog
 
-### aws/base_component/bedrock_agent_core: Support Gateway MCP Enhancements
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/bedrock_agent_core
-**Why:** Expanding the Bedrock AgentCore module to support advanced MCP gateway controls for streaming and session management. Confirmed in AWS Provider v6.49.0.
-
-#### Acceptance Criteria
-- [ ] Implement `protocol_configuration.mcp.session_configuration` for fine-grained session control
-- [ ] Implement `protocol_configuration.mcp.streaming_configuration` for real-time streaming tool support
-- [ ] Mandatory CMK encryption for session state and logs
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates gateway enhancements
-
----
-
-### aws/base_component/bedrock_agent_core: Support Enhanced Gateway Target Configuration
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/bedrock_agent_core
-**Why:** AWS Provider v6.48.0 added support for `credential_provider_configuration.jwt_passthrough`, `credential_provider_configuration.caller_iam_credentials`, SigV4 signing for MCP servers, and direct HTTP targets.
-
-#### Acceptance Criteria
-- [ ] Support `credential_provider_configuration.jwt_passthrough` and `caller_iam_credentials`
-- [ ] Support SigV4 signing for mcp_server targets via `gateway_iam_role.service` and `region`
-- [ ] Support `target_configuration.http` for routing to non-MCP HTTP targets
-- [ ] Required `tags` enforced (where supported)
-- [ ] Native offline Terraform test validates target enhancements
-
----
-
-### aws/base_component/observability_admin: Support Expanded Rule Schema
-
-**Priority:** MEDIUM
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/observability_admin
-**Why:** AWS Provider v6.48.0 expanded the telemetry rule schema to support destination configurations for CloudTrail, ELB, Log Delivery, MSK, VPC Flow Logs, and WAF.
-
-#### Acceptance Criteria
-- [ ] Implement `destination_configuration` block with all sub-parameters
-- [ ] Support for `selection_criteria`, `telemetry_source_types`, and `scope`
-- [ ] Update organizational rule support to match the expanded schema
-- [ ] Mandatory CMK encryption for any underlying log destinations
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates expanded rule configuration
-
----
-
 ### aws/base_component/xray: Opinionated AWS X-Ray module
 
 **Priority:** MEDIUM
@@ -229,22 +267,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Support for enabling/disabling DNS resolution via variables
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates configuration
-
----
-
-### aws/base_component/opensearch_serverless: Support Generation attribute
-
-**Priority:** MEDIUM
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/opensearch_serverless
-**Why:** AWS Provider v6.49.0 added the `generation` attribute to `aws_opensearchserverless_collection_group`, enabling better tracking of collection group iterations.
-
-#### Acceptance Criteria
-- [ ] Support `generation` attribute in `aws_opensearchserverless_collection_group`
-- [ ] Update data source to expose `generation`
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates attribute propagation
 
 ---
 
