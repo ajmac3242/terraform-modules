@@ -31,7 +31,7 @@ module "task_execution_role" {
   ]
 
   permissions_boundary_arn = var.permissions_boundary_arn
-
+  aws_account_id           = local.account_id
 
   tags = var.tags
 }
@@ -56,7 +56,7 @@ module "task_role" {
   })
 
   permissions_boundary_arn = var.permissions_boundary_arn
-
+  aws_account_id           = local.account_id
 
   tags = var.tags
 }
@@ -120,7 +120,7 @@ resource "aws_ecs_task_definition" "this" {
         logDriver = "awslogs"
         options = {
           "awslogs-group"         = aws_cloudwatch_log_group.this.name
-          "awslogs-region"        = data.aws_region.current.id
+          "awslogs-region"        = data.aws_region.current.name
           "awslogs-stream-prefix" = "ecs"
         }
       }

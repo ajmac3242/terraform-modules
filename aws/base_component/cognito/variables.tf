@@ -24,6 +24,6 @@ variable "tags" {
   type        = map(string)
   validation {
     condition     = alltrue([for k in ["environment", "owner", "project", "cost_center"] : contains(keys(var.tags), k)])
-    error_message = "The tags map must contain environment, owner, project, and cost_center keys."
+    error_message = "The tags map must contain the following keys: environment, owner, project, cost_center."
   }
 }

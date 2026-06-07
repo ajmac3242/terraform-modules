@@ -7,10 +7,15 @@ variable "tags" {
 
   validation {
     condition     = alltrue([for k in ["environment", "owner", "project", "cost_center"] : contains(keys(var.tags), k)])
-    error_message = "The tags map must contain environment, owner, project, and cost_center keys."
+    error_message = "The tags map must contain the following keys: environment, owner, project, cost_center."
   }
 }
 
+variable "aws_account_id" {
+  description = "The AWS Account ID to support tests/mocking"
+  type        = string
+  default     = null
+}
 
 # -----------------------------------------------------------------------------
 # S3 Account-level Public Access Block

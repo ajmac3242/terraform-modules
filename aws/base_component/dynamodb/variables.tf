@@ -59,3 +59,8 @@ variable "tags" {
   }
 }
 
+variable "aws_account_id" {
+  description = "The AWS Account ID to support tests/mocking"
+  type        = string
+  default     = null
+}
