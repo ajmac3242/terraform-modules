@@ -31,7 +31,7 @@ module "task_execution_role" {
   ]
 
   permissions_boundary_arn = var.permissions_boundary_arn
-  aws_account_id           = local.account_id
+
 
   tags = var.tags
 }
@@ -56,7 +56,7 @@ module "task_role" {
   })
 
   permissions_boundary_arn = var.permissions_boundary_arn
-  aws_account_id           = local.account_id
+
 
   tags = var.tags
 }

@@ -3,8 +3,8 @@ module "kms" {
   count  = var.create_bus && var.existing_kms_key_arn == null && var.kms_key_arn == null ? 1 : 0
   source = "../kms"
 
-  name                 = "${var.name}-bus-key"
-  description          = "KMS key for EventBridge bus ${var.name}"
+  name                 = "${coalesce(var.name, "custom")}-bus-key"
+  description          = "KMS key for EventBridge bus ${coalesce(var.name, "custom")}"
   admin_principal_arns = []
   usage_principal_arns = ["arn:aws:iam::${local.account_id}:root"] # Basic usage for the account, actual service access via key policy usually needs more
   aws_account_id       = var.aws_account_id

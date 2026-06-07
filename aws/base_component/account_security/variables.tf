@@ -11,11 +11,6 @@ variable "tags" {
   }
 }
 
-variable "aws_account_id" {
-  description = "The AWS Account ID to support tests/mocking"
-  type        = string
-  default     = null
-}
 
 # -----------------------------------------------------------------------------
 # S3 Account-level Public Access Block

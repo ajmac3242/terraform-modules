@@ -1,6 +1,6 @@
 # Main resource definitions for Security Hub
 
-data "aws_region" "current" {}
+
 data "aws_caller_identity" "current" {}
 
 resource "aws_securityhub_account" "this" {
