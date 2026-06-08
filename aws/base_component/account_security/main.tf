@@ -1,16 +1,13 @@
-# Account-level security configurations
-# This module enforces organizational security standards at the account/regional level.
-# Designed for use in AWS Organization member accounts managed by Control Tower.
-# CloudTrail, Config, and Security Hub are assumed to be managed centrally by the organization.
+# -----------------------------------------------------------------------------
+# Data sources
+# -----------------------------------------------------------------------------
+data "aws_caller_identity" "current" {}
 
 # -----------------------------------------------------------------------------
-# 1. S3 Account-level Public Access Block
-# Enforces that NO bucket in the account can be made public, regardless of
-# individual bucket settings.
+# 1. S3 Public Access Block (Account Level)
+# Enforces organization-wide security default for S3.
 # -----------------------------------------------------------------------------
 resource "aws_s3_account_public_access_block" "this" {
-  count = var.enable_s3_account_public_block ? 1 : 0
-
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -19,84 +16,66 @@ resource "aws_s3_account_public_access_block" "this" {
 
 # -----------------------------------------------------------------------------
 # 2. Default Security Group Hardening
-# Removes all rules from the default security group in the specified VPC.
-# Default security groups should never be used for actual traffic.
+# Removes all ingress/egress rules from the default security group.
 # -----------------------------------------------------------------------------
 resource "aws_default_security_group" "this" {
   count  = var.vpc_id != null ? 1 : 0
   vpc_id = var.vpc_id
 
-  # No ingress or egress rules defined = deny all
-
-  tags = merge(var.tags, {
-    Name = "default-sg-denied"
-  })
+  tags = var.tags
 }
 
 # -----------------------------------------------------------------------------
-# 3. EC2 Instance Metadata Defaults
-# Note: Requires AWS Provider >= 5.71.0
-# -----------------------------------------------------------------------------
-resource "aws_ec2_instance_metadata_defaults" "this" {
-  count = var.enable_ec2_metadata_defaults ? 1 : 0
-
-  # Require IMDSv2 (session-token based) for all new instances
-  http_tokens = "required"
-  # Hop limit of 1 prevents metadata access from within containers
-  http_put_response_hop_limit = var.ec2_metadata_hop_limit
-  # Disable instance tags in metadata unless explicitly needed
-  instance_metadata_tags = "disabled"
-}
-
-# -----------------------------------------------------------------------------
-# 4. EBS Encryption by Default
-# All new EBS volumes and snapshots will be encrypted.
+# 3. EBS Encryption by Default
+# Enforces regional default for EBS volume encryption.
 # -----------------------------------------------------------------------------
 resource "aws_ebs_encryption_by_default" "this" {
-  count   = var.enable_ebs_encryption_by_default ? 1 : 0
   enabled = true
 }
 
 resource "aws_ebs_default_kms_key" "this" {
-  count   = var.enable_ebs_encryption_by_default && var.ebs_kms_key_arn != null ? 1 : 0
-  key_arn = var.ebs_kms_key_arn
+  count       = var.ebs_kms_key_arn != null ? 1 : 0
+  key_arn     = var.ebs_kms_key_arn
 }
 
 # -----------------------------------------------------------------------------
-# 5. IAM Account Password Policy
+# 4. IAM Password Policy
 # Enforces strong password requirements for IAM users.
 # -----------------------------------------------------------------------------
 resource "aws_iam_account_password_policy" "this" {
-  count = var.enable_iam_password_policy ? 1 : 0
-
-  minimum_password_length        = var.password_policy_min_length
+  minimum_password_length        = 14
   require_lowercase_characters   = true
   require_numbers                = true
-  require_symbols                = true
   require_uppercase_characters   = true
+  require_symbols                = true
   allow_users_to_change_password = true
-  max_password_age               = 90
   password_reuse_prevention      = 24
-  hard_expiry                    = false
+  max_password_age               = 90
 }
 
 # -----------------------------------------------------------------------------
-# 6. IAM Access Analyzer
-# Continuously monitors resource policies to identify any resources shared
-# with external entities (accounts, internet, etc.).
+# 5. Access Analyzer
+# Monitors for resources shared outside the account or organization.
 # -----------------------------------------------------------------------------
 resource "aws_accessanalyzer_analyzer" "this" {
-  count         = var.enable_access_analyzer ? 1 : 0
-  analyzer_name = "account-access-analyzer"
+  analyzer_name = "account-analyzer"
   type          = "ACCOUNT"
 
   tags = var.tags
 }
 
 # -----------------------------------------------------------------------------
-# 7. Amazon GuardDuty
-# Account/region-level threat detection. Compatible with org-level GuardDuty
-# delegated admin — member detectors are required even in org-managed setups.
+# 6. EC2 IMDSv2 Enforcement
+# Mandates the use of IMDSv2 for all new instances in the region.
+# -----------------------------------------------------------------------------
+resource "aws_ec2_instance_metadata_defaults" "this" {
+  http_tokens                 = "required"
+  http_put_response_hop_limit = 1
+}
+
+# -----------------------------------------------------------------------------
+# 7. GuardDuty
+# Basic enablement of GuardDuty with recommended features.
 # -----------------------------------------------------------------------------
 resource "aws_guardduty_detector" "this" {
   count  = var.enable_guardduty ? 1 : 0
@@ -129,8 +108,6 @@ resource "aws_guardduty_detector_feature" "malware_protection" {
 # -----------------------------------------------------------------------------
 # 8. Account Alternate Contacts
 # Registers security, billing, and operations contacts on the account.
-# CIS Benchmark requires current contact details for all three personas.
-# Use team/group mailboxes rather than individual addresses.
 # -----------------------------------------------------------------------------
 resource "aws_account_alternate_contact" "security" {
   count = var.security_contact_email != null ? 1 : 0
@@ -199,9 +176,3 @@ module "support_role" {
     "arn:aws:iam::aws:policy/AWSSupportAccess"
   ]
 }
-
-# -----------------------------------------------------------------------------
-# Data sources
-# -----------------------------------------------------------------------------
-data "aws_region" "current" {}
-data "aws_caller_identity" "current" {}
