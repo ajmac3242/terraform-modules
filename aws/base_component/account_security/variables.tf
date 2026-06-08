@@ -11,8 +11,6 @@ variable "tags" {
   }
 }
 
-
-
 # -----------------------------------------------------------------------------
 # S3 Account-level Public Access Block
 # -----------------------------------------------------------------------------
@@ -38,17 +36,6 @@ variable "enable_ec2_metadata_defaults" {
   description = "Whether to enable account-level EC2 instance metadata defaults (IMDSv2 enforcement)"
   type        = bool
   default     = true
-}
-
-variable "ec2_metadata_hop_limit" {
-  description = "The desired HTTP PUT response hop limit for instance metadata requests. Best practice is 1 to prevent hop to containers."
-  type        = number
-  default     = 1
-
-  validation {
-    condition     = var.ec2_metadata_hop_limit >= 1 && var.ec2_metadata_hop_limit <= 64
-    error_message = "The hop limit must be between 1 and 64."
-  }
 }
 
 # -----------------------------------------------------------------------------
@@ -80,12 +67,6 @@ variable "enable_iam_password_policy" {
   default     = true
 }
 
-variable "password_policy_min_length" {
-  description = "Minimum length to require for IAM user passwords. AWS minimum is 6; CIS recommends 14+."
-  type        = number
-  default     = 14
-}
-
 # -----------------------------------------------------------------------------
 # EC2 Serial Console Access
 # -----------------------------------------------------------------------------
@@ -105,18 +86,7 @@ variable "create_support_role" {
 }
 
 # -----------------------------------------------------------------------------
-# IAM Access Analyzer
-# -----------------------------------------------------------------------------
-variable "enable_access_analyzer" {
-  description = "Whether to enable IAM Access Analyzer for the account"
-  type        = bool
-  default     = true
-}
-
-# -----------------------------------------------------------------------------
 # Amazon GuardDuty
-# Member-account detectors are required even when a GuardDuty org delegated
-# admin is managing findings centrally.
 # -----------------------------------------------------------------------------
 variable "enable_guardduty" {
   description = "Whether to enable Amazon GuardDuty for the account/region"
@@ -132,9 +102,6 @@ variable "enable_guardduty_kubernetes" {
 
 # -----------------------------------------------------------------------------
 # Alternate Contacts
-# AWS allows exactly one SECURITY, BILLING, and OPERATIONS contact per account.
-# Use team/group mailboxes rather than individual addresses.
-# CIS Benchmark requires current contact details for all three personas.
 # -----------------------------------------------------------------------------
 
 # Security contact
