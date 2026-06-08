@@ -86,13 +86,13 @@ resource "aws_iam_role_policy_attachment" "custom" {
 
 # Step Functions State Machine using base module
 module "step_functions" {
-  count  = var.skip_sfn_creation ? 0 : 1
-  source = "../../base_component/step_functions"
+  count                       = var.skip_sfn_creation ? 0 : 1
+  source                      = "../../base_component/step_functions"
   name                        = var.name
   definition                  = var.definition
   role_arn                    = module.role.role_arn
   type                        = var.type
   kms_key_arn                 = var.kms_key_arn
   log_group_retention_in_days = var.log_group_retention_in_days
-  tags = var.tags
+  tags                        = var.tags
 }
