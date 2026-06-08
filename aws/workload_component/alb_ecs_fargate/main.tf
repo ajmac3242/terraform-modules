@@ -60,7 +60,7 @@ resource "aws_lb_listener_rule" "this" {
 
 # ECS Fargate Service using base module
 module "ecs_fargate" {
-  source = "../../base_component/ecs_fargate"
+  source             = "../../base_component/ecs_fargate"
   name               = var.name
   private_subnet_ids = var.private_subnet_ids
   security_group_ids = var.ecs_service_security_group_ids
@@ -76,5 +76,5 @@ module "ecs_fargate" {
   }
   kms_key_arn              = var.kms_key_arn
   permissions_boundary_arn = var.permissions_boundary_arn
-  tags = var.tags
+  tags                     = var.tags
 }
