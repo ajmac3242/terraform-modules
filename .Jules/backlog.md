@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-06-07
+> **Last reviewed:** 2026-06-08
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -53,6 +53,26 @@ All modules in this repo MUST comply with these non-negotiable standards:
 ***
 
 ## Immediate Ready Queue
+
+### aws/base_component/resiliencehub: Opinionated AWS Resilience Hub (Next Generation) module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/resiliencehub
+**Why:** Next Generation Resilience Hub (GA June 1, 2026) provides a unified framework for resilience standards, modular policies (SLOs, DR, data recovery), and generative AI-powered assessments. Standardizing these policies is critical for organizational SRE and compliance posture.
+
+#### Acceptance Criteria
+- [ ] `aws_resiliencehub_resiliency_policy` implementation for standardized RTO/RPO targets
+- [ ] Support for modular resilience policies covering service-level objectives (SLOs)
+- [ ] Support for multi-AZ/Region DR and data recovery policies
+- [ ] Implementation of business-oriented application modeling (AppRegistry integration)
+- [ ] Support for Generative AI-powered resilience assessments
+- [ ] Mandatory CMK encryption for any underlying assessment reports or state
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates policy configuration and application mapping
+
+---
 
 ### aws/base_component/aurora_mysql: Opinionated Aurora MySQL module with Kiro Powers integration
 
