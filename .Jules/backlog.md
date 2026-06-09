@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-06-08
+> **Last reviewed:** 2026-06-09
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -53,6 +53,23 @@ All modules in this repo MUST comply with these non-negotiable standards:
 ***
 
 ## Immediate Ready Queue
+
+### aws/base_component/cognito: Support Multi-Region Replication
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/cognito
+**Why:** Cognito now supports multi-Region replication (announced June 8, 2026), enabling synchronization of user and machine identity data for global resilience and low-latency access.
+
+#### Acceptance Criteria
+- [ ] Implement `aws_cognito_user_pool` replication to secondary Regions
+- [ ] Support for synchronizing user pools, credentials, and federation setups
+- [ ] Support for near real-time data synchronization
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates replication configuration
+
+---
 
 ### aws/base_component/resiliencehub: Opinionated AWS Resilience Hub (Next Generation) module
 
@@ -335,7 +352,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** AWS ExtendDB (announced May 20, 2026) allows extending existing relational databases with scalable AI-powered capabilities or providing a managed DynamoDB-compatible adapter with pluggable storage.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_extenddb_cluster` (or equivalent) resource. Verified still blocked in AWS Provider v6.49.0. (Verified by Navigator 2026-06-05)
+> **Blocker:** Pending AWS Provider support for `aws_extenddb_cluster` (or equivalent) resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-09)
 
 #### Acceptance Criteria
 - [ ] `aws_extenddb_cluster` (or equivalent) resource implementation
@@ -357,7 +374,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** AWS Transform (GA May 20, 2026) provides managed data transformation, migration, and agentic modernization for code and networks.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_transform_job` / `aws_transform_project` (or equivalent) resource. Verified still blocked in AWS Provider v6.49.0. (Verified by Navigator 2026-06-05)
+> **Blocker:** Pending AWS Provider support for `aws_transform_job` / `aws_transform_project` (or equivalent) resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-09)
 
 #### Acceptance Criteria
 - [ ] `aws_transform_job` / `aws_transform_project` / `aws_transform_modernization_job` resource implementation
@@ -379,7 +396,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** May 7, 2026 update introduced agentic payment features for Bedrock AgentCore, enabling agents to make purchases using the x402 protocol.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `payment_configuration` (or equivalent) in `aws_bedrockagentcore_gateway`. Verified still blocked in AWS Provider v6.49.0. (Verified by Navigator 2026-06-05)
+> **Blocker:** Pending AWS Provider support for `payment_configuration` (or equivalent) in `aws_bedrockagentcore_gateway`. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-09)
 
 #### Acceptance Criteria
 - [ ] Implement `payment_configuration` block in `aws_bedrockagentcore_gateway`
@@ -399,7 +416,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Standardized infrastructure for Amazon Quick AI assistant integrations. Includes cross-account Athena data sources, desktop app preview, and "Generate Analysis" capabilities.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_amazon_quick` (or equivalent) resource. Verified still blocked in AWS Provider v6.49.0. (Verified by Navigator 2026-06-05)
+> **Blocker:** Pending AWS Provider support for `aws_amazon_quick` (or equivalent) resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-09)
 
 #### Acceptance Criteria
 - [ ] `aws_amazon_quick` resource implementation
@@ -407,7 +424,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Support for desktop app preview integration and visual asset generation
 - [ ] Support for "Generate Analysis" (natural language dashboard generation)
 - [ ] Connectivity to local files, calendars, and communications
-- [ ] Mandatory CMK encryption for all data stores and logs
+- [ ] Mandatory CMK encryption for all data stores, logs, and assets created in research sessions, such as analyses
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates security and configuration
 
@@ -445,7 +462,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Leverages new "Optimized Generative AI Inference Recommendations" feature (GA April 2026) to automatically identify optimized deployment configurations for generative AI models.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_sagemaker_inference_recommendations_job` resource. Verified still blocked in AWS Provider v6.49.0. (Verified by Navigator 2026-06-05)
+> **Blocker:** Pending AWS Provider support for `aws_sagemaker_inference_recommendations_job` resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-09)
 
 #### Acceptance Criteria
 - [ ] `aws_sagemaker_inference_recommendations_job` or equivalent for optimized deployment
@@ -467,7 +484,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** AWS DevOps Agent (GA May 2026) is an autonomous "frontier agent" for incident investigation and SRE tasks. Standardizing "Spaces" and MCP integrations is key for platform operations.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_devopsagent_space` (or equivalent) resource. Verified still blocked in AWS Provider v6.49.0. (Verified by Navigator 2026-06-05)
+> **Blocker:** Pending AWS Provider support for `aws_devopsagent_space` (or equivalent) resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-09)
 
 #### Acceptance Criteria
 - [ ] `aws_devopsagent_space` resource implementation
