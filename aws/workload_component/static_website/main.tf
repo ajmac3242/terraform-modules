@@ -5,7 +5,7 @@ module "s3_origin" {
   bucket_name           = "${replace(var.domain_name, ".", "-")}-origin"
   enable_access_logging = true
   log_bucket_id         = var.log_bucket_id
-  aws_account_id        = var.aws_account_id
+
 
   tags = var.tags
 }

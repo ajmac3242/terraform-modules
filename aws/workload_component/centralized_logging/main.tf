@@ -1,10 +1,12 @@
+data "aws_caller_identity" "current" {}
+
 # Centralized Log Storage using the base S3 module
 module "log_storage" {
   source = "../../base_component/s3"
 
   bucket_name                = "${var.name_prefix}-centralized-logs"
   enable_access_logging      = false # Circular logging not desired for the logging bucket itself
-  aws_account_id             = var.aws_account_id
+
   additional_policy_document = data.aws_iam_policy_document.log_delivery.json
 
   tags = var.tags
@@ -45,7 +47,7 @@ data "aws_iam_policy_document" "log_delivery" {
     condition {
       test     = "StringEquals"
       variable = "aws:SourceAccount"
-      values   = [var.aws_account_id]
+      values   = [data.aws_caller_identity.current.account_id]
     }
   }
 

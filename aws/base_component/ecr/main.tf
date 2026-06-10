@@ -7,7 +7,7 @@ module "kms" {
   description          = "KMS key for ECR repository ${var.name}"
   admin_principal_arns = []
   usage_principal_arns = []
-  aws_account_id       = var.aws_account_id
+
 
   tags = var.tags
 }

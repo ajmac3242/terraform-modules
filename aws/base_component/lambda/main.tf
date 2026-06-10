@@ -7,7 +7,7 @@ module "kms" {
   description          = "KMS key for Lambda function ${var.function_name}"
   admin_principal_arns = []
   usage_principal_arns = []
-  aws_account_id       = var.aws_account_id
+
 
   tags = var.tags
 }

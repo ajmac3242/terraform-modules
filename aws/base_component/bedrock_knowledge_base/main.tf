@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 # IAM Role for Bedrock Knowledge Base
 module "iam_role" {
   source = "../iam"
@@ -15,10 +17,10 @@ module "iam_role" {
         }
         Condition = {
           StringEquals = {
-            "aws:SourceAccount" = var.aws_account_id
+            "aws:SourceAccount" = data.aws_caller_identity.current.account_id
           }
           ArnLike = {
-            "aws:SourceArn" = "arn:aws:bedrock:${var.region}:${var.aws_account_id}:knowledge-base/*"
+            "aws:SourceArn" = "arn:aws:bedrock:${var.region}:${data.aws_caller_identity.current.account_id}:knowledge-base/*"
           }
         }
       }
