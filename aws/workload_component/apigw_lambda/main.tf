@@ -2,12 +2,12 @@
 module "lambda" {
   source = "../../base_component/lambda"
 
-  function_name  = var.name
-  description    = var.description
-  runtime        = var.runtime
-  handler        = var.handler
-  filename       = var.filename
-  kms_key_arn    = var.kms_key_arn
+  function_name = var.name
+  description   = var.description
+  runtime       = var.runtime
+  handler       = var.handler
+  filename      = var.filename
+  kms_key_arn   = var.kms_key_arn
 
 
   permissions_boundary_arn = var.permissions_boundary_arn

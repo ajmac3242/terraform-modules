@@ -10,7 +10,7 @@ module "lambda" {
 
   vpc_config = var.lambda_vpc_config
 
-  tags           = var.tags
+  tags = var.tags
 }
 
 # KMS Key for EventBridge DLQ if enabled
@@ -61,7 +61,7 @@ module "eventbridge" {
     }
   }
 
-  tags           = var.tags
+  tags = var.tags
 }
 
 # Lambda Permission for EventBridge to invoke
