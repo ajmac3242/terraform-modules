@@ -60,3 +60,40 @@ module "knowledge_base" {
 | `role_arn` | The ARN of the IAM role used by the knowledge base |
 | `role_name` | The name of the IAM role used by the knowledge base |
 | `tags` | A map of tags assigned to the knowledge base |
+
+<!-- BEGIN_TF_DOCS -->
+
+
+## Usage
+
+```hcl
+# See README.md for usage example
+```
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_embedding_model_arn"></a> [embedding\_model\_arn](#input\_embedding\_model\_arn) | ARN of the embedding model | `string` | n/a | yes |
+| <a name="input_name"></a> [name](#input\_name) | Name of the knowledge base | `string` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to the resources. Required keys: environment, owner, project, cost\_center. | `map(string)` | n/a | yes |
+| <a name="input_managed_policy_arns"></a> [managed\_policy\_arns](#input\_managed\_policy\_arns) | List of managed policy ARNs to attach to the KB role | `list(string)` | `[]` | no |
+| <a name="input_opensearch_serverless_configuration"></a> [opensearch\_serverless\_configuration](#input\_opensearch\_serverless\_configuration) | Configuration for OpenSearch Serverless storage | ```object({ collection_arn = string vector_index_name = string vector_field = string text_field = string metadata_field = string })``` | `null` | no |
+| <a name="input_permissions_boundary_arn"></a> [permissions\_boundary\_arn](#input\_permissions\_boundary\_arn) | ARN of the permissions boundary to attach to the KB role | `string` | `null` | no |
+| <a name="input_pinecone_configuration"></a> [pinecone\_configuration](#input\_pinecone\_configuration) | Configuration for Pinecone storage | ```object({ connection_string = string credentials_secret_arn = string text_field = string metadata_field = string })``` | `null` | no |
+| <a name="input_rds_configuration"></a> [rds\_configuration](#input\_rds\_configuration) | Configuration for RDS Aurora storage | ```object({ resource_arn = string credentials_secret_arn = string database_name = string table_name = string primary_key_field = string vector_field = string text_field = string metadata_field = string })``` | `null` | no |
+| <a name="input_redis_enterprise_cloud_configuration"></a> [redis\_enterprise\_cloud\_configuration](#input\_redis\_enterprise\_cloud\_configuration) | Configuration for Redis Enterprise Cloud storage | ```object({ endpoint = string credentials_secret_arn = string vector_index_name = string vector_field = string text_field = string metadata_field = string })``` | `null` | no |
+| <a name="input_region"></a> [region](#input\_region) | AWS region | `string` | `"us-east-1"` | no |
+| <a name="input_storage_type"></a> [storage\_type](#input\_storage\_type) | Type of storage for the knowledge base | `string` | `"OPENSEARCH_SERVERLESS"` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_knowledge_base_arn"></a> [knowledge\_base\_arn](#output\_knowledge\_base\_arn) | The ARN of the knowledge base |
+| <a name="output_knowledge_base_id"></a> [knowledge\_base\_id](#output\_knowledge\_base\_id) | The ID of the knowledge base |
+| <a name="output_role_arn"></a> [role\_arn](#output\_role\_arn) | The ARN of the IAM role used by the knowledge base |
+| <a name="output_role_name"></a> [role\_name](#output\_role\_name) | The name of the IAM role used by the knowledge base |
+| <a name="output_tags"></a> [tags](#output\_tags) | A map of tags assigned to the knowledge base |
+
+<!-- END_TF_DOCS -->
