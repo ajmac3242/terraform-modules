@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-06-09
+> **Last reviewed:** 2026-06-10
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -64,10 +64,31 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 #### Acceptance Criteria
 - [ ] Implement `aws_cognito_user_pool` replication to secondary Regions
+- [ ] Mandatory requirement: Configure a multi-Region customer managed key (CMK) for data-at-rest encryption before enabling replication
+- [ ] Support for configuring the OIDC issuer type (multi-region endpoints)
+- [ ] Support for manual activation of the replicated user pool
 - [ ] Support for synchronizing user pools, credentials, and federation setups
+- [ ] Integration with Route 53 health check IDs for automated failover
 - [ ] Support for near real-time data synchronization
 - [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates replication configuration
+- [ ] Native offline Terraform test validates replication and encryption configuration
+
+---
+
+### aws/base_component/bedrock_agent_runtime: Support Interactive Shells
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_agent_runtime
+**Why:** Bedrock AgentRuntime now supports interactive shells (announced June 5, 2026), enabling developers to access persistent, terminal-based sessions for agentic execution.
+
+#### Acceptance Criteria
+- [ ] Support for `InvokeAgentRuntimeCommandShell` API via provider resources/data sources
+- [ ] Support for persistent PTY-based sessions
+- [ ] Mandatory CMK encryption for shell session logs and state
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates shell configuration
 
 ---
 
@@ -197,6 +218,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Support for `filesystem_configuration` (EFS, S3 Files, and Session Storage)
 - [ ] Support for `request_header_configuration` (allowlists)
 - [ ] Support for `environment_variables` and `lifecycle_configuration`
+- [ ] Support for Interactive Shells via `InvokeAgentRuntimeCommandShell`
 - [ ] Standardized runtime endpoint configuration for low-latency agentic interactions
 - [ ] Mandatory CMK encryption for mounted session storage and persistent session state
 - [ ] Least-privilege IAM roles for agent invocation and filesystem access
@@ -256,6 +278,23 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ---
 
+### aws/base_component/bedrock_agent: Support Claude Fable 5 and Mythos safeguards
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_agent
+**Why:** Support for Claude Fable 5 (announced June 9, 2026) brings "Mythos-class" capabilities and safety safeguards to agents.
+
+#### Acceptance Criteria
+- [ ] Support for `anthropic.claude-fable-5-v1:0` model ID
+- [ ] Support for Mythos-class safeguards and reasoning parameters
+- [ ] Update documentation to reflect model availability and safety features
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates agent model configuration
+
+---
+
 ### aws/base_component/bedrock_agent: Support Expanded Session TTL
 
 **Priority:** LOW
@@ -268,6 +307,39 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Update `variable "idle_session_ttl_in_seconds"` validation to allow values up to 5400
 - [ ] Update documentation to reflect the new maximum TTL
 - [ ] Native offline Terraform test validates the new upper bound
+
+---
+
+### aws/base_component/ecs_fargate: Support 32vCPU configurations
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/ecs_fargate
+**Why:** Amazon ECS with AWS Fargate now supports 32vCPU compute configurations (announced June 5, 2026), enabling larger workloads.
+
+#### Acceptance Criteria
+- [ ] Update `cpu` variable validation to allow values up to 32768 (32vCPU)
+- [ ] Update `memory` variable validation to support corresponding memory limits for 32vCPU
+- [ ] Update documentation to reflect new compute limits
+- [ ] Native offline Terraform test validates the new upper bounds
+
+---
+
+### aws/base_component/eks: Support CloudWatch Vended Logs
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/eks
+**Why:** Amazon EKS now supports Amazon CloudWatch Vended Logs (announced June 4, 2026), providing a more cost-effective way to manage cluster logs.
+
+#### Acceptance Criteria
+- [ ] Implement support for CloudWatch Vended Logs configuration in `aws_eks_cluster`
+- [ ] Support for configuring log types and destinations
+- [ ] Mandatory CMK encryption for log groups
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates vended logs configuration
 
 ***
 
