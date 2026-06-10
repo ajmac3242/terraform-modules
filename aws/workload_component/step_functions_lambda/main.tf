@@ -1,12 +1,3 @@
-# Data sources to get current AWS region and account ID
-data "aws_region" "current" {}
-data "aws_caller_identity" "current" {}
-
-locals {
-  account_id = data.aws_caller_identity.current.account_id
-  region     = data.aws_region.current.id
-}
-
 # IAM Policy for the Step Functions State Machine
 resource "aws_iam_policy" "this" {
   name        = "${var.name}-policy"

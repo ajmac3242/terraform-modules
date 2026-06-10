@@ -1,10 +1,10 @@
 # Data sources to get current AWS region and account ID
 data "aws_region" "current" {}
-data "aws_caller_identity" "current" {}
 
-locals {
-  account_id = data.aws_caller_identity.current.account_id
-}
+
+
+
+
 
 # Task execution role created via base IAM module
 module "task_execution_role" {

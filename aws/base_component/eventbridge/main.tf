@@ -1,3 +1,10 @@
+data "aws_caller_identity" "current" {}
+
+locals {
+  account_id           = data.aws_caller_identity.current.account_id
+  provided_kms_key_arn = var.existing_kms_key_arn != null ? var.existing_kms_key_arn : var.kms_key_arn
+}
+
 # Automatically manage KMS key if not provided and creating a bus
 module "kms" {
   count  = var.create_bus && var.existing_kms_key_arn == null && var.kms_key_arn == null ? 1 : 0
@@ -6,18 +13,13 @@ module "kms" {
   name                 = "${coalesce(var.name, "default")}-bus-key"
   description          = "KMS key for EventBridge bus ${coalesce(var.name, "default")}"
   admin_principal_arns = []
-  usage_principal_arns = ["arn:aws:iam::${local.account_id}:root"] # Basic usage for the account, actual service access via key policy usually needs more
-
+  usage_principal_arns = ["arn:aws:iam::${local.account_id}:root"] # Basic usage for the account
 
   tags = var.tags
 }
 
-data "aws_caller_identity" "current" {}
-
 locals {
-  account_id           = data.aws_caller_identity.current.account_id
-  provided_kms_key_arn = var.existing_kms_key_arn != null ? var.existing_kms_key_arn : var.kms_key_arn
-  kms_key_arn          = var.create_bus ? (local.provided_kms_key_arn != null ? local.provided_kms_key_arn : module.kms[0].key_arn) : null
+  kms_key_arn = var.create_bus ? (local.provided_kms_key_arn != null ? local.provided_kms_key_arn : module.kms[0].key_arn) : null
 }
 
 # Main EventBridge Bus resource

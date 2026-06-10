@@ -1,12 +1,3 @@
-# Data sources to get current AWS region and account ID
-data "aws_region" "current" {}
-data "aws_caller_identity" "current" {}
-
-locals {
-  account_id = data.aws_caller_identity.current.account_id
-
-}
-
 # ALB using base module (conditionally created)
 module "alb" {
   count  = var.use_existing_alb ? 0 : 1
@@ -21,7 +12,6 @@ module "alb" {
   enable_http_redirect  = var.enable_https
 
   access_logs_bucket = var.access_logs_bucket
-
 
   tags = var.tags
 }
@@ -45,6 +35,7 @@ resource "aws_lb_target_group" "this" {
 
   tags = var.tags
 }
+
 
 locals {
   listener_arn = var.use_existing_alb ? var.existing_alb_listener_arn : (var.enable_https ? module.alb[0].https_listener_arn : module.alb[0].http_listener_arn)
@@ -89,7 +80,6 @@ module "ecs_fargate" {
 
   kms_key_arn              = var.kms_key_arn
   permissions_boundary_arn = var.permissions_boundary_arn
-
 
   tags = var.tags
 }

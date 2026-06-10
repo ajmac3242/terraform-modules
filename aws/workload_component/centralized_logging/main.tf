@@ -4,8 +4,8 @@ data "aws_caller_identity" "current" {}
 module "log_storage" {
   source = "../../base_component/s3"
 
-  bucket_name           = "${var.name_prefix}-centralized-logs"
-  enable_access_logging = false # Circular logging not desired for the logging bucket itself
+  bucket_name                = "${var.name_prefix}-centralized-logs"
+  enable_access_logging      = false # Circular logging not desired for the logging bucket itself
 
   additional_policy_document = data.aws_iam_policy_document.log_delivery.json
 
