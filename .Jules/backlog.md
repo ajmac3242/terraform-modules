@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-06-10
+> **Last reviewed:** 2026-06-11
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -289,6 +289,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 #### Acceptance Criteria
 - [ ] Support for `anthropic.claude-fable-5-v1:0` model ID
 - [ ] Support for Mythos-class safeguards and reasoning parameters
+- [ ] Support for autonomous planning, self-verification, and autonomous refinement for long-running tasks (days-long execution)
 - [ ] Update documentation to reflect model availability and safety features
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates agent model configuration
@@ -450,6 +451,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 #### Acceptance Criteria
 - [ ] `aws_transform_job` / `aws_transform_project` / `aws_transform_modernization_job` resource implementation
+- [ ] Support for Agentic Readiness Analysis (ARA) and Modernization Analysis (MODA)
 - [ ] Support for source and target data store configurations (S3, Kinesis, MSK)
 - [ ] Support for transformation logic using SQL, Python, or automated modernization (code/network)
 - [ ] Mandatory CMK encryption for data in transit, intermediate state, and job logs
@@ -493,9 +495,10 @@ All modules in this repo MUST comply with these non-negotiable standards:
 #### Acceptance Criteria
 - [ ] `aws_amazon_quick` resource implementation
 - [ ] Support for cross-account Athena data sources and data perimeter integration
-- [ ] Support for desktop app preview integration and visual asset generation
-- [ ] Support for "Generate Analysis" (natural language dashboard generation)
-- [ ] Connectivity to local files, calendars, and communications
+- [ ] Support for desktop app integration (access to local files, calendar, and communications)
+- [ ] Support for "Generate Analysis" (natural language dashboard generation) and visual asset generation
+- [ ] Support for expanded native connectors (Google Workspace, Zoom, Airtable, Dropbox, MS Teams)
+- [ ] Support for "Custom Apps" preview for building intelligent dashboards and web pages
 - [ ] Mandatory CMK encryption for all data stores, logs, and assets created in research sessions, such as analyses
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates security and configuration
