@@ -62,11 +62,6 @@ variable "tags" {
   }
 }
 
-variable "aws_account_id" {
-  description = "The AWS Account ID to support tests/mocking"
-  type        = string
-  default     = null
-}
 
 variable "skip_sfn_creation" {
   description = "If true, skip creation of the state machine. Useful for offline tests where SFN validation fails."
