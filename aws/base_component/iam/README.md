@@ -58,3 +58,35 @@ module "iam_role" {
 | `role_id` | The stable and unique string identifying the role |
 | `unique_id` | The unique ID assigned by AWS |
 | `tags` | A map of tags assigned to the resource |
+
+<!-- BEGIN_TF_DOCS -->
+
+
+## Usage
+
+```hcl
+# See README.md for usage example
+```
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_assume_role_policy"></a> [assume\_role\_policy](#input\_assume\_role\_policy) | The assume role policy for the IAM role (JSON string) | `string` | n/a | yes |
+| <a name="input_description"></a> [description](#input\_description) | The description of the IAM role | `string` | n/a | yes |
+| <a name="input_role_name"></a> [role\_name](#input\_role\_name) | The name of the IAM role. (1–64 chars, alphanumeric + +=,.@\_/-) | `string` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to the resources | `map(string)` | n/a | yes |
+| <a name="input_managed_policy_arns"></a> [managed\_policy\_arns](#input\_managed\_policy\_arns) | A list of managed policy ARNs to attach to the IAM role | `list(string)` | `[]` | no |
+| <a name="input_permissions_boundary_arn"></a> [permissions\_boundary\_arn](#input\_permissions\_boundary\_arn) | The ARN of the policy that is used to set the permissions boundary for the role | `string` | `null` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_role_arn"></a> [role\_arn](#output\_role\_arn) | The ARN of the IAM role |
+| <a name="output_role_id"></a> [role\_id](#output\_role\_id) | The stable and unique string identifying the role |
+| <a name="output_role_name"></a> [role\_name](#output\_role\_name) | The name of the IAM role |
+| <a name="output_tags"></a> [tags](#output\_tags) | A map of tags assigned to the resource |
+| <a name="output_unique_id"></a> [unique\_id](#output\_unique\_id) | The unique ID assigned by AWS |
+
+<!-- END_TF_DOCS -->
