@@ -40,3 +40,30 @@ module "waf" {
 | `web_acl_id` | The ID of the WAF Web ACL |
 | `web_acl_name` | The name of the WAF Web ACL |
 | `tags` | A map of tags assigned to the resource |
+
+<!-- BEGIN_TF_DOCS -->
+
+
+## Usage
+
+```hcl
+# See README.md for usage example
+```
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_name"></a> [name](#input\_name) | The name of the Web ACL | `string` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to the resources | `map(string)` | n/a | yes |
+| <a name="input_scope"></a> [scope](#input\_scope) | The scope of this Web ACL. Valid values are CLOUDFRONT and REGIONAL | `string` | `"REGIONAL"` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_tags"></a> [tags](#output\_tags) | A map of tags assigned to the resource |
+| <a name="output_web_acl_arn"></a> [web\_acl\_arn](#output\_web\_acl\_arn) | The ARN of the Web ACL |
+| <a name="output_web_acl_id"></a> [web\_acl\_id](#output\_web\_acl\_id) | The ID of the Web ACL |
+
+<!-- END_TF_DOCS -->
