@@ -31,6 +31,16 @@ variable "kms_key_arn" {
   }
 }
 
+variable "idle_session_ttl_in_seconds" {
+  description = "The amount of time, in seconds, that a session with the agent can remain idle before Bedrock terminates it"
+  type        = number
+  default     = 1800
+  validation {
+    condition     = var.idle_session_ttl_in_seconds >= 60 && var.idle_session_ttl_in_seconds <= 5400
+    error_message = "idle_session_ttl_in_seconds must be between 60 and 5400 seconds."
+  }
+}
+
 variable "guardrail_configuration" {
   description = "Guardrail configuration for the agent"
   type = object({

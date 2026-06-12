@@ -80,3 +80,8 @@ resource "aws_opensearchserverless_collection" "this" {
 
   tags = var.tags
 }
+
+# Data source to retrieve collection group details, including generation
+data "aws_opensearchserverless_collection_group" "this" {
+  name = aws_opensearchserverless_collection.this.collection_group_name
+}

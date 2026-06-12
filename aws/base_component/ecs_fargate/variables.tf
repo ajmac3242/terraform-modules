@@ -32,15 +32,25 @@ variable "platform_version" {
 }
 
 variable "cpu" {
-  description = "Number of cpu units used by the task"
+  description = "Number of cpu units used by the task (up to 32768 for 32vCPU)"
   type        = number
   default     = 256
+
+  validation {
+    condition     = contains([256, 512, 1024, 2048, 4096, 8192, 16384, 32768], var.cpu)
+    error_message = "cpu must be one of the supported Fargate values: 256, 512, 1024, 2048, 4096, 8192, 16384, 32768."
+  }
 }
 
 variable "memory" {
-  description = "Amount (in MiB) of memory used by the task"
+  description = "Amount (in MiB) of memory used by the task (up to 262144 for 32vCPU)"
   type        = number
   default     = 512
+
+  validation {
+    condition     = var.memory >= 512 && var.memory <= 262144
+    error_message = "memory must be between 512 and 262144 MiB."
+  }
 }
 
 variable "desired_count" {

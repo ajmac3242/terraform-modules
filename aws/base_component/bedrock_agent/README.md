@@ -36,6 +36,7 @@ module "bedrock_agent" {
 | `instruction` | Instructions for the agent | `string` | n/a | yes |
 | `agent_resource_role_arn` | The ARN of the IAM role with permissions to invoke the agent | `string` | n/a | yes |
 | `kms_key_arn` | KMS key ARN for encryption | `string` | n/a | yes |
+| `idle_session_ttl_in_seconds` | The amount of time, in seconds, that a session can remain idle before Bedrock terminates it (up to 5400) | `number` | `1800` | no |
 | `guardrail_configuration` | Guardrail configuration for the agent | `object` | `null` | no |
 | `tags` | Standard tags for all resources | `map(string)` | n/a | yes |
 

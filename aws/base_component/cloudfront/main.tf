@@ -72,4 +72,12 @@ resource "aws_cloudfront_distribution" "this" {
 
   # Mandatory WAF association
   web_acl_id = var.waf_web_acl_id
+
+  # Conditional cache tag config
+  dynamic "cache_tag_config" {
+    for_each = var.cache_tag_config_header_name != null ? [1] : []
+    content {
+      header_name = var.cache_tag_config_header_name
+    }
+  }
 }

@@ -35,8 +35,8 @@ module "ecs_fargate" {
 | `container_image` | Image to use for the container | `string` | n/a | yes |
 | `private_subnet_ids` | A list of private subnet IDs for the Fargate service | `list(string)` | n/a | yes |
 | `kms_key_arn` | KMS key ARN for log group encryption | `string` | n/a | yes |
-| `cpu` | Number of CPU units used by the task | `number` | `256` | no |
-| `memory` | Amount of memory (in MiB) used by the task | `number` | `512` | no |
+| `cpu` | Number of CPU units used by the task (up to 32768 for 32vCPU) | `number` | `256` | no |
+| `memory` | Amount of memory (in MiB) used by the task (up to 262144 for 32vCPU) | `number` | `512` | no |
 | `desired_count` | Number of instances of the task definition to place and keep running | `number` | `1` | no |
 | `platform_version` | The Fargate platform version on which to run your service | `string` | `"LATEST"` | no |
 | `tags` | Standard tags for all resources | `map(string)` | n/a | yes |

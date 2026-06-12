@@ -190,15 +190,15 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** MEDIUM
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #134)
 **Module:** aws/base_component/opensearch_serverless
 **Why:** AWS Provider v6.49.0 added the `generation` attribute to `aws_opensearchserverless_collection_group`, enabling better tracking of collection group iterations.
 
 #### Acceptance Criteria
-- [ ] Support `generation` attribute in `aws_opensearchserverless_collection_group`
-- [ ] Update data source to expose `generation`
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates attribute propagation
+- [x] Support `generation` attribute in `aws_opensearchserverless_collection_group`
+- [x] Update data source to expose `generation`
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates attribute propagation
 
 ---
 
@@ -266,15 +266,15 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** MEDIUM
 **Type:** Maintenance
-**Status:** `backlog`
+**Status:** `done` (PR #134)
 **Module:** aws/base_component/cloudfront
 **Why:** AWS Provider v6.46.0 introduced `cache_tag_config` to `aws_cloudfront_distribution`, enabling more granular cache invalidation patterns via tags.
 
 #### Acceptance Criteria
-- [ ] Implement `cache_tag_config` block in `aws_cloudfront_distribution`
-- [ ] Support for enabling/disabling cache tagging via variables
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates configuration
+- [x] Implement `cache_tag_config` block in `aws_cloudfront_distribution`
+- [x] Support for enabling/disabling cache tagging via variables
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates configuration
 
 ---
 
@@ -300,14 +300,14 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** LOW
 **Type:** Maintenance
-**Status:** `backlog`
+**Status:** `done` (PR #134)
 **Module:** aws/base_component/bedrock_agent
 **Why:** AWS Provider v6.46.0 increased the maximum value for `idle_session_ttl_in_seconds` from 3600 to 5400.
 
 #### Acceptance Criteria
-- [ ] Update `variable "idle_session_ttl_in_seconds"` validation to allow values up to 5400
-- [ ] Update documentation to reflect the new maximum TTL
-- [ ] Native offline Terraform test validates the new upper bound
+- [x] Update `variable "idle_session_ttl_in_seconds"` validation to allow values up to 5400
+- [x] Update documentation to reflect the new maximum TTL
+- [x] Native offline Terraform test validates the new upper bound
 
 ---
 
@@ -315,15 +315,15 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** MEDIUM
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #134)
 **Module:** aws/base_component/ecs_fargate
 **Why:** Amazon ECS with AWS Fargate now supports 32vCPU compute configurations (announced June 5, 2026), enabling larger workloads.
 
 #### Acceptance Criteria
-- [ ] Update `cpu` variable validation to allow values up to 32768 (32vCPU)
-- [ ] Update `memory` variable validation to support corresponding memory limits for 32vCPU
-- [ ] Update documentation to reflect new compute limits
-- [ ] Native offline Terraform test validates the new upper bounds
+- [x] Update `cpu` variable validation to allow values up to 32768 (32vCPU)
+- [x] Update `memory` variable validation to support corresponding memory limits for 32vCPU
+- [x] Update documentation to reflect new compute limits
+- [x] Native offline Terraform test validates the new upper bounds
 
 ---
 

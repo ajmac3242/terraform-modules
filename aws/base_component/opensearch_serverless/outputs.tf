@@ -17,3 +17,8 @@ output "tags" {
   description = "A map of tags assigned to the resource"
   value       = aws_opensearchserverless_collection.this.tags_all
 }
+
+output "generation" {
+  description = "The generation of the OpenSearch Serverless collection group"
+  value       = data.aws_opensearchserverless_collection_group.this.generation
+}
