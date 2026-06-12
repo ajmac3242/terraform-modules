@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-06-11
+> **Last reviewed:** 2026-06-12
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -61,6 +61,9 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Status:** `backlog`
 **Module:** aws/base_component/cognito
 **Why:** Cognito now supports multi-Region replication (announced June 8, 2026), enabling synchronization of user and machine identity data for global resilience and low-latency access.
+
+> [!IMPORTANT]
+> **Blocker:** Pending AWS Provider support for `replica_regions` (or equivalent) in `aws_cognito_user_pool`. Verified still blocked in AWS Provider v6.50.0 audit. (Verified by Navigator 2026-06-12)
 
 #### Acceptance Criteria
 - [ ] Implement `aws_cognito_user_pool` replication to secondary Regions
@@ -288,11 +291,45 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 #### Acceptance Criteria
 - [ ] Support for `anthropic.claude-fable-5-v1:0` model ID
-- [ ] Support for Mythos-class safeguards and reasoning parameters
+- [ ] Support for Mythos-class safeguards and reasoning parameters (including `reasoning_depth` and `logic_consistency` checks)
 - [ ] Support for autonomous planning, self-verification, and autonomous refinement for long-running tasks (days-long execution)
 - [ ] Update documentation to reflect model availability and safety features
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates agent model configuration
+
+---
+
+### aws/base_component/ecs_fargate: Support Deployment Pause Points
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/ecs_fargate
+**Why:** Amazon ECS now enables pausing service deployments at critical stages (announced June 2026), allowing for manual decision points and interactive verification during progression.
+
+#### Acceptance Criteria
+- [ ] Support for `pause_deployment` configurations in `aws_ecs_service`
+- [ ] Support for defining multiple pause points based on deployment percentages or specific events
+- [ ] Support for manual 'continue' signals via API/CLI
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates pause point configuration
+
+---
+
+### aws/base_component/elasticache: Support Valkey Durability
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/elasticache
+**Why:** ElastiCache for Valkey now supports built-in durability (announced June 2, 2026), addressing persistent memory challenges for AI agent state and long-term memory.
+
+#### Acceptance Criteria
+- [ ] Support for `durability_enabled` and `persistence_config` in `aws_elasticache_replication_group`
+- [ ] Support for configuring snapshot-based persistence and aof-based durability
+- [ ] Mandatory CMK encryption for persisted data at rest
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates durability and encryption settings
 
 ---
 
@@ -425,7 +462,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** AWS ExtendDB (announced May 20, 2026) allows extending existing relational databases with scalable AI-powered capabilities or providing a managed DynamoDB-compatible adapter with pluggable storage.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_extenddb_cluster` (or equivalent) resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-09)
+> **Blocker:** Pending AWS Provider support for `aws_extenddb_cluster` (or equivalent) resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-12)
 
 #### Acceptance Criteria
 - [ ] `aws_extenddb_cluster` (or equivalent) resource implementation
@@ -447,7 +484,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** AWS Transform (GA May 20, 2026) provides managed data transformation, migration, and agentic modernization for code and networks.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_transform_job` / `aws_transform_project` (or equivalent) resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-09)
+> **Blocker:** Pending AWS Provider support for `aws_transform_job` / `aws_transform_project` (or equivalent) resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-12)
 
 #### Acceptance Criteria
 - [ ] `aws_transform_job` / `aws_transform_project` / `aws_transform_modernization_job` resource implementation
@@ -470,7 +507,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** May 7, 2026 update introduced agentic payment features for Bedrock AgentCore, enabling agents to make purchases using the x402 protocol.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `payment_configuration` (or equivalent) in `aws_bedrockagentcore_gateway`. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-09)
+> **Blocker:** Pending AWS Provider support for `payment_configuration` (or equivalent) in `aws_bedrockagentcore_gateway`. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-12)
 
 #### Acceptance Criteria
 - [ ] Implement `payment_configuration` block in `aws_bedrockagentcore_gateway`
@@ -490,7 +527,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Standardized infrastructure for Amazon Quick AI assistant integrations. Includes cross-account Athena data sources, desktop app preview, and "Generate Analysis" capabilities.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_amazon_quick` (or equivalent) resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-09)
+> **Blocker:** Pending AWS Provider support for `aws_amazon_quick` (or equivalent) resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-12)
 
 #### Acceptance Criteria
 - [ ] `aws_amazon_quick` resource implementation
@@ -537,7 +574,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Leverages new "Optimized Generative AI Inference Recommendations" feature (GA April 2026) to automatically identify optimized deployment configurations for generative AI models.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_sagemaker_inference_recommendations_job` resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-09)
+> **Blocker:** Pending AWS Provider support for `aws_sagemaker_inference_recommendations_job` resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-12)
 
 #### Acceptance Criteria
 - [ ] `aws_sagemaker_inference_recommendations_job` or equivalent for optimized deployment
@@ -559,7 +596,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** AWS DevOps Agent (GA May 2026) is an autonomous "frontier agent" for incident investigation and SRE tasks. Standardizing "Spaces" and MCP integrations is key for platform operations.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_devopsagent_space` (or equivalent) resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-09)
+> **Blocker:** Pending AWS Provider support for `aws_devopsagent_space` (or equivalent) resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-12)
 
 #### Acceptance Criteria
 - [ ] `aws_devopsagent_space` resource implementation
