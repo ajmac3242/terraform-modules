@@ -37,6 +37,7 @@ module "cloudfront" {
 | `origin_id` | A unique identifier for the origin | `string` | n/a | yes |
 | `waf_web_acl_id` | The ID of the WAF Web ACL | `string` | n/a | yes |
 | `log_bucket_domain_name` | S3 bucket domain for access logs | `string` | n/a | yes |
+| `cache_tag_config_header_name` | The header name to use for cache tagging | `string` | `null` | no |
 | `tags` | A map of tags to assign to the resources. Required keys: `environment`, `owner`, `project`, `cost_center`. | `map(string)` | n/a | yes |
 
 ## Outputs

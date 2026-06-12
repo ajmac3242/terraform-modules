@@ -29,6 +29,12 @@ variable "log_bucket_domain_name" {
   type        = string
 }
 
+variable "cache_tag_config_header_name" {
+  description = "The header name to use for cache tagging. If provided, cache tagging is enabled."
+  type        = string
+  default     = null
+}
+
 variable "tags" {
   description = "A map of tags to assign to the resources"
   type        = map(string)
