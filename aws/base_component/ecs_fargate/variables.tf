@@ -25,11 +25,6 @@ variable "container_port" {
   default     = 80
 }
 
-variable "platform_version" {
-  description = "The platform version on which to run your service"
-  type        = string
-  default     = "LATEST"
-}
 
 variable "cpu" {
   description = "Number of cpu units used by the task"
@@ -49,15 +44,6 @@ variable "desired_count" {
   default     = 1
 }
 
-variable "load_balancer_config" {
-  description = "Optional load balancer configuration for the ECS service"
-  type = object({
-    target_group_arn = string
-    container_name   = string
-    container_port   = number
-  })
-  default = null
-}
 
 variable "kms_key_arn" {
   description = "The ARN of the KMS key for encryption of logs"
@@ -90,3 +76,13 @@ variable "tags" {
   }
 }
 
+
+variable "load_balancer_config" {
+  description = "Optional load balancer configuration for the ECS service"
+  type = object({
+    target_group_arn = string
+    container_name   = string
+    container_port   = number
+  })
+  default = null
+}

@@ -1,8 +1,3 @@
-# Data sources to get current AWS region and account ID
-
-locals {
-}
-
 # IAM Policy for the Step Functions State Machine
 resource "aws_iam_policy" "this" {
   name        = "${var.name}-policy"

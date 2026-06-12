@@ -8,7 +8,6 @@ module "lambda" {
   handler        = var.handler
   filename       = var.filename
   kms_key_arn    = var.kms_key_arn
-  aws_account_id = var.aws_account_id
 
   permissions_boundary_arn = var.permissions_boundary_arn
 

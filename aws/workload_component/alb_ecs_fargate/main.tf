@@ -1,6 +1,5 @@
-# Data sources to get current AWS region and account ID
-
 locals {
+  listener_arn = var.use_existing_alb ? var.existing_alb_listener_arn : module.alb[0].https_listener_arn
 }
 
 # ALB using base module (conditionally created)
@@ -39,10 +38,6 @@ resource "aws_lb_target_group" "this" {
   }
 
   tags = var.tags
-}
-
-locals {
-  listener_arn = var.use_existing_alb ? var.existing_alb_listener_arn : (var.enable_https ? module.alb[0].https_listener_arn : module.alb[0].http_listener_arn)
 }
 
 # ALB Listener Rule

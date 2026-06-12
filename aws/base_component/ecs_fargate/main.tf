@@ -117,7 +117,6 @@ resource "aws_ecs_task_definition" "this" {
           "awslogs-stream-prefix" = "ecs"
         }
       }
-      environment = []
     }
   ])
 
@@ -141,6 +140,15 @@ resource "aws_ecs_service" "this" {
     subnets          = var.private_subnet_ids
     security_groups  = var.security_group_ids
     assign_public_ip = false
+  }
+
+  dynamic "load_balancer" {
+    for_each = var.load_balancer_config != null ? [var.load_balancer_config] : []
+    content {
+      target_group_arn = load_balancer.value.target_group_arn
+      container_name   = load_balancer.value.container_name
+      container_port   = load_balancer.value.container_port
+    }
   }
 
   # Allow external changes to desired_count without forcing recreation (e.g. ASG)
