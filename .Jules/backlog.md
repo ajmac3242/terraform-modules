@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-06-12
+> **Last reviewed:** 2026-06-13
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -63,7 +63,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Cognito now supports multi-Region replication (announced June 8, 2026), enabling synchronization of user and machine identity data for global resilience and low-latency access.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `replica_regions` (or equivalent) in `aws_cognito_user_pool`. Verified still blocked in AWS Provider v6.50.0 audit. (Verified by Navigator 2026-06-12)
+> **Blocker:** Pending AWS Provider support for `replica_regions` (or equivalent) in `aws_cognito_user_pool`. Verified still blocked in AWS Provider v6.50.0 audit. (Verified by Navigator 2026-06-13)
 
 #### Acceptance Criteria
 - [ ] Implement `aws_cognito_user_pool` replication to secondary Regions
@@ -287,11 +287,11 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Type:** Feature
 **Status:** `backlog`
 **Module:** aws/base_component/bedrock_agent
-**Why:** Support for Claude Fable 5 (announced June 9, 2026) brings "Mythos-class" capabilities and safety safeguards to agents.
+**Why:** Support for Claude Fable 5 (announced June 9, 2026) brings "Mythos-class" capabilities and safety safeguards to agents. Confirmed unblocked in AWS Provider v6.50.0 via `reasoning_configuration`.
 
 #### Acceptance Criteria
 - [ ] Support for `anthropic.claude-fable-5-v1:0` model ID
-- [ ] Support for Mythos-class safeguards and reasoning parameters (including `reasoning_depth` and `logic_consistency` checks)
+- [ ] Support for Mythos-class safeguards via `reasoning_configuration` (including `reasoning_depth` and `logic_consistency` checks)
 - [ ] Support for autonomous planning, self-verification, and autonomous refinement for long-running tasks (days-long execution)
 - [ ] Update documentation to reflect model availability and safety features
 - [ ] Required `tags` enforced
@@ -306,6 +306,9 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Status:** `backlog`
 **Module:** aws/base_component/ecs_fargate
 **Why:** Amazon ECS now enables pausing service deployments at critical stages (announced June 2026), allowing for manual decision points and interactive verification during progression.
+
+> [!IMPORTANT]
+> **Blocker:** Pending AWS Provider support for `pause_deployment` (or equivalent) in `aws_ecs_service`. Verified still blocked in AWS Provider v6.50.0 audit. (Verified by Navigator 2026-06-13)
 
 #### Acceptance Criteria
 - [ ] Support for `pause_deployment` configurations in `aws_ecs_service`
@@ -323,6 +326,9 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Status:** `backlog`
 **Module:** aws/base_component/elasticache
 **Why:** ElastiCache for Valkey now supports built-in durability (announced June 2, 2026), addressing persistent memory challenges for AI agent state and long-term memory.
+
+> [!IMPORTANT]
+> **Blocker:** Pending AWS Provider support for `durability_enabled` and `persistence_config` in `aws_elasticache_replication_group`. Verified still blocked in AWS Provider v6.50.0 audit. (Verified by Navigator 2026-06-13)
 
 #### Acceptance Criteria
 - [ ] Support for `durability_enabled` and `persistence_config` in `aws_elasticache_replication_group`
@@ -417,6 +423,24 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ---
 
+### aws/base_component/cloudwatch_log_transformer: Opinionated CloudWatch Log Transformer module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/cloudwatch_log_transformer
+**Why:** CloudWatch Log Transformer (announced June 11, 2026) enables in-flight transformation of log data to add context for Application Signals, infrastructure, and traces, accelerating troubleshooting.
+
+#### Acceptance Criteria
+- [ ] `aws_cloudwatch_log_transformer` resource implementation
+- [ ] Support for adding infrastructure and trace context to logs
+- [ ] Mandatory CMK encryption for any persistent transformation state or logs
+- [ ] Least-privilege IAM roles for log transformation
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates transformer configuration
+
+---
+
 ### aws/base_component/bedrock_agent_token_vault: Opinionated Bedrock Agent Token Vault module
 
 **Priority:** HIGH
@@ -462,7 +486,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** AWS ExtendDB (announced May 20, 2026) allows extending existing relational databases with scalable AI-powered capabilities or providing a managed DynamoDB-compatible adapter with pluggable storage.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_extenddb_cluster` (or equivalent) resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-12)
+> **Blocker:** Pending AWS Provider support for `aws_extenddb_cluster` (or equivalent) resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-13)
 
 #### Acceptance Criteria
 - [ ] `aws_extenddb_cluster` (or equivalent) resource implementation
@@ -484,7 +508,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** AWS Transform (GA May 20, 2026) provides managed data transformation, migration, and agentic modernization for code and networks.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_transform_job` / `aws_transform_project` (or equivalent) resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-12)
+> **Blocker:** Pending AWS Provider support for `aws_transform_job` / `aws_transform_project` (or equivalent) resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-13)
 
 #### Acceptance Criteria
 - [ ] `aws_transform_job` / `aws_transform_project` / `aws_transform_modernization_job` resource implementation
@@ -507,7 +531,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** May 7, 2026 update introduced agentic payment features for Bedrock AgentCore, enabling agents to make purchases using the x402 protocol.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `payment_configuration` (or equivalent) in `aws_bedrockagentcore_gateway`. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-12)
+> **Blocker:** Pending AWS Provider support for `payment_configuration` (or equivalent) in `aws_bedrockagentcore_gateway`. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-13)
 
 #### Acceptance Criteria
 - [ ] Implement `payment_configuration` block in `aws_bedrockagentcore_gateway`
@@ -527,7 +551,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Standardized infrastructure for Amazon Quick AI assistant integrations. Includes cross-account Athena data sources, desktop app preview, and "Generate Analysis" capabilities.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_amazon_quick` (or equivalent) resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-12)
+> **Blocker:** Pending AWS Provider support for `aws_amazon_quick` (or equivalent) resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-13)
 
 #### Acceptance Criteria
 - [ ] `aws_amazon_quick` resource implementation
@@ -574,7 +598,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** Leverages new "Optimized Generative AI Inference Recommendations" feature (GA April 2026) to automatically identify optimized deployment configurations for generative AI models.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_sagemaker_inference_recommendations_job` resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-12)
+> **Blocker:** Pending AWS Provider support for `aws_sagemaker_inference_recommendations_job` resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-13)
 
 #### Acceptance Criteria
 - [ ] `aws_sagemaker_inference_recommendations_job` or equivalent for optimized deployment
@@ -596,7 +620,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Why:** AWS DevOps Agent (GA May 2026) is an autonomous "frontier agent" for incident investigation and SRE tasks. Standardizing "Spaces" and MCP integrations is key for platform operations.
 
 > [!IMPORTANT]
-> **Blocker:** Pending AWS Provider support for `aws_devopsagent_space` (or equivalent) resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-12)
+> **Blocker:** Pending AWS Provider support for `aws_devopsagent_space` (or equivalent) resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-13)
 
 #### Acceptance Criteria
 - [ ] `aws_devopsagent_space` resource implementation
@@ -684,6 +708,21 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [x] Add `is_organization_rule` toggle to the module
 - [x] Update outputs to handle both local and organizational rule IDs using `try()`
 - [x] Native offline Terraform test validates organizational rule configuration
+
+---
+
+### aws/base_component/aurora_postgresql: Support PostgreSQL 18
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/aurora_postgresql
+**Why:** Support for PostgreSQL major version 18 (announced June 11, 2026) in Aurora.
+
+#### Acceptance Criteria
+- [ ] Support `engine_version` >= 18.x
+- [ ] Update `db_cluster_parameter_group_family` default and validation to support `aurora-postgresql18`
+- [ ] Native offline Terraform test validates version configuration
 
 ---
 
@@ -1475,6 +1514,20 @@ Retain previously completed module entries below this line for historical tracki
 - [x] Monitoring enabled by default
 - [x] Tag propagation to initiatives and volumes
 - [x] Required `tags` enforced
+
+---
+
+### aws/base_component/ec2: Support M9g and M9gd (Graviton5) instances
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/ec2
+**Why:** Support for new AWS Graviton5-powered M9g and M9gd instances (announced June 10, 2026), offering up to 25% better compute performance.
+
+#### Acceptance Criteria
+- [ ] Update `instance_type` documentation and any validation to include M9g and M9gd classes
+- [ ] Native offline Terraform test validates instance type configuration
 
 ---
 
