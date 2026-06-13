@@ -117,3 +117,56 @@ run "valid_browser_creation" {
     error_message = "Mandatory tags are missing on Browser"
   }
 }
+
+run "enhanced_gateway_and_target_configuration" {
+  command = plan
+
+  variables {
+    protocol_configuration = {
+      mcp = {
+        session_configuration = {
+          session_timeout_in_seconds = 3600
+        }
+        streaming_configuration = {
+          enable_response_streaming = true
+        }
+      }
+    }
+
+    gateway_targets = {
+      "enhanced-target" = {
+        description = "Enhanced target with HTTP and JWT"
+        target_configuration = {
+          http = {
+            agentcore_runtime = {
+              arn = "arn:aws:bedrock:us-east-1:123456789012:agent-runtime/enhanced"
+            }
+          }
+        }
+        credential_provider_configuration = {
+          jwt_passthrough = true
+        }
+      }
+    }
+  }
+
+  assert {
+    condition     = aws_bedrockagentcore_gateway.this.protocol_configuration[0].mcp[0].session_configuration[0].session_timeout_in_seconds == 3600
+    error_message = "Gateway session timeout does not match"
+  }
+
+  assert {
+    condition     = aws_bedrockagentcore_gateway.this.protocol_configuration[0].mcp[0].streaming_configuration[0].enable_response_streaming == true
+    error_message = "Gateway streaming not enabled"
+  }
+
+  assert {
+    condition     = length(aws_bedrockagentcore_gateway_target.this["enhanced-target"].credential_provider_configuration[0].jwt_passthrough) == 1
+    error_message = "Target JWT passthrough block should be present"
+  }
+
+  assert {
+    condition     = aws_bedrockagentcore_gateway_target.this["enhanced-target"].target_configuration[0].http[0].agentcore_runtime[0].arn == "arn:aws:bedrock:us-east-1:123456789012:agent-runtime/enhanced"
+    error_message = "Target HTTP agentcore_runtime ARN does not match"
+  }
+}

@@ -64,6 +64,12 @@ variable "protocol_configuration" {
       instructions       = optional(string)
       search_type        = optional(string)
       supported_versions = optional(list(string))
+      session_configuration = optional(object({
+        session_timeout_in_seconds = optional(number)
+      }))
+      streaming_configuration = optional(object({
+        enable_response_streaming = optional(bool)
+      }))
     })
   })
   default = null
@@ -124,12 +130,33 @@ variable "gateway_targets" {
   type = map(object({
     description = optional(string)
     target_configuration = object({
-      mcp = object({
+      http = optional(object({
+        agentcore_runtime = optional(object({
+          arn       = string
+          qualifier = optional(string)
+        }))
+      }))
+      mcp = optional(object({
         lambda = optional(object({
           lambda_arn = string
         }))
-      })
+        mcp_server = optional(object({
+          endpoint     = string
+          listing_mode = optional(string)
+        }))
+      }))
     })
+    credential_provider_configuration = optional(object({
+      jwt_passthrough = optional(bool, false)
+      caller_iam_credentials = optional(object({
+        service = string
+        region  = optional(string)
+      }))
+      gateway_iam_role = optional(object({
+        service = optional(string)
+        region  = optional(string)
+      }))
+    }))
   }))
   default = {}
 }

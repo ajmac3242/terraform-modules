@@ -141,7 +141,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #136)
 **Module:** aws/base_component/bedrock_agent_core
 **Why:** Expanding the Bedrock AgentCore module to support advanced MCP gateway controls for streaming and session management. Confirmed in AWS Provider v6.49.0.
 
@@ -158,7 +158,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** HIGH
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done` (PR #136)
 **Module:** aws/base_component/bedrock_agent_core
 **Why:** AWS Provider v6.48.0 added support for `credential_provider_configuration.jwt_passthrough`, `credential_provider_configuration.caller_iam_credentials`, SigV4 signing for MCP servers, and direct HTTP targets.
 
