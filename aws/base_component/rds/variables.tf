@@ -63,8 +63,8 @@ variable "kms_key_arn" {
   type        = string
 
   validation {
-    condition     = can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/.*$", var.kms_key_arn))
-    error_message = "The kms_key_arn must be a valid KMS key ARN."
+    condition     = can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/[a-z0-9-]+$", var.kms_key_arn))
+    error_message = "The kms_key_arn must be a valid AWS KMS key ARN (arn:aws:kms:region:account:key/key-id)."
   }
 }
 
@@ -77,6 +77,7 @@ variable "tags" {
     error_message = "The tags map must contain the following keys: environment, owner, project, cost_center."
   }
 }
+
 
 variable "aws_account_id" {
   description = "The AWS Account ID to support tests/mocking"

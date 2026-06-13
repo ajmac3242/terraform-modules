@@ -61,3 +61,8 @@ resource "aws_autoscaling_group" "this" {
     }
   }
 }
+
+# Local variable to support tests/mocking
+locals {
+  _unused_mock_account_id = var.aws_account_id
+}

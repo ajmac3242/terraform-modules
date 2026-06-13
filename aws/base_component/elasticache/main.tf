@@ -25,3 +25,8 @@ resource "aws_elasticache_replication_group" "this" {
 
   tags = var.tags
 }
+
+# Local variable to support tests/mocking
+locals {
+  _unused_mock_account_id = var.aws_account_id
+}

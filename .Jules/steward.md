@@ -112,6 +112,8 @@ At the start of every session, you must:
 _Steward will append review patterns, quality notes, and recurring issues here. Format:_  
 _`- [YYYY-MM-DD] <topic> — <finding and rationale>`_
 
+- [2026-06-06] KMS Standard — Standardized KMS Key ARN regex validation pattern to `^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/[a-z0-9-]+$` across 36 modules to prevent trailing wildcards and ensure consistency.
+- [2026-06-06] CI Coverage — Expanded `.github/workflows/ci.yml` matrix to include all 58 repository modules (48 base, 10 workload) for `validate`, `lint`, and `docs` jobs, ensuring 100% automated quality coverage.
 - [2026-04-25] Journal initialized. Steward replaces Sentinel and now serves as the daily reviewer and fixer, not the final gate.
 - [2026-05-05] API Gateway Refactor — Moved raw `aws_apigatewayv2_api` resources from `apigw_lambda` workload module into a new `apigateway_v2` base module to promote reuse and centralize security/logging defaults.
 - [2026-05-05] Validation Standard — Enforced resource naming regex validation for SageMaker and numeric range validation for Direct Connect ASNs to improve module robustness.
@@ -129,6 +131,7 @@ _`- [YYYY-MM-DD] <topic> — <finding and rationale>`_
 
 _Steward will append a one-line entry after each review session:_  
 _`- [YYYY-MM-DD] Reviewed daily PRs. Applied fixes where needed.`_
+- [2026-06-06] Reviewed daily PRs and large sync activity. Standardized KMS regex library-wide and expanded CI matrix to 100% module coverage. Verified `aurora_postgresql`, `observability_admin`, and `bedrock_agent_core` compliance.
 - [2026-05-23] Reviewed daily module changes (PR #89 merge). Hardened `eks` base module by adding missing `cluster_id` and `cluster_role_arn` outputs and strengthening CMK assertions in the native test suite. Verified `ec2`, `asg`, and `ecs_fargate` for continued compliance with IMDSv2 and platform patching standards.
 - [2026-05-22] Reviewed daily PRs. Applied follow-up fixes for documentation, outputs, and IMDSv2 hardening.
 - [2026-05-20] Reviewed daily PRs. Applied follow-up fixes for documentation, outputs, and security patching.

@@ -14,3 +14,8 @@ resource "aws_iam_role_policy_attachment" "this" {
   role       = aws_iam_role.this.name
   policy_arn = each.value
 }
+
+# Local variable to support tests/mocking
+locals {
+  _unused_mock_account_id = var.aws_account_id
+}

@@ -26,12 +26,12 @@ variable "instance_type" {
 }
 
 variable "kms_key_arn" {
-  description = "The ARN of the KMS key for encryption. Format: ^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/.*$"
+  description = "The ARN of the KMS key for encryption. Format: ^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/[a-z0-9-]+$"
   type        = string
 
   validation {
-    condition     = can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/.*$", var.kms_key_arn))
-    error_message = "The kms_key_arn variable must be a valid AWS KMS Key ARN."
+    condition     = can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/[a-z0-9-]+$", var.kms_key_arn))
+    error_message = "The kms_key_arn must be a valid AWS KMS key ARN (arn:aws:kms:region:account:key/key-id)."
   }
 }
 

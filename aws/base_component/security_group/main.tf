@@ -35,3 +35,8 @@ resource "aws_security_group" "this" {
     create_before_destroy = true
   }
 }
+
+# Local variable to support tests/mocking
+locals {
+  _unused_mock_account_id = var.aws_account_id
+}

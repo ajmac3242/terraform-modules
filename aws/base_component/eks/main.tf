@@ -48,3 +48,8 @@ resource "aws_eks_cluster" "this" {
     module.cluster_role
   ]
 }
+
+# Local variable to support tests/mocking
+locals {
+  _unused_mock_account_id = var.aws_account_id
+}

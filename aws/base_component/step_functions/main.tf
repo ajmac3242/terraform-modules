@@ -7,6 +7,7 @@ locals {
   account_id = var.aws_account_id != null ? var.aws_account_id : data.aws_caller_identity.current[0].account_id
 }
 
+
 # CloudWatch Log Group for Step Functions with mandatory KMS encryption
 resource "aws_cloudwatch_log_group" "this" {
   name              = "/aws/vendedlogs/states/${var.name}"

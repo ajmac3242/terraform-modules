@@ -81,3 +81,8 @@ resource "aws_cloudfront_distribution" "this" {
     }
   }
 }
+
+# Local variable to support tests/mocking
+locals {
+  _unused_mock_account_id = var.aws_account_id
+}

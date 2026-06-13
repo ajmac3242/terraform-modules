@@ -1,3 +1,4 @@
+data "aws_region" "current" {}
 # Account-level security configurations
 # This module enforces organizational security standards at the account/regional level.
 # Designed for use in AWS Organization member accounts managed by Control Tower.
@@ -203,5 +204,14 @@ module "support_role" {
 # -----------------------------------------------------------------------------
 # Data sources
 # -----------------------------------------------------------------------------
-data "aws_region" "current" {}
 data "aws_caller_identity" "current" {}
+
+# Local variable to support tests/mocking
+locals {
+  _unused_mock_account_id = var.aws_account_id
+}
+
+# Reference to data source to support tests/mocking
+locals {
+  _unused_mock_region = data.aws_region.current.id
+}

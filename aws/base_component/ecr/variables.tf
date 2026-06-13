@@ -26,8 +26,8 @@ variable "existing_kms_key_arn" {
   default     = null
 
   validation {
-    condition     = var.existing_kms_key_arn == null || can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/.*$", var.existing_kms_key_arn))
-    error_message = "The existing_kms_key_arn must be a valid KMS key ARN."
+    condition     = var.existing_kms_key_arn == null || can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/[a-z0-9-]+$", var.existing_kms_key_arn))
+    error_message = "The existing_kms_key_arn must be a valid AWS KMS key ARN (arn:aws:kms:region:account:key/key-id)."
   }
 }
 

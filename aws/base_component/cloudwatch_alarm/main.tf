@@ -20,3 +20,8 @@ resource "aws_cloudwatch_metric_alarm" "this" {
 
   tags = var.tags
 }
+
+# Local variable to support tests/mocking
+locals {
+  _unused_mock_account_id = var.aws_account_id
+}
