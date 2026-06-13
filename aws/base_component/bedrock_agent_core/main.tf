@@ -27,6 +27,20 @@ resource "aws_bedrockagentcore_gateway" "this" {
           instructions       = mcp.value.instructions
           search_type        = mcp.value.search_type
           supported_versions = mcp.value.supported_versions
+
+          dynamic "session_configuration" {
+            for_each = mcp.value.session_configuration != null ? [mcp.value.session_configuration] : []
+            content {
+              session_timeout_in_seconds = session_configuration.value.session_timeout_in_seconds
+            }
+          }
+
+          dynamic "streaming_configuration" {
+            for_each = mcp.value.streaming_configuration != null ? [mcp.value.streaming_configuration] : []
+            content {
+              enable_response_streaming = streaming_configuration.value.enable_response_streaming
+            }
+          }
         }
       }
     }
@@ -106,11 +120,72 @@ resource "aws_bedrockagentcore_gateway_target" "this" {
   gateway_identifier = aws_bedrockagentcore_gateway.this.gateway_id
 
   target_configuration {
-    mcp {
-      dynamic "lambda" {
-        for_each = each.value.target_configuration.mcp.lambda != null ? [each.value.target_configuration.mcp.lambda] : []
+    dynamic "mcp" {
+      for_each = each.value.target_configuration.mcp != null ? [each.value.target_configuration.mcp] : []
+      content {
+        dynamic "lambda" {
+          for_each = mcp.value.lambda != null ? [mcp.value.lambda] : []
+          content {
+            lambda_arn = lambda.value.lambda_arn
+          }
+        }
+      }
+    }
+
+    dynamic "mcp" {
+      for_each = each.value.target_configuration.mcp != null ? [each.value.target_configuration.mcp] : []
+      content {
+        dynamic "lambda" {
+          for_each = mcp.value.lambda != null ? [mcp.value.lambda] : []
+          content {
+            lambda_arn = lambda.value.lambda_arn
+          }
+        }
+        dynamic "mcp_server" {
+          for_each = mcp.value.mcp_server != null ? [mcp.value.mcp_server] : []
+          content {
+            endpoint     = mcp_server.value.endpoint
+            listing_mode = mcp_server.value.listing_mode
+          }
+        }
+      }
+    }
+
+    dynamic "http" {
+      for_each = each.value.target_configuration.http != null ? [each.value.target_configuration.http] : []
+      content {
+        dynamic "agentcore_runtime" {
+          for_each = http.value.agentcore_runtime != null ? [http.value.agentcore_runtime] : []
+          content {
+            arn       = agentcore_runtime.value.arn
+            qualifier = agentcore_runtime.value.qualifier
+          }
+        }
+      }
+    }
+  }
+
+  dynamic "credential_provider_configuration" {
+    for_each = each.value.credential_provider_configuration != null ? [each.value.credential_provider_configuration] : []
+    content {
+      dynamic "jwt_passthrough" {
+        for_each = credential_provider_configuration.value.jwt_passthrough ? [1] : []
+        content {}
+      }
+
+      dynamic "caller_iam_credentials" {
+        for_each = credential_provider_configuration.value.caller_iam_credentials != null ? [credential_provider_configuration.value.caller_iam_credentials] : []
         content {
-          lambda_arn = lambda.value.lambda_arn
+          service = caller_iam_credentials.value.service
+          region  = caller_iam_credentials.value.region
+        }
+      }
+
+      dynamic "gateway_iam_role" {
+        for_each = credential_provider_configuration.value.gateway_iam_role != null ? [credential_provider_configuration.value.gateway_iam_role] : []
+        content {
+          service = gateway_iam_role.value.service
+          region  = gateway_iam_role.value.region
         }
       }
     }

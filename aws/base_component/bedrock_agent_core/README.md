@@ -63,6 +63,7 @@ module "bedrock_agent_core" {
 
 ## Security
 - **CMK Encryption**: Mandatory encryption at rest using a Customer Managed Key (CMK) via the `kms_key_arn` variable. Browser recordings (S3) and Evaluation logs (CloudWatch) must also be CMK-encrypted.
+- **Secure Gateway Targets**: Supports advanced credential providers including JWT passthrough, Caller IAM credentials, and Gateway IAM roles for secure tool orchestration.
 - **VPC Sandboxing**: Browser tools are placed within a VPC with configurable security groups and subnets to ensure network isolation.
 - **IAM Least Privilege**: Ensure all provided execution roles follow the principle of least privilege.
 - **Tagging**: Enforces organizational tagging standards for cost attribution and governance.
