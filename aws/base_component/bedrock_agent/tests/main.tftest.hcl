@@ -65,3 +65,16 @@ run "valid_agent_creation_with_guardrail" {
     error_message = "Guardrail identifier does not match"
   }
 }
+
+run "valid_agent_creation_with_max_ttl" {
+  command = plan
+
+  variables {
+    idle_session_ttl_in_seconds = 5400
+  }
+
+  assert {
+    condition     = aws_bedrockagent_agent.this.idle_session_ttl_in_seconds == 5400
+    error_message = "Idle session TTL does not match expected maximum value"
+  }
+}
