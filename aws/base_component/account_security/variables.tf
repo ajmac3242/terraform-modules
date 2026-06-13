@@ -11,12 +11,6 @@ variable "tags" {
   }
 }
 
-variable "aws_account_id" {
-  description = "The AWS Account ID to support tests/mocking"
-  type        = string
-  default     = null
-}
-
 # -----------------------------------------------------------------------------
 # S3 Account-level Public Access Block
 # -----------------------------------------------------------------------------
@@ -44,17 +38,6 @@ variable "enable_ec2_metadata_defaults" {
   default     = true
 }
 
-variable "ec2_metadata_hop_limit" {
-  description = "The desired HTTP PUT response hop limit for instance metadata requests. Best practice is 1 to prevent hop to containers."
-  type        = number
-  default     = 1
-
-  validation {
-    condition     = var.ec2_metadata_hop_limit >= 1 && var.ec2_metadata_hop_limit <= 64
-    error_message = "The hop limit must be between 1 and 64."
-  }
-}
-
 # -----------------------------------------------------------------------------
 # EBS Encryption by Default
 # -----------------------------------------------------------------------------
@@ -70,7 +53,7 @@ variable "ebs_kms_key_arn" {
   default     = null
 
   validation {
-    condition     = var.ebs_kms_key_arn == null || can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/.*$", var.ebs_kms_key_arn))
+    condition     = var.ebs_kms_key_arn == null || can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/[a-z0-9-]+$", var.ebs_kms_key_arn))
     error_message = "The ebs_kms_key_arn must be a valid KMS key ARN."
   }
 }
@@ -82,12 +65,6 @@ variable "enable_iam_password_policy" {
   description = "Whether to enable the account-level IAM password policy"
   type        = bool
   default     = true
-}
-
-variable "password_policy_min_length" {
-  description = "Minimum length to require for IAM user passwords. AWS minimum is 6; CIS recommends 14+."
-  type        = number
-  default     = 14
 }
 
 # -----------------------------------------------------------------------------
@@ -109,18 +86,7 @@ variable "create_support_role" {
 }
 
 # -----------------------------------------------------------------------------
-# IAM Access Analyzer
-# -----------------------------------------------------------------------------
-variable "enable_access_analyzer" {
-  description = "Whether to enable IAM Access Analyzer for the account"
-  type        = bool
-  default     = true
-}
-
-# -----------------------------------------------------------------------------
 # Amazon GuardDuty
-# Member-account detectors are required even when a GuardDuty org delegated
-# admin is managing findings centrally.
 # -----------------------------------------------------------------------------
 variable "enable_guardduty" {
   description = "Whether to enable Amazon GuardDuty for the account/region"
@@ -136,9 +102,6 @@ variable "enable_guardduty_kubernetes" {
 
 # -----------------------------------------------------------------------------
 # Alternate Contacts
-# AWS allows exactly one SECURITY, BILLING, and OPERATIONS contact per account.
-# Use team/group mailboxes rather than individual addresses.
-# CIS Benchmark requires current contact details for all three personas.
 # -----------------------------------------------------------------------------
 
 # Security contact

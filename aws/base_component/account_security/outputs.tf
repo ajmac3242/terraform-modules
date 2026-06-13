@@ -31,7 +31,7 @@ output "iam_password_policy_enabled" {
 
 output "access_analyzer_arn" {
   description = "The ARN of the IAM Access Analyzer, or null if disabled"
-  value       = try(aws_accessanalyzer_analyzer.this[0].arn, null)
+  value       = try(aws_accessanalyzer_analyzer.this.arn, null)
 }
 
 # -----------------------------------------------------------------------------

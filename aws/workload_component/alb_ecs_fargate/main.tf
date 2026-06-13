@@ -1,14 +1,3 @@
-# Data sources to get current AWS region and account ID
-data "aws_region" "current" {}
-data "aws_caller_identity" "current" {
-  count = var.aws_account_id == null ? 1 : 0
-}
-
-locals {
-  account_id = var.aws_account_id != null ? var.aws_account_id : data.aws_caller_identity.current[0].account_id
-  region     = data.aws_region.current.id
-}
-
 # ALB using base module (conditionally created)
 module "alb" {
   count  = var.use_existing_alb ? 0 : 1
@@ -23,7 +12,6 @@ module "alb" {
   enable_http_redirect  = var.enable_https
 
   access_logs_bucket = var.access_logs_bucket
-  aws_account_id     = local.account_id
 
   tags = var.tags
 }
@@ -72,8 +60,7 @@ resource "aws_lb_listener_rule" "this" {
 
 # ECS Fargate Service using base module
 module "ecs_fargate" {
-  source = "../../base_component/ecs_fargate"
-
+  source             = "../../base_component/ecs_fargate"
   name               = var.name
   private_subnet_ids = var.private_subnet_ids
   security_group_ids = var.ecs_service_security_group_ids
@@ -82,16 +69,12 @@ module "ecs_fargate" {
   cpu                = var.cpu
   memory             = var.memory
   desired_count      = var.desired_count
-
   load_balancer_config = {
     target_group_arn = aws_lb_target_group.this.arn
     container_name   = var.name
     container_port   = var.container_port
   }
-
   kms_key_arn              = var.kms_key_arn
   permissions_boundary_arn = var.permissions_boundary_arn
-  aws_account_id           = local.account_id
-
-  tags = var.tags
+  tags                     = var.tags
 }
