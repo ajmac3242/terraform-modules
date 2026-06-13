@@ -48,3 +48,34 @@ module "cloudfront" {
 | `distribution_arn` | The ARN of the distribution |
 | `distribution_domain_name` | The domain name of the distribution |
 | `tags` | A map of tags assigned to the resource |
+
+<!-- BEGIN_TF_DOCS -->
+
+
+## Usage
+
+```hcl
+# See README.md for usage example
+```
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_log_bucket_domain_name"></a> [log\_bucket\_domain\_name](#input\_log\_bucket\_domain\_name) | The domain name of the S3 bucket for access logs | `string` | n/a | yes |
+| <a name="input_origin_domain_name"></a> [origin\_domain\_name](#input\_origin\_domain\_name) | The domain name for the origin | `string` | n/a | yes |
+| <a name="input_origin_id"></a> [origin\_id](#input\_origin\_id) | A unique identifier for the origin | `string` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to the resources | `map(string)` | n/a | yes |
+| <a name="input_waf_web_acl_id"></a> [waf\_web\_acl\_id](#input\_waf\_web\_acl\_id) | The ID of the WAF Web ACL to associate with the distribution | `string` | n/a | yes |
+| <a name="input_origin_type"></a> [origin\_type](#input\_origin\_type) | The type of origin (S3 or ALB) | `string` | `"S3"` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_distribution_arn"></a> [distribution\_arn](#output\_distribution\_arn) | The ARN of the distribution |
+| <a name="output_distribution_domain_name"></a> [distribution\_domain\_name](#output\_distribution\_domain\_name) | The domain name of the distribution |
+| <a name="output_distribution_id"></a> [distribution\_id](#output\_distribution\_id) | The ID of the distribution |
+| <a name="output_tags"></a> [tags](#output\_tags) | A map of tags assigned to the resource |
+
+<!-- END_TF_DOCS -->

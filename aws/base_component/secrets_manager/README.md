@@ -41,3 +41,31 @@ module "secret" {
 | `secret_arn` | The ARN of the secret |
 | `secret_id` | The ID of the secret |
 | `tags` | A map of tags assigned to the resource |
+
+<!-- BEGIN_TF_DOCS -->
+
+
+## Usage
+
+```hcl
+# See README.md for usage example
+```
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_description"></a> [description](#input\_description) | The description of the secret | `string` | n/a | yes |
+| <a name="input_kms_key_arn"></a> [kms\_key\_arn](#input\_kms\_key\_arn) | The ARN of the KMS key for encryption | `string` | n/a | yes |
+| <a name="input_name"></a> [name](#input\_name) | The name of the secret | `string` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to the resources | `map(string)` | n/a | yes |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_secret_arn"></a> [secret\_arn](#output\_secret\_arn) | The ARN of the secret |
+| <a name="output_secret_id"></a> [secret\_id](#output\_secret\_id) | The ID of the secret |
+| <a name="output_tags"></a> [tags](#output\_tags) | A map of tags assigned to the resource |
+
+<!-- END_TF_DOCS -->

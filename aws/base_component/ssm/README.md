@@ -41,3 +41,32 @@ module "ssm_parameter" {
 | `parameter_name` | The name of the SSM parameter |
 | `parameter_version` | The version of the SSM parameter |
 | `tags` | A map of tags assigned to the resource |
+
+<!-- BEGIN_TF_DOCS -->
+
+
+## Usage
+
+```hcl
+# See README.md for usage example
+```
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_description"></a> [description](#input\_description) | The description of the SSM parameter | `string` | n/a | yes |
+| <a name="input_kms_key_arn"></a> [kms\_key\_arn](#input\_kms\_key\_arn) | The KMS key ARN to use for encryption | `string` | n/a | yes |
+| <a name="input_name"></a> [name](#input\_name) | The name of the SSM parameter | `string` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to the resources | `map(string)` | n/a | yes |
+| <a name="input_value"></a> [value](#input\_value) | The value of the SSM parameter | `string` | n/a | yes |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_parameter_arn"></a> [parameter\_arn](#output\_parameter\_arn) | The ARN of the SSM parameter |
+| <a name="output_parameter_name"></a> [parameter\_name](#output\_parameter\_name) | The name of the SSM parameter |
+| <a name="output_tags"></a> [tags](#output\_tags) | A map of tags assigned to the resource |
+
+<!-- END_TF_DOCS -->

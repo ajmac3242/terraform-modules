@@ -1,12 +1,5 @@
-# Data sources to get current AWS region and account ID
+# Data sources to get current AWS region
 data "aws_region" "current" {}
-data "aws_caller_identity" "current" {
-  count = var.aws_account_id == null ? 1 : 0
-}
-
-locals {
-  account_id = var.aws_account_id != null ? var.aws_account_id : data.aws_caller_identity.current[0].account_id
-}
 
 # Task execution role created via base IAM module
 module "task_execution_role" {
@@ -23,15 +16,15 @@ module "task_execution_role" {
         Principal = {
           Service = "ecs-tasks.amazonaws.com"
         }
-      },
+      }
     ]
   })
+
   managed_policy_arns = [
     "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
   ]
 
   permissions_boundary_arn = var.permissions_boundary_arn
-  aws_account_id           = local.account_id
 
   tags = var.tags
 }
@@ -51,12 +44,11 @@ module "task_role" {
         Principal = {
           Service = "ecs-tasks.amazonaws.com"
         }
-      },
+      }
     ]
   })
 
   permissions_boundary_arn = var.permissions_boundary_arn
-  aws_account_id           = local.account_id
 
   tags = var.tags
 }
@@ -73,11 +65,11 @@ resource "aws_ecs_cluster" "this" {
   tags = var.tags
 }
 
-# Fargate Capacity Providers
+# ECS Cluster Capacity Providers
 resource "aws_ecs_cluster_capacity_providers" "this" {
   cluster_name = aws_ecs_cluster.this.name
 
-  capacity_providers = ["FARGATE"]
+  capacity_providers = ["FARGATE", "FARGATE_SPOT"]
 
   default_capacity_provider_strategy {
     base              = 1
@@ -86,7 +78,7 @@ resource "aws_ecs_cluster_capacity_providers" "this" {
   }
 }
 
-# CloudWatch Log Group for container logs with mandatory KMS encryption
+# CloudWatch Log Group for ECS tasks
 resource "aws_cloudwatch_log_group" "this" {
   name              = "/aws/ecs/${var.name}"
   retention_in_days = 30
@@ -114,30 +106,35 @@ resource "aws_ecs_task_definition" "this" {
         {
           containerPort = var.container_port
           hostPort      = var.container_port
+          protocol      = "tcp"
         }
       ]
       logConfiguration = {
         logDriver = "awslogs"
         options = {
           "awslogs-group"         = aws_cloudwatch_log_group.this.name
-          "awslogs-region"        = data.aws_region.current.id
+          "awslogs-region"        = data.aws_region.current.name
           "awslogs-stream-prefix" = "ecs"
         }
       }
     }
   ])
 
+  runtime_platform {
+    operating_system_family = "LINUX"
+    cpu_architecture        = "X86_64"
+  }
+
   tags = var.tags
 }
 
 # ECS Service
 resource "aws_ecs_service" "this" {
-  name             = var.name
-  cluster          = aws_ecs_cluster.this.id
-  task_definition  = aws_ecs_task_definition.this.arn
-  launch_type      = "FARGATE"
-  platform_version = var.platform_version
-  desired_count    = var.desired_count
+  name            = var.name
+  cluster         = aws_ecs_cluster.this.id
+  task_definition = aws_ecs_task_definition.this.arn
+  desired_count   = var.desired_count
+  launch_type     = "FARGATE"
 
   network_configuration {
     subnets          = var.private_subnet_ids
@@ -152,6 +149,11 @@ resource "aws_ecs_service" "this" {
       container_name   = load_balancer.value.container_name
       container_port   = load_balancer.value.container_port
     }
+  }
+
+  # Allow external changes to desired_count without forcing recreation (e.g. ASG)
+  lifecycle {
+    ignore_changes = [desired_count]
   }
 
   tags = var.tags

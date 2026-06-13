@@ -25,11 +25,6 @@ variable "container_port" {
   default     = 80
 }
 
-variable "platform_version" {
-  description = "The platform version on which to run your service"
-  type        = string
-  default     = "LATEST"
-}
 
 variable "cpu" {
   description = "Number of cpu units used by the task (up to 32768 for 32vCPU)"
@@ -59,23 +54,14 @@ variable "desired_count" {
   default     = 1
 }
 
-variable "load_balancer_config" {
-  description = "Optional load balancer configuration for the ECS service"
-  type = object({
-    target_group_arn = string
-    container_name   = string
-    container_port   = number
-  })
-  default = null
-}
 
 variable "kms_key_arn" {
   description = "The ARN of the KMS key for encryption of logs"
   type        = string
 
   validation {
-    condition     = can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/.*$", var.kms_key_arn))
-    error_message = "The kms_key_arn must be a valid KMS key ARN."
+    condition     = can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/[a-z0-9-]+$", var.kms_key_arn))
+    error_message = "The kms_key_arn must be a valid AWS KMS key ARN."
   }
 }
 
@@ -100,8 +86,13 @@ variable "tags" {
   }
 }
 
-variable "aws_account_id" {
-  description = "The AWS Account ID to support tests/mocking"
-  type        = string
-  default     = null
+
+variable "load_balancer_config" {
+  description = "Optional load balancer configuration for the ECS service"
+  type = object({
+    target_group_arn = string
+    container_name   = string
+    container_port   = number
+  })
+  default = null
 }

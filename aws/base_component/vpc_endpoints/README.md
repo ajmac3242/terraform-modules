@@ -45,3 +45,34 @@ module "vpc_endpoints" {
 | `s3_endpoint_id` | The ID of the S3 Gateway endpoint |
 | `dynamodb_endpoint_id` | The ID of the DynamoDB Gateway endpoint |
 | `tags` | A map of tags assigned to the resources |
+
+<!-- BEGIN_TF_DOCS -->
+
+
+## Usage
+
+```hcl
+# See README.md for usage example
+```
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_endpoints"></a> [endpoints](#input\_endpoints) | A map of endpoint configurations | ```map(object({ service = string service_type = string # Interface or Gateway private_dns_enabled = optional(bool, true) }))``` | n/a | yes |
+| <a name="input_region"></a> [region](#input\_region) | The AWS region | `string` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to the resources | `map(string)` | n/a | yes |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The ID of the VPC where endpoints will be created | `string` | n/a | yes |
+| <a name="input_route_table_ids"></a> [route\_table\_ids](#input\_route\_table\_ids) | A list of route table IDs for gateway endpoints | `list(string)` | `[]` | no |
+| <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | A list of security group IDs for interface endpoints | `list(string)` | `[]` | no |
+| <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | A list of subnet IDs for interface endpoints | `list(string)` | `[]` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_endpoint_arns"></a> [endpoint\_arns](#output\_endpoint\_arns) | A map of endpoint ARNs |
+| <a name="output_endpoints"></a> [endpoints](#output\_endpoints) | A map of endpoint IDs |
+| <a name="output_tags"></a> [tags](#output\_tags) | A map of tags assigned to the resources |
+
+<!-- END_TF_DOCS -->

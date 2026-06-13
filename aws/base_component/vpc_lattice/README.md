@@ -44,3 +44,35 @@ module "vpc_lattice" {
 | service_arn | The ARN of the VPC Lattice service |
 | log_group_arn | The ARN of the CloudWatch Log Group for access logs |
 | tags | The tags assigned to the resources |
+
+<!-- BEGIN_TF_DOCS -->
+
+
+## Usage
+
+```hcl
+# See README.md for usage example
+```
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_kms_key_arn"></a> [kms\_key\_arn](#input\_kms\_key\_arn) | The ARN of the KMS CMK to use for encrypting access logs. Standardized naming per memory. | `string` | n/a | yes |
+| <a name="input_name"></a> [name](#input\_name) | The name of the VPC Lattice service network and service | `string` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to the resources | `map(string)` | n/a | yes |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The VPC ID to associate with the service network | `string` | n/a | yes |
+| <a name="input_auth_type"></a> [auth\_type](#input\_auth\_type) | The auth type for the service network. Valid values are NONE and AWS\_IAM. | `string` | `"AWS_IAM"` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_log_group_arn"></a> [log\_group\_arn](#output\_log\_group\_arn) | The ARN of the CloudWatch Log Group for VPC Lattice access logs |
+| <a name="output_service_arn"></a> [service\_arn](#output\_service\_arn) | The ARN of the VPC Lattice service |
+| <a name="output_service_id"></a> [service\_id](#output\_service\_id) | The ID of the VPC Lattice service |
+| <a name="output_service_network_arn"></a> [service\_network\_arn](#output\_service\_network\_arn) | The ARN of the VPC Lattice service network |
+| <a name="output_service_network_id"></a> [service\_network\_id](#output\_service\_network\_id) | The ID of the VPC Lattice service network |
+| <a name="output_tags"></a> [tags](#output\_tags) | The tags assigned to the resources |
+
+<!-- END_TF_DOCS -->
