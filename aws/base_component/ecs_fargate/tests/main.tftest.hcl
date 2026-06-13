@@ -66,3 +66,22 @@ run "valid_fargate_creation" {
     error_message = "ECS task definition log region does not match expected value"
   }
 }
+
+run "valid_fargate_creation_with_32vcpu" {
+  command = plan
+
+  variables {
+    cpu    = 32768
+    memory = 262144
+  }
+
+  assert {
+    condition     = aws_ecs_task_definition.this.cpu == "32768"
+    error_message = "Task definition CPU does not match expected 32vCPU value"
+  }
+
+  assert {
+    condition     = aws_ecs_task_definition.this.memory == "262144"
+    error_message = "Task definition memory does not match expected 256GB value"
+  }
+}

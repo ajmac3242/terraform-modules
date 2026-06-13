@@ -49,4 +49,5 @@ module "opensearch_vector_store" {
 | collection_id | The unique identifier of the OpenSearch Serverless collection |
 | collection_arn | The Amazon Resource Name (ARN) of the OpenSearch Serverless collection |
 | collection_endpoint | The endpoint of the OpenSearch Serverless collection |
+| `generation` | The generation of the OpenSearch Serverless collection group |
 | `tags` | A map of tags assigned to the resource |

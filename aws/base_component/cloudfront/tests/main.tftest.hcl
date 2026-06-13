@@ -43,3 +43,21 @@ run "valid_distribution_creation" {
     error_message = "Mandatory tags are missing or incorrect on CloudFront distribution."
   }
 }
+
+run "valid_distribution_creation_with_cache_tags" {
+  command = plan
+
+  variables {
+    cache_tag_config_header_name = "X-Cache-Tags"
+  }
+
+  assert {
+    condition     = length(aws_cloudfront_distribution.this.cache_tag_config) > 0
+    error_message = "Cache tag configuration is missing"
+  }
+
+  assert {
+    condition     = aws_cloudfront_distribution.this.cache_tag_config[0].header_name == "X-Cache-Tags"
+    error_message = "Cache tag header name does not match"
+  }
+}
