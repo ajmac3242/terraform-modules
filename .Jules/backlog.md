@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-06-13
+> **Last reviewed:** 2026-06-14
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -137,40 +137,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ---
 
-### aws/base_component/bedrock_agent_core: Support Gateway MCP Enhancements
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `done` (PR #136)
-**Module:** aws/base_component/bedrock_agent_core
-**Why:** Expanding the Bedrock AgentCore module to support advanced MCP gateway controls for streaming and session management. Confirmed in AWS Provider v6.49.0.
-
-#### Acceptance Criteria
-- [ ] Implement `protocol_configuration.mcp.session_configuration` for fine-grained session control
-- [ ] Implement `protocol_configuration.mcp.streaming_configuration` for real-time streaming tool support
-- [ ] Mandatory CMK encryption for session state and logs
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates gateway enhancements
-
----
-
-### aws/base_component/bedrock_agent_core: Support Enhanced Gateway Target Configuration
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `done` (PR #136)
-**Module:** aws/base_component/bedrock_agent_core
-**Why:** AWS Provider v6.48.0 added support for `credential_provider_configuration.jwt_passthrough`, `credential_provider_configuration.caller_iam_credentials`, SigV4 signing for MCP servers, and direct HTTP targets.
-
-#### Acceptance Criteria
-- [ ] Support `credential_provider_configuration.jwt_passthrough` and `caller_iam_credentials`
-- [ ] Support SigV4 signing for mcp_server targets via `gateway_iam_role.service` and `region`
-- [ ] Support `target_configuration.http` for routing to non-MCP HTTP targets
-- [ ] Required `tags` enforced (where supported)
-- [ ] Native offline Terraform test validates target enhancements
-
----
-
 ### aws/base_component/observability_admin: Support Expanded Rule Schema
 
 **Priority:** MEDIUM
@@ -186,22 +152,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Mandatory CMK encryption for any underlying log destinations
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates expanded rule configuration
-
----
-
-### aws/base_component/opensearch_serverless: Support Generation attribute
-
-**Priority:** MEDIUM
-**Type:** Feature
-**Status:** `done` (PR #134)
-**Module:** aws/base_component/opensearch_serverless
-**Why:** AWS Provider v6.49.0 added the `generation` attribute to `aws_opensearchserverless_collection_group`, enabling better tracking of collection group iterations.
-
-#### Acceptance Criteria
-- [x] Support `generation` attribute in `aws_opensearchserverless_collection_group`
-- [x] Update data source to expose `generation`
-- [x] Required `tags` enforced
-- [x] Native offline Terraform test validates attribute propagation
 
 ---
 
@@ -265,22 +215,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ---
 
-### aws/base_component/cloudfront: Support Cache Tagging
-
-**Priority:** MEDIUM
-**Type:** Maintenance
-**Status:** `done` (PR #134)
-**Module:** aws/base_component/cloudfront
-**Why:** AWS Provider v6.46.0 introduced `cache_tag_config` to `aws_cloudfront_distribution`, enabling more granular cache invalidation patterns via tags.
-
-#### Acceptance Criteria
-- [x] Implement `cache_tag_config` block in `aws_cloudfront_distribution`
-- [x] Support for enabling/disabling cache tagging via variables
-- [x] Required `tags` enforced
-- [x] Native offline Terraform test validates configuration
-
----
-
 ### aws/base_component/bedrock_agent: Support Claude Fable 5 and Mythos safeguards
 
 **Priority:** HIGH
@@ -339,37 +273,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ---
 
-### aws/base_component/bedrock_agent: Support Expanded Session TTL
-
-**Priority:** LOW
-**Type:** Maintenance
-**Status:** `done` (PR #134)
-**Module:** aws/base_component/bedrock_agent
-**Why:** AWS Provider v6.46.0 increased the maximum value for `idle_session_ttl_in_seconds` from 3600 to 5400.
-
-#### Acceptance Criteria
-- [x] Update `variable "idle_session_ttl_in_seconds"` validation to allow values up to 5400
-- [x] Update documentation to reflect the new maximum TTL
-- [x] Native offline Terraform test validates the new upper bound
-
----
-
-### aws/base_component/ecs_fargate: Support 32vCPU configurations
-
-**Priority:** MEDIUM
-**Type:** Feature
-**Status:** `done` (PR #134)
-**Module:** aws/base_component/ecs_fargate
-**Why:** Amazon ECS with AWS Fargate now supports 32vCPU compute configurations (announced June 5, 2026), enabling larger workloads.
-
-#### Acceptance Criteria
-- [x] Update `cpu` variable validation to allow values up to 32768 (32vCPU)
-- [x] Update `memory` variable validation to support corresponding memory limits for 32vCPU
-- [x] Update documentation to reflect new compute limits
-- [x] Native offline Terraform test validates the new upper bounds
-
----
-
 ### aws/base_component/eks: Support CloudWatch Vended Logs
 
 **Priority:** MEDIUM
@@ -385,9 +288,46 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates vended logs configuration
 
+---
+
+### aws/base_component/bedrock_agent_token_vault: Opinionated Bedrock Agent Token Vault module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_agent_token_vault
+**Why:** Bedrock Agent Token Vault (confirmed in AWS Provider v6.48.0) manages sensitive credentials (API keys, OAuth2) for agents using a secure, hardware-backed vault.
+
+#### Acceptance Criteria
+- [ ] `aws_bedrockagentcore_token_vault_cmk` implementation
+- [ ] `aws_bedrockagentcore_api_key_credential_provider` and `aws_bedrockagentcore_oauth2_credential_provider` support
+- [ ] Mandatory CMK encryption for vault keys and secrets
+- [ ] Integration with Secrets Manager for backend credential storage
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates vault and credential provider configuration
+
 ***
 
 ## Module Backlog
+
+### aws/workload_component/terraform_mcp_server: Opinionated Terraform MCP Server pattern
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/workload_component/terraform_mcp_server
+**Why:** The Terraform MCP Server (GA June 13, 2026) enables AI agents to interact with Terraform Registry APIs, discover approved modules, and generate compliant code. This pattern standardizes its deployment on AWS.
+
+#### Acceptance Criteria
+- [ ] Deploy Terraform MCP Server on ECS Fargate within a private VPC
+- [ ] Configure least-privilege IAM roles for accessing Terraform Registry and internal repositories
+- [ ] Support for mounting configuration via EFS or S3 Files (standardized CMK encryption)
+- [ ] Mandatory CMK encryption for all logs and persistent state
+- [ ] Integrate with Bedrock AgentCore as a Gateway Target (MCP over HTTP/SigV4)
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates deployment and orchestration wiring
+
+---
 
 ### aws/base_component/xray: Opinionated AWS X-Ray module
 
@@ -441,23 +381,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ---
 
-### aws/base_component/bedrock_agent_token_vault: Opinionated Bedrock Agent Token Vault module
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/bedrock_agent_token_vault
-**Why:** Bedrock Agent Token Vault (confirmed in AWS Provider v6.48.0) manages sensitive credentials (API keys, OAuth2) for agents using a secure, hardware-backed vault.
-
-#### Acceptance Criteria
-- [ ] `aws_bedrockagentcore_token_vault_cmk` implementation
-- [ ] `aws_bedrockagentcore_api_key_credential_provider` and `aws_bedrockagentcore_oauth2_credential_provider` support
-- [ ] Mandatory CMK encryption for vault keys and secrets
-- [ ] Integration with Secrets Manager for backend credential storage
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates vault and credential provider configuration
-
----
 
 ### aws/base_component/bedrock_agent_harness: Opinionated Bedrock Agent Harness module
 
@@ -633,6 +556,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ---
 
+
 ### aws/workload_component/agentic_sre: Secure Agentic SRE pattern
 
 **Priority:** HIGH
@@ -660,6 +584,42 @@ All modules in this repo MUST comply with these non-negotiable standards:
 ***
 
 ## Existing Completed Module History
+
+### aws/base_component/bedrock_agent_core: Support Enhanced Gateway and Target Configuration
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `done` (Verified 2026-06-13)
+**Module:** aws/base_component/bedrock_agent_core
+**Why:** Expanded the Bedrock AgentCore module to support advanced MCP gateway controls (streaming/sessions) and enhanced target configurations (JWT passthrough, SigV4, HTTP targets).
+
+#### Acceptance Criteria
+- [x] Support for `protocol_configuration` MCP session and streaming configurations
+- [x] Support for `credential_provider_configuration` JWT passthrough and caller IAM credentials
+- [x] Support SigV4 signing for mcp_server targets
+- [x] Support `target_configuration.http` for routing to non-MCP HTTP targets
+- [x] Mandatory CMK encryption for session state and logs
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates gateway and target enhancements
+
+---
+
+### aws/base_component/bedrock_agent: Hardened capabilities and Compute scaling
+
+**Priority:** HIGH
+**Type:** Maintenance
+**Status:** `done` (Verified 2026-06-12)
+**Module:** repo-wide
+**Why:** Implemented expanded capabilities across Bedrock, CloudFront, OpenSearch, and ECS to support high-performance agentic infrastructure.
+
+#### Acceptance Criteria
+- [x] **bedrock_agent**: Expanded `idle_session_ttl_in_seconds` to 5400s
+- [x] **cloudfront**: Added `cache_tag_config` support
+- [x] **ecs_fargate**: Hardened 32vCPU (32768 cpu) and 256GB RAM (262144 memory) validations
+- [x] **opensearch_serverless**: Implemented `generation` attribute support
+- [x] Native offline Terraform test validates all expanded bounds and attributes
+
+---
 
 ### aws/base_component/bedrock_agent_core: Expanded support for Online Evaluation, Browsers, and Targets
 
