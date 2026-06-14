@@ -8,7 +8,7 @@ variable "role_arn" {
   type        = string
   validation {
     condition     = can(regex("^arn:aws:iam::[0-9]{12}:role/.*$", var.role_arn))
-    error_message = "role_arn must be a valid IAM role ARN."
+    error_message = "role_arn must be a valid AWS IAM role ARN."
   }
 }
 
@@ -17,7 +17,7 @@ variable "kms_key_arn" {
   type        = string
   validation {
     condition     = can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/[a-z0-9-]+$", var.kms_key_arn))
-    error_message = "The kms_key_arn must be a valid KMS key ARN."
+    error_message = "The kms_key_arn must be a valid AWS KMS key ARN."
   }
 }
 
@@ -58,17 +58,17 @@ variable "protocol_type" {
 }
 
 variable "protocol_configuration" {
-  description = "Configuration for the gateway protocol."
+  description = "Configuration for the gateway protocol. Includes session and streaming settings."
   type = object({
     mcp = object({
-      instructions       = optional(string)
+      instructions       = optional(string, "You are a helpful assistant.")
       search_type        = optional(string)
       supported_versions = optional(list(string))
       session_configuration = optional(object({
-        session_timeout_in_seconds = optional(number)
+        session_timeout_in_seconds = optional(number, 3600)
       }))
       streaming_configuration = optional(object({
-        enable_response_streaming = optional(bool)
+        enable_response_streaming = optional(bool, false)
       }))
     })
   })
@@ -76,7 +76,7 @@ variable "protocol_configuration" {
 }
 
 variable "online_evaluation_configs" {
-  description = "A map of Online Evaluation configurations to create."
+  description = "A map of Online Evaluation configurations to create. Key is the evaluation config name."
   type = map(object({
     description                   = optional(string)
     evaluation_execution_role_arn = string
@@ -103,7 +103,7 @@ variable "online_evaluation_configs" {
 }
 
 variable "browsers" {
-  description = "A map of Bedrock AgentCore Browsers to create."
+  description = "A map of Bedrock AgentCore Browsers to create. Key is the browser name."
   type = map(object({
     description        = optional(string)
     execution_role_arn = string
@@ -126,7 +126,7 @@ variable "browsers" {
 }
 
 variable "gateway_targets" {
-  description = "A map of Gateway Targets to create for tool orchestration."
+  description = "A map of Gateway Targets to create for tool orchestration. Key is the target name."
   type = map(object({
     description = optional(string)
     target_configuration = object({
@@ -142,7 +142,7 @@ variable "gateway_targets" {
         }))
         mcp_server = optional(object({
           endpoint     = string
-          listing_mode = optional(string)
+          listing_mode = optional(string, "DEFAULT")
         }))
       }))
     })
