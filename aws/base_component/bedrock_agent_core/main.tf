@@ -129,18 +129,6 @@ resource "aws_bedrockagentcore_gateway_target" "this" {
             lambda_arn = lambda.value.lambda_arn
           }
         }
-      }
-    }
-
-    dynamic "mcp" {
-      for_each = each.value.target_configuration.mcp != null ? [each.value.target_configuration.mcp] : []
-      content {
-        dynamic "lambda" {
-          for_each = mcp.value.lambda != null ? [mcp.value.lambda] : []
-          content {
-            lambda_arn = lambda.value.lambda_arn
-          }
-        }
         dynamic "mcp_server" {
           for_each = mcp.value.mcp_server != null ? [mcp.value.mcp_server] : []
           content {

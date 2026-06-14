@@ -4,7 +4,7 @@
 This module provisions an AWS Bedrock AgentCore Gateway along with supporting resources for Online Evaluation, Browser tools, and Gateway Targets. It enables developers to convert APIs, Lambda functions, and services into Model Context Protocol (MCP)-compatible tools, while providing continuous performance monitoring and browser-based task capabilities.
 
 > [!IMPORTANT]
-> **Provider Requirement:** This module requires AWS Provider `v6.47.0` or later to support Online Evaluation and Browser tool resources.
+> **Provider Requirement:** This module requires AWS Provider `v6.49.0` or later to support enhanced Gateway protocol configurations (streaming, sessions) and expanded target credential providers.
 
 ## Usage
 ```hcl
@@ -15,40 +15,45 @@ module "bedrock_agent_core" {
   role_arn    = "arn:aws:iam::123456789012:role/bedrock-gateway-role"
   kms_key_arn = "arn:aws:kms:us-east-1:123456789012:key/my-key-id"
 
-  description = "Example AgentCore Gateway with Browser and Evaluation"
+  description = "Example AgentCore Gateway with MCP enhancements and Targets"
 
-  # Browser tool configuration
-  browsers = {
-    "default-browser" = {
-      execution_role_arn = "arn:aws:iam::123456789012:role/browser-execution-role"
-      network_configuration = {
-        network_mode = "VPC"
-        vpc_config = {
-          security_groups = ["sg-12345678"]
-          subnets         = ["subnet-12345678"]
-        }
+  # Protocol configuration with session and streaming
+  protocol_configuration = {
+    mcp = {
+      instructions = "You are a helpful research assistant."
+      session_configuration = {
+        session_timeout_in_seconds = 3600
       }
-      recording = {
-        enabled = true
-        s3_location = {
-          bucket = "my-browser-recordings"
-        }
+      streaming_configuration = {
+        enable_response_streaming = true
       }
     }
   }
 
-  # Online Evaluation configuration
-  online_evaluation_configs = {
-    "continous-eval" = {
-      evaluation_execution_role_arn = "arn:aws:iam::123456789012:role/eval-execution-role"
-      data_source_config = {
-        cloudwatch_logs = {
-          log_group_names = ["/aws/vendedlogs/bedrock-agent-logs"]
-          service_names   = ["bedrock"]
+  # Gateway Targets with enhanced credential providers
+  gateway_targets = {
+    "lambda-target" = {
+      description = "Target routing to a Lambda function via MCP"
+      target_configuration = {
+        mcp = {
+          lambda = {
+            lambda_arn = "arn:aws:lambda:us-east-1:123456789012:function:my-tool"
+          }
         }
       }
-      evaluator_ids       = ["arn:aws:bedrock:us-east-1::evaluator/bert-score"]
-      sampling_percentage = 10.0
+    }
+    "enhanced-http-target" = {
+      description = "Target using JWT passthrough to an HTTP runtime"
+      target_configuration = {
+        http = {
+          agentcore_runtime = {
+            arn = "arn:aws:bedrock:us-east-1:123456789012:agent-runtime/my-app"
+          }
+        }
+      }
+      credential_provider_configuration = {
+        jwt_passthrough = true
+      }
     }
   }
 
@@ -78,10 +83,10 @@ module "bedrock_agent_core" {
 | authorizer_type | The type of authorizer for the gateway. Valid values: CUSTOM_JWT, NONE. | `string` | `"NONE"` | no |
 | authorizer_configuration | Configuration for request authorization. Required when authorizer_type is set to CUSTOM_JWT. | `object` | `null` | no |
 | protocol_type | The type of protocol for the gateway. Valid values: MCP. | `string` | `"MCP"` | no |
-| protocol_configuration | Configuration for the gateway protocol. | `object` | `null` | no |
-| online_evaluation_configs | A map of Online Evaluation configurations to create. | `map(object)` | `{}` | no |
-| browsers | A map of Bedrock AgentCore Browsers to create. | `map(object)` | `{}` | no |
-| gateway_targets | A map of Gateway Targets to create for tool orchestration. | `map(object)` | `{}` | no |
+| protocol_configuration | Configuration for the gateway protocol. Includes `mcp` with `session_configuration` and `streaming_configuration`. | `object` | `null` | no |
+| online_evaluation_configs | A map of Online Evaluation configurations to create. Key is the evaluation config name. | `map(object)` | `{}` | no |
+| browsers | A map of Bedrock AgentCore Browsers to create. Key is the browser name. | `map(object)` | `{}` | no |
+| gateway_targets | A map of Gateway Targets to create for tool orchestration. Supports `http` and `mcp` targets with advanced credentials. | `map(object)` | `{}` | no |
 | tags | A map of tags to assign to the resources. Required keys: environment, owner, project, cost_center. | `map(string)` | n/a | yes |
 
 ## Outputs
