@@ -6,7 +6,7 @@ module "kms" {
   name                 = "${var.name}-bus-key"
   description          = "KMS key for EventBridge bus ${var.name}"
   admin_principal_arns = []
-  usage_principal_arns = ["arn:aws:iam::${local.account_id}:root"] # Basic usage for the account, actual service access via key policy usually needs more
+  usage_principal_arns = ["arn:aws:iam::${coalesce(local.account_id, "")}:root"] # Basic usage for the account, actual service access via key policy usually needs more
   aws_account_id       = var.aws_account_id
 
   tags = var.tags
@@ -79,7 +79,7 @@ data "aws_iam_policy_document" "kms_eventbridge" {
     effect = "Allow"
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${local.account_id}:root"]
+      identifiers = ["arn:aws:iam::${coalesce(local.account_id, "")}:root"]
     }
     actions   = ["kms:*"]
     resources = ["*"]
