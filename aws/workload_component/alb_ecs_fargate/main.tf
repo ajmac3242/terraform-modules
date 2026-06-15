@@ -1,12 +1,10 @@
-# Data sources to get current AWS region and account ID
-data "aws_region" "current" {}
+# Data source to get current account ID if not provided
 data "aws_caller_identity" "current" {
   count = var.aws_account_id == null ? 1 : 0
 }
 
 locals {
   account_id = var.aws_account_id != null ? var.aws_account_id : data.aws_caller_identity.current[0].account_id
-
 }
 
 # ALB using base module (conditionally created)
@@ -23,7 +21,6 @@ module "alb" {
   enable_http_redirect  = var.enable_https
 
   access_logs_bucket = var.access_logs_bucket
-
 
   tags = var.tags
 }
@@ -91,7 +88,6 @@ module "ecs_fargate" {
 
   kms_key_arn              = var.kms_key_arn
   permissions_boundary_arn = var.permissions_boundary_arn
-
 
   tags = var.tags
 }

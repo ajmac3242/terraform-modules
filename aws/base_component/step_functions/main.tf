@@ -1,12 +1,3 @@
-# Data source to get current account ID if not provided
-data "aws_caller_identity" "current" {
-  count = var.aws_account_id == null ? 1 : 0
-}
-
-locals {
-
-}
-
 # CloudWatch Log Group for Step Functions with mandatory KMS encryption
 resource "aws_cloudwatch_log_group" "this" {
   name              = "/aws/vendedlogs/states/${var.name}"
