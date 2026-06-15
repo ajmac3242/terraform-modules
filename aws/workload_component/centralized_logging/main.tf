@@ -10,13 +10,7 @@ module "log_storage" {
   tags = var.tags
 }
 
-data "aws_iam_policy_document" "log_delivery" {
-  # ALB Log Delivery
-  statement {
-    sid       = "AllowALBLogDelivery"
-    effect    = "Allow"
-    actions   = ["s3:PutObject"]
-    resources = ["arn:aws:s3:::${var.name_prefix}-centralized-logs/alb/*"]
+-centralized-logs/alb/*"]
 
     principals {
       type        = "AWS"

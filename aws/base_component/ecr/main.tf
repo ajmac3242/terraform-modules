@@ -15,14 +15,9 @@ module "kms" {
 locals {
   kms_key_arn = var.existing_kms_key_arn != null ? var.existing_kms_key_arn : module.kms[0].key_arn
   default_lifecycle_policy = jsonencode({
-    rules = [
+
       {
-        rulePriority = 1
-        description  = "Keep last 30 images"
-        selection = {
-          tagStatus   = "any"
-          countType   = "imageCountMoreThan"
-          countNumber = 30
+
         }
         action = {
           type = "expire"

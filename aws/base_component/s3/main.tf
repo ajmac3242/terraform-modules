@@ -69,16 +69,7 @@ resource "aws_s3_bucket_policy" "this" {
 }
 
 # IAM policy document for S3 bucket policy
-data "aws_iam_policy_document" "this" {
-  source_policy_documents = var.additional_policy_document != null ? [var.additional_policy_document] : null
-
-  statement {
-    sid     = "EnforceSSLOnly"
-    effect  = "Deny"
-    actions = ["s3:*"]
-    resources = [
-      aws_s3_bucket.this.arn,
-      "${aws_s3_bucket.this.arn}/*",
+/*",
     ]
 
     principals {

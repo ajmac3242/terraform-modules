@@ -1,5 +1,5 @@
-# Data sources to get current AWS region and account ID
-data "aws_region" "current" {}
+# Data sources to get current AWS region
+
 
 # Task execution role created via base IAM module
 module "task_execution_role" {
@@ -111,7 +111,7 @@ resource "aws_ecs_task_definition" "this" {
         logDriver = "awslogs"
         options = {
           "awslogs-group"         = aws_cloudwatch_log_group.this.name
-          "awslogs-region"        = data.aws_region.current.id
+          "awslogs-region"        = data.aws_region.current.name
           "awslogs-stream-prefix" = "ecs"
         }
       }

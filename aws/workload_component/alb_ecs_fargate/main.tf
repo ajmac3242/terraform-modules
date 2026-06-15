@@ -1,12 +1,3 @@
-# Data source to get current account ID if not provided
-data "aws_caller_identity" "current" {
-  count = var.aws_account_id == null ? 1 : 0
-}
-
-locals {
-  account_id = var.aws_account_id != null ? var.aws_account_id : data.aws_caller_identity.current[0].account_id
-}
-
 # ALB using base module (conditionally created)
 module "alb" {
   count  = var.use_existing_alb ? 0 : 1
