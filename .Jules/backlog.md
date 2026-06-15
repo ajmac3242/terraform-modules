@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-06-14
+> **Last reviewed:** 2026-06-15
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -223,6 +223,9 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Module:** aws/base_component/bedrock_agent
 **Why:** Support for Claude Fable 5 (announced June 9, 2026) brings "Mythos-class" capabilities and safety safeguards to agents. Confirmed unblocked in AWS Provider v6.50.0 via `reasoning_configuration`.
 
+> [!IMPORTANT]
+> **Blocker:** Anthropic revoked access to Claude Fable 5 and Claude Mythos 5 on June 12, 2026, to comply with US government export control directives. While the provider supports the necessary configuration, the model is currently unavailable for invocation.
+
 #### Acceptance Criteria
 - [ ] Support for `anthropic.claude-fable-5-v1:0` model ID
 - [ ] Support for Mythos-class safeguards via `reasoning_configuration` (including `reasoning_depth` and `logic_consistency` checks)
@@ -306,9 +309,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates vault and credential provider configuration
 
-***
-
-## Module Backlog
+---
 
 ### aws/workload_component/terraform_mcp_server: Opinionated Terraform MCP Server pattern
 
@@ -327,7 +328,9 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates deployment and orchestration wiring
 
----
+***
+
+## Module Backlog
 
 ### aws/base_component/xray: Opinionated AWS X-Ray module
 
