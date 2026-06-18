@@ -13,10 +13,7 @@ variable "tags" {
   }
 }
 
-variable "aws_account_id" {
-  description = "The AWS account ID for resource policies (e.g., KMS, S3)"
-  type        = string
-}
+
 
 variable "alb_account_id" {
   description = "The AWS account ID for the ELB service principal in the current region"

@@ -9,10 +9,7 @@ variable "region" {
   default     = "us-east-1"
 }
 
-variable "aws_account_id" {
-  description = "AWS account ID"
-  type        = string
-}
+
 
 variable "embedding_model_arn" {
   description = "ARN of the embedding model"
