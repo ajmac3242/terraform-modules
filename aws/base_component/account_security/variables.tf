@@ -11,11 +11,6 @@ variable "tags" {
   }
 }
 
-variable "aws_account_id" {
-  description = "The AWS Account ID to support tests/mocking"
-  type        = string
-  default     = null
-}
 
 # -----------------------------------------------------------------------------
 # S3 Account-level Public Access Block
@@ -70,7 +65,7 @@ variable "ebs_kms_key_arn" {
   default     = null
 
   validation {
-    condition     = var.ebs_kms_key_arn == null || can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/.*$", var.ebs_kms_key_arn))
+    condition     = var.ebs_kms_key_arn == null || can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/[a-z0-9-]+$", var.ebs_kms_key_arn))
     error_message = "The ebs_kms_key_arn must be a valid KMS key ARN."
   }
 }
