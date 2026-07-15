@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-06-15
+> **Last reviewed:** 2026-06-16
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -276,6 +276,23 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ---
 
+### aws/base_component/eks: Harden against June 2026 TTC findings
+
+**Priority:** HIGH
+**Type:** Security
+**Status:** `backlog`
+**Module:** aws/base_component/eks
+**Why:** June 2026 Threat Technique Catalog (TTC) update highlights EKS workload modification risks. Hardening is required to enforce image signing and enable anomalous activity detection.
+
+#### Acceptance Criteria
+- [ ] Support for enabling/configuring Amazon GuardDuty EKS Protection
+- [ ] Integration for Image Signing and Admission Controllers (e.g., via AWS Signer)
+- [ ] Documentation update to reflect RBAC and admission controller best practices
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates GuardDuty and security configuration
+
+---
+
 ### aws/base_component/eks: Support CloudWatch Vended Logs
 
 **Priority:** MEDIUM
@@ -431,7 +448,7 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Type:** Feature
 **Status:** `backlog`
 **Module:** aws/base_component/aws_transform
-**Why:** AWS Transform (GA May 20, 2026) provides managed data transformation, migration, and agentic modernization for code and networks.
+**Why:** AWS Transform (GA May 20, 2026) provides managed data transformation, migration, and agentic modernization for code and networks. Recent updates (June 2026) added support for FSx for NetApp ONTAP migration and Bedrock model-to-model migration assessments.
 
 > [!IMPORTANT]
 > **Blocker:** Pending AWS Provider support for `aws_transform_job` / `aws_transform_project` (or equivalent) resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-13)
@@ -439,6 +456,8 @@ All modules in this repo MUST comply with these non-negotiable standards:
 #### Acceptance Criteria
 - [ ] `aws_transform_job` / `aws_transform_project` / `aws_transform_modernization_job` resource implementation
 - [ ] Support for Agentic Readiness Analysis (ARA) and Modernization Analysis (MODA)
+- [ ] Support for FSx for NetApp ONTAP migration workflows
+- [ ] Support for Bedrock model-to-model migration and assessments
 - [ ] Support for source and target data store configurations (S3, Kinesis, MSK)
 - [ ] Support for transformation logic using SQL, Python, or automated modernization (code/network)
 - [ ] Mandatory CMK encryption for data in transit, intermediate state, and job logs
@@ -543,13 +562,15 @@ All modules in this repo MUST comply with these non-negotiable standards:
 **Type:** Feature
 **Status:** `backlog`
 **Module:** aws/base_component/devops_agent
-**Why:** AWS DevOps Agent (GA May 2026) is an autonomous "frontier agent" for incident investigation and SRE tasks. Standardizing "Spaces" and MCP integrations is key for platform operations.
+**Why:** AWS DevOps Agent (GA May 2026) is an autonomous "frontier agent" for incident investigation and SRE tasks. Recent updates (June 2026) introduced a community skills gallery and structured investigation feedback.
 
 > [!IMPORTANT]
 > **Blocker:** Pending AWS Provider support for `aws_devopsagent_space` (or equivalent) resource. Verified still blocked in June 2026 provider audit. (Verified by Navigator 2026-06-13)
 
 #### Acceptance Criteria
 - [ ] `aws_devopsagent_space` resource implementation
+- [ ] Support for community skills gallery integration (sample skill browsing and import)
+- [ ] Support for structured investigation feedback via web app or chat
 - [ ] Support for defining investigation scope (CloudWatch, GitHub, Azure, etc.)
 - [ ] Support for multicloud incident correlation (AWS and Azure) and on-premises investigation via MCP
 - [ ] Support for MCP (Model Context Protocol) tool integration
@@ -686,6 +707,38 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Support `engine_version` >= 18.x
 - [ ] Update `db_cluster_parameter_group_family` default and validation to support `aurora-postgresql18`
 - [ ] Native offline Terraform test validates version configuration
+
+---
+
+### aws/base_component/bedrock_guardrail: Support InvokeGuardrailChecks API
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_guardrail
+**Why:** Amazon Bedrock Guardrails now supports the `InvokeGuardrailChecks` API (June 16, 2026), enabling real-time safety assessments for model inputs and outputs.
+
+#### Acceptance Criteria
+- [ ] Support for `InvokeGuardrailChecks` API configuration in the module
+- [ ] Support for real-time safety assessment reporting
+- [ ] Mandatory CMK encryption for any associated check logs
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates API configuration
+
+---
+
+### aws/base_component/s3: Support expanded Vector search results
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/s3
+**Why:** Amazon S3 Vectors now supports up to 10,000 search results per query (announced June 16, 2026), enhancing the capability for large-scale RAG and analytical workloads.
+
+#### Acceptance Criteria
+- [ ] Update documentation to reflect increased search result limits for S3 Vectors
+- [ ] (If provider supported) Update any internal validation for query result bounds
+- [ ] Native offline Terraform test validates configuration
 
 ---
 
