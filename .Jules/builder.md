@@ -171,3 +171,5 @@ _`- [YYYY-MM-DD] Built <module path>. PR #<number>.`_
 - [2026-05-26] Session concluded early. All backlog items remain blocked by AWS Provider v6.46.0 gaps. Verified standalone `aws_bedrockagentcore_browser` existence but confirmed missing gateway integration.
 - [2026-06-03] Session concluded early. Verified all 8 active high-priority backlog items remain blocked by missing resources or attributes in AWS Provider v6.47.0 (including amazon_quick, extenddb, transform, devops_agent, and agentic payments).
 - [2026-06-13] Built aws/base_component/bedrock_agent_core enhancements. PR #136.
+- [2026-06-17] resiliencehub — Implemented `aws_resiliencehub_resiliency_policy` with validation for severity tiers (MissionCritical to NonCritical), RTO/RPO targets across AZ, Hardware, Software, and Region, and enforced tagging standards.
+- [2026-06-17] Built aws/base_component/resiliencehub. PR #142.
