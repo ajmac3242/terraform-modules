@@ -1,12 +1,5 @@
-# Data sources to get current AWS region and account ID
-data "aws_region" "current" {}
-data "aws_caller_identity" "current" {
-  count = var.aws_account_id == null ? 1 : 0
-}
+# Data sources to get current AWS region
 
-locals {
-  account_id = var.aws_account_id != null ? var.aws_account_id : data.aws_caller_identity.current[0].account_id
-}
 
 # Task execution role created via base IAM module
 module "task_execution_role" {
@@ -31,7 +24,6 @@ module "task_execution_role" {
   ]
 
   permissions_boundary_arn = var.permissions_boundary_arn
-  aws_account_id           = local.account_id
 
   tags = var.tags
 }
@@ -56,7 +48,6 @@ module "task_role" {
   })
 
   permissions_boundary_arn = var.permissions_boundary_arn
-  aws_account_id           = local.account_id
 
   tags = var.tags
 }
@@ -120,7 +111,7 @@ resource "aws_ecs_task_definition" "this" {
         logDriver = "awslogs"
         options = {
           "awslogs-group"         = aws_cloudwatch_log_group.this.name
-          "awslogs-region"        = data.aws_region.current.id
+          "awslogs-region"        = data.aws_region.current.name
           "awslogs-stream-prefix" = "ecs"
         }
       }
