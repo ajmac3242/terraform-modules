@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-06-17
+> **Last reviewed:** 2026-06-18
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -92,26 +92,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Mandatory CMK encryption for shell session logs and state
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates shell configuration
-
----
-
-### aws/base_component/resiliencehub: Opinionated AWS Resilience Hub (Next Generation) module
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `done` (PR #142)
-**Module:** aws/base_component/resiliencehub
-**Why:** Next Generation Resilience Hub (GA June 1, 2026) provides a unified framework for resilience standards, modular policies (SLOs, DR, data recovery), and generative AI-powered assessments. Standardizing these policies is critical for organizational SRE and compliance posture.
-
-#### Acceptance Criteria
-- [x] `aws_resiliencehub_resiliency_policy` implementation for standardized RTO/RPO targets
-- [x] Support for modular resilience policies covering service-level objectives (SLOs)
-- [x] Support for multi-AZ/Region DR and data recovery policies
-- [x] Implementation of business-oriented application modeling (AppRegistry integration)
-- [x] Support for Generative AI-powered resilience assessments
-- [x] Mandatory CMK encryption for any underlying assessment reports or state
-- [x] Required `tags` enforced
-- [x] Native offline Terraform test validates policy configuration and application mapping
 
 ---
 
@@ -608,6 +588,26 @@ All modules in this repo MUST comply with these non-negotiable standards:
 ***
 
 ## Existing Completed Module History
+
+### aws/base_component/resiliencehub: Opinionated AWS Resilience Hub (Next Generation) module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `done` (PR #142)
+**Module:** aws/base_component/resiliencehub
+**Why:** Next Generation Resilience Hub (GA June 1, 2026) provides a unified framework for resilience standards, modular policies (SLOs, DR, data recovery), and generative AI-powered assessments. Standardizing these policies is critical for organizational SRE and compliance posture.
+
+#### Acceptance Criteria
+- [x] `aws_resiliencehub_resiliency_policy` implementation for standardized RTO/RPO targets
+- [x] Support for modular resilience policies covering service-level objectives (SLOs)
+- [x] Support for multi-AZ/Region DR and data recovery policies
+- [x] Implementation of business-oriented application modeling (AppRegistry integration)
+- [x] Support for Generative AI-powered resilience assessments
+- [x] Mandatory CMK encryption for any underlying assessment reports or state
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates policy configuration and application mapping
+
+---
 
 ### aws/base_component/bedrock_agent_core: Support Enhanced Gateway and Target Configuration
 
