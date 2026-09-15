@@ -65,3 +65,47 @@ run "valid_organization_telemetry_rule_creation" {
     error_message = "Mandatory tags are missing on organization rule"
   }
 }
+
+run "valid_expanded_destination_configuration" {
+  command = plan
+
+  variables {
+    telemetry_type         = "Logs"
+    resource_type          = "AWS::EC2::VPC"
+    selection_criteria     = "Include"
+    telemetry_source_types = ["VPC_FLOW_LOGS"]
+    scope                  = "ACCOUNT"
+    destination_configurations = [
+      {
+        destination_type    = "cloud-watch-logs"
+        destination_pattern = "arn:aws:logs:us-east-1:123456789012:log-group:/aws/vpc/flow-logs"
+        retention_in_days   = 30
+        vpc_flow_log_parameters = {
+          traffic_type             = "ALL"
+          max_aggregation_interval = 60
+          log_format               = "custom-format"
+        }
+      }
+    ]
+  }
+
+  assert {
+    condition     = aws_observabilityadmin_telemetry_rule.this[0].rule[0].selection_criteria == "Include"
+    error_message = "Selection criteria does not match"
+  }
+
+  assert {
+    condition     = aws_observabilityadmin_telemetry_rule.this[0].rule[0].scope == "ACCOUNT"
+    error_message = "Scope does not match"
+  }
+
+  assert {
+    condition     = aws_observabilityadmin_telemetry_rule.this[0].rule[0].destination_configuration[0].destination_type == "cloud-watch-logs"
+    error_message = "Destination type does not match"
+  }
+
+  assert {
+    condition     = aws_observabilityadmin_telemetry_rule.this[0].rule[0].destination_configuration[0].vpc_flow_log_parameters[0].traffic_type == "ALL"
+    error_message = "VPC Flow Log traffic type does not match"
+  }
+}
