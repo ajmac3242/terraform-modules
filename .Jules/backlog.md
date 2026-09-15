@@ -121,17 +121,17 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 **Priority:** MEDIUM
 **Type:** Feature
-**Status:** `backlog`
+**Status:** `done`
 **Module:** aws/base_component/observability_admin
 **Why:** AWS Provider v6.48.0 expanded the telemetry rule schema to support destination configurations for CloudTrail, ELB, Log Delivery, MSK, VPC Flow Logs, and WAF.
 
 #### Acceptance Criteria
-- [ ] Implement `destination_configuration` block with all sub-parameters
-- [ ] Support for `selection_criteria`, `telemetry_source_types`, and `scope`
-- [ ] Update organizational rule support to match the expanded schema
-- [ ] Mandatory CMK encryption for any underlying log destinations
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates expanded rule configuration
+- [x] Implement `destination_configuration` block with all sub-parameters
+- [x] Support for `selection_criteria`, `telemetry_source_types`, and `scope`
+- [x] Update organizational rule support to match the expanded schema
+- [x] Mandatory CMK encryption for any underlying log destinations
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates expanded rule configuration
 
 ---
 

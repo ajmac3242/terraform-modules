@@ -173,3 +173,5 @@ _`- [YYYY-MM-DD] Built <module path>. PR #<number>.`_
 - [2026-06-13] Built aws/base_component/bedrock_agent_core enhancements. PR #136.
 - [2026-06-17] resiliencehub — Implemented `aws_resiliencehub_resiliency_policy` with validation for severity tiers (MissionCritical to NonCritical), RTO/RPO targets across AZ, Hardware, Software, and Region, and enforced tagging standards.
 - [2026-06-17] Built aws/base_component/resiliencehub. PR #142.
+- [2026-06-18] observability_admin — Expanded telemetry rule schema to support destination_configurations (CloudTrail, ELB, Log Delivery, MSK, VPC Flow Logs, WAF) and rule attributes (selection_criteria, telemetry_source_types, scope).
+- [2026-06-18] Built aws/base_component/observability_admin.
