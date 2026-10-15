@@ -1,7 +1,7 @@
 # Terraform Modules — Product Backlog
 
 > **Maintained by:** Navigator (daily backlog ownership), Builder (marks implemented items done), Steward (adds review-discovered follow-up work)
-> **Last reviewed:** 2026-06-18
+> **Last reviewed:** 2026-06-19
 > **Purpose:** Single source of truth for module roadmap, implementation-ready backlog items, acceptance criteria, review-discovered gaps, and strategic module expansion for this opinionated AWS Terraform module library.
 
 ***
@@ -78,23 +78,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ---
 
-### aws/base_component/bedrock_agent_runtime: Support Interactive Shells
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/bedrock_agent_runtime
-**Why:** Bedrock AgentRuntime now supports interactive shells (announced June 5, 2026), enabling developers to access persistent, terminal-based sessions for agentic execution.
-
-#### Acceptance Criteria
-- [ ] Support for `InvokeAgentRuntimeCommandShell` API via provider resources/data sources
-- [ ] Support for persistent PTY-based sessions
-- [ ] Mandatory CMK encryption for shell session logs and state
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates shell configuration
-
----
-
 ### aws/base_component/aurora_mysql: Opinionated Aurora MySQL module with Kiro Powers integration
 
 **Priority:** HIGH
@@ -114,24 +97,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Storage type `aurora-iopt1` (I/O-Optimized) enabled by default
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates encryption, scaling configuration, and IAM associations
-
----
-
-### aws/base_component/observability_admin: Support Expanded Rule Schema
-
-**Priority:** MEDIUM
-**Type:** Feature
-**Status:** `done`
-**Module:** aws/base_component/observability_admin
-**Why:** AWS Provider v6.48.0 expanded the telemetry rule schema to support destination configurations for CloudTrail, ELB, Log Delivery, MSK, VPC Flow Logs, and WAF.
-
-#### Acceptance Criteria
-- [x] Implement `destination_configuration` block with all sub-parameters
-- [x] Support for `selection_criteria`, `telemetry_source_types`, and `scope`
-- [x] Update organizational rule support to match the expanded schema
-- [x] Mandatory CMK encryption for any underlying log destinations
-- [x] Required `tags` enforced
-- [x] Native offline Terraform test validates expanded rule configuration
 
 ---
 
@@ -308,6 +273,41 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ---
 
+### aws/base_component/cloudwatch_log_transformer: Opinionated CloudWatch Log Transformer module
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/cloudwatch_log_transformer
+**Why:** CloudWatch Log Transformer (announced June 11, 2026) enables in-flight transformation of log data to add context for Application Signals, infrastructure, and traces, accelerating troubleshooting.
+
+#### Acceptance Criteria
+- [ ] `aws_cloudwatch_log_transformer` resource implementation
+- [ ] Support for adding infrastructure and trace context to logs
+- [ ] Mandatory CMK encryption for any persistent transformation state or logs
+- [ ] Least-privilege IAM roles for log transformation
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates transformer configuration
+
+---
+
+### aws/base_component/bedrock_guardrail: Support InvokeGuardrailChecks API
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `backlog`
+**Module:** aws/base_component/bedrock_guardrail
+**Why:** Amazon Bedrock Guardrails now supports the `InvokeGuardrailChecks` API (June 16, 2026), enabling real-time safety assessments for model inputs and outputs.
+
+#### Acceptance Criteria
+- [ ] Support for `InvokeGuardrailChecks` API configuration in the module
+- [ ] Support for real-time safety assessment reporting
+- [ ] Mandatory CMK encryption for any associated check logs
+- [ ] Required `tags` enforced
+- [ ] Native offline Terraform test validates API configuration
+
+---
+
 ### aws/workload_component/terraform_mcp_server: Opinionated Terraform MCP Server pattern
 
 **Priority:** HIGH
@@ -360,24 +360,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Support for enabling/disabling DNS resolution via variables
 - [ ] Required `tags` enforced
 - [ ] Native offline Terraform test validates configuration
-
----
-
-### aws/base_component/cloudwatch_log_transformer: Opinionated CloudWatch Log Transformer module
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/cloudwatch_log_transformer
-**Why:** CloudWatch Log Transformer (announced June 11, 2026) enables in-flight transformation of log data to add context for Application Signals, infrastructure, and traces, accelerating troubleshooting.
-
-#### Acceptance Criteria
-- [ ] `aws_cloudwatch_log_transformer` resource implementation
-- [ ] Support for adding infrastructure and trace context to logs
-- [ ] Mandatory CMK encryption for any persistent transformation state or logs
-- [ ] Least-privilege IAM roles for log transformation
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates transformer configuration
 
 ---
 
@@ -589,6 +571,24 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ## Existing Completed Module History
 
+### aws/base_component/observability_admin: Support Expanded Rule Schema
+
+**Priority:** MEDIUM
+**Type:** Feature
+**Status:** `done` (PR #148)
+**Module:** aws/base_component/observability_admin
+**Why:** AWS Provider v6.48.0 expanded the telemetry rule schema to support destination configurations for CloudTrail, ELB, Log Delivery, MSK, VPC Flow Logs, and WAF.
+
+#### Acceptance Criteria
+- [x] Implement `destination_configuration` block with all sub-parameters
+- [x] Support for `selection_criteria`, `telemetry_source_types`, and `scope`
+- [x] Update organizational rule support to match the expanded schema
+- [x] Mandatory CMK encryption for any underlying log destinations
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates expanded rule configuration
+
+---
+
 ### aws/base_component/resiliencehub: Opinionated AWS Resilience Hub (Next Generation) module
 
 **Priority:** HIGH
@@ -707,23 +707,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 - [ ] Support `engine_version` >= 18.x
 - [ ] Update `db_cluster_parameter_group_family` default and validation to support `aurora-postgresql18`
 - [ ] Native offline Terraform test validates version configuration
-
----
-
-### aws/base_component/bedrock_guardrail: Support InvokeGuardrailChecks API
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/bedrock_guardrail
-**Why:** Amazon Bedrock Guardrails now supports the `InvokeGuardrailChecks` API (June 16, 2026), enabling real-time safety assessments for model inputs and outputs.
-
-#### Acceptance Criteria
-- [ ] Support for `InvokeGuardrailChecks` API configuration in the module
-- [ ] Support for real-time safety assessment reporting
-- [ ] Mandatory CMK encryption for any associated check logs
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates API configuration
 
 ---
 
