@@ -168,6 +168,7 @@ _`- [YYYY-MM-DD] Built <module path>. PR #<number>.`_
 - [2026-06-02] bedrock_agent_core — Discovered that `aws_bedrockagentcore_browser` and `aws_bedrockagentcore_online_evaluation_config` do not support a top-level `kms_key_arn` attribute in AWS Provider v6.47.0. Hardening deferred to storage layer.
 - [2026-06-02] aurora_postgresql — Verified restoration of vector search and Lambda integration.
 - [2026-06-02] observability_admin — Verified support for organizational telemetry rules.
+- [2026-06-19] aurora_mysql — Implemented opinionated Aurora MySQL Serverless v2 module with I/O-Optimized storage (aurora-iopt1), CMK encryption for storage and CloudWatch logs, and dedicated Kiro Powers (MCP) control plane and data plane IAM roles.
 - [2026-05-26] Session concluded early. All backlog items remain blocked by AWS Provider v6.46.0 gaps. Verified standalone `aws_bedrockagentcore_browser` existence but confirmed missing gateway integration.
 - [2026-06-03] Session concluded early. Verified all 8 active high-priority backlog items remain blocked by missing resources or attributes in AWS Provider v6.47.0 (including amazon_quick, extenddb, transform, devops_agent, and agentic payments).
 - [2026-06-13] Built aws/base_component/bedrock_agent_core enhancements. PR #136.
@@ -175,3 +176,4 @@ _`- [YYYY-MM-DD] Built <module path>. PR #<number>.`_
 - [2026-06-17] Built aws/base_component/resiliencehub. PR #142.
 - [2026-06-18] observability_admin — Expanded telemetry rule schema to support destination_configurations (CloudTrail, ELB, Log Delivery, MSK, VPC Flow Logs, WAF) and rule attributes (selection_criteria, telemetry_source_types, scope).
 - [2026-06-18] Built aws/base_component/observability_admin.
+- [2026-06-19] Built aws/base_component/aurora_mysql. PR #149.

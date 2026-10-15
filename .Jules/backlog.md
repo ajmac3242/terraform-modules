@@ -78,27 +78,6 @@ All modules in this repo MUST comply with these non-negotiable standards:
 
 ---
 
-### aws/base_component/aurora_mysql: Opinionated Aurora MySQL module with Kiro Powers integration
-
-**Priority:** HIGH
-**Type:** Feature
-**Status:** `backlog`
-**Module:** aws/base_component/aurora_mysql
-**Why:** Support for Kiro Powers (MCP) integration (announced May 2026) to enable AI-assisted database operations and schema management. Bundles best practices for Aurora MySQL Serverless v2, automated scaling, and secure IAM integration for AI-DLC workflows.
-
-#### Acceptance Criteria
-- [ ] `aws_rds_cluster` with `engine = "aurora-mysql"` and `engine_version` >= 8.0.mysql_aurora.3.x
-- [ ] Support for Aurora Serverless v2 (`serverlessv2_scaling_configuration`)
-- [ ] Configure `aws_rds_cluster_parameter_group` with opinionated performance and security defaults
-- [ ] Implementation of IAM roles and associations for Kiro MCP integration (Control plane and Data plane)
-- [ ] Mandatory CMK encryption for storage and CloudWatch logs
-- [ ] Placed in VPC private subnets with dedicated `aws_db_subnet_group`
-- [ ] Point-in-time recovery (PITR) enabled (7 days minimum)
-- [ ] Storage type `aurora-iopt1` (I/O-Optimized) enabled by default
-- [ ] Required `tags` enforced
-- [ ] Native offline Terraform test validates encryption, scaling configuration, and IAM associations
-
----
 
 ### aws/base_component/bedrock_agent_runtime: Opinionated Bedrock Agent Runtime module
 
@@ -570,6 +549,28 @@ All modules in this repo MUST comply with these non-negotiable standards:
 ***
 
 ## Existing Completed Module History
+
+### aws/base_component/aurora_mysql: Opinionated Aurora MySQL module with Kiro Powers integration
+
+**Priority:** HIGH
+**Type:** Feature
+**Status:** `done` (PR #149)
+**Module:** aws/base_component/aurora_mysql
+**Why:** Support for Kiro Powers (MCP) integration (announced May 2026) to enable AI-assisted database operations and schema management. Bundles best practices for Aurora MySQL Serverless v2, automated scaling, and secure IAM integration for AI-DLC workflows.
+
+#### Acceptance Criteria
+- [x] `aws_rds_cluster` with `engine = "aurora-mysql"` and `engine_version` >= 8.0.mysql_aurora.3.x
+- [x] Support for Aurora Serverless v2 (`serverlessv2_scaling_configuration`)
+- [x] Configure `aws_rds_cluster_parameter_group` with opinionated performance and security defaults
+- [x] Implementation of IAM roles and associations for Kiro MCP integration (Control plane and Data plane)
+- [x] Mandatory CMK encryption for storage and CloudWatch logs
+- [x] Placed in VPC private subnets with dedicated `aws_db_subnet_group`
+- [x] Point-in-time recovery (PITR) enabled (7 days minimum)
+- [x] Storage type `aurora-iopt1` (I/O-Optimized) enabled by default
+- [x] Required `tags` enforced
+- [x] Native offline Terraform test validates encryption, scaling configuration, and IAM associations
+
+---
 
 ### aws/base_component/observability_admin: Support Expanded Rule Schema
 
