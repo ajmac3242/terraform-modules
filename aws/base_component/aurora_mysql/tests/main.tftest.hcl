@@ -96,6 +96,16 @@ run "valid_aurora_mysql_creation" {
   }
 
   assert {
+    condition     = output.cluster_identifier == var.cluster_identifier
+    error_message = "Output cluster_identifier does not match input"
+  }
+
+  assert {
+    condition     = output.db_subnet_group_name == "${var.cluster_identifier}-subnet-group"
+    error_message = "Output db_subnet_group_name does not match expected subnet group name"
+  }
+
+  assert {
     condition     = aws_rds_cluster.this.tags["environment"] == "test"
     error_message = "Mandatory tag environment is missing"
   }
