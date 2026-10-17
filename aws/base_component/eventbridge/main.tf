@@ -3,21 +3,19 @@ module "kms" {
   count  = var.create_bus && var.existing_kms_key_arn == null && var.kms_key_arn == null ? 1 : 0
   source = "../kms"
 
-  name                 = "${var.name}-bus-key"
-  description          = "KMS key for EventBridge bus ${var.name}"
+  name                 = "${var.name == null ? "default" : var.name}-bus-key"
+  description          = "KMS key for EventBridge bus ${var.name == null ? "default" : var.name}"
   admin_principal_arns = []
-  usage_principal_arns = ["arn:aws:iam::${local.account_id}:root"] # Basic usage for the account, actual service access via key policy usually needs more
+  usage_principal_arns = ["arn:aws:iam::${local.account_id}:root"] # Basic usage for the account
   aws_account_id       = var.aws_account_id
 
   tags = var.tags
 }
 
-data "aws_caller_identity" "current" {
-  count = var.aws_account_id == null ? 1 : 0
-}
+data "aws_caller_identity" "current" {}
 
 locals {
-  account_id           = var.aws_account_id != null ? var.aws_account_id : data.aws_caller_identity.current[0].account_id
+  account_id           = var.aws_account_id != null ? var.aws_account_id : data.aws_caller_identity.current.account_id
   provided_kms_key_arn = var.existing_kms_key_arn != null ? var.existing_kms_key_arn : var.kms_key_arn
   kms_key_arn          = var.create_bus ? (local.provided_kms_key_arn != null ? local.provided_kms_key_arn : module.kms[0].key_arn) : null
 }
@@ -73,7 +71,6 @@ data "aws_iam_policy_document" "kms_eventbridge" {
     resources = ["*"]
   }
 
-  # Inherit from module.kms if possible, or just add account root
   statement {
     sid    = "Enable IAM User Permissions"
     effect = "Allow"

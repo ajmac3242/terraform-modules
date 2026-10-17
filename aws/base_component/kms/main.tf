@@ -1,10 +1,6 @@
-data "aws_caller_identity" "current" {
-  count = var.aws_account_id == null ? 1 : 0
-}
 
-locals {
-  account_id = var.aws_account_id != null ? var.aws_account_id : data.aws_caller_identity.current[0].account_id
-}
+
+
 
 resource "aws_kms_key" "this" {
   description             = var.description
@@ -22,14 +18,7 @@ resource "aws_kms_alias" "this" {
   target_key_id = aws_kms_key.this.key_id
 }
 
-data "aws_iam_policy_document" "kms" {
-  # Root account access is standard to prevent lockout and allow IAM policy delegation
-  statement {
-    sid    = "Enable IAM User Permissions"
-    effect = "Allow"
-    principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::${local.account_id}:root"]
+:root"]
     }
     actions   = ["kms:*"]
     resources = ["*"]

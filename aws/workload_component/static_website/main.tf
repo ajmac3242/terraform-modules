@@ -95,10 +95,7 @@ resource "aws_s3_bucket_policy" "oac" {
   policy = data.aws_iam_policy_document.oac.json
 }
 
-data "aws_iam_policy_document" "oac" {
-  statement {
-    actions   = ["s3:GetObject"]
-    resources = ["${module.s3_origin.bucket_arn}/*"]
+/*"]
 
     principals {
       type        = "Service"

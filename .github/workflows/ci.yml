@@ -26,13 +26,26 @@ permissions:
   pull-requests: write
   actions: read
 
-# ---------------------------------------------------------------
-# Module directories — update this list as modules are added
-# ---------------------------------------------------------------
-# To add a new module, append to this list and the matrix jobs
-# will automatically pick it up.
-
 jobs:
+  # ---------------------------------------------------------------
+  # Module Discovery: Dynamically identify all modules
+  # ---------------------------------------------------------------
+  discovery:
+    name: Discover Modules
+    runs-on: ubuntu-latest
+    outputs:
+      modules: ${{ steps.set-modules.outputs.modules }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Identify all modules
+        id: set-modules
+        run: |
+          # Find all directories containing main.tf
+          MODULES=$(find aws -name "main.tf" -exec dirname {} + | sort -u | jq -R . | jq -s -c .)
+          echo "modules=$MODULES" >> "$GITHUB_OUTPUT"
+
   # ---------------------------------------------------------------
   # Path Filtering: Determines what changed
   # ---------------------------------------------------------------
@@ -58,7 +71,7 @@ jobs:
               - '.github/workflows/ci.yml'
 
   # ---------------------------------------------------------------
-  # Terraform Auto-Fix (best-effort: fmt + commit, never blocks pipeline)
+  # Terraform Auto-Fix
   # ---------------------------------------------------------------
   terraform-auto-fix:
     name: Terraform Auto-Fix
@@ -89,20 +102,18 @@ jobs:
           file_pattern: "aws/**/*.tf"
 
   # ---------------------------------------------------------------
-  # Terraform Validate (matrix over all modules, parallel with lint)
+  # Terraform Validate
   # ---------------------------------------------------------------
   validate:
     name: Terraform Validate
-    needs: [filter, terraform-auto-fix]
+    needs: [discovery, filter, terraform-auto-fix]
     if: always() && needs.filter.outputs.terraform == 'true' && (needs.terraform-auto-fix.result == 'success' || needs.terraform-auto-fix.result == 'skipped')
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
-        working-directory:
-          - aws/base_component/lambda
-          - aws/workload_component/apigw_lambda
+        working-directory: ${{ fromJson(needs.discovery.outputs.modules) }}
     defaults:
       run:
         shell: bash
@@ -117,32 +128,24 @@ jobs:
           terraform_wrapper: false
 
       - name: Terraform Init
-        run: |
-          echo "::group::Terraform Init"
-          terraform init -backend=false -input=false
-          echo "::endgroup::"
+        run: terraform init -backend=false -input=false
 
       - name: Terraform Validate
-        run: |
-          echo "::group::Terraform Validate"
-          terraform validate -no-color
-          echo "::endgroup::"
+        run: terraform validate -no-color
 
   # ---------------------------------------------------------------
-  # Terraform Lint (matrix over all modules, parallel with validate)
+  # Terraform Lint
   # ---------------------------------------------------------------
   lint:
     name: Terraform Lint
-    needs: [filter, terraform-auto-fix]
+    needs: [discovery, filter, terraform-auto-fix]
     if: always() && needs.filter.outputs.terraform == 'true' && (needs.terraform-auto-fix.result == 'success' || needs.terraform-auto-fix.result == 'skipped')
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
-        working-directory:
-          - aws/base_component/lambda
-          - aws/workload_component/apigw_lambda
+        working-directory: ${{ fromJson(needs.discovery.outputs.modules) }}
     defaults:
       run:
         shell: bash
@@ -166,25 +169,19 @@ jobs:
         uses: terraform-linters/setup-tflint@v4
 
       - name: Init TFLint
-        run: |
-          echo "::group::TFLint Init"
-          tflint --init
-          echo "::endgroup::"
+        run: tflint --init
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Run TFLint
-        run: |
-          echo "::group::TFLint Run"
-          tflint -f compact
-          echo "::endgroup::"
+        run: tflint -f compact
 
   # ---------------------------------------------------------------
-  # Terraform Docs (PR only, runs after validate + lint both pass)
+  # Terraform Docs
   # ---------------------------------------------------------------
   docs:
     name: Terraform Docs
-    needs: [filter, validate, lint]
+    needs: [discovery, filter, validate, lint]
     if: >
       always() &&
       github.event_name == 'pull_request' &&
@@ -192,13 +189,11 @@ jobs:
       (needs.validate.result == 'success' || needs.validate.result == 'skipped') &&
       (needs.lint.result == 'success' || needs.lint.result == 'skipped')
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
-        working-directory:
-          - aws/base_component/lambda
-          - aws/workload_component/apigw_lambda
+        working-directory: ${{ fromJson(needs.discovery.outputs.modules) }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -245,13 +240,6 @@ jobs:
         run: |
           set -euo pipefail
 
-          echo "=== Decision Gate Debug ==="
-          echo "TERRAFORM_CHANGED='$TERRAFORM_CHANGED'"
-          echo "AUTOFIX_RESULT='$AUTOFIX_RESULT'"
-          echo "VALIDATE_RESULT='$VALIDATE_RESULT'"
-          echo "LINT_RESULT='$LINT_RESULT'"
-          echo "DOCS_RESULT='$DOCS_RESULT'"
-
           can_merge=false
 
           if { [ "$AUTOFIX_RESULT"  = "success" ] || [ "$AUTOFIX_RESULT"  = "skipped" ]; } && \
@@ -262,8 +250,6 @@ jobs:
           fi
 
           echo "can_merge=$can_merge" >> "$GITHUB_OUTPUT"
-          echo "==========================="
-          echo "can_merge=$can_merge"
 
   # ---------------------------------------------------------------
   # Auto-Merge PR
