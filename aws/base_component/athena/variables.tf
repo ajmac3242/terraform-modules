@@ -24,7 +24,7 @@ variable "kms_key_arn" {
   type        = string
 
   validation {
-    condition     = can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/.*$", var.kms_key_arn))
+    condition     = can(regex("^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/[a-z0-9-]+$", var.kms_key_arn))
     error_message = "The kms_key_arn must be a valid AWS KMS key ARN."
   }
 }
@@ -47,6 +47,6 @@ variable "tags" {
 
   validation {
     condition     = contains(keys(var.tags), "environment") && contains(keys(var.tags), "owner") && contains(keys(var.tags), "project") && contains(keys(var.tags), "cost_center")
-    error_message = "The tags map must include environment, owner, project, and cost_center."
+    error_message = "The tags map must contain the following keys: environment, owner, project, cost_center."
   }
 }
