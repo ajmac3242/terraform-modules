@@ -51,3 +51,33 @@ module "security_group" {
 | `security_group_id` | The ID of the security group |
 | `security_group_arn` | The ARN of the security group |
 | `tags` | A map of tags assigned to the resource |
+
+<!-- BEGIN_TF_DOCS -->
+
+
+## Usage
+
+```hcl
+# See README.md for usage example
+```
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_description"></a> [description](#input\_description) | Description of the security group | `string` | n/a | yes |
+| <a name="input_name"></a> [name](#input\_name) | Name of the security group | `string` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to the resources | `map(string)` | n/a | yes |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The VPC ID where the security group will be created | `string` | n/a | yes |
+| <a name="input_egress_rules"></a> [egress\_rules](#input\_egress\_rules) | List of egress rules | ```list(object({ from_port = number to_port = number protocol = string cidr_blocks = list(string) description = string }))``` | ```[ { "cidr_blocks": [ "0.0.0.0/0" ], "description": "Allow all outbound traffic", "from_port": 0, "protocol": "-1", "to_port": 0 } ]``` | no |
+| <a name="input_ingress_rules"></a> [ingress\_rules](#input\_ingress\_rules) | List of ingress rules | ```list(object({ from_port = number to_port = number protocol = string cidr_blocks = list(string) description = string }))``` | `[]` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_security_group_arn"></a> [security\_group\_arn](#output\_security\_group\_arn) | The ARN of the security group |
+| <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | The ID of the security group |
+| <a name="output_tags"></a> [tags](#output\_tags) | A map of tags assigned to the resource |
+
+<!-- END_TF_DOCS -->

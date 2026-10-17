@@ -7,7 +7,7 @@ module "kms" {
   description          = "KMS key for S3 bucket ${var.bucket_name}"
   admin_principal_arns = []
   usage_principal_arns = []
-  aws_account_id       = var.aws_account_id
+
 
   tags = var.tags
 }

@@ -5,8 +5,7 @@ module "s3" {
   bucket_name   = var.bucket_name
   log_bucket_id = var.log_bucket_id
 
-  aws_account_id = var.aws_account_id
-  tags           = var.tags
+  tags = var.tags
 }
 
 # Lambda Function using base module
@@ -21,8 +20,7 @@ module "lambda" {
 
   vpc_config = var.lambda_vpc_config
 
-  aws_account_id = var.aws_account_id
-  tags           = var.tags
+  tags = var.tags
 }
 
 # Lambda Permission for S3 to invoke
